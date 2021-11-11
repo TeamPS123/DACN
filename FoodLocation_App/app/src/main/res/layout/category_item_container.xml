@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="@dimen/_8sdp"
+    android:paddingVertical="@dimen/_6sdp"
+    android:layout_marginEnd="@dimen/_4sdp"
+    android:background="@drawable/background_category"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/imageViewCategory"
+        android:layout_width="@dimen/_24sdp"
+        android:layout_height="@dimen/_24sdp"
+        android:src="@drawable/ic_baseline_restaurant_menu_24"/>
+
+    <TextView
+        android:id="@+id/textViewName"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/_4sdp"
+        android:text="Trà sửa"
+        android:gravity="center_vertical"
+        android:textSize="@dimen/_12ssp"
+        android:textColor="#212A45"/>
+
+</LinearLayout>
