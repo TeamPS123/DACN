@@ -1,8 +1,11 @@
 package com.psteam.foodlocation.activities;
 
+import static com.psteam.foodlocation.ultilities.RetrofitClient.getRetrofitGoogleMapAPI;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,6 +16,7 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,33 +25,58 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.internal.maps.zzw;
+import com.google.android.gms.internal.maps.zzx;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.maps.android.PolyUtil;
+import com.google.maps.android.clustering.Cluster;
+import com.google.maps.android.clustering.ClusterItem;
+import com.google.maps.android.clustering.ClusterManager;
+import com.google.maps.android.clustering.view.DefaultClusterRenderer;
+import com.google.maps.android.ui.IconGenerator;
 import com.psteam.foodlocation.R;
 import com.psteam.foodlocation.adapters.MapRestaurantAdapter;
 import com.psteam.foodlocation.databinding.ActivityMapBinding;
 import com.psteam.foodlocation.listeners.MapRestaurantListener;
+import com.psteam.foodlocation.models.GoogleMapApiModels.DirectionResponses;
+import com.psteam.foodlocation.models.MyItem;
 import com.psteam.foodlocation.models.RestaurantModel;
 import com.psteam.foodlocation.services.LocationService;
+import com.psteam.foodlocation.services.ServiceAPI;
 import com.psteam.foodlocation.ultilities.Constants;
 import com.psteam.foodlocation.ultilities.Para;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback, MapRestaurantListener {
+
+    private final static LatLng currentLocation = new LatLng(Para.latitude, Para.longitude);
 
     private static final int REQUEST_CODE_LOCATION_PERMISSION = 1;
     private GoogleMap mMap;
@@ -62,6 +91,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private RecyclerView recyclerViewSearch;
     private MapRestaurantAdapter mapRestaurantAdapter;
     private ArrayList<RestaurantModel> restaurantModels;
+
+    private TextView textViewRestaurantName, textViewRestaurantAddress, textViewCloseTime, textViewOpenTime, textViewDistance, textViewDirections, textViewDuration;
+
+    private LinearLayout layoutSuggestRestaurant, layoutLocationInfo, layoutProgressBar;
+
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,22 +126,39 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         buttonMyLocation = findViewById(R.id.buttonMyLocation);
         iconLocation = findViewById(R.id.iconLocation);
+        layoutSuggestRestaurant = findViewById(R.id.layoutSuggestRestaurant);
+        layoutLocationInfo = findViewById(R.id.layoutLocationInfo);
+
+        textViewRestaurantName = findViewById(R.id.textViewRestaurantName);
+        textViewRestaurantAddress = findViewById(R.id.textViewRestaurantAddress);
+        textViewOpenTime = findViewById(R.id.textViewOpenTime);
+        textViewCloseTime = findViewById(R.id.textViewCloseTime);
+        textViewDistance = findViewById(R.id.textviewDistance);
+        textViewDirections = findViewById(R.id.textViewDirections);
+        textViewDuration = findViewById(R.id.textviewDuration);
+
+        progressBar = findViewById(R.id.progressBarMap);
+        layoutProgressBar = findViewById(R.id.layoutProgressBar);
+
         initBottomSheetRestaurant();
+
     }
 
     private void initSearchRestaurant() {
         restaurantModels = new ArrayList<>();
-        restaurantModels.add(new RestaurantModel("ToCoToCo", "875/22, Đường Nguyễn văn Cừ, Phường Lộc Phát, Tp.Bảo Lộc, Tỉnh Lâm Đồng", "2.5", R.drawable.tocotoco_restaurant, "11.5572771,107.8466486"));
-        restaurantModels.add(new RestaurantModel("ToCoToCo", "875/22, Đường Nguyễn văn Cừ, Phường Lộc Phát, Tp.Bảo Lộc, Tỉnh Lâm Đồng", "2.5", R.drawable.tocotoco_restaurant, "11.5584221,107.8403592"));
-        restaurantModels.add(new RestaurantModel("ToCoToCo", "875/22, Đường Nguyễn văn Cừ, Phường Lộc Phát, Tp.Bảo Lộc, Tỉnh Lâm Đồng", "2.5", R.drawable.tocotoco_restaurant, "11.5567423,107.842969"));
-        restaurantModels.add(new RestaurantModel("ToCoToCo", "875/22, Đường Nguyễn văn Cừ, Phường Lộc Phát, Tp.Bảo Lộc, Tỉnh Lâm Đồng", "2.5", R.drawable.tocotoco_restaurant, "11.5612465,107.8423469"));
+        restaurantModels.add(new RestaurantModel("ToCoToCo1", "875/22, Đường Nguyễn văn Cừ, Phường Lộc Phát, Tp.Bảo Lộc, Tỉnh Lâm Đồng", "2.5", R.drawable.tocotoco_restaurant, "11.5572771,107.8466486"));
+        restaurantModels.add(new RestaurantModel("ToCoToCo2", "875/22, Đường Nguyễn văn Cừ, Phường Lộc Phát, Tp.Bảo Lộc, Tỉnh Lâm Đồng", "2.5", R.drawable.tocotoco_restaurant, "11.5584221,107.8403592"));
+        restaurantModels.add(new RestaurantModel("ToCoToCo3", "875/22, Đường Nguyễn văn Cừ, Phường Lộc Phát, Tp.Bảo Lộc, Tỉnh Lâm Đồng", "2.5", R.drawable.tocotoco_restaurant, "11.5567423,107.842969"));
+        restaurantModels.add(new RestaurantModel("ToCoToCo4", "875/22, Đường Nguyễn văn Cừ, Phường Lộc Phát, Tp.Bảo Lộc, Tỉnh Lâm Đồng", "2.5", R.drawable.tocotoco_restaurant, "11.5612465,107.8423469"));
+        restaurantModels.add(new RestaurantModel("ToCoToCo5", "875/22, Đường Nguyễn văn Cừ, Phường Lộc Phát, Tp.Bảo Lộc, Tỉnh Lâm Đồng", "2.5", R.drawable.tocotoco_restaurant, "11.5612435,107.8521100"));
+        restaurantModels.add(new RestaurantModel("ToCoToCo6", "875/22, Đường Nguyễn văn Cừ, Phường Lộc Phát, Tp.Bảo Lộc, Tỉnh Lâm Đồng", "2.5", R.drawable.tocotoco_restaurant, "11.5612435,107.8321100"));
 
         mapRestaurantAdapter = new MapRestaurantAdapter(restaurantModels, this);
         recyclerViewSearch.setAdapter(mapRestaurantAdapter);
 
     }
 
-    private int peekHeight;
+    private static int peekHeight;
 
     private void initBottomSheetRestaurant() {
         layoutBottomSheet = findViewById(R.id.bottomSheetContainer);
@@ -115,7 +167,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         recyclerViewSearch = findViewById(R.id.recycleViewSearchRestaurant);
         initSearchRestaurant();
-
+        checkSelfPermission();
 
     }
 
@@ -191,14 +243,19 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private boolean markerSelected = false;
     private Marker markerClicked;
     private Marker oldMarkerClicked;
-    private ArrayList<Marker> markerArrayList;
-
 
     @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
-        markerArrayList = new ArrayList<>();
         mMap = googleMap;
+        setUpClusterer();
+    }
+
+    private ClusterManager<RestaurantModel> mClusterManager;
+
+    @SuppressLint("MissingPermission")
+    private void setUpClusterer() {
+
         mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
 
@@ -208,31 +265,139 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             locationButton.setVisibility(View.GONE);
         }
 
-        // Add a marker in Sydney and move the camera
-        LatLng currentLocation = new LatLng(Para.latitude, Para.longitude);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(Para.latitude, Para.longitude), 15));
 
-        mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+        mClusterManager = new ClusterManager<RestaurantModel>(this, mMap);
+        mClusterManager.setRenderer(new RestaurantRender(getApplicationContext(), mMap, mClusterManager));
+
+        mMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
             @Override
-            public void onMapLoaded() {
-                for (RestaurantModel restaurantModel : restaurantModels) {
-                    Marker marker = mMap.addMarker(new MarkerOptions()
-                            .position(restaurantModel.LatLng())
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
-                            .title(restaurantModel.getName()));
-                    marker.setTag(restaurantModel);
-                    markerArrayList.add(marker);
+            public void onCameraIdle() {
+                mClusterManager.onCameraIdle();
+                if (markerSelected) {
+                    iconLocation.setVisibility(View.GONE);
+                    oldMarkerClicked = markerClicked;
+                    markerSelected = false;
+
+                    if (layoutSuggestRestaurant.getVisibility() == View.VISIBLE) {
+                        layoutSuggestRestaurant.setVisibility(View.GONE);
+                        layoutLocationInfo.setVisibility(View.VISIBLE);
+                    }
+
+                    if (bottomSheetBehavior != null) {
+                        bottomSheetBehavior.setPeekHeight(layoutLocationInfo.getHeight() + peekHeight);
+                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                        bottomSheetBehavior.setDraggable(false);
+                        RestaurantModel restaurantModel = (RestaurantModel) markerClicked.getTag();
+                        setRestaurantInfo(restaurantModel);
+                    }
+
+                } else {
+                    layoutLocationInfo.setVisibility(View.GONE);
+                    layoutSuggestRestaurant.setVisibility(View.VISIBLE);
+
+                    if (bottomSheetBehavior != null) {
+                        bottomSheetBehavior.setPeekHeight(peekHeight);
+                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                        bottomSheetBehavior.setDraggable(true);
+                    }
                 }
+
+
+            }
+        });
+
+        mClusterManager.setOnClusterClickListener(new ClusterManager.OnClusterClickListener<RestaurantModel>() {
+            @Override
+            public boolean onClusterClick(Cluster<RestaurantModel> cluster) {
+                // Create the builder to collect all essential cluster items for the bounds.
+                LatLngBounds.Builder builder = LatLngBounds.builder();
+                for (ClusterItem item : cluster.getItems()) {
+                    builder.include(item.getPosition());
+                }
+                // Get the LatLngBounds
+                final LatLngBounds bounds = builder.build();
+
+                // Animate camera to the bounds
+                try {
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100), 500, null);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return true;
             }
         });
 
 
+        mClusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<RestaurantModel>() {
+            @Override
+            public boolean onClusterItemClick(RestaurantModel item) {
+
+                Marker marker = getMarkerFromCluster(item.getPosition());
+
+                // Click buttonGuide In bottom sheet
+                if (marker == null && flag) {
+
+                    markerSelected = true;
+                    markerClicked = Para.marker;
+
+                    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(temp, 15);
+                    mMap.animateCamera(cameraUpdate, 500, new GoogleMap.CancelableCallback() {
+                        @Override
+                        public void onCancel() {
+                        }
+
+                        @Override
+                        public void onFinish() {
+                            markerClicked.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+                            markerClicked.setTitle(item.getName());
+                            markerClicked.setTag(item);
+                            markerClicked.showInfoWindow();
+                            temp = null;
+                            flag = false;
+                        }
+                    });
+                }
+
+                if (polyline != null) {
+                    if(!item.getPosition().equals(latLngDestination)) {
+                        polyline.remove();
+                        polyline = null;
+                    }
+                }
+
+                if (marker != null) {
+                    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(item.getPosition(), 15);
+                    mMap.animateCamera(cameraUpdate, 500, new GoogleMap.CancelableCallback() {
+                        @Override
+                        public void onCancel() {
+                        }
+
+                        @Override
+                        public void onFinish() {
+                            markerSelected = true;
+                            markerClicked = marker;
+                            marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+                            marker.setTitle(item.getName());
+                            marker.setTag(item);
+                            marker.showInfoWindow();
+                        }
+                    });
+                }
+                return true;
+            }
+        });
+
         mMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
             @Override
             public void onCameraMove() {
+
                 if (bottomSheetBehavior != null) {
                     bottomSheetBehavior.setPeekHeight(0);
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_COLLAPSED) {
+                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+
+                    }
                 }
 
                 if (!markerSelected) {
@@ -242,6 +407,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     if (markerClicked != null) {
                         markerClicked.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
                         markerClicked.hideInfoWindow();
+                        markerClicked = null;
                     }
                 }
                 if (oldMarkerClicked != null) {
@@ -249,51 +415,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     oldMarkerClicked.hideInfoWindow();
                     oldMarkerClicked = null;
                 }
-
-
-            }
-        });
-
-        mMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
-            @Override
-            public void onCameraIdle() {
-
-                if (bottomSheetBehavior != null) {
-                    bottomSheetBehavior.setPeekHeight(peekHeight);
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                }
-
-                if (markerSelected) {
-                    iconLocation.setVisibility(View.GONE);
-                    oldMarkerClicked = markerClicked;
-                    markerSelected = false;
-                }
-            }
-        });
-
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(@NonNull Marker marker) {
-
-                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(((RestaurantModel)marker.getTag()).LatLng(), 15);
-                mMap.animateCamera(cameraUpdate, 500, new GoogleMap.CancelableCallback() {
-                    @Override
-                    public void onCancel() {
-                        return;
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        markerSelected = true;
-                        markerClicked = marker;
-                        marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
-                        marker.showInfoWindow();
-                    }
-                });
-
-
-
-                return true;
             }
         });
 
@@ -303,7 +424,28 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         circleOptions.fillColor(Color.TRANSPARENT);
         circleOptions.strokeWidth(6);
         circleOptions.strokeColor(Color.LTGRAY);
-        googleMap.addCircle(circleOptions);
+        mMap.addCircle(circleOptions);
+        // Add cluster items (markers) to the cluster manager.
+        addItems();
+    }
+
+    private void addItems() {
+
+        // Set some lat/lng coordinates to start with.
+        double lat = Para.latitude;
+        double lng = Para.longitude;
+
+        // Add ten cluster items in close proximity, for purposes of this example.
+        /*for (int i = 0; i < 15; i++) {
+            double offset = i / 10000d;
+            lat = lat + offset;
+            lng = lng + offset;
+            String latLng = String.format("%s,%s", lat, lng);
+            RestaurantModel restaurantModel = new RestaurantModel("ToCoToCo" +i, "875/22, Đường Nguyễn văn Cừ, Phường Lộc Phát, Tp.Bảo Lộc, Tỉnh Lâm Đồng", "2.5", R.drawable.tocotoco_restaurant, latLng);
+            mClusterManager.addItem(restaurantModel);
+
+        }*/
+        mClusterManager.addItems(restaurantModels);
     }
 
     private void getMyLocation() {
@@ -312,30 +454,129 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         mMap.animateCamera(cameraUpdate);
     }
 
+    private void setRestaurantInfo(RestaurantModel restaurantModel) {
+        textViewRestaurantName.setText(restaurantModel.getName());
+        textViewRestaurantAddress.setText(restaurantModel.getAddress());
+        textViewDistance.setText(String.format("%skm", restaurantModel.getDistance()));
+
+        textViewDirections.setOnClickListener(v -> {
+            if (polyline == null) {
+                loadingDirection(true);
+                getDirection(currentLocation, restaurantModel.getPosition());
+            }
+        });
+    }
+
 
     @Override
     public void onRestaurantClicked(RestaurantModel restaurantModel) {
 
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(restaurantModel.LatLng(), 15);
-        mMap.animateCamera(cameraUpdate, 500, new GoogleMap.CancelableCallback() {
-            @Override
-            public void onCancel() {
-                return;
-            }
+        mMap.animateCamera(cameraUpdate, 500, null);
+        if (getMarkerFromCluster(restaurantModel.getPosition()) != null)
+            mClusterManager.getMarkerManager().onMarkerClick(getMarkerFromCluster(restaurantModel.getPosition()));
+        else {
+            flag = true;
+            temp = restaurantModel.getPosition();
+        }
+    }
 
+    public static boolean flag = false;
+    private static LatLng temp;
+
+    private Marker getMarkerFromCluster(LatLng latLng) {
+        for (Marker marker : mClusterManager.getMarkerCollection().getMarkers()) {
+            if (marker.getPosition().equals(latLng)) {
+                return marker;
+            }
+        }
+        return null;
+    }
+
+    private Polyline polyline;
+
+    private void drawPolyline(@NonNull Response<DirectionResponses> response) {
+        if (response.body() != null) {
+            String shape = response.body().getRoutes().get(0).getOverviewPolyline().getPoints();
+            String distance = response.body().getRoutes().get(0).getLegs().get(0).getDistance().getText();
+            String duration = response.body().getRoutes().get(0).getLegs().get(0).getDuration().getText();
+
+            polyline = mMap.addPolyline(new PolylineOptions()
+                    .addAll(PolyUtil.decode(shape))
+                    .width(10f)
+                    .color(Color.BLUE));
+
+            /*mMap.addMarker(new MarkerOptions()
+                    .position(center)
+                    .title(duration)
+
+            ).setIcon(null);*/
+            textViewDuration.setText(duration);
+            textViewDistance.setText(distance);
+            loadingDirection(false);
+        }
+    }
+
+    private void loadingDirection(boolean Loading) {
+        if (Loading) {
+            progressBar.setVisibility(View.VISIBLE);
+            layoutProgressBar.setVisibility(View.VISIBLE);
+            layoutLocationInfo.setVisibility(View.GONE);
+            mMap.getUiSettings().setScrollGesturesEnabled(false);
+
+        } else {
+            progressBar.setVisibility(View.GONE);
+            layoutProgressBar.setVisibility(View.GONE);
+            layoutLocationInfo.setVisibility(View.VISIBLE);
+            mMap.getUiSettings().setScrollGesturesEnabled(true);
+        }
+    }
+
+    private static LatLng latLngDestination;
+
+    private void getDirection(LatLng latLngOrigin, LatLng latLngDestination) {
+        String origin = String.valueOf(latLngOrigin.latitude) + "," + String.valueOf(latLngOrigin.longitude);
+        String destination = String.valueOf(latLngDestination.latitude) + "," + String.valueOf(latLngDestination.longitude);
+        this.latLngDestination = latLngDestination;
+
+        ServiceAPI serviceAPI = getRetrofitGoogleMapAPI().create(ServiceAPI.class);
+        Call<DirectionResponses> call = serviceAPI.getDirection(origin, destination, getString(R.string.google_map_api_key));
+        call.enqueue(new Callback<DirectionResponses>() {
             @Override
-            public void onFinish() {
-                for (Marker marker : markerArrayList) {
-                    if (((RestaurantModel) marker.getTag()) == restaurantModel) {
-                        markerClicked = marker;
-                        marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
-                        marker.showInfoWindow();
-                        markerSelected = true;
-                    }
+            public void onResponse(Call<DirectionResponses> call, Response<DirectionResponses> response) {
+                if (response.body().getStatus().equals("OK")) {
+                    drawPolyline(response);
+                    Log.d("OKAY", response.message());
+                } else {
+                    Toast.makeText(getApplicationContext(), "Lỗi khi lấy dữ liệu", Toast.LENGTH_SHORT).show();
+                    loadingDirection(false);
                 }
             }
+
+            @Override
+            public void onFailure(Call<DirectionResponses> call, Throwable t) {
+                Log.e("TAG:", t.getLocalizedMessage());
+            }
         });
+    }
+
+    public class RestaurantRender extends DefaultClusterRenderer<RestaurantModel> {
+
+        private final ClusterManager<RestaurantModel> mClusterManager;
+
+        public RestaurantRender(Context context, GoogleMap map, ClusterManager<RestaurantModel> clusterManager) {
+            super(context, map, clusterManager);
+            mClusterManager = clusterManager;
+        }
 
 
+        @Override
+        protected void onClusterItemRendered(@NonNull RestaurantModel clusterItem, @NonNull Marker marker) {
+            super.onClusterItemRendered(clusterItem, marker);
+            if (clusterItem.getPosition().equals(temp)) {
+                Para.marker = marker;
+                mClusterManager.getMarkerManager().onMarkerClick(marker);
+            }
+        }
     }
 }

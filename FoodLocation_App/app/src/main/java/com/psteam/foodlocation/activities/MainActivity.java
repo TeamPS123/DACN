@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
@@ -21,6 +23,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.ResultReceiver;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -30,6 +33,8 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.navigation.NavigationView;
 import com.psteam.foodlocation.R;
 import com.psteam.foodlocation.adapters.CategoryAdapter;
 import com.psteam.foodlocation.adapters.PromotionAdapter;
@@ -64,17 +69,19 @@ public class MainActivity extends AppCompatActivity implements CategoryListener 
 
     private ResultReceiver resultReceiver;
 
+    private MaterialButton buttonSignIn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(Build.VERSION.SDK_INT>=21){
-            Window window=getWindow();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(Color.TRANSPARENT);
 
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);//  set status text dark
-            getWindow().setStatusBarColor(ContextCompat.getColor(MainActivity.this,R.color.white));// set status background white
+            getWindow().setStatusBarColor(ContextCompat.getColor(MainActivity.this, R.color.white));// set status background white
         }
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
@@ -86,13 +93,14 @@ public class MainActivity extends AppCompatActivity implements CategoryListener 
     }
 
     private void init() {
+        buttonSignIn = binding.navigationView.getHeaderView(0).findViewById(R.id.buttonSignInNavigation);
         checkSelfPermission();
         initSliderImage();
         initCategory();
         initPromotion();
     }
 
-    private void checkSelfPermission(){
+    private void checkSelfPermission() {
         resultReceiver = new AddressResultReceiver(new Handler());
 
         if (ContextCompat.checkSelfPermission(
@@ -116,7 +124,6 @@ public class MainActivity extends AppCompatActivity implements CategoryListener 
                 getCurrentLocation();
             else {
                 Toast.makeText(getApplicationContext(), "Permission denied", Toast.LENGTH_SHORT).show();
-
             }
         }
     }
@@ -151,9 +158,32 @@ public class MainActivity extends AppCompatActivity implements CategoryListener 
             startActivity(intent);
         });
 
-        binding.buttonSearch.setOnClickListener(v->{
+        binding.buttonSearch.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, SearchActivity.class);
             startActivity(intent);
+        });
+
+        binding.imageMenu.setOnClickListener(v -> {
+            binding.drawerLayout.openDrawer(GravityCompat.START);
+        });
+
+        binding.navigationView.setItemIconTintList(null);
+
+        binding.navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                if(item.getTitle().equals(getString(R.string.text_logout))){
+                    startActivity(new Intent(MainActivity.this,SignInActivity.class));
+                    finishAffinity();
+                }
+
+                return false;
+            }
+        });
+
+        buttonSignIn.setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this,SignInActivity.class));
         });
     }
 

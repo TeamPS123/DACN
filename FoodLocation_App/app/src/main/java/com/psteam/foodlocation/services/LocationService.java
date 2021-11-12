@@ -65,7 +65,7 @@ public class LocationService extends Service {
         builder.setSmallIcon(R.mipmap.ic_launcher);
         builder.setContentTitle("Location Service");
         builder.setDefaults(NotificationCompat.DEFAULT_ALL);
-        builder.setContentText("Running");
+        builder.setContentText("Bạn có đơn đăt bàn mới");
         builder.setContentIntent(pendingIntent);
         builder.setAutoCancel(false);
         builder.setPriority(NotificationCompat.PRIORITY_MAX);
@@ -109,6 +109,12 @@ public class LocationService extends Service {
                 .removeLocationUpdates(locationCallback);
         stopForeground(true);
         stopSelf();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        stopLocationService();
     }
 
     @Override

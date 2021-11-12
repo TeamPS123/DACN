@@ -55,7 +55,7 @@ public class MapRestaurantAdapter extends RecyclerView.Adapter<MapRestaurantAdap
             binding.textviewDistance.setText(restaurantModel.getDistance() + "km");
             binding.textViewRestaurantName.setText(restaurantModel.getName());
 
-            binding.getRoot().setOnClickListener(v -> {
+            binding.textViewGuide.setOnClickListener(v -> {
                 mapRestaurantListener.onRestaurantClicked(restaurantModel);
             });
         }

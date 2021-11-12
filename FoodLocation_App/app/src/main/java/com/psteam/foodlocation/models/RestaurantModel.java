@@ -1,8 +1,12 @@
 package com.psteam.foodlocation.models;
 
-import com.google.android.gms.maps.model.LatLng;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
-public class RestaurantModel {
+import com.google.android.gms.maps.model.LatLng;
+import com.google.maps.android.clustering.ClusterItem;
+
+public class RestaurantModel implements ClusterItem {
 
     private String name;
     private String address;
@@ -93,5 +97,23 @@ public class RestaurantModel {
 
     public void setImage(int image) {
         this.image = image;
+    }
+
+    @NonNull
+    @Override
+    public LatLng getPosition() {
+        return LatLng();
+    }
+
+    @Nullable
+    @Override
+    public String getTitle() {
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public String getSnippet() {
+        return null;
     }
 }
