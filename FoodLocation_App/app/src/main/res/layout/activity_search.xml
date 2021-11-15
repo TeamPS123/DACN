@@ -28,15 +28,15 @@
             android:layout_marginStart="@dimen/_4sdp"
             android:layout_marginEnd="@dimen/_8sdp"
             android:layout_weight="1"
-            android:maxLines="1"
-            android:ellipsize="end"
             android:background="@drawable/background_layout_search"
             android:drawableLeft="@drawable/ic_search"
             android:drawablePadding="@dimen/_4sdp"
-            android:imeOptions="actionSearch"
-            android:importantForAutofill="no"
+            android:ellipsize="end"
             android:focusableInTouchMode="true"
             android:hint="Tìm món ăn, địa điểm, khu vực"
+            android:imeOptions="actionSearch"
+            android:importantForAutofill="no"
+            android:maxLines="1"
             android:paddingHorizontal="@dimen/_8sdp"
             android:paddingVertical="@dimen/_6sdp"
             android:textSize="@dimen/_13ssp" />
@@ -54,15 +54,81 @@
         android:id="@+id/recycleViewSearch"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#F5F5F5"
         android:layout_marginTop="@dimen/_8sdp"
-        android:clipToPadding="false"
+        android:background="#F5F5F5"
         android:clipChildren="false"
+        android:clipToPadding="false"
+        android:orientation="vertical"
         android:overScrollMode="never"
         android:scrollbars="none"
-        app:layout_constraintTop_toBottomOf="@id/layoutSearch"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:orientation="vertical"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layoutSearch" />
+
+
+    <LinearLayout
+        android:id="@+id/layoutBottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_margin="@dimen/_8sdp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/background_search"
+            app:cardCornerRadius="@dimen/_8sdp">
+
+            <TextView
+                android:id="@+id/textviewSort"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingVertical="@dimen/_4sdp"
+                android:drawableTop="@drawable/ic_repeat"
+                android:gravity="center"
+                android:text="Mới nhất" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:layout_marginStart="@dimen/_4sdp"
+            android:background="@drawable/background_search">
+
+            <TextView
+                android:id="@+id/textviewCategory"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:paddingVertical="@dimen/_4sdp"
+                android:drawableTop="@drawable/ic_category"
+                android:gravity="center"
+                android:text="Danh mục" />
+
+            <TextView
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginVertical="@dimen/_2sdp"
+                android:background="#868686"/>
+
+            <TextView
+                android:id="@+id/textviewDistrict"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:paddingVertical="@dimen/_4sdp"
+                android:drawableTop="@drawable/ic_sharp_location"
+                android:gravity="center"
+                android:text="Quận" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

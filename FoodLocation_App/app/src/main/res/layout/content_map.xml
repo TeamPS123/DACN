@@ -19,5 +19,4 @@
         android:src="@drawable/ic_center_location"
         android:translationY="-18dp" />
 
-
 </RelativeLayout>

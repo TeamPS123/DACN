@@ -5,6 +5,8 @@
     <string name="google_map_api_key">AIzaSyC3RwBupXyFdul5XtIAWjDsF9f8ogyLam4</string>
     <string name="text_my_book_table">Đặt chỗ của tôi</string>
     <string name="text_logout">Đăng xuất</string>
+    <string name="read_more">Xem thêm</string>
+    <string name="read_less">Thu gọn</string>
     <string-array name="city">
         <item>Thành phố</item>
         <item>Hồ Chí Minh</item>
