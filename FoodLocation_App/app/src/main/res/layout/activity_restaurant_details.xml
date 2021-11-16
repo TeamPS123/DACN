@@ -5,6 +5,52 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutTop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent">
+
+        <ImageView
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginBottom="@dimen/_8sdp"
+            android:src="@drawable/ic_round_arrow_back_ios_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/TextPrimary" />
+
+        <TextView
+            android:id="@+id/text11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thông tin nhà hàng"
+            android:textAllCaps="true"
+            android:textColor="@color/TextPrimary"
+            android:textSize="@dimen/_10ssp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textRestaurantName" />
+
+        <TextView
+            android:id="@+id/textRestaurantName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Aka House"
+            android:textSize="@dimen/_9ssp"
+            app:layout_constraintBottom_toTopOf="@id/text11"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
@@ -201,7 +247,7 @@
                         android:id="@+id/textViewChooseAddress"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="2"
+                        android:layout_weight="2.5"
                         android:drawableLeft="@drawable/ic_outline_location"
                         android:drawableTint="#000000"
                         android:ellipsize="end"
@@ -592,7 +638,7 @@ I/ Chương trình: 15% cho tất cả các gói buffet\n
                     android:id="@+id/layoutMap"
                     layout="@layout/restaurant_map_address"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_120sdp"
+                    android:layout_height="@dimen/_130sdp"
                     android:layout_marginTop="@dimen/_8sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -934,6 +980,7 @@ I/ Chương trình: 15% cho tất cả các gói buffet\n
     </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonReserve"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:maxHeight="@dimen/_40sdp"
@@ -942,6 +989,7 @@ I/ Chương trình: 15% cho tất cả các gói buffet\n
         android:text="đặt chỗ ngay"
         app:backgroundTint="#E73948"
         app:cornerRadius="@dimen/_6sdp"
+        android:visibility="visible"
         android:textStyle="bold"/>
 
 </LinearLayout>

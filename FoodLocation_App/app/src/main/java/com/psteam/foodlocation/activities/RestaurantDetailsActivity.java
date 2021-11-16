@@ -1,36 +1,46 @@
 package com.psteam.foodlocation.activities;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.psteam.foodlocation.R;
+import com.psteam.foodlocation.adapters.ChooseDateReserveTableAdapter;
+import com.psteam.foodlocation.adapters.ChooseNumberPeopleAdapter;
 import com.psteam.foodlocation.adapters.RestaurantAddressAdapter;
 import com.psteam.foodlocation.adapters.RestaurantPostAdapter;
 import com.psteam.foodlocation.adapters.TimeBookTableAdapter;
 import com.psteam.foodlocation.databinding.ActivityRestaurantDetailsBinding;
 import com.psteam.foodlocation.adapters.RestaurantPhotoAdapter;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-public class RestaurantDetailsActivity extends AppCompatActivity {
+public class RestaurantDetailsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private ActivityRestaurantDetailsBinding binding;
-
+    private GoogleMap mMap;
+    private View viewMap;
     private RestaurantPhotoAdapter restaurantPhotoAdapter;
     private ArrayList<RestaurantPhotoAdapter.Photo> photoArrayList;
 
@@ -40,14 +50,16 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
     private RestaurantPostAdapter restaurantPostAdapter;
     private ArrayList<RestaurantPostAdapter.FoodRestaurant> foodRestaurants;
 
-    private RestaurantAddressAdapter restaurantAddressAdapter;
     private ArrayList<RestaurantAddressAdapter.AddressRestaurant> addressRestaurants;
+    private ArrayList<ChooseNumberPeopleAdapter.NumberPeople> numberPeople;
+    private ArrayList<ChooseDateReserveTableAdapter.DateReserveTable> dateReserveTables;
 
     private Handler sliderHandler = new Handler();
 
     private int currentItem;
     private int totalItem;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +71,10 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
     }
 
     private void init() {
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.mapRestaurant);
+        mapFragment.getMapAsync(this);
+        viewMap = mapFragment.getView();
         setFullScreen();
         initSliderPhotoRestaurant();
         initTimeBookTable();
@@ -76,6 +92,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void setListeners() {
         binding.textViewReadMore.setOnClickListener(v -> {
             if (binding.textViewReadMore.getText().equals(getText(R.string.read_more))) {
@@ -107,17 +124,85 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
         });
 
         binding.layoutAddress.setOnClickListener(v -> {
-
-
-            clickOpenBottomSheetFragment();
-
+            clickOpenBottomSheetChooseAddressFragment();
         });
+
+        binding.textViewChoosePersonNumber.setOnClickListener(v -> {
+            clickOpenBottomSheetChooseNumberPeopleFragment();
+        });
+
+        binding.textViewChooseDate.setOnClickListener(v -> {
+            clickOpenBottomSheetChooseDateReserveTableFragment();
+        });
+
+        binding.buttonReserve.setOnClickListener(v -> {
+            int scrollY=binding.recycleViewTimeBookTable.getScrollY();
+            int scrollX=binding.recycleViewTimeBookTable.getScrollX();
+            binding.nestedScrollView.smoothScrollTo(scrollX,scrollY,1000);
+        });
+
+    }
+
+
+    ChooseDateReserveTableFragment chooseDateReserveTableFragment;
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void clickOpenBottomSheetChooseDateReserveTableFragment() {
+        dateReserveTables = new ArrayList<>();
+        DateTimeFormatter formatter;
+        String formattedString = "";
+        LocalDate today = LocalDate.now(ZoneId.of("Asia/Ho_Chi_Minh"));
+        for (int i = 0; i < 7; i++) {
+            LocalDate localDate = today.plusDays(i);
+            if (today.equals(localDate)) {
+                formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                formattedString = "Hôm nay, " + localDate.format(formatter);
+            } else if (today.plusDays(1).equals(localDate)) {
+                formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                formattedString = "Ngày mai, " + localDate.format(formatter);
+            } else {
+                formatter = DateTimeFormatter.ofPattern("EEEE, dd/MM/yyyy");
+                formattedString = localDate.format(formatter);
+            }
+
+            dateReserveTables.add(new ChooseDateReserveTableAdapter.DateReserveTable(formattedString));
+        }
+
+        chooseDateReserveTableFragment = new ChooseDateReserveTableFragment(dateReserveTables, new ChooseDateReserveTableAdapter.ChooseDateReserveTableListener() {
+            @Override
+            public void onChooseDateReserveTableClicked(ChooseDateReserveTableAdapter.DateReserveTable dateReserveTable) {
+                binding.textViewChooseDate.setText(dateReserveTable.getDay());
+                chooseDateReserveTableFragment.dismiss();
+            }
+        });
+        chooseDateReserveTableFragment.show(getSupportFragmentManager(), chooseDateReserveTableFragment.getTag());
+
+
+    }
+
+    private ChooseNumberPeopleBottomSheetFragment chooseNumberPeopleBottomSheetFragment;
+
+    private void clickOpenBottomSheetChooseNumberPeopleFragment() {
+        numberPeople = new ArrayList<>();
+        for (int i = 2; i <= 21; i++) {
+            numberPeople.add(new ChooseNumberPeopleAdapter.NumberPeople(i));
+        }
+
+        chooseNumberPeopleBottomSheetFragment = new ChooseNumberPeopleBottomSheetFragment(numberPeople, new ChooseNumberPeopleAdapter.ChooseNumberPeopleListener() {
+            @Override
+            public void ChooseNumberPeopleClicked(ChooseNumberPeopleAdapter.NumberPeople numberPeople) {
+                binding.textViewChoosePersonNumber.setText(String.format("%d Khách", numberPeople.getNumber()));
+                chooseNumberPeopleBottomSheetFragment.dismiss();
+            }
+        });
+
+        chooseNumberPeopleBottomSheetFragment.show(getSupportFragmentManager(), chooseNumberPeopleBottomSheetFragment.getTag());
 
     }
 
     private ChooseAddressBottomSheetFragment chooseAddressBottomSheetFragment;
 
-    private void clickOpenBottomSheetFragment() {
+    private void clickOpenBottomSheetChooseAddressFragment() {
 
         addressRestaurants = new ArrayList<>();
         addressRestaurants.add(new RestaurantAddressAdapter.AddressRestaurant("Nguyễn Văn Cừ", "875/22 Nguyễn Văn Cừ, P.Lộc Phát, Bảo Lộc, Lâm Đồng", "20.0km"));
@@ -191,7 +276,13 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
         timeBooks.add(new TimeBookTableAdapter.TimeBook("06:45 CH", "-15% *"));
         timeBooks.add(new TimeBookTableAdapter.TimeBook("07:00 CH", "-15% *"));
 
-        timeBookTableAdapter = new TimeBookTableAdapter(timeBooks);
+        timeBookTableAdapter = new TimeBookTableAdapter(timeBooks, new TimeBookTableAdapter.TimeBookTableListener() {
+            @Override
+            public void onTimeBookTableClicked(TimeBookTableAdapter.TimeBook timeBook) {
+                Intent intent = new Intent(getApplicationContext(), ReserveTableActivity.class);
+                startActivity(intent);
+            }
+        });
         binding.recycleViewTimeBookTable.setAdapter(timeBookTableAdapter);
     }
 
@@ -203,7 +294,12 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
         foodRestaurants.add(new RestaurantPostAdapter.FoodRestaurant(R.drawable.lau, "TAKA BBQ: GIẢM 30% TẤT CẢ GÓI BUFFET", 4.4, 10, "875/22 Nguyễn Văn Cừ", "-15%"));
         foodRestaurants.add(new RestaurantPostAdapter.FoodRestaurant(R.drawable.lau, "TAKA BBQ: GIẢM 35% TẤT CẢ GÓI BUFFET", 3, 10, "875/22 Nguyễn Văn Cừ", "-15%"));
 
-        restaurantPostAdapter = new RestaurantPostAdapter(foodRestaurants);
+        restaurantPostAdapter = new RestaurantPostAdapter(foodRestaurants, new RestaurantPostAdapter.RestaurantPostListeners() {
+            @Override
+            public void onRestaurantPostClicked(RestaurantPostAdapter.FoodRestaurant foodRestaurant) {
+                startActivity(new Intent(getApplicationContext(),RestaurantDetailsActivity.class));
+            }
+        });
         binding.recycleViewPostFoodRestaurant.setAdapter(restaurantPostAdapter);
     }
 
@@ -219,4 +315,18 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
         sliderHandler.postDelayed(sliderRunnable, 3000);
     }
 
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        mMap = googleMap;
+        LatLng latLng = new LatLng(11.5572771, 107.8466486);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+        mMap.getUiSettings().setScrollGesturesEnabled(false);
+        mMap.addMarker(new MarkerOptions().position(latLng));
+        googleMap.getUiSettings().setMapToolbarEnabled(false);
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(@NonNull LatLng latLng) {
+            }
+        });
+    }
 }

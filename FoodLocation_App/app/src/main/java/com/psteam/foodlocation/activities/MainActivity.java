@@ -5,8 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
@@ -38,6 +36,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.psteam.foodlocation.R;
 import com.psteam.foodlocation.adapters.CategoryAdapter;
 import com.psteam.foodlocation.adapters.PromotionAdapter;
+import com.psteam.foodlocation.adapters.RestaurantPostAdapter;
 import com.psteam.foodlocation.adapters.SliderAdapter;
 import com.psteam.foodlocation.databinding.ActivityMainBinding;
 import com.psteam.foodlocation.listeners.CategoryListener;
@@ -66,6 +65,9 @@ public class MainActivity extends AppCompatActivity implements CategoryListener 
 
     private PromotionAdapter promotionAdapter;
     private List<PromotionModel> promotionModels;
+
+    private RestaurantPostAdapter restaurantPostAdapter;
+    private ArrayList<RestaurantPostAdapter.FoodRestaurant> foodRestaurants;
 
     private ResultReceiver resultReceiver;
 
@@ -98,6 +100,7 @@ public class MainActivity extends AppCompatActivity implements CategoryListener 
         initSliderImage();
         initCategory();
         initPromotion();
+        initFoodRestaurant();
     }
 
     private void checkSelfPermission() {
@@ -274,6 +277,25 @@ public class MainActivity extends AppCompatActivity implements CategoryListener 
     @Override
     public void onCategoryClick(CategoryModel categoryModel) {
 
+    }
+
+
+
+    private void initFoodRestaurant() {
+        foodRestaurants = new ArrayList<>();
+        foodRestaurants.add(new RestaurantPostAdapter.FoodRestaurant(R.drawable.lau, "TAKA BBQ: GIẢM 15% TẤT CẢ GÓI BUFFET", 4, 10, "875/22 Nguyễn Văn Cừ", "-15%"));
+        foodRestaurants.add(new RestaurantPostAdapter.FoodRestaurant(R.drawable.lau, "TAKA BBQ: GIẢM 20% TẤT CẢ GÓI BUFFET", 4.6, 10, "875/22 Nguyễn Văn Cừ", "-15%"));
+        foodRestaurants.add(new RestaurantPostAdapter.FoodRestaurant(R.drawable.lau, "TAKA BBQ: GIẢM 25% TẤT CẢ GÓI BUFFET", 4.75, 10, "875/22 Nguyễn Văn Cừ", "-15%"));
+        foodRestaurants.add(new RestaurantPostAdapter.FoodRestaurant(R.drawable.lau, "TAKA BBQ: GIẢM 30% TẤT CẢ GÓI BUFFET", 4.4, 10, "875/22 Nguyễn Văn Cừ", "-15%"));
+        foodRestaurants.add(new RestaurantPostAdapter.FoodRestaurant(R.drawable.lau, "TAKA BBQ: GIẢM 35% TẤT CẢ GÓI BUFFET", 3, 10, "875/22 Nguyễn Văn Cừ", "-15%"));
+
+        restaurantPostAdapter = new RestaurantPostAdapter(foodRestaurants, new RestaurantPostAdapter.RestaurantPostListeners() {
+            @Override
+            public void onRestaurantPostClicked(RestaurantPostAdapter.FoodRestaurant foodRestaurant) {
+                startActivity(new Intent(getApplicationContext(),RestaurantDetailsActivity.class));
+            }
+        });
+        binding.recycleViewPostFoodRestaurant.setAdapter(restaurantPostAdapter);
     }
 
     @SuppressLint("MissingPermission")

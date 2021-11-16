@@ -13,9 +13,11 @@ import java.util.List;
 public class RestaurantPostAdapter extends RecyclerView.Adapter<RestaurantPostAdapter.RestaurantPostViewHolder> {
 
     private final List<FoodRestaurant> foodRestaurants;
+    private final RestaurantPostListeners restaurantPostListener;
 
-    public RestaurantPostAdapter(List<FoodRestaurant> foodRestaurants) {
+    public RestaurantPostAdapter(List<FoodRestaurant> foodRestaurants, RestaurantPostListeners restaurantPostListener) {
         this.foodRestaurants = foodRestaurants;
+        this.restaurantPostListener = restaurantPostListener;
     }
 
     @NonNull
@@ -55,7 +57,14 @@ public class RestaurantPostAdapter extends RecyclerView.Adapter<RestaurantPostAd
             binding.textViewCountReview.setText(String.valueOf(foodRestaurant.getTotalReview()));
             binding.textViewRestaurantAddress.setText(foodRestaurant.getAddress());
             binding.textViewPromotion.setText(foodRestaurant.getDiscount());
+            binding.getRoot().setOnClickListener(v -> {
+                restaurantPostListener.onRestaurantPostClicked(foodRestaurant);
+            });
         }
+    }
+
+    public interface RestaurantPostListeners {
+        void onRestaurantPostClicked(FoodRestaurant foodRestaurant);
     }
 
     public static class FoodRestaurant {

@@ -13,9 +13,11 @@ import java.util.List;
 public class TimeBookTableAdapter extends RecyclerView.Adapter<TimeBookTableAdapter.TimeBookTableViewHolder> {
 
     private final List<TimeBook> timeBooks;
+    private final TimeBookTableListener timeBookTableListener;
 
-    public TimeBookTableAdapter(List<TimeBook> timeBooks) {
+    public TimeBookTableAdapter(List<TimeBook> timeBooks, TimeBookTableListener timeBookTableListener) {
         this.timeBooks = timeBooks;
+        this.timeBookTableListener = timeBookTableListener;
     }
 
     @NonNull
@@ -50,6 +52,9 @@ public class TimeBookTableAdapter extends RecyclerView.Adapter<TimeBookTableAdap
         public void setData(TimeBook timeBook) {
             binding.textViewTime.setText(timeBook.getTime());
             binding.textViewPercentDiscount.setText(timeBook.getDiscount());
+            binding.getRoot().setOnClickListener(v->{
+                timeBookTableListener.onTimeBookTableClicked(timeBook);
+            });
         }
     }
 
@@ -77,5 +82,9 @@ public class TimeBookTableAdapter extends RecyclerView.Adapter<TimeBookTableAdap
         public void setDiscount(String discount) {
             this.discount = discount;
         }
+    }
+
+    public interface TimeBookTableListener{
+        void onTimeBookTableClicked(TimeBook timeBook);
     }
 }
