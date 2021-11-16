@@ -1,20 +1,25 @@
 package com.psteam.foodlocation.activities;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.psteam.foodlocation.R;
+import com.psteam.foodlocation.adapters.RestaurantAddressAdapter;
 import com.psteam.foodlocation.adapters.RestaurantPostAdapter;
 import com.psteam.foodlocation.adapters.TimeBookTableAdapter;
 import com.psteam.foodlocation.databinding.ActivityRestaurantDetailsBinding;
@@ -34,6 +39,9 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
 
     private RestaurantPostAdapter restaurantPostAdapter;
     private ArrayList<RestaurantPostAdapter.FoodRestaurant> foodRestaurants;
+
+    private RestaurantAddressAdapter restaurantAddressAdapter;
+    private ArrayList<RestaurantAddressAdapter.AddressRestaurant> addressRestaurants;
 
     private Handler sliderHandler = new Handler();
 
@@ -98,7 +106,38 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
             }
         });
 
+        binding.layoutAddress.setOnClickListener(v -> {
+
+
+            clickOpenBottomSheetFragment();
+
+        });
+
     }
+
+    private ChooseAddressBottomSheetFragment chooseAddressBottomSheetFragment;
+
+    private void clickOpenBottomSheetFragment() {
+
+        addressRestaurants = new ArrayList<>();
+        addressRestaurants.add(new RestaurantAddressAdapter.AddressRestaurant("Nguyễn Văn Cừ", "875/22 Nguyễn Văn Cừ, P.Lộc Phát, Bảo Lộc, Lâm Đồng", "20.0km"));
+        addressRestaurants.add(new RestaurantAddressAdapter.AddressRestaurant("Nguyễn Công Chứ", "875/22 Nguyễn Công Chứ, P.Lộc Phát, Bảo Lộc, Lâm Đồng", "22.0km"));
+        addressRestaurants.add(new RestaurantAddressAdapter.AddressRestaurant("Đình Phong Phú", "875/22 Đình Phong Phú, P.Lộc Phát, Bảo Lộc, Lâm Đồng", "23.0km"));
+        addressRestaurants.add(new RestaurantAddressAdapter.AddressRestaurant("Phạm Văn Đồng", "875/22 Phạm Văn Đồng, P.Lộc Phát, Bảo Lộc, Lâm Đồng", "24.0km"));
+
+
+        chooseAddressBottomSheetFragment = new ChooseAddressBottomSheetFragment(addressRestaurants, new RestaurantAddressAdapter.RestaurantAddressListener() {
+            @Override
+            public void onRestaurantAddressClicked(RestaurantAddressAdapter.AddressRestaurant addressRestaurant) {
+                binding.textViewChooseAddress.setText(addressRestaurant.getAddress());
+                binding.textViewChooseDistance.setText(addressRestaurant.getDistance());
+                chooseAddressBottomSheetFragment.dismiss();
+
+            }
+        });
+        chooseAddressBottomSheetFragment.show(getSupportFragmentManager(), chooseAddressBottomSheetFragment.getTag());
+    }
+
 
     private void initSliderPhotoRestaurant() {
         photoArrayList = new ArrayList<>();
@@ -122,7 +161,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
             }
         });
     }
-
 
 
     private Runnable sliderRunnable = new Runnable() {
@@ -157,15 +195,15 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
         binding.recycleViewTimeBookTable.setAdapter(timeBookTableAdapter);
     }
 
-    private void initFoodRestaurant(){
-        foodRestaurants=new ArrayList<>();
-        foodRestaurants.add(new RestaurantPostAdapter.FoodRestaurant(R.drawable.lau,"TAKA BBQ: GIẢM 15% TẤT CẢ GÓI BUFFET",4,10,"875/22 Nguyễn Văn Cừ","-15%"));
-        foodRestaurants.add(new RestaurantPostAdapter.FoodRestaurant(R.drawable.lau,"TAKA BBQ: GIẢM 20% TẤT CẢ GÓI BUFFET",4.6,10,"875/22 Nguyễn Văn Cừ","-15%"));
-        foodRestaurants.add(new RestaurantPostAdapter.FoodRestaurant(R.drawable.lau,"TAKA BBQ: GIẢM 25% TẤT CẢ GÓI BUFFET",4.75,10,"875/22 Nguyễn Văn Cừ","-15%"));
-        foodRestaurants.add(new RestaurantPostAdapter.FoodRestaurant(R.drawable.lau,"TAKA BBQ: GIẢM 30% TẤT CẢ GÓI BUFFET",4.4,10,"875/22 Nguyễn Văn Cừ","-15%"));
-        foodRestaurants.add(new RestaurantPostAdapter.FoodRestaurant(R.drawable.lau,"TAKA BBQ: GIẢM 35% TẤT CẢ GÓI BUFFET",3,10,"875/22 Nguyễn Văn Cừ","-15%"));
+    private void initFoodRestaurant() {
+        foodRestaurants = new ArrayList<>();
+        foodRestaurants.add(new RestaurantPostAdapter.FoodRestaurant(R.drawable.lau, "TAKA BBQ: GIẢM 15% TẤT CẢ GÓI BUFFET", 4, 10, "875/22 Nguyễn Văn Cừ", "-15%"));
+        foodRestaurants.add(new RestaurantPostAdapter.FoodRestaurant(R.drawable.lau, "TAKA BBQ: GIẢM 20% TẤT CẢ GÓI BUFFET", 4.6, 10, "875/22 Nguyễn Văn Cừ", "-15%"));
+        foodRestaurants.add(new RestaurantPostAdapter.FoodRestaurant(R.drawable.lau, "TAKA BBQ: GIẢM 25% TẤT CẢ GÓI BUFFET", 4.75, 10, "875/22 Nguyễn Văn Cừ", "-15%"));
+        foodRestaurants.add(new RestaurantPostAdapter.FoodRestaurant(R.drawable.lau, "TAKA BBQ: GIẢM 30% TẤT CẢ GÓI BUFFET", 4.4, 10, "875/22 Nguyễn Văn Cừ", "-15%"));
+        foodRestaurants.add(new RestaurantPostAdapter.FoodRestaurant(R.drawable.lau, "TAKA BBQ: GIẢM 35% TẤT CẢ GÓI BUFFET", 3, 10, "875/22 Nguyễn Văn Cừ", "-15%"));
 
-        restaurantPostAdapter =new RestaurantPostAdapter(foodRestaurants);
+        restaurantPostAdapter = new RestaurantPostAdapter(foodRestaurants);
         binding.recycleViewPostFoodRestaurant.setAdapter(restaurantPostAdapter);
     }
 
@@ -180,4 +218,5 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
         super.onResume();
         sliderHandler.postDelayed(sliderRunnable, 3000);
     }
+
 }
