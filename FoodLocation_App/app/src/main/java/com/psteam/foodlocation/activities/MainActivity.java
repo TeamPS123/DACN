@@ -50,6 +50,7 @@ import com.psteam.foodlocation.ultilities.Para;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class MainActivity extends AppCompatActivity implements CategoryListener {
 
     private ActivityMainBinding binding;
@@ -261,6 +262,8 @@ public class MainActivity extends AppCompatActivity implements CategoryListener 
             binding.viewPagerSliderImage.setCurrentItem(binding.viewPagerSliderImage.getCurrentItem() + 1);
         }
     };
+
+
 
     @Override
     protected void onPause() {

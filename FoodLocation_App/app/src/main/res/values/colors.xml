@@ -13,4 +13,6 @@
     <color name="lightGrey">#CDCDCD</color>
     <color name="TextColorSub">#8F8F8F</color>
     <color name="TextPrimary">#454545</color>
+    <color name="ColorLine">#EDEDED</color>
+    <color name="ColorButtonReserve">#E73948</color>
 </resources>
