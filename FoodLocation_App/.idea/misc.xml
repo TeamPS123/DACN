@@ -22,6 +22,66 @@
         <entry key="..\:/Users/PAM/AndroidStudioProjects/FoodLocation/app/src/main/res/layout/fragment_check_bussiness.xml" value="0.25" />
         <entry key="..\:/Users/PAM/AndroidStudioProjects/FoodLocation/app/src/main/res/layout/fragment_restaurant_registration_step2.xml" value="0.3625" />
         <entry key="..\:/Users/PAM/AndroidStudioProjects/FoodLocation/app/src/main/res/menu/image_restaurant_menu.xml" value="0.20260416666666667" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/drawable/background_bottom_sheet.xml" value="0.325" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/drawable/background_button_guide.xml" value="0.3365740740740741" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/drawable/background_category.xml" value="0.3365740740740741" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/drawable/background_choose_address.xml" value="0.3319634703196347" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/drawable/background_current_location.xml" value="0.3365740740740741" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/drawable/background_current_location_press.xml" value="0.19444444444444445" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/drawable/background_current_location_pressed.xml" value="0.19490740740740742" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/drawable/background_directions.xml" value="0.3319634703196347" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/drawable/background_layout_search.xml" value="0.37864583333333335" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/drawable/background_loading_progressbar.xml" value="0.3365740740740741" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/drawable/background_reserved_time.xml" value="0.3319634703196347" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/drawable/background_search.xml" value="0.3365740740740741" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/drawable/background_text_load_more.xml" value="0.3319634703196347" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/drawable/background_time_reserve.xml" value="0.3319634703196347" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/drawable/button_radius.xml" value="0.3759765625" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/drawable/ic_baseline_directions_24.xml" value="0.3319634703196347" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/drawable/ic_center_location.xml" value="0.3365740740740741" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/drawable/ic_directions.xml" value="0.3365740740740741" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/drawable/ic_login.xml" value="0.1" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/drawable/ic_loyalty.xml" value="0.3319634703196347" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/drawable/ic_menu.xml" value="0.3101851851851852" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/drawable/ic_outline_date_range.xml" value="0.3319634703196347" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/drawable/ic_round_arrow_forward_ios_24.xml" value="0.3319634703196347" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/drawable/ic_round_check.xml" value="0.3319634703196347" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/drawable/ic_round_keyboard_arrow_down_24.xml" value="0.19444444444444445" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/drawable/ic_round_keyboard_arrow_up_24.xml" value="0.19444444444444445" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/drawable/ic_round_location_on_24.xml" value="0.3319634703196347" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/drawable/ic_round_warning_amber_24.xml" value="0.3319634703196347" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/drawable/ic_time.xml" value="0.3319634703196347" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/drawable/ic_twotone_location.xml" value="0.3319634703196347" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/drawable/item_radius.xml" value="0.325" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/drawable/layout_radius.xml" value="0.3319634703196347" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/drawable/translucent_marker.xml" value="0.3365740740740741" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/layout/activity_business.xml" value="0.13333333333333333" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/layout/activity_main.xml" value="0.2913705583756345" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/layout/activity_map.xml" value="0.32222222222222224" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/layout/activity_reserve_table.xml" value="0.32222222222222224" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/layout/activity_restaurant_details.xml" value="0.33" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/layout/activity_restaurant_registration.xml" value="0.33" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/layout/activity_restaurant_registration_step2.xml" value="0.13333333333333333" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/layout/activity_search.xml" value="0.2672413793103448" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/layout/activity_sign_up.xml" value="0.32222222222222224" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/layout/category_item_container.xml" value="0.32222222222222224" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/layout/choose_number_people_item_container.xml" value="0.32222222222222224" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/layout/choose_restaurant_item_container.xml" value="0.32222222222222224" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/layout/container_item_image_restaurant.xml" value="0.1" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/layout/content_map.xml" value="0.32222222222222224" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/layout/food_restaurant_item_container.xml" value="0.33" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/layout/layout_bottom_sheet_restaurant.xml" value="0.4779951100244499" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/layout/layout_choose_restaurant_bottom_sheet.xml" value="0.32222222222222224" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/layout/layout_navigation_header.xml" value="0.22" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/layout/map_restaurant_item_container.xml" value="0.32222222222222224" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/layout/promotion_item_container.xml" value="0.32222222222222224" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/layout/restaurant_item_container.xml" value="0.32222222222222224" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/layout/restaurant_map_address.xml" value="0.32222222222222224" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/layout/restaurant_photo_item_container.xml" value="0.32222222222222224" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/layout/slide_item_container.xml" value="0.33" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/layout/slider_item_container.xml" value="0.32222222222222224" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/layout/time_reserve_item_container.xml" value="0.32222222222222224" />
+        <entry key="..\:/Users/PAM/Documents/GitHub/DACN/FoodLocation_App/app/src/main/res/menu/navigation_menu.xml" value="0.18101851851851852" />
       </map>
     </option>
   </component>

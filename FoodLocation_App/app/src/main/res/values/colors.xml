@@ -7,4 +7,10 @@
     <color name="white">#FFFFFF</color>
     <color name="input_background">#ECECEC</color>
     <color name="darkGray">#acacac</color>
+    <color name="colorSubtext">#757575</color>
+    <color name="black">#000000</color>
+    <color name="duskYellow">#A69D62</color>
+    <color name="lightGrey">#CDCDCD</color>
+    <color name="TextColorSub">#8F8F8F</color>
+    <color name="TextPrimary">#454545</color>
 </resources>
