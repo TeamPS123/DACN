@@ -17,6 +17,7 @@ import com.psteam.foodlocation.adapters.MenuFragmentAdapter;
 import com.psteam.foodlocation.databinding.FragmentManagerMenuBinding;
 import com.psteam.foodlocation.databinding.LayoutAddMenuNameDialogBinding;
 import com.psteam.foodlocation.ultilities.CustomToast;
+import com.psteam.foodlocation.ultilities.Para;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -106,9 +107,9 @@ public class ManagerMenuFragment extends Fragment {
             }
 
             binding.tabs.addTab(binding.tabs.newTab().setText(layoutAddMenuNameDialogBinding.inputMenuName.getText().toString()));
-            menuFragmentAdapter = new MenuFragmentAdapter(getActivity().getSupportFragmentManager(), binding.tabs.getTabCount());
-            binding.viewPager.setAdapter(menuFragmentAdapter);
-            binding.viewPager.setCurrentItem(menuFragmentAdapter.getCount() - 1);
+            Para.numberTabs=binding.tabs.getTabCount();
+            menuFragmentAdapter.notifyDataSetChanged();
+            binding.viewPager.setCurrentItem(binding.tabs.getTabCount()-1);
             dialog.dismiss();
         });
 
