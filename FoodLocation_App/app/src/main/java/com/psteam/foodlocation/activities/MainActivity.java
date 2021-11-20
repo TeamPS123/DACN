@@ -77,7 +77,24 @@ public class MainActivity extends AppCompatActivity implements CategoryListener 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        init();
+        setListeners();
 
+    }
+
+    private void init() {
+        setFullScreen();
+        buttonSignIn = binding.navigationView.getHeaderView(0).findViewById(R.id.buttonSignInNavigation);
+        checkSelfPermission();
+        initSliderImage();
+        initCategory();
+        initPromotion();
+        initFoodRestaurant();
+    }
+
+    private void setFullScreen(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -86,22 +103,6 @@ public class MainActivity extends AppCompatActivity implements CategoryListener 
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);//  set status text dark
             getWindow().setStatusBarColor(ContextCompat.getColor(MainActivity.this, R.color.white));// set status background white
         }
-
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
-        init();
-        setListeners();
-
-    }
-
-    private void init() {
-        buttonSignIn = binding.navigationView.getHeaderView(0).findViewById(R.id.buttonSignInNavigation);
-        checkSelfPermission();
-        initSliderImage();
-        initCategory();
-        initPromotion();
-        initFoodRestaurant();
     }
 
     private void checkSelfPermission() {
@@ -181,7 +182,6 @@ public class MainActivity extends AppCompatActivity implements CategoryListener 
                     startActivity(new Intent(MainActivity.this,SignInActivity.class));
                     finishAffinity();
                 }
-
                 return false;
             }
         });
