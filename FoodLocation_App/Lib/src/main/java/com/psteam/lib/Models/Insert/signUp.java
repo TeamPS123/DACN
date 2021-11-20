@@ -1,7 +1,9 @@
 package com.psteam.lib.Models.Insert;
 
-public class signup {
-    public signup(String fullName, String phone, String pass, Boolean business, Boolean gender) {
+import java.io.Serializable;
+
+public class signUp implements Serializable {
+    public signUp(String fullName, String phone, String pass, Boolean business, Boolean gender) {
         this.fullName = fullName;
         this.phone = phone;
         this.pass = pass;
@@ -33,5 +35,10 @@ public class signup {
     private String phone ;
     private String pass ;
     private Boolean business ;
+
+    public void setBusiness(Boolean business) {
+        this.business = business;
+    }
+
     private Boolean gender ;
 }
