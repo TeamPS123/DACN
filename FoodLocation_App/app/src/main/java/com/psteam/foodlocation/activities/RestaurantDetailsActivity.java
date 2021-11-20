@@ -25,6 +25,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.psteam.foodlocation.R;
 import com.psteam.foodlocation.adapters.ChooseDateReserveTableAdapter;
 import com.psteam.foodlocation.adapters.ChooseNumberPeopleAdapter;
+import com.psteam.foodlocation.adapters.FoodReserveAdapter;
 import com.psteam.foodlocation.adapters.RestaurantAddressAdapter;
 import com.psteam.foodlocation.adapters.RestaurantPostAdapter;
 import com.psteam.foodlocation.adapters.TimeBookTableAdapter;
@@ -53,6 +54,8 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
     private ArrayList<RestaurantAddressAdapter.AddressRestaurant> addressRestaurants;
     private ArrayList<ChooseNumberPeopleAdapter.NumberPeople> numberPeople;
     private ArrayList<ChooseDateReserveTableAdapter.DateReserveTable> dateReserveTables;
+
+
 
     private Handler sliderHandler = new Handler();
 

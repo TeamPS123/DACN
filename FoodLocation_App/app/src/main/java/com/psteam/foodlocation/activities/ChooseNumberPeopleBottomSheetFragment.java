@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,6 +16,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.psteam.foodlocation.R;
 import com.psteam.foodlocation.adapters.ChooseNumberPeopleAdapter;
+import com.psteam.foodlocation.ultilities.DividerItemDecorator;
 
 import java.util.List;
 
@@ -49,8 +51,8 @@ public class ChooseNumberPeopleBottomSheetFragment extends BottomSheetDialogFrag
 
         recyclerView.setAdapter(chooseNumberPeopleAdapter);
 
-        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
-        recyclerView.addItemDecoration(itemDecoration);
+        RecyclerView.ItemDecoration dividerItemDecoration = new DividerItemDecorator(ContextCompat.getDrawable(getContext(), R.drawable.divider));
+        recyclerView.addItemDecoration(dividerItemDecoration);
 
         return bottomSheetDialog;
     }

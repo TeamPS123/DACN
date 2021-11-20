@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/_140sdp"
         android:adjustViewBounds="true"
+        android:foreground="?android:attr/selectableItemBackground"
         android:scaleType="centerCrop"
         android:src="@drawable/lau"
         app:layout_constraintTop_toTopOf="parent"
@@ -76,10 +77,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_2sdp"
         android:layout_marginEnd="@dimen/_8sdp"
-        android:textSize="@dimen/_9ssp"
         android:text="327 Nguyễn Tri Phương, Phường 5, Quận 10, TP.HCM"
-        app:layout_constraintTop_toBottomOf="@id/ratingBar"
+        android:textSize="@dimen/_9ssp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/ratingBar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

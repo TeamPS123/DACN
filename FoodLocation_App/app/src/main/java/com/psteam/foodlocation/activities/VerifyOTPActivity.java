@@ -8,8 +8,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -67,7 +65,7 @@ public class VerifyOTPActivity extends AppCompatActivity {
                     binding.inputCode5.getText().toString() +
                     binding.inputCode6.getText().toString();
             if (code.length() == 6) {
-                startActivity(new Intent(VerifyOTPActivity.this,BusinessActivity.class));
+                startActivity(new Intent(VerifyOTPActivity.this, BusinessOrNormalActivity.class));
                 loading(false);
             }
         });
