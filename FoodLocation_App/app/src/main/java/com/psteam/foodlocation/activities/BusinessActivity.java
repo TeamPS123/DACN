@@ -50,6 +50,7 @@ import io.socket.emitter.Emitter;
 public class BusinessActivity extends AppCompatActivity {
     private ActivityBusinessBinding binding;
     private String deviceId = "";
+    private String user;
 
     String uriGlobal = "https://food-location.herokuapp.com/";
     String uriLocal = "http://192.168.1.8:3030/";
@@ -69,9 +70,7 @@ public class BusinessActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         init();
-        setListeners();
-
-        socket();
+        setListeners();;
     }
 
     private void socket(){
@@ -83,7 +82,7 @@ public class BusinessActivity extends AppCompatActivity {
         // receiver notification when start app
         mSocket.on("new_notification", onNewNotification);
 
-        signIn("i");
+        signIn(user);
     }
 
     private void setListeners() {
@@ -111,6 +110,7 @@ public class BusinessActivity extends AppCompatActivity {
     private void init() {
         setFullScreen();
         setFCM();
+        socket();
     }
 
     private void setFullScreen() {
@@ -247,7 +247,7 @@ public class BusinessActivity extends AppCompatActivity {
         mSocket.connect();
 
         Gson gson = new Gson();
-        User user1 = new User("i", deviceId);
+        User user1 = new User(user, deviceId);
         mSocket.emit("login", gson.toJson(user1));
     }
 }
