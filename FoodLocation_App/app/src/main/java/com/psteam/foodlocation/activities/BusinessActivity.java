@@ -1,12 +1,16 @@
 package com.psteam.foodlocation.activities;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,17 +23,44 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.gson.Gson;
 import com.psteam.foodlocation.R;
 import com.psteam.foodlocation.adapters.BusinessReserveTableAdapter;
 import com.psteam.foodlocation.databinding.ActivityBusinessBinding;
+import com.psteam.foodlocation.models.Socket.User;
 import com.psteam.foodlocation.ultilities.Constants;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.net.URISyntaxException;
+
+import io.socket.client.IO;
+import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
 
 public class BusinessActivity extends AppCompatActivity {
     private ActivityBusinessBinding binding;
+    private String deviceId = "";
+
+    String uriGlobal = "https://food-location.herokuapp.com/";
+    String uriLocal = "http://192.168.1.8:3030/";
+    private Socket mSocket;
+    {
+        try {
+            mSocket = IO.socket(uriLocal);
+        } catch (URISyntaxException e) {
+            e.getMessage();
+        }
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,6 +70,20 @@ public class BusinessActivity extends AppCompatActivity {
 
         init();
         setListeners();
+
+        socket();
+    }
+
+    private void socket(){
+        mSocket.connect();
+        // notification login success or fail
+        mSocket.on("noti_login", onLogin);
+        // receiver notification when used app
+        mSocket.on("send_notication", onNotification);
+        // receiver notification when start app
+        mSocket.on("new_notification", onNewNotification);
+
+        signIn("i");
     }
 
     private void setListeners() {
@@ -65,7 +110,7 @@ public class BusinessActivity extends AppCompatActivity {
 
     private void init() {
         setFullScreen();
-
+        setFCM();
     }
 
     private void setFullScreen() {
@@ -79,5 +124,130 @@ public class BusinessActivity extends AppCompatActivity {
         }
     }
 
+    //FCM
+    private void setFCM(){
+        // set notification FCM
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("notification_channel", "notification_channel", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+        }
 
+        FirebaseMessaging.getInstance().subscribeToTopic("general")
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        String msg = "Subscribed Successfully";
+                        if (!task.isSuccessful()) {
+                            msg = "Subscription failed";
+                        }
+                        Log.e("Notification form FCM",msg);
+                    }
+                });
+    }
+
+    // get device token from FCM
+    public void getToken(String user){
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.e("notification_getToken", "Fetching FCM registration token failed", task.getException());
+                            return;
+                        }
+
+                        // Get new FCM registration token
+                        deviceId = task.getResult();
+
+                        Gson gson = new Gson();
+                        User user1 = new User(user, deviceId);
+                        mSocket.emit("login", gson.toJson(user1));
+                        // Log and toast
+                        Log.e("notification_getToken", deviceId);
+
+                    }
+                });
+    }
+
+    //socket.io
+    private void signIn(String user){
+        getToken(user);
+    }
+
+    private final Emitter.Listener onLogin = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject) args[0];
+                    String notification = data.optString("message");
+                    Toast.makeText(BusinessActivity.this, notification, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    };
+
+    private final Emitter.Listener onNotification = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject) args[0];
+                    String sender = data.optString("sender");
+                    String title = data.optString("title");
+                    String body = data.optString("body");
+                    //receiver.setText(sender+": "+body);
+                }
+            });
+        }
+    };
+
+    private final Emitter.Listener onNewNotification = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject) args[0];
+                    JSONArray listNotification = data.optJSONArray("list");
+
+//                    for(int i = 0; i < listNotification.length(); i++){
+//                        try {
+//                            JSONObject jsonObject = new JSONObject(listNotification.getString(i));
+//
+//                            BodyReceiver receiver1 = new BodyReceiver(jsonObject.optString("sender"), jsonObject.optString("title"), jsonObject.optString("body"));
+//
+//                            receiver.setText(receiver1.getTitle()+": "+receiver1.getBody());
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//
+//                        }
+//                    }
+                }
+            });
+        }
+    };
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        //notification when out activity
+        mSocket.disconnect();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+        //notification when come back activity
+        mSocket.connect();
+
+        Gson gson = new Gson();
+        User user1 = new User("i", deviceId);
+        mSocket.emit("login", gson.toJson(user1));
+    }
 }
