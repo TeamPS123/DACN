@@ -25,6 +25,7 @@ import com.psteam.foodlocation.adapters.FoodAdapter;
 import com.psteam.foodlocation.adapters.FoodReserveAdapter;
 import com.psteam.foodlocation.adapters.MenuAdapter;
 import com.psteam.foodlocation.databinding.ActivityReserveTableBinding;
+import com.psteam.foodlocation.models.Socket.BodySender;
 import com.psteam.foodlocation.models.Socket.User;
 import com.psteam.foodlocation.ultilities.CustomToast;
 import com.psteam.foodlocation.ultilities.DividerItemDecorator;
@@ -61,7 +62,7 @@ public class ReserveTableActivity extends AppCompatActivity {
     private Socket mSocket;
     {
         try {
-            mSocket = IO.socket(uriLocal);
+            mSocket = IO.socket(uriGlobal);
         } catch (URISyntaxException e) {
             e.getMessage();
         }
@@ -102,6 +103,12 @@ public class ReserveTableActivity extends AppCompatActivity {
 
         binding.imageViewClose.setOnClickListener(v -> {
             finish();
+        });
+
+        binding.buttonReserve.setOnClickListener(v -> {
+            Gson gson = new Gson();
+            BodySender body = new BodySender("i", "user", "Thông báo", "Có đơn mới nek");
+            mSocket.emit("notification", gson.toJson(body));
         });
     }
 

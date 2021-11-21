@@ -57,7 +57,7 @@ public class BusinessActivity extends AppCompatActivity {
     private Socket mSocket;
     {
         try {
-            mSocket = IO.socket(uriLocal);
+            mSocket = IO.socket(uriGlobal);
         } catch (URISyntaxException e) {
             e.getMessage();
         }
@@ -111,6 +111,7 @@ public class BusinessActivity extends AppCompatActivity {
         setFullScreen();
         setFCM();
         socket();
+
     }
 
     private void setFullScreen() {
@@ -161,7 +162,7 @@ public class BusinessActivity extends AppCompatActivity {
                         deviceId = task.getResult();
 
                         Gson gson = new Gson();
-                        User user1 = new User(user, deviceId);
+                        User user1 = new User("user", deviceId);
                         mSocket.emit("login", gson.toJson(user1));
                         // Log and toast
                         Log.e("notification_getToken", deviceId);
@@ -199,6 +200,8 @@ public class BusinessActivity extends AppCompatActivity {
                     String sender = data.optString("sender");
                     String title = data.optString("title");
                     String body = data.optString("body");
+
+
                     //receiver.setText(sender+": "+body);
                 }
             });
