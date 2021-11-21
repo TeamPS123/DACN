@@ -74,7 +74,6 @@ public class BusinessOrNormalActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<message> call, Response<message> response) {
                 if(response.body().getStatus() == 1){
-                    Toast.makeText(BusinessOrNormalActivity.this, response.body().getNotification(), Toast.LENGTH_SHORT).show();
                     if(code == 1){
                         startActivity(new Intent(BusinessOrNormalActivity.this, RestaurantRegistrationActivity.class));
                     }else if(code == 2){

@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,19 +15,10 @@ import android.widget.Toast;
 
 import com.psteam.foodlocation.R;
 import com.psteam.foodlocation.databinding.ActivitySignInBinding;
-import com.psteam.foodlocation.other.DataTokenAndUserId;
-import com.psteam.lib.Models.Input.signIn;
-import com.psteam.lib.Models.message;
-import com.psteam.lib.Service.ServiceAPI_lib;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class SignInActivity extends AppCompatActivity {
 
     private ActivitySignInBinding binding;
-    private DataTokenAndUserId dataTokenAndUserId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +41,11 @@ public class SignInActivity extends AppCompatActivity {
         binding.buttonSignIn.setOnClickListener(v -> {
             loading(true);
             if (isValidSignIn()) {
-                SignIn();
+                Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                loading(false);
+                finish();
             }
             loading(false);
         });
@@ -90,35 +84,4 @@ public class SignInActivity extends AppCompatActivity {
         }
     }
 
-    private void SignIn(){
-        signIn user = new signIn(binding.inputPhone.getText()+"", binding.inputPassword.getText()+"");
-
-        ServiceAPI_lib serviceAPI = com.psteam.lib.RetrofitServer.getRetrofit_lib().create(ServiceAPI_lib.class);
-        Call<message> call = serviceAPI.signin(user);
-        call.enqueue(new Callback<message>() {
-            @Override
-            public void onResponse(Call<message> call, Response<message> response) {
-                if(response.body().getStatus() == 1){
-                    //save token and userId
-                    dataTokenAndUserId = new DataTokenAndUserId(SignInActivity.this);
-                    dataTokenAndUserId.saveToken(response.body().getNotification()+"");
-                    dataTokenAndUserId.saveUserId(response.body().getId()+"");
-
-                    Toast.makeText(SignInActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(SignInActivity.this, MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    loading(false);
-                    finish();
-                }else {
-                    Toast.makeText(SignInActivity.this, response.body().getNotification(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<message> call, Throwable t) {
-                Toast.makeText(SignInActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
 }

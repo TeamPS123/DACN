@@ -21,17 +21,24 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.psteam.foodlocation.R;
+import com.psteam.foodlocation.adapters.BusinessReserveTableAdapter;
 import com.psteam.foodlocation.databinding.ActivityBusinessBinding;
 import com.psteam.foodlocation.models.Socket.User;
-import com.psteam.foodlocation.other.DataTokenAndUserId;
+import com.psteam.foodlocation.ultilities.Constants;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
@@ -43,7 +50,7 @@ import io.socket.emitter.Emitter;
 public class BusinessActivity extends AppCompatActivity {
     private ActivityBusinessBinding binding;
     private String deviceId = "";
-    private DataTokenAndUserId dataTokenAndUserId;
+    private String user;
 
     String uriGlobal = "https://food-location.herokuapp.com/";
     String uriLocal = "http://192.168.1.8:3030/";
@@ -63,7 +70,19 @@ public class BusinessActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         init();
-        setListeners();
+        setListeners();;
+    }
+
+    private void socket(){
+        mSocket.connect();
+        // notification login success or fail
+        mSocket.on("noti_login", onLogin);
+        // receiver notification when used app
+        mSocket.on("send_notication", onNotification);
+        // receiver notification when start app
+        mSocket.on("new_notification", onNewNotification);
+
+        signIn(user);
     }
 
     private void setListeners() {
@@ -90,8 +109,6 @@ public class BusinessActivity extends AppCompatActivity {
 
     private void init() {
         setFullScreen();
-
-        dataTokenAndUserId = new DataTokenAndUserId(BusinessActivity.this);
         setFCM();
         socket();
     }
@@ -154,18 +171,6 @@ public class BusinessActivity extends AppCompatActivity {
     }
 
     //socket.io
-    private void socket(){
-        mSocket.connect();
-        // notification login success or fail
-        mSocket.on("noti_login", onLogin);
-        // receiver notification when used app
-        mSocket.on("send_notication", onNotification);
-        // receiver notification when start app
-        mSocket.on("new_notification", onNewNotification);
-
-        signIn(dataTokenAndUserId.getUserId());
-    }
-
     private void signIn(String user){
         getToken(user);
     }
@@ -242,7 +247,7 @@ public class BusinessActivity extends AppCompatActivity {
         mSocket.connect();
 
         Gson gson = new Gson();
-        User user1 = new User(dataTokenAndUserId.getUserId(), deviceId);
+        User user1 = new User(user, deviceId);
         mSocket.emit("login", gson.toJson(user1));
     }
 }
