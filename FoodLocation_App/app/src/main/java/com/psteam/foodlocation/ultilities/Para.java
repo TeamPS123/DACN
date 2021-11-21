@@ -8,6 +8,8 @@ public class Para {
     public static String currentAddress = "";
     public static Marker marker;
 
+    public static int numberTabs;
+
     public static String currentLatLng() {
         return String.format("%s, %s", latitude, longitude);
     }

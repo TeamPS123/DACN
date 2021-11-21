@@ -113,6 +113,7 @@
             android:drawableLeft="@drawable/ic_baseline_toggle_off_24"
             android:drawableTint="@color/white"
             android:insetTop="0dp"
+            android:tag="off"
             android:insetBottom="0dp"
             android:minWidth="0dp"
             android:minHeight="0dp"
@@ -122,7 +123,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/_10sdp"
             android:textStyle="bold"
-            app:backgroundTint="#2196F3" />
+            app:backgroundTint="@color/TextPrimary" />
 
     </LinearLayout>
 

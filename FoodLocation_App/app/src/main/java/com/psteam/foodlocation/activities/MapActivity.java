@@ -64,6 +64,7 @@ import com.psteam.foodlocation.models.RestaurantModel;
 import com.psteam.foodlocation.services.LocationService;
 import com.psteam.foodlocation.services.ServiceAPI;
 import com.psteam.foodlocation.ultilities.Constants;
+import com.psteam.foodlocation.ultilities.DividerItemDecorator;
 import com.psteam.foodlocation.ultilities.Para;
 
 import java.util.ArrayList;
@@ -156,6 +157,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         mapRestaurantAdapter = new MapRestaurantAdapter(restaurantModels, this);
         recyclerViewSearch.setAdapter(mapRestaurantAdapter);
 
+        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecorator(getDrawable(R.drawable.divider));
+        recyclerViewSearch.addItemDecoration(itemDecoration);
+
     }
 
     private static int peekHeight;
@@ -167,7 +171,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         recyclerViewSearch = findViewById(R.id.recycleViewSearchRestaurant);
         initSearchRestaurant();
-        checkSelfPermission();
+        // checkSelfPermission();
+
+        layoutLocationInfo.setOnClickListener(v->{
+            startActivity(new Intent(getApplicationContext(),RestaurantDetailsActivity.class));
+        });
 
     }
 
@@ -302,8 +310,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         bottomSheetBehavior.setDraggable(true);
                     }
                 }
-
-
             }
         });
 
@@ -327,7 +333,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 return true;
             }
         });
-
 
         mClusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<RestaurantModel>() {
             @Override
@@ -360,7 +365,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 }
 
                 if (polyline != null) {
-                    if(!item.getPosition().equals(latLngDestination)) {
+                    if (!item.getPosition().equals(latLngDestination)) {
                         polyline.remove();
                         polyline = null;
                     }
@@ -431,20 +436,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     private void addItems() {
 
-        // Set some lat/lng coordinates to start with.
-        double lat = Para.latitude;
-        double lng = Para.longitude;
-
-        // Add ten cluster items in close proximity, for purposes of this example.
-        /*for (int i = 0; i < 15; i++) {
-            double offset = i / 10000d;
-            lat = lat + offset;
-            lng = lng + offset;
-            String latLng = String.format("%s,%s", lat, lng);
-            RestaurantModel restaurantModel = new RestaurantModel("ToCoToCo" +i, "875/22, Đường Nguyễn văn Cừ, Phường Lộc Phát, Tp.Bảo Lộc, Tỉnh Lâm Đồng", "2.5", R.drawable.tocotoco_restaurant, latLng);
-            mClusterManager.addItem(restaurantModel);
-
-        }*/
         mClusterManager.addItems(restaurantModels);
     }
 
@@ -467,10 +458,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         });
     }
 
-
     @Override
-    public void onRestaurantClicked(RestaurantModel restaurantModel) {
-
+    public void onRestaurantGuideClicked(RestaurantModel restaurantModel) {
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(restaurantModel.LatLng(), 15);
         mMap.animateCamera(cameraUpdate, 500, null);
         if (getMarkerFromCluster(restaurantModel.getPosition()) != null)
@@ -479,6 +468,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             flag = true;
             temp = restaurantModel.getPosition();
         }
+    }
+
+    @Override
+    public void onRestaurantClicked(RestaurantModel restaurantModel) {
+        startActivity(new Intent(getApplicationContext(), RestaurantDetailsActivity.class));
     }
 
     public static boolean flag = false;

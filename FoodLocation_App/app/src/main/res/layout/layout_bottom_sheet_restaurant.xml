@@ -99,7 +99,7 @@
                         android:adjustViewBounds="true"
                         android:scaleType="centerCrop"
                         android:src="@drawable/tocotoco_restaurant"
-                        app:riv_corner_radius="@dimen/_8sdp" />
+                        app:riv_corner_radius="@dimen/_4sdp" />
 
                     <LinearLayout
                         android:layout_width="0dp"

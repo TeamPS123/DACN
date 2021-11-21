@@ -61,14 +61,7 @@ public class RestaurantRegistrationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(Color.TRANSPARENT);
 
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);//  set status text dark
-            getWindow().setStatusBarColor(ContextCompat.getColor(getApplicationContext(), R.color.white));// set status background white
-        }
         binding = ActivityRestaurantRegistrationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         init();
@@ -80,12 +73,22 @@ public class RestaurantRegistrationActivity extends AppCompatActivity {
         districtModel = new DistrictModel();
         wardModel = new WardModel();
         districtModels = new ArrayList<>();
-
+        setFullScreen();
         getProvinces();
         getProvince("0");
         getDistrict("0");
     }
 
+    private void setFullScreen(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.TRANSPARENT);
+
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);//  set status text dark
+            getWindow().setStatusBarColor(ContextCompat.getColor(getApplicationContext(), R.color.white));// set status background white
+        }
+    }
 
     private void getProvinces() {
         provinceModels = new ArrayList<>();
@@ -227,6 +230,30 @@ public class RestaurantRegistrationActivity extends AppCompatActivity {
         });
 
 
+        binding.inputLatitude.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), MapRegistrationActivity.class);
+            startActivityForResult(intent, 1);
+        });
+
+        binding.inputLongitude.setOnClickListener(v -> {
+
+            Intent intent = new Intent(getApplicationContext(), MapRegistrationActivity.class);
+            startActivityForResult(intent, 1);
+        });
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if (resultCode == 2) {
+                String latitude = data.getStringExtra("latitude");
+                String longitude = data.getStringExtra("longitude");
+                binding.inputLatitude.setText(latitude);
+                binding.inputLongitude.setText(longitude);
+            }
+        }
     }
 
     private boolean isValidRestaurantRegistration() {

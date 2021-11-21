@@ -2,6 +2,7 @@ package com.psteam.foodlocation.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -15,6 +16,7 @@ import com.psteam.foodlocation.R;
 import com.psteam.foodlocation.adapters.SearchRestaurantAdapter;
 import com.psteam.foodlocation.databinding.ActivitySearchBinding;
 import com.psteam.foodlocation.models.RestaurantModel;
+import com.psteam.foodlocation.ultilities.DividerItemDecorator;
 
 import java.util.ArrayList;
 
@@ -73,6 +75,9 @@ public class SearchActivity extends AppCompatActivity {
 
         searchRestaurantAdapter = new SearchRestaurantAdapter(restaurantModels);
         binding.recycleViewSearch.setAdapter(searchRestaurantAdapter);
+
+        RecyclerView.ItemDecoration itemDecoration=new DividerItemDecorator(getDrawable(R.drawable.divider));
+        binding.recycleViewSearch.addItemDecoration(itemDecoration);
 
     }
 }

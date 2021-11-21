@@ -45,6 +45,7 @@ import com.psteam.foodlocation.models.PromotionModel;
 import com.psteam.foodlocation.models.SliderItem;
 import com.psteam.foodlocation.services.FetchAddressIntentServices;
 import com.psteam.foodlocation.ultilities.Constants;
+import com.psteam.foodlocation.ultilities.CustomToast;
 import com.psteam.foodlocation.ultilities.Para;
 
 import java.util.ArrayList;
@@ -94,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements CategoryListener 
         initFoodRestaurant();
     }
 
-    private void setFullScreen(){
+    private void setFullScreen() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -128,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements CategoryListener 
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
                 getCurrentLocation();
             else {
-                Toast.makeText(getApplicationContext(), "Permission denied", Toast.LENGTH_SHORT).show();
+                CustomToast.makeText(getApplicationContext(), "Permission denied", CustomToast.LENGTH_SHORT,CustomToast.WARNING).show();
             }
         }
     }
@@ -178,16 +179,18 @@ public class MainActivity extends AppCompatActivity implements CategoryListener 
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-                if(item.getTitle().equals(getString(R.string.text_logout))){
-                    startActivity(new Intent(MainActivity.this,SignInActivity.class));
+                if (item.getTitle().equals(getString(R.string.text_logout))) {
+                    startActivity(new Intent(MainActivity.this, SignInActivity.class));
                     finishAffinity();
+                } else if (item.getTitle().equals(getString(R.string.text_manager))) {
+                    startActivity(new Intent(MainActivity.this, BusinessActivity.class));
                 }
                 return false;
             }
         });
 
         buttonSignIn.setOnClickListener(v -> {
-            startActivity(new Intent(MainActivity.this,SignInActivity.class));
+            startActivity(new Intent(MainActivity.this, SignInActivity.class));
         });
     }
 
@@ -264,7 +267,6 @@ public class MainActivity extends AppCompatActivity implements CategoryListener 
     };
 
 
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -283,7 +285,6 @@ public class MainActivity extends AppCompatActivity implements CategoryListener 
     }
 
 
-
     private void initFoodRestaurant() {
         foodRestaurants = new ArrayList<>();
         foodRestaurants.add(new RestaurantPostAdapter.FoodRestaurant(R.drawable.lau, "TAKA BBQ: GIẢM 15% TẤT CẢ GÓI BUFFET", 4, 10, "875/22 Nguyễn Văn Cừ", "-15%"));
@@ -295,7 +296,7 @@ public class MainActivity extends AppCompatActivity implements CategoryListener 
         restaurantPostAdapter = new RestaurantPostAdapter(foodRestaurants, new RestaurantPostAdapter.RestaurantPostListeners() {
             @Override
             public void onRestaurantPostClicked(RestaurantPostAdapter.FoodRestaurant foodRestaurant) {
-                startActivity(new Intent(getApplicationContext(),RestaurantDetailsActivity.class));
+                startActivity(new Intent(getApplicationContext(), RestaurantDetailsActivity.class));
             }
         });
         binding.recycleViewPostFoodRestaurant.setAdapter(restaurantPostAdapter);
