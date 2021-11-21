@@ -54,7 +54,15 @@ public class ImageRestaurantAdapter extends RecyclerView.Adapter<ImageRestaurant
 
         public void setData(Bitmap bitmap){
             binding.imageViewRestaurant.setImageBitmap(bitmap);
-            binding.getRoot().setOnCreateContextMenuListener(this::onCreateContextMenu);
+            binding.getRoot().setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    bitmaps.remove(getAdapterPosition());
+                    notifyItemRemoved(getAdapterPosition());
+                    return false;
+                }
+            });
+
         }
 
         @Override

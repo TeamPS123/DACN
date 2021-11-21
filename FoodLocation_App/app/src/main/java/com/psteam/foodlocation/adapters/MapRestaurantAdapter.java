@@ -56,8 +56,14 @@ public class MapRestaurantAdapter extends RecyclerView.Adapter<MapRestaurantAdap
             binding.textViewRestaurantName.setText(restaurantModel.getName());
 
             binding.textViewGuide.setOnClickListener(v -> {
+                mapRestaurantListener.onRestaurantGuideClicked(restaurantModel);
+            });
+
+            binding.getRoot().setOnClickListener(v->{
                 mapRestaurantListener.onRestaurantClicked(restaurantModel);
             });
+
+
         }
     }
 }

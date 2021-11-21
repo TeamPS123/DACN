@@ -1,7 +1,12 @@
 package com.psteam.foodlocation.activities;
 
+import static com.google.gson.internal.$Gson$Types.arrayOf;
+
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,6 +19,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -31,6 +38,7 @@ import com.psteam.foodlocation.adapters.RestaurantPostAdapter;
 import com.psteam.foodlocation.adapters.TimeBookTableAdapter;
 import com.psteam.foodlocation.databinding.ActivityRestaurantDetailsBinding;
 import com.psteam.foodlocation.adapters.RestaurantPhotoAdapter;
+import com.psteam.foodlocation.ultilities.CustomToast;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -54,7 +62,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
     private ArrayList<RestaurantAddressAdapter.AddressRestaurant> addressRestaurants;
     private ArrayList<ChooseNumberPeopleAdapter.NumberPeople> numberPeople;
     private ArrayList<ChooseDateReserveTableAdapter.DateReserveTable> dateReserveTables;
-
 
 
     private Handler sliderHandler = new Handler();
@@ -139,13 +146,42 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
         });
 
         binding.buttonReserve.setOnClickListener(v -> {
-            int scrollY=binding.recycleViewTimeBookTable.getScrollY();
-            int scrollX=binding.recycleViewTimeBookTable.getScrollX();
-            binding.nestedScrollView.smoothScrollTo(scrollX,scrollY,1000);
+            int scrollY = binding.recycleViewTimeBookTable.getScrollY();
+            int scrollX = binding.recycleViewTimeBookTable.getScrollX();
+            binding.nestedScrollView.smoothScrollTo(scrollX, scrollY, 1000);
+        });
+
+        binding.textViewCall.setOnClickListener(v -> {
+            if (ContextCompat.checkSelfPermission(
+                    getApplicationContext(), Manifest.permission.CALL_PHONE
+            ) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(
+                        RestaurantDetailsActivity.this,
+                        new String[]{Manifest.permission.CALL_PHONE},
+                        REQUEST_CODE_PHONE_PERMISSION
+                );
+            } else {
+                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "0587875442"));
+                startActivity(intent);
+            }
         });
 
     }
 
+    private static final int REQUEST_CODE_PHONE_PERMISSION = 9;
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CODE_PHONE_PERMISSION && grantResults.length > 0) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "0587875442"));
+                startActivity(intent);
+            } else {
+                CustomToast.makeText(getApplicationContext(), "Permission denied", CustomToast.LENGTH_SHORT, CustomToast.WARNING).show();
+            }
+        }
+    }
 
     ChooseDateReserveTableFragment chooseDateReserveTableFragment;
 
@@ -300,7 +336,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
         restaurantPostAdapter = new RestaurantPostAdapter(foodRestaurants, new RestaurantPostAdapter.RestaurantPostListeners() {
             @Override
             public void onRestaurantPostClicked(RestaurantPostAdapter.FoodRestaurant foodRestaurant) {
-                startActivity(new Intent(getApplicationContext(),RestaurantDetailsActivity.class));
+                startActivity(new Intent(getApplicationContext(), RestaurantDetailsActivity.class));
             }
         });
         binding.recycleViewPostFoodRestaurant.setAdapter(restaurantPostAdapter);
