@@ -16,7 +16,6 @@ import android.widget.Toast;
 
 import com.psteam.foodlocation.R;
 import com.psteam.foodlocation.databinding.ActivitySignUpBinding;
-import com.psteam.lib.Models.Insert.signUp;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -45,13 +44,9 @@ public class SignUpActivity extends AppCompatActivity {
         binding.buttonSignUp.setOnClickListener(v -> {
             if (isValidSignUp()) {
                 Intent intent = new Intent(getApplicationContext(), VerifyOTPActivity.class);
-
-                signUp user = new signUp(binding.inputFullName.getText()+"", binding.inputPhone.getText()+"", binding.inputPassword.getText()+"",true, true);
-                intent.putExtra("user", user);
-
-//                Bundle bundle = new Bundle();
-//                bundle.putString("phoneNumber", binding.inputPhone.getText().toString());
-//                intent.putExtra("bundle", bundle);
+                Bundle bundle = new Bundle();
+                bundle.putString("phoneNumber", binding.inputPhone.getText().toString());
+                intent.putExtra("bundle", bundle);
                 startActivity(intent);
             }
         });

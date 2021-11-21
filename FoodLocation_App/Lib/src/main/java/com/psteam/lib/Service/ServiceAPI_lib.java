@@ -11,19 +11,26 @@ import com.psteam.lib.Models.Insert.insertPromotion;
 import com.psteam.lib.Models.Insert.insertRestaurant;
 import com.psteam.lib.Models.Insert.reserveFood;
 import com.psteam.lib.Models.Insert.reserveTable;
-import com.psteam.lib.Models.Insert.signUp;
+import com.psteam.lib.Models.Insert.signup;
 import com.psteam.lib.Models.message;
 
+import java.util.ArrayList;
+
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
+import static com.psteam.lib.RetrofitServer.getRetrofit_lib;
+
 public interface ServiceAPI_lib {
+    //Header("Authorization") String token,@Query("user") String user
     @POST("signup")
-    Call<message> signup(@Body signUp user);
+    Call<message> signup(@Body signup user);
 
     @POST("signin")
     Call<message> signin(@Body signIn user);

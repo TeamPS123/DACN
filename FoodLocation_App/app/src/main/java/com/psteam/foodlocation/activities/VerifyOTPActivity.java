@@ -18,20 +18,12 @@ import android.widget.Toast;
 import com.psteam.foodlocation.R;
 import com.psteam.foodlocation.databinding.ActivityVerifyOtpBinding;
 import com.psteam.foodlocation.ultilities.GenericTextWatcher;
-import com.psteam.lib.Models.Insert.signUp;
-import com.psteam.lib.Models.message;
-import com.psteam.lib.Service.ServiceAPI_lib;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class VerifyOTPActivity extends AppCompatActivity {
 
     private ActivityVerifyOtpBinding binding;
     private String phoneNumber;
     private Bundle bundle;
-    private signUp user;
 
     private long leftTimeInSecond = 60000;
 
@@ -73,9 +65,7 @@ public class VerifyOTPActivity extends AppCompatActivity {
                     binding.inputCode5.getText().toString() +
                     binding.inputCode6.getText().toString();
             if (code.length() == 6) {
-                Intent intent = new Intent(VerifyOTPActivity.this, BusinessOrNormalActivity.class);
-                intent.putExtra("user", user);
-                startActivity(intent);
+                startActivity(new Intent(VerifyOTPActivity.this, BusinessOrNormalActivity.class));
                 loading(false);
             }
         });
@@ -114,9 +104,9 @@ public class VerifyOTPActivity extends AppCompatActivity {
     }
 
     private void init() {
-        user = (signUp)getIntent().getExtras().getSerializable("user");
-        if (user.getPhone() != null) {
-            phoneNumber = user.getPhone();
+        bundle = getIntent().getBundleExtra("bundle");
+        if (bundle != null) {
+            phoneNumber = bundle.getString("phoneNumber");
             binding.textviewPhone.setText(phoneNumber);
         }
         countDownResendOTP(leftTimeInSecond);
