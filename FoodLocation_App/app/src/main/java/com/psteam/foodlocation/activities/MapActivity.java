@@ -171,7 +171,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         recyclerViewSearch = findViewById(R.id.recycleViewSearchRestaurant);
         initSearchRestaurant();
-        // checkSelfPermission();
+         checkSelfPermission();
 
         layoutLocationInfo.setOnClickListener(v->{
             startActivity(new Intent(getApplicationContext(),RestaurantDetailsActivity.class));

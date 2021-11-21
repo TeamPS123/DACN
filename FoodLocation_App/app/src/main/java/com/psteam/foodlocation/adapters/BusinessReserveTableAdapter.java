@@ -26,10 +26,10 @@ public class BusinessReserveTableAdapter extends FragmentStateAdapter {
                 return new PendingReservedTableFragment();
             case Constants.TAB_POSITION_PROCESSING:
                 return new ProcessingReservedTableFragment();
-            case Constants.TAB_POSITION_LATE:
-                return new LateReservedTableFragment();
-            default:
+            case Constants.TAB_POSITION_CONFIRMED:
                 return new ConfirmedReservedTableFragment();
+            default:
+                return new LateReservedTableFragment();
         }
     }
 

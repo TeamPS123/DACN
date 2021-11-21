@@ -18,6 +18,6 @@ public class Constants {
 
     public static final int TAB_POSITION_PENDING = 0;
     public static final int TAB_POSITION_PROCESSING = 1;
-    public static final int TAB_POSITION_CONFIRMED = 3;
-    public static final int TAB_POSITION_LATE = 2;
+    public static final int TAB_POSITION_CONFIRMED = 2;
+    public static final int TAB_POSITION_LATE = 3;
 }
