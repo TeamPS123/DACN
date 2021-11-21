@@ -38,6 +38,9 @@ public interface ServiceAPI_lib {
     @GET("getRestaurant")
     Call<messResDetail> getRestaurant(@Query("restaurantId") String id);
 
+    @GET("getResWithPromotion")
+    Call<messResDetail> getResWithPromotion(@Query("promotionId") String id);
+
     @POST("addRestaurant")
     Call<message> addRestaurant(@Header("Authorization") String token, @Body insertRestaurant res);
 
