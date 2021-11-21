@@ -12,9 +12,11 @@ import java.util.List;
 
 public class ReserveTableAdapter extends RecyclerView.Adapter<ReserveTableAdapter.ReserveTableViewHolder> {
     private final List<ReserveTable> reserveTableList;
+    private final ReserveTableListeners reserveTableListeners;
 
-    public ReserveTableAdapter(List<ReserveTable> reserveTableList) {
+    public ReserveTableAdapter(List<ReserveTable> reserveTableList, ReserveTableListeners reserveTableListeners) {
         this.reserveTableList = reserveTableList;
+        this.reserveTableListeners = reserveTableListeners;
     }
 
     @NonNull
@@ -51,7 +53,21 @@ public class ReserveTableAdapter extends RecyclerView.Adapter<ReserveTableAdapte
             binding.textViewNumberPeople.setText(reserveTable.getPhone());
             binding.textViewDateReserve.setText(reserveTable.getDateReserve());
             binding.textViewNumberPeople.setText(String.format("Đặt chỗ cho %d người", reserveTable.getNumberPeople()));
+
+            binding.buttonConfirmed.setOnClickListener(v -> {
+                reserveTableListeners.onConfirmClicked(reserveTable,getAdapterPosition());
+            });
+
+            binding.buttonDeny.setOnClickListener(v -> {
+                reserveTableListeners.onDenyClicked(reserveTable,getAdapterPosition());
+            });
+
         }
+    }
+
+    public interface  ReserveTableListeners{
+        void onConfirmClicked(ReserveTable reserveTable, int position);
+        void onDenyClicked(ReserveTable reserveTable,int position);
     }
 
 

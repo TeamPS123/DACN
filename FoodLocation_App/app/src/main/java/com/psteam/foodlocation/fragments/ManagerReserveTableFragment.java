@@ -71,9 +71,9 @@ public class ManagerReserveTableFragment extends Fragment {
                         badgeDrawable.setVisible(true);
                         break;
                     }
-                    case Constants.TAB_POSITION_LATE: {
-                        tab.setText("Quá hạn");
-                        tab.setIcon(R.drawable.ic_round_assignment_late_24);
+                    case Constants.TAB_POSITION_CONFIRMED: {
+                        tab.setText("Hoàn tất");
+                        tab.setIcon(R.drawable.ic_round_check_circle);
 
                         BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
                         badgeDrawable.setBackgroundColor(
@@ -84,9 +84,9 @@ public class ManagerReserveTableFragment extends Fragment {
                         badgeDrawable.setMaxCharacterCount(3);
                         break;
                     }
-                    case Constants.TAB_POSITION_CONFIRMED: {
-                        tab.setText("Hoàn tất");
-                        tab.setIcon(R.drawable.ic_round_check_circle);
+                    case Constants.TAB_POSITION_LATE: {
+                        tab.setText("Quá hạn");
+                        tab.setIcon(R.drawable.ic_round_assignment_late_24);
 
                         BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
                         badgeDrawable.setBackgroundColor(

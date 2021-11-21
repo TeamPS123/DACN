@@ -52,7 +52,17 @@ public class PendingReservedTableFragment extends Fragment {
         reserveTables.add(new ReserveTableAdapter.ReserveTable("Lê Tiểu Phàm","0123456789","11:03 SA, 11/19/2021",2));
         reserveTables.add(new ReserveTableAdapter.ReserveTable("Lê Tiểu Phàm","0123456789","11:03 SA, 11/19/2021",2));
 
-        reserveTableAdapter=new ReserveTableAdapter(reserveTables);
+        reserveTableAdapter=new ReserveTableAdapter(reserveTables, new ReserveTableAdapter.ReserveTableListeners() {
+            @Override
+            public void onConfirmClicked(ReserveTableAdapter.ReserveTable reserveTable, int position) {
+
+            }
+
+            @Override
+            public void onDenyClicked(ReserveTableAdapter.ReserveTable reserveTable, int position) {
+
+            }
+        });
 
         binding.recycleView.setAdapter(reserveTableAdapter);
         RecyclerView.ItemDecoration dividerItemDecoration = new DividerItemDecorator(ContextCompat.getDrawable(getContext(), R.drawable.divider));

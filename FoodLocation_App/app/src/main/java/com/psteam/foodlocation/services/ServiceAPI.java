@@ -25,4 +25,8 @@ public interface ServiceAPI {
     Call<DirectionResponses> getDirection(@Query("origin") String origin,
                                           @Query("destination") String destination,
                                           @Query("key") String apiKey);
+
+    @GET("maps/api/directions/json")
+    Call<DirectionResponses> getLatLng(@Query("address") String origin,
+                                          @Query("key") String apiKey);
 }
