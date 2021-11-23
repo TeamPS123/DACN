@@ -25,15 +25,16 @@ import com.psteam.foodlocation.adapters.FoodAdapter;
 import com.psteam.foodlocation.adapters.FoodReserveAdapter;
 import com.psteam.foodlocation.adapters.MenuAdapter;
 import com.psteam.foodlocation.databinding.ActivityReserveTableBinding;
-import com.psteam.foodlocation.models.Socket.BodySender;
-import com.psteam.foodlocation.models.Socket.User;
+import com.psteam.foodlocation.socket.models.BodySenderFromUser;
+import com.psteam.foodlocation.socket.models.MessageSenderFromUser;
+import com.psteam.foodlocation.socket.setupSocket;
 import com.psteam.foodlocation.ultilities.CustomToast;
 import com.psteam.foodlocation.ultilities.DividerItemDecorator;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
+import java.sql.Time;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -54,15 +55,12 @@ public class ReserveTableActivity extends AppCompatActivity {
     private double totalPrice = 0;
     private int totalCount = 0;
 
-    private String deviceId;
-    private String user;
+    private String user = "user";
 
-    String uriGlobal = "https://food-location.herokuapp.com/";
-    String uriLocal = "http://192.168.1.8:3030/";
-    private Socket mSocket;
+    public Socket mSocket;
     {
         try {
-            mSocket = IO.socket(uriGlobal);
+            mSocket = IO.socket(setupSocket.uriLocal);
         } catch (URISyntaxException e) {
             e.getMessage();
         }
@@ -106,9 +104,11 @@ public class ReserveTableActivity extends AppCompatActivity {
         });
 
         binding.buttonReserve.setOnClickListener(v -> {
-            Gson gson = new Gson();
-            BodySender body = new BodySender("i", "user", "Thông báo", "Có đơn mới nek");
-            mSocket.emit("notification", gson.toJson(body));
+            //lấy thời gian và ngày bắt buộc SDK >= 26
+            BodySenderFromUser body = new BodySenderFromUser("i", 5, java.time.LocalTime.now()+" "+java.time.LocalDate.now(), "1", "phàm", "0589674321", "1");
+            MessageSenderFromUser message = new MessageSenderFromUser("user", "restaurant", "Thông báo", body);
+
+            setupSocket.notificationFromUser(message, mSocket);
         });
     }
 
@@ -245,45 +245,17 @@ public class ReserveTableActivity extends AppCompatActivity {
                 });
     }
 
-    // get device token from FCM
-    public void getToken(String user){
-        FirebaseMessaging.getInstance().getToken()
-                .addOnCompleteListener(new OnCompleteListener<String>() {
-                    @Override
-                    public void onComplete(@NonNull Task<String> task) {
-                        if (!task.isSuccessful()) {
-                            Log.e("notification_getToken", "Fetching FCM registration token failed", task.getException());
-                            return;
-                        }
-
-                        // Get new FCM registration token
-                        deviceId = task.getResult();
-
-                        Gson gson = new Gson();
-                        User user1 = new User(user, deviceId);
-                        mSocket.emit("login", gson.toJson(user1));
-                        // Log and toast
-                        Log.e("notification_getToken", deviceId);
-
-                    }
-                });
-    }
-
     //socket.io
     private void socket(){
-        mSocket.connect();
+        setupSocket.mSocket = mSocket;
+
+        setupSocket.mSocket.connect();
         // notification login success or fail
-        mSocket.on("noti_login", onLogin);
+        setupSocket.mSocket.on("noti_login", onLogin);
         // receiver notification when used app
-        mSocket.on("send_notication", onNotification);
-        // receiver notification when start app
-        mSocket.on("new_notification", onNewNotification);
+        setupSocket.mSocket.on("send_notication", onNotification);
 
-        signIn(user);
-    }
-
-    private void signIn(String user){
-        getToken(user);
+        setupSocket.signIn(user);
     }
 
     private final Emitter.Listener onLogin = new Emitter.Listener() {
@@ -307,36 +279,10 @@ public class ReserveTableActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     JSONObject data = (JSONObject) args[0];
-                    String sender = data.optString("sender");
+                    String senderUser = data.optString("sender");
                     String title = data.optString("title");
                     String body = data.optString("body");
                     //receiver.setText(sender+": "+body);
-                }
-            });
-        }
-    };
-
-    private final Emitter.Listener onNewNotification = new Emitter.Listener() {
-        @Override
-        public void call(Object... args) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    JSONObject data = (JSONObject) args[0];
-                    JSONArray listNotification = data.optJSONArray("list");
-
-//                    for(int i = 0; i < listNotification.length(); i++){
-//                        try {
-//                            JSONObject jsonObject = new JSONObject(listNotification.getString(i));
-//
-//                            BodyReceiver receiver1 = new BodyReceiver(jsonObject.optString("sender"), jsonObject.optString("title"), jsonObject.optString("body"));
-//
-//                            receiver.setText(receiver1.getTitle()+": "+receiver1.getBody());
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//
-//                        }
-//                    }
                 }
             });
         }
@@ -357,8 +303,6 @@ public class ReserveTableActivity extends AppCompatActivity {
         //notification when come back activity
         mSocket.connect();
 
-        Gson gson = new Gson();
-        User user1 = new User(user, deviceId);
-        mSocket.emit("login", gson.toJson(user1));
+        setupSocket.reconnect(user, mSocket);
     }
 }

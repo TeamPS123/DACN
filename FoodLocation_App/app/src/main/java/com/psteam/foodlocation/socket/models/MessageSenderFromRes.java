@@ -1,7 +1,7 @@
-package com.psteam.foodlocation.models.Socket;
+package com.psteam.foodlocation.socket.models;
 
-public class BodySender {
-    public BodySender(String sender, String receiver, String title, String body) {
+public class MessageSenderFromRes {
+    public MessageSenderFromRes(String sender, String receiver, String title, String body) {
         this.sender = sender;
         this.receiver = receiver;
         this.title = title;

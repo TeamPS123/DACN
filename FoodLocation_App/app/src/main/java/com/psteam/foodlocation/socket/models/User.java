@@ -1,4 +1,4 @@
-package com.psteam.foodlocation.models.Socket;
+package com.psteam.foodlocation.socket.models;
 
 public class User {
     public User(String user, String device) {
