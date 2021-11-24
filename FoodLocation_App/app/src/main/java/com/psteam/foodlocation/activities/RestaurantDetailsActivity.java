@@ -166,6 +166,10 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
             }
         });
 
+        binding.textViewDirections.setOnClickListener(v->{
+            startActivity(new Intent(getApplicationContext(),RestaurantMapActivity.class));
+        });
+
     }
 
     private static final int REQUEST_CODE_PHONE_PERMISSION = 9;

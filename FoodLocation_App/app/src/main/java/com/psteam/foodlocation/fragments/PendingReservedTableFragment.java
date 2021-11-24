@@ -46,6 +46,7 @@ public class PendingReservedTableFragment extends Fragment {
 
     private void initReserveTable() {
         reserveTables=new ArrayList<>();
+
         reserveTables.add(new ReserveTableAdapter.ReserveTable("Lê Tiểu Phàm","0123456789","11:03 SA, 11/19/2021",2));
         reserveTables.add(new ReserveTableAdapter.ReserveTable("Lê Tiểu Phàm","0123456789","11:03 SA, 11/19/2021",2));
         reserveTables.add(new ReserveTableAdapter.ReserveTable("Lê Tiểu Phàm","0123456789","11:03 SA, 11/19/2021",2));

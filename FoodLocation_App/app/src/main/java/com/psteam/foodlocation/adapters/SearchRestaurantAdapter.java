@@ -49,7 +49,7 @@ public class SearchRestaurantAdapter extends RecyclerView.Adapter<SearchRestaura
         public void setData(RestaurantModel restaurantModel) {
             binding.imageViewRestaurant.setBackgroundResource(restaurantModel.getImage());
             binding.textViewRestaurantAddress.setText(restaurantModel.getAddress());
-            binding.textviewDistance.setText(restaurantModel.getDistance() + "km");
+            binding.textviewDistance.setText(restaurantModel.getDistance());
             binding.textViewRestaurantName.setText(restaurantModel.getName());
         }
     }

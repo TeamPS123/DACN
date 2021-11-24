@@ -1,6 +1,7 @@
 package com.psteam.foodlocation.fragments;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
 import com.psteam.foodlocation.R;
+import com.psteam.foodlocation.activities.ManagerCategoryActivity;
 import com.psteam.foodlocation.adapters.MenuFragmentAdapter;
 import com.psteam.foodlocation.databinding.FragmentManagerMenuBinding;
 import com.psteam.foodlocation.databinding.LayoutAddMenuNameDialogBinding;
@@ -45,6 +47,11 @@ public class ManagerMenuFragment extends Fragment {
         binding.buttonAddMenu.setOnClickListener(v -> {
             openDialogAddMenu();
         });
+
+        binding.buttonManagerCategory.setOnClickListener(v -> {
+            startActivity(new Intent(getContext(), ManagerCategoryActivity.class));
+        });
+
     }
 
     private void init() {
@@ -107,9 +114,9 @@ public class ManagerMenuFragment extends Fragment {
             }
 
             binding.tabs.addTab(binding.tabs.newTab().setText(layoutAddMenuNameDialogBinding.inputMenuName.getText().toString()));
-            Para.numberTabs=binding.tabs.getTabCount();
+            Para.numberTabs = binding.tabs.getTabCount();
             menuFragmentAdapter.notifyDataSetChanged();
-            binding.viewPager.setCurrentItem(binding.tabs.getTabCount()-1);
+            binding.viewPager.setCurrentItem(binding.tabs.getTabCount() - 1);
             dialog.dismiss();
         });
 

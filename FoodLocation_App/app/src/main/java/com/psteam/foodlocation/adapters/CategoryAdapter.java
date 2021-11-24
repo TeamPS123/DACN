@@ -52,8 +52,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         }
 
         public void setData(CategoryModel categoryModel) {
-            binding.imageViewCategory.setBackgroundResource(categoryModel.getImage());
+            binding.imageViewCategory.setImageResource(categoryModel.getImage());
             binding.textViewName.setText(categoryModel.getName());
+
+            binding.getRoot().setOnClickListener(v -> {
+                categoryListener.onCategoryClick(categoryModel);
+            });
         }
     }
 }

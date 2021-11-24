@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
@@ -23,18 +24,25 @@ import android.os.Looper;
 import android.os.ResultReceiver;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.badge.BadgeUtils;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.navigation.NavigationView;
 import com.psteam.foodlocation.R;
 import com.psteam.foodlocation.adapters.CategoryAdapter;
+import com.psteam.foodlocation.adapters.ChooseCityAdapter;
+import com.psteam.foodlocation.adapters.ChooseNumberPeopleAdapter;
+import com.psteam.foodlocation.adapters.NotificationAdapter;
 import com.psteam.foodlocation.adapters.PromotionAdapter;
 import com.psteam.foodlocation.adapters.RestaurantPostAdapter;
 import com.psteam.foodlocation.adapters.SliderAdapter;
@@ -46,7 +54,10 @@ import com.psteam.foodlocation.models.SliderItem;
 import com.psteam.foodlocation.services.FetchAddressIntentServices;
 import com.psteam.foodlocation.ultilities.Constants;
 import com.psteam.foodlocation.ultilities.CustomToast;
+import com.psteam.foodlocation.ultilities.DividerItemDecorator;
 import com.psteam.foodlocation.ultilities.Para;
+import com.psteam.library.TopSheetBehavior;
+import com.psteam.library.TopSheetDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,7 +93,6 @@ public class MainActivity extends AppCompatActivity implements CategoryListener 
         setContentView(binding.getRoot());
         init();
         setListeners();
-
     }
 
     private void init() {
@@ -93,6 +103,7 @@ public class MainActivity extends AppCompatActivity implements CategoryListener 
         initCategory();
         initPromotion();
         initFoodRestaurant();
+        setNumberNotification(0);
     }
 
     private void setFullScreen() {
@@ -100,7 +111,6 @@ public class MainActivity extends AppCompatActivity implements CategoryListener 
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(Color.TRANSPARENT);
-
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);//  set status text dark
             getWindow().setStatusBarColor(ContextCompat.getColor(MainActivity.this, R.color.white));// set status background white
         }
@@ -129,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements CategoryListener 
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
                 getCurrentLocation();
             else {
-                CustomToast.makeText(getApplicationContext(), "Permission denied", CustomToast.LENGTH_SHORT,CustomToast.WARNING).show();
+                CustomToast.makeText(getApplicationContext(), "Permission denied", CustomToast.LENGTH_SHORT, CustomToast.WARNING).show();
             }
         }
     }
@@ -152,22 +162,49 @@ public class MainActivity extends AppCompatActivity implements CategoryListener 
             if (resultCode == Constants.SUCCESS_RESULT) {
                 Para.currentAddress = resultData.getString(Constants.RESULT_DATA_KEY);
                 binding.textviewCurrentLocation.setText(resultData.getString(Constants.RESULT_DATA_KEY));
+                if (resultData.getString(Constants.RESULT_DATA_KEY) != null && !resultData.getString(Constants.RESULT_DATA_KEY).isEmpty())
+                    binding.textTitle.setText(String.format("Các địa điểm ở %s", resultData.getString(Constants.RESULT_CITY)));
             } else {
                 Toast.makeText(getApplicationContext(), resultData.getString(Constants.RESULT_DATA_KEY), Toast.LENGTH_SHORT).show();
             }
         }
     }
 
+    private ArrayList<NotificationAdapter.Notification> notifications;
+    private TopSheetBehavior topSheetBehavior;
+    private NotificationAdapter notificationAdapter;
+
     private void setListeners() {
+        notifications = new ArrayList<>();
+        topSheetBehavior = new TopSheetBehavior();
         binding.textviewCurrentLocation.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, SearchActivity.class);
             startActivity(intent);
         });
 
-        binding.buttonSearch.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, SearchActivity.class);
-            startActivity(intent);
+        binding.buttonNotification.setOnClickListener(v -> {
+            notifications.add(new NotificationAdapter.Notification("Đơn đặt bàn của bạn đã được xác nhận", "1"));
+            notifications.add(new NotificationAdapter.Notification("Bạn đã đến nhà hàng, bạn có thể gói món ngay trên ứng dụng", "1"));
+            badgeDrawable.setNumber(notifications.size());
+            if (notifications.size() > 0) {
+                binding.textEmptyNotification.setVisibility(View.GONE);
+            } else {
+                binding.textEmptyNotification.setVisibility(View.VISIBLE);
+            }
+            notificationAdapter = new NotificationAdapter(notifications);
+            binding.recycleViewNotification.setAdapter(notificationAdapter);
+            new ItemTouchHelper(simpleCallback).attachToRecyclerView(binding.recycleViewNotification);
+            RecyclerView.ItemDecoration itemDecoration = new DividerItemDecorator(getDrawable(R.drawable.divider));
+            binding.recycleViewNotification.addItemDecoration(itemDecoration);
+
+            topSheetBehavior.from(binding.topSheet).setState(TopSheetBehavior.STATE_EXPANDED);
+
         });
+
+        binding.textViewExpand.setOnClickListener(v -> {
+            topSheetBehavior.from(binding.topSheet).setState(TopSheetBehavior.STATE_COLLAPSED);
+        });
+
 
         binding.imageMenu.setOnClickListener(v -> {
             binding.drawerLayout.openDrawer(GravityCompat.START);
@@ -175,15 +212,37 @@ public class MainActivity extends AppCompatActivity implements CategoryListener 
 
         binding.navigationView.setItemIconTintList(null);
 
+
         binding.navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-                if (item.getTitle().equals(getString(R.string.text_logout))) {
-                    startActivity(new Intent(MainActivity.this, SignInActivity.class));
-                    finishAffinity();
-                } else if (item.getTitle().equals(getString(R.string.text_manager))) {
-                    startActivity(new Intent(MainActivity.this, BusinessActivity.class));
+                switch (item.getItemId()) {
+                    case R.id.menuUserInfo: {
+                        startActivity(new Intent(MainActivity.this, UserInfoActivity.class));
+                        break;
+                    }
+
+                    case R.id.menuBookTable: {
+                        startActivity(new Intent(MainActivity.this, UserBookTableHistoryActivity.class));
+                        break;
+                    }
+
+                    case R.id.menuLogOut: {
+                        startActivity(new Intent(MainActivity.this, SignInActivity.class));
+                        finishAffinity();
+                        break;
+                    }
+
+                    case R.id.menuManager: {
+                        startActivity(new Intent(MainActivity.this, BusinessActivity.class));
+                        break;
+                    }
+
+                    case R.id.menuChangeRegionSearch: {
+                        clickOpenBottomSheetChooseCityFragment();
+                        break;
+                    }
                 }
                 return false;
             }
@@ -191,6 +250,43 @@ public class MainActivity extends AppCompatActivity implements CategoryListener 
 
         buttonSignIn.setOnClickListener(v -> {
             startActivity(new Intent(MainActivity.this, SignInActivity.class));
+        });
+    }
+
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            notifications.remove(viewHolder.getAdapterPosition());
+            notificationAdapter.notifyDataSetChanged();
+            badgeDrawable.setNumber(notifications.size());
+            if (notifications.size() <= 0) {
+                topSheetBehavior.from(binding.topSheet).setState(TopSheetBehavior.STATE_COLLAPSED);
+            }
+        }
+    };
+
+    private BadgeDrawable badgeDrawable;
+
+    public void setNumberNotification(int number) {
+        binding.buttonNotification.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @SuppressLint("UnsafeOptInUsageError")
+            @Override
+            public void onGlobalLayout() {
+                badgeDrawable = BadgeDrawable.create(MainActivity.this);
+                badgeDrawable.setNumber(number);
+                badgeDrawable.setBadgeGravity(BadgeDrawable.TOP_END);
+                BadgeUtils.attachBadgeDrawable(badgeDrawable, binding.buttonNotification, findViewById(R.id.layout));
+                binding.buttonNotification.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                lp.setMargins(binding.buttonNotification.getWidth() / 4, 0, binding.buttonNotification.getWidth(), 0);
+                binding.buttonNotification.setLayoutParams(lp);
+
+            }
         });
     }
 
@@ -228,16 +324,19 @@ public class MainActivity extends AppCompatActivity implements CategoryListener 
                 sliderHandler.postDelayed(sliderRunnable, 3000);
             }
         });
-
-
     }
 
     private void initCategory() {
         categoryModelArrayList = new ArrayList<>();
-        categoryModelArrayList.add(new CategoryModel(R.drawable.ic_baseline_restaurant_menu_24, "Lẩu"));
-        categoryModelArrayList.add(new CategoryModel(R.drawable.ic_baseline_restaurant_menu_24, "Nướng"));
-        categoryModelArrayList.add(new CategoryModel(R.drawable.ic_baseline_restaurant_menu_24, "Trà sửa"));
-        categoryModelArrayList.add(new CategoryModel(R.drawable.ic_baseline_restaurant_menu_24, "Hải sản"));
+        categoryModelArrayList.add(new CategoryModel("Cơm", R.drawable.rice));
+        categoryModelArrayList.add(new CategoryModel("Lẩu", R.drawable.hotpot));
+        categoryModelArrayList.add(new CategoryModel("Trà sửa", R.drawable.bubble_tea));
+        categoryModelArrayList.add(new CategoryModel("Bia", R.drawable.beer));
+        categoryModelArrayList.add(new CategoryModel("Nướng", R.drawable.barbecue));
+        categoryModelArrayList.add(new CategoryModel("Coffee", R.drawable.coffee));
+        categoryModelArrayList.add(new CategoryModel("Phở", R.drawable.ramen));
+        categoryModelArrayList.add(new CategoryModel("Nước ép", R.drawable.drink));
+        categoryModelArrayList.add(new CategoryModel("Pizza", R.drawable.pizza));
 
         categoryAdapter = new CategoryAdapter(categoryModelArrayList, this);
         binding.recycleViewCategory.setAdapter(categoryAdapter);
@@ -256,7 +355,6 @@ public class MainActivity extends AppCompatActivity implements CategoryListener 
         binding.recycleViewPromotion.setAdapter(promotionAdapter);
         binding.recycleViewPromotion.setClipToPadding(false);
         binding.recycleViewPromotion.setClipChildren(false);
-
     }
 
     private Runnable sliderRunnable = new Runnable() {
@@ -265,7 +363,6 @@ public class MainActivity extends AppCompatActivity implements CategoryListener 
             binding.viewPagerSliderImage.setCurrentItem(binding.viewPagerSliderImage.getCurrentItem() + 1);
         }
     };
-
 
     @Override
     protected void onPause() {
@@ -281,9 +378,8 @@ public class MainActivity extends AppCompatActivity implements CategoryListener 
 
     @Override
     public void onCategoryClick(CategoryModel categoryModel) {
-
+        startActivity(new Intent(getApplicationContext(), SearchActivity.class));
     }
-
 
     private void initFoodRestaurant() {
         foodRestaurants = new ArrayList<>();
@@ -335,6 +431,28 @@ public class MainActivity extends AppCompatActivity implements CategoryListener 
                             }
                         }
                         , Looper.getMainLooper());
+
+    }
+
+    private ChooseCityBottomSheetFragment chooseCityBottomSheetFragment;
+    private ArrayList<ChooseCityAdapter.City> cities;
+
+
+    private void clickOpenBottomSheetChooseCityFragment() {
+        cities = new ArrayList<>();
+
+        cities.add(new ChooseCityAdapter.City("Tp.Hồ Chí Minh", "79"));
+        cities.add(new ChooseCityAdapter.City("Hà Nội", "1"));
+        cities.add(new ChooseCityAdapter.City("Lâm Đồng", "68"));
+
+        chooseCityBottomSheetFragment = new ChooseCityBottomSheetFragment(cities, new ChooseCityAdapter.ChooseCityListener() {
+            @Override
+            public void onChooseCityClicked(ChooseCityAdapter.City city) {
+                Para.cityCode = city.getCode();
+            }
+        });
+
+        chooseCityBottomSheetFragment.show(getSupportFragmentManager(), chooseCityBottomSheetFragment.getTag());
 
     }
 }

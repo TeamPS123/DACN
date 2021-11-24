@@ -45,28 +45,32 @@ public class FetchAddressIntentServices extends IntentService {
             }
 
             if (addressList == null || addressList.isEmpty()) {
-                deliverResultToReceiver(Constants.FAILURE_RESULT, errorMessage);
+                deliverResultToReceiver(Constants.FAILURE_RESULT, errorMessage,"");
             } else {
                 Address address = addressList.get(0);
                 ArrayList<String> addressFragments = new ArrayList<>();
+                String city = "";
                 for (int i = 0; i <= address.getMaxAddressLineIndex(); i++) {
                     addressFragments.add(address.getAddressLine(i));
+                    city=address.getLocality();
                 }
                 deliverResultToReceiver(
                         Constants.SUCCESS_RESULT,
                         TextUtils.join(
                                 Objects.requireNonNull(System.getProperty("line.separator")),
                                 addressFragments
-                        )
+                        ),
+                        city
                 );
             }
         }
 
     }
 
-    private void deliverResultToReceiver(int resultCode, String addressMessage) {
+    private void deliverResultToReceiver(int resultCode, String addressMessage, String city) {
         Bundle bundle = new Bundle();
         bundle.putString(Constants.RESULT_DATA_KEY, addressMessage);
+        bundle.putString(Constants.RESULT_CITY, city);
         resultReceiver.send(resultCode, bundle);
     }
 }

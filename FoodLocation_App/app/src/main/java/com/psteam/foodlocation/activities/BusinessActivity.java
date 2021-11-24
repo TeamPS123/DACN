@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -42,9 +44,6 @@ public class BusinessActivity extends AppCompatActivity {
     }
 
     private void setListeners() {
-        binding.imageMenu.setOnClickListener(v->{
-            startActivity(new Intent(getApplicationContext(),ReserveTableDetailsActivity.class));
-        });
 
         binding.imageMenu.setOnClickListener(v -> {
             binding.drawerLayout.openDrawer(GravityCompat.START);
@@ -65,7 +64,6 @@ public class BusinessActivity extends AppCompatActivity {
 
     private void init() {
         setFullScreen();
-
     }
 
     private void setFullScreen() {
@@ -78,6 +76,4 @@ public class BusinessActivity extends AppCompatActivity {
             getWindow().setStatusBarColor(ContextCompat.getColor(getApplicationContext(), R.color.white));// set status background white
         }
     }
-
-
 }

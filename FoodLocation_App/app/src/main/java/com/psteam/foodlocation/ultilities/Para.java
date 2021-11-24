@@ -7,7 +7,7 @@ public class Para {
     public static double longitude = 0;
     public static String currentAddress = "";
     public static Marker marker;
-
+    public static String cityCode="79";
     public static int numberTabs;
 
     public static String currentLatLng() {

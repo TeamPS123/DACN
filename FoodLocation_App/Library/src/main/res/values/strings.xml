@@ -1,0 +1,3 @@
+<resources>
+    <string name="top_sheet_behavior" translatable="false">com.psteam.library.TopSheetBehavior</string>
+</resources>
