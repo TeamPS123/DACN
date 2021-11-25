@@ -8,7 +8,7 @@
     android:overScrollMode="never"
     android:padding="@dimen/_24sdp"
     android:scrollbars="none"
-    tools:context=".activities.RestaurantRegistrationActivity">
+    tools:context=".activites.RestaurantRegistrationActivity">
 
 
     <LinearLayout
@@ -40,6 +40,7 @@
                 android:minHeight="@dimen/_45sdp"
                 android:hint="Tên nhà hàng"
                 android:imeOptions="actionNext"
+                android:inputType="text"
                 android:textColorHint="@color/secondary_text"
                 android:textSize="@dimen/_13ssp"
                 android:textColor="@color/primary_text"/>
@@ -50,7 +51,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_16sdp"
+            android:layout_marginTop="@dimen/_8sdp"
             android:background="@drawable/background_gender_radio_group"
             android:gravity="center"
             android:orientation="vertical">
@@ -87,7 +88,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_16sdp"
+            android:layout_marginTop="@dimen/_8sdp"
             android:background="@drawable/background_gender_radio_group"
             android:gravity="center"
             android:orientation="vertical">
@@ -124,7 +125,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_16sdp"
+            android:layout_marginTop="@dimen/_8sdp"
             android:background="@drawable/background_gender_radio_group"
             android:gravity="center"
             android:orientation="vertical">
@@ -163,7 +164,8 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_16sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            app:hintEnabled="false"
             app:boxBackgroundColor="@color/input_background"
             app:startIconDrawable="@drawable/ic_location">
 
@@ -175,6 +177,31 @@
                 android:textSize="@dimen/_13ssp"
                 android:textColor="@color/primary_text"
                 android:imeOptions="actionNext"
+                android:inputType="text"
+                android:minHeight="@dimen/_45sdp"
+                android:textColorHint="@color/secondary_text" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            app:hintEnabled="false"
+            app:boxBackgroundColor="@color/input_background"
+            app:startIconDrawable="@drawable/ic_phone">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputPhoneNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Số điện thoại kinh doanh"
+                android:textSize="@dimen/_13ssp"
+                android:textColor="@color/primary_text"
+                android:imeOptions="actionNext"
+                android:inputType="phone"
+                android:maxLength="13"
                 android:minHeight="@dimen/_45sdp"
                 android:textColorHint="@color/secondary_text" />
 
@@ -183,62 +210,40 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_16sdp"
+            android:layout_marginTop="@dimen/_8sdp"
             android:orientation="horizontal">
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/_4sdp"
-                android:layout_weight="1"
+                app:hintEnabled="false"
                 app:boxBackgroundColor="@color/input_background"
-                app:startIconDrawable="@drawable/ic_location">
+                app:startIconDrawable="@drawable/ic_baseline_share_location_24">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/inputLatitude"
+                    android:id="@+id/inputGetLocation"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_45sdp"
-                    android:hint="Vĩ độ"
+                    android:hint="Vị trí của bạn"
                     android:textSize="@dimen/_13ssp"
+                    android:focusableInTouchMode="false"
+                    android:focusable="false"
+                    android:drawableEnd="@drawable/ic_baseline_my_location_24"
                     android:textColor="@color/primary_text"
                     android:imeOptions="actionNext"
-                    android:inputType="number"
-                    android:maxLength="15"
+                    android:inputType="none"
+
                     android:textColorHint="@color/secondary_text" />
 
             </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_4sdp"
-                android:layout_weight="1"
-                app:boxBackgroundColor="@color/input_background"
-                app:startIconDrawable="@drawable/ic_location">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/inputLongitude"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_45sdp"
-                    android:hint="Kinh độ"
-                    android:textSize="@dimen/_13ssp"
-                    android:textColor="@color/primary_text"
-                    android:imeOptions="actionNext"
-                    android:inputType="number"
-                    android:maxLength="15"
-                    android:textColorHint="@color/secondary_text" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_16sdp"
+            android:layout_marginTop="@dimen/_8sdp"
             android:orientation="horizontal">
 
             <com.google.android.material.textfield.TextInputLayout
@@ -247,6 +252,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/_4sdp"
                 android:layout_weight="1"
+                app:hintEnabled="false"
                 app:boxBackgroundColor="@color/input_background"
                 app:startIconDrawable="@drawable/ic_time">
 
@@ -257,6 +263,7 @@
                     android:focusable="false"
                     android:textColor="@color/primary_text"
                     android:textSize="@dimen/_13ssp"
+                    android:inputType="none"
                     android:hint="Mở cửa"
                     android:imeOptions="actionNext"
                     android:textColorHint="@color/secondary_text" />
@@ -269,6 +276,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_4sdp"
                 android:layout_weight="1"
+                app:hintEnabled="false"
                 app:boxBackgroundColor="@color/input_background"
                 app:startIconDrawable="@drawable/ic_time">
 
@@ -280,6 +288,7 @@
                     android:textColor="@color/primary_text"
                     android:textSize="@dimen/_13ssp"
                     android:hint="Đóng cửa"
+                    android:inputType="none"
                     android:imeOptions="actionNext"
                     android:textColorHint="@color/secondary_text" />
 

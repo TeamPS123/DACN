@@ -1,5 +1,7 @@
 package com.psteam.foodlocationbusiness.fragments;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,58 +10,70 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 
 import com.psteam.foodlocationbusiness.R;
+import com.psteam.foodlocationbusiness.databinding.FragmentManagerRestaurantBinding;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ManagerRestaurantFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ManagerRestaurantFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public ManagerRestaurantFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ManagerRestaurantFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ManagerRestaurantFragment newInstance(String param1, String param2) {
-        ManagerRestaurantFragment fragment = new ManagerRestaurantFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private boolean isSelected;
+    private int status;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
+
+    private FragmentManagerRestaurantBinding binding;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_manager_restaurant, container, false);
+        binding = FragmentManagerRestaurantBinding.inflate(inflater, container, false);
+        init();
+        return binding.getRoot();
+
+
+    }
+
+    private void init() {
+        status=1;
+        isSelected = status != 1 ? true : false;
+        if(isSelected) {
+            binding.buttonSwitch.setMinAndMaxProgress(0.5f, 1.0f);
+            binding.textStatus.setText("Mở cửa");
+        }else {
+            binding.buttonSwitch.setMinAndMaxProgress(0.0f, 0.5f);
+            binding.textStatus.setText("Đóng cửa");
+        }
+
+        binding.buttonSwitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isSelected) {
+                    binding.buttonSwitch.setMinAndMaxProgress(0.5f, 1.0f);
+                    binding.buttonSwitch.playAnimation();
+                    binding.buttonSwitch.addAnimatorListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            binding.textStatus.setText("Đóng cửa");
+                        }
+                    });
+                    isSelected = false;
+                } else {
+                    binding.buttonSwitch.setMinAndMaxProgress(0.0f, 0.5f);
+                    binding.buttonSwitch.playAnimation();
+                    binding.buttonSwitch.addAnimatorListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            binding.textStatus.setText("Mở cửa");
+                        }
+                    });
+
+                    isSelected = true;
+                }
+            }
+        });
     }
 }

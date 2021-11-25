@@ -1,5 +1,6 @@
 package com.psteam.foodlocationbusiness.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.psteam.foodlocationbusiness.R;
+import com.psteam.foodlocationbusiness.activites.ReserveTableDetailsActivity;
 import com.psteam.foodlocationbusiness.adapters.ReserveTableAdapter;
 import com.psteam.foodlocationbusiness.databinding.FragmentPendingReservedTableBinding;
 import com.psteam.foodlocationbusiness.ultilities.DividerItemDecorator;
@@ -62,6 +64,11 @@ public class PendingReservedTableFragment extends Fragment {
             @Override
             public void onDenyClicked(ReserveTableAdapter.ReserveTable reserveTable, int position) {
 
+            }
+
+            @Override
+            public void onClicked(ReserveTableAdapter.ReserveTable reserveTable, int position) {
+                startActivity(new Intent(getContext(), ReserveTableDetailsActivity.class));
             }
         });
 

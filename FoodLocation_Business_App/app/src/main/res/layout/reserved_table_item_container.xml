@@ -59,26 +59,25 @@
         android:layout_marginStart="@dimen/_4sdp"
         android:layout_marginTop="@dimen/_6sdp"
         android:text=" Đặt bàn cho 01 người"
-        android:textColor="@color/TextPrimary"
+        android:textColor="#FF5722"
         android:textSize="@dimen/_12ssp"
-        android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@id/textViewFullName"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toEndOf="@id/textViewDateReserve"/>
 
     <TextView
         android:id="@+id/textViewDateReserve"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_6sdp"
         android:text="10:00 SA, 17/11/2021"
         android:textStyle="bold"
-        android:textColor="@color/TextPrimary"
-        android:drawableTint="@color/TextPrimary"
+        android:layout_marginStart="@dimen/_4sdp"
+        android:textColor="#FF5722"
+        android:drawableTint="#FF5722"
         android:textSize="@dimen/_12ssp"
         android:drawablePadding="@dimen/_4sdp"
         android:drawableLeft="@drawable/ic_baseline_date_range"
         app:layout_constraintTop_toTopOf="@id/textViewNumberPeople"
-        app:layout_constraintStart_toEndOf="@id/textViewNumberPeople"/>
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <LinearLayout
         android:layout_width="wrap_content"

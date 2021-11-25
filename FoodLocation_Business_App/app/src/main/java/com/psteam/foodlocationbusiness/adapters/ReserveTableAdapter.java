@@ -56,19 +56,26 @@ public class ReserveTableAdapter extends RecyclerView.Adapter<ReserveTableAdapte
             binding.textViewNumberPeople.setText(String.format("Đặt chỗ cho %d người", reserveTable.getNumberPeople()));
 
             binding.buttonConfirmed.setOnClickListener(v -> {
-                reserveTableListeners.onConfirmClicked(reserveTable,getAdapterPosition());
+                reserveTableListeners.onConfirmClicked(reserveTable, getAdapterPosition());
             });
 
             binding.buttonDeny.setOnClickListener(v -> {
-                reserveTableListeners.onDenyClicked(reserveTable,getAdapterPosition());
+                reserveTableListeners.onDenyClicked(reserveTable, getAdapterPosition());
+            });
+
+            binding.getRoot().setOnClickListener(v -> {
+                reserveTableListeners.onClicked(reserveTable, getAdapterPosition());
             });
 
         }
     }
 
-    public interface  ReserveTableListeners{
+    public interface ReserveTableListeners {
         void onConfirmClicked(ReserveTable reserveTable, int position);
-        void onDenyClicked(ReserveTable reserveTable,int position);
+
+        void onDenyClicked(ReserveTable reserveTable, int position);
+
+        void onClicked(ReserveTable reserveTable, int position);
     }
 
 

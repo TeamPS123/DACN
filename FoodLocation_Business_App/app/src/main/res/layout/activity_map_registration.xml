@@ -5,9 +5,32 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
-    tools:context=".activities.MapActivity">
+    tools:context=".activites.MapRegistrationActivity">
 
     <include layout="@layout/content_map" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_16sdp"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:layout_alignParentTop="true">
+
+        <EditText
+            android:id="@+id/inputSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/input_radius"
+            android:backgroundTint="@color/white"
+            android:paddingHorizontal="@dimen/_12sdp"
+            android:textSize="@dimen/_12ssp"
+            android:textColorHint="@color/TextColorSub"
+            android:drawablePadding="@dimen/_8sdp"
+            android:paddingVertical="@dimen/_8sdp"
+            android:drawableLeft="@drawable/ic_outline_fmd_good_24"
+            android:hint="Tìm kiểm ờ đây"/>
+
+    </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

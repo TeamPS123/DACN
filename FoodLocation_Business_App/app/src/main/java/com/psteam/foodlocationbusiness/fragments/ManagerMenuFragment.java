@@ -27,7 +27,6 @@ public class ManagerMenuFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -47,7 +46,6 @@ public class ManagerMenuFragment extends Fragment {
         binding.buttonManagerCategory.setOnClickListener(v -> {
             startActivity(new Intent(getContext(), ManagerCategoryActivity.class));
         });
-
     }
 
     private void init() {
