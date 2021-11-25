@@ -422,7 +422,7 @@
                     android:imeOptions="actionNext"
                     android:importantForAutofill="no"
                     android:inputType="text"
-                    android:maxLength="128"
+                    android:maxLength="56"
                     android:textColor="@color/TextPrimary"
                     android:textColorHint="#EDEDED"
                     android:textSize="@dimen/_12ssp"

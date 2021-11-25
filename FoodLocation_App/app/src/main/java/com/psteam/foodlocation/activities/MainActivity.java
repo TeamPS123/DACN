@@ -1,5 +1,7 @@
 package com.psteam.foodlocation.activities;
 
+import static com.psteam.lib.RetrofitClient.getRetrofit;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -22,6 +24,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.ResultReceiver;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -41,14 +44,12 @@ import com.google.android.material.navigation.NavigationView;
 import com.psteam.foodlocation.R;
 import com.psteam.foodlocation.adapters.CategoryAdapter;
 import com.psteam.foodlocation.adapters.ChooseCityAdapter;
-import com.psteam.foodlocation.adapters.ChooseNumberPeopleAdapter;
 import com.psteam.foodlocation.adapters.NotificationAdapter;
 import com.psteam.foodlocation.adapters.PromotionAdapter;
 import com.psteam.foodlocation.adapters.RestaurantPostAdapter;
 import com.psteam.foodlocation.adapters.SliderAdapter;
 import com.psteam.foodlocation.databinding.ActivityMainBinding;
 import com.psteam.foodlocation.listeners.CategoryListener;
-import com.psteam.foodlocation.models.CategoryModel;
 import com.psteam.foodlocation.models.PromotionModel;
 import com.psteam.foodlocation.models.SliderItem;
 import com.psteam.foodlocation.services.FetchAddressIntentServices;
@@ -56,14 +57,24 @@ import com.psteam.foodlocation.ultilities.Constants;
 import com.psteam.foodlocation.ultilities.CustomToast;
 import com.psteam.foodlocation.ultilities.DividerItemDecorator;
 import com.psteam.foodlocation.ultilities.Para;
+
+import com.psteam.lib.Services.ServiceAPI;
+import com.psteam.lib.modeluser.CategoryRes;
+import com.psteam.lib.modeluser.GetCategoryResModel;
+import com.psteam.lib.modeluser.GetRestaurantByDistance;
+import com.psteam.lib.modeluser.GetRestaurantModel;
+import com.psteam.lib.modeluser.RestaurantModel;
 import com.psteam.library.TopSheetBehavior;
-import com.psteam.library.TopSheetDialog;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements CategoryListener {
+
+public class MainActivity extends AppCompatActivity implements CategoryListener, RestaurantPostAdapter.RestaurantPostListeners {
 
     private ActivityMainBinding binding;
 
@@ -74,13 +85,12 @@ public class MainActivity extends AppCompatActivity implements CategoryListener 
     private Handler sliderHandler = new Handler();
 
     private CategoryAdapter categoryAdapter;
-    private ArrayList<CategoryModel> categoryModelArrayList;
+    private ArrayList<CategoryRes> categoryModelArrayList;
 
     private PromotionAdapter promotionAdapter;
     private List<PromotionModel> promotionModels;
 
     private RestaurantPostAdapter restaurantPostAdapter;
-    private ArrayList<RestaurantPostAdapter.FoodRestaurant> foodRestaurants;
 
     private ResultReceiver resultReceiver;
 
@@ -100,10 +110,9 @@ public class MainActivity extends AppCompatActivity implements CategoryListener 
         buttonSignIn = binding.navigationView.getHeaderView(0).findViewById(R.id.buttonSignInNavigation);
         checkSelfPermission();
         initSliderImage();
-        initCategory();
-        initPromotion();
-        initFoodRestaurant();
+        GetCategoryRes();
         setNumberNotification(0);
+        GetRestaurantByDistance(new GetRestaurantByDistance("10","108.200364","16.080288"));
     }
 
     private void setFullScreen() {
@@ -150,6 +159,7 @@ public class MainActivity extends AppCompatActivity implements CategoryListener 
         intent.putExtra(Constants.LOCATION_DATA_EXTRA, location);
         startService(intent);
     }
+
 
     private class AddressResultReceiver extends ResultReceiver {
         AddressResultReceiver(Handler handler) {
@@ -326,21 +336,6 @@ public class MainActivity extends AppCompatActivity implements CategoryListener 
         });
     }
 
-    private void initCategory() {
-        categoryModelArrayList = new ArrayList<>();
-        categoryModelArrayList.add(new CategoryModel("Cơm", R.drawable.rice));
-        categoryModelArrayList.add(new CategoryModel("Lẩu", R.drawable.hotpot));
-        categoryModelArrayList.add(new CategoryModel("Trà sửa", R.drawable.bubble_tea));
-        categoryModelArrayList.add(new CategoryModel("Bia", R.drawable.beer));
-        categoryModelArrayList.add(new CategoryModel("Nướng", R.drawable.barbecue));
-        categoryModelArrayList.add(new CategoryModel("Coffee", R.drawable.coffee));
-        categoryModelArrayList.add(new CategoryModel("Phở", R.drawable.ramen));
-        categoryModelArrayList.add(new CategoryModel("Nước ép", R.drawable.drink));
-        categoryModelArrayList.add(new CategoryModel("Pizza", R.drawable.pizza));
-
-        categoryAdapter = new CategoryAdapter(categoryModelArrayList, this);
-        binding.recycleViewCategory.setAdapter(categoryAdapter);
-    }
 
     private void initPromotion() {
         promotionModels = new ArrayList<>();
@@ -377,26 +372,10 @@ public class MainActivity extends AppCompatActivity implements CategoryListener 
     }
 
     @Override
-    public void onCategoryClick(CategoryModel categoryModel) {
+    public void onCategoryClick(CategoryRes categoryModel) {
         startActivity(new Intent(getApplicationContext(), SearchActivity.class));
     }
 
-    private void initFoodRestaurant() {
-        foodRestaurants = new ArrayList<>();
-        foodRestaurants.add(new RestaurantPostAdapter.FoodRestaurant(R.drawable.lau, "TAKA BBQ: GIẢM 15% TẤT CẢ GÓI BUFFET", 4, 10, "875/22 Nguyễn Văn Cừ", "-15%"));
-        foodRestaurants.add(new RestaurantPostAdapter.FoodRestaurant(R.drawable.lau, "TAKA BBQ: GIẢM 20% TẤT CẢ GÓI BUFFET", 4.6, 10, "875/22 Nguyễn Văn Cừ", "-15%"));
-        foodRestaurants.add(new RestaurantPostAdapter.FoodRestaurant(R.drawable.lau, "TAKA BBQ: GIẢM 25% TẤT CẢ GÓI BUFFET", 4.75, 10, "875/22 Nguyễn Văn Cừ", "-15%"));
-        foodRestaurants.add(new RestaurantPostAdapter.FoodRestaurant(R.drawable.lau, "TAKA BBQ: GIẢM 30% TẤT CẢ GÓI BUFFET", 4.4, 10, "875/22 Nguyễn Văn Cừ", "-15%"));
-        foodRestaurants.add(new RestaurantPostAdapter.FoodRestaurant(R.drawable.lau, "TAKA BBQ: GIẢM 35% TẤT CẢ GÓI BUFFET", 3, 10, "875/22 Nguyễn Văn Cừ", "-15%"));
-
-        restaurantPostAdapter = new RestaurantPostAdapter(foodRestaurants, new RestaurantPostAdapter.RestaurantPostListeners() {
-            @Override
-            public void onRestaurantPostClicked(RestaurantPostAdapter.FoodRestaurant foodRestaurant) {
-                startActivity(new Intent(getApplicationContext(), RestaurantDetailsActivity.class));
-            }
-        });
-        binding.recycleViewPostFoodRestaurant.setAdapter(restaurantPostAdapter);
-    }
 
     @SuppressLint("MissingPermission")
     public void getCurrentLocation() {
@@ -437,22 +416,73 @@ public class MainActivity extends AppCompatActivity implements CategoryListener 
     private ChooseCityBottomSheetFragment chooseCityBottomSheetFragment;
     private ArrayList<ChooseCityAdapter.City> cities;
 
-
     private void clickOpenBottomSheetChooseCityFragment() {
         cities = new ArrayList<>();
-
         cities.add(new ChooseCityAdapter.City("Tp.Hồ Chí Minh", "79"));
         cities.add(new ChooseCityAdapter.City("Hà Nội", "1"));
         cities.add(new ChooseCityAdapter.City("Lâm Đồng", "68"));
-
         chooseCityBottomSheetFragment = new ChooseCityBottomSheetFragment(cities, new ChooseCityAdapter.ChooseCityListener() {
             @Override
             public void onChooseCityClicked(ChooseCityAdapter.City city) {
                 Para.cityCode = city.getCode();
             }
         });
-
         chooseCityBottomSheetFragment.show(getSupportFragmentManager(), chooseCityBottomSheetFragment.getTag());
 
+    }
+
+    private void GetCategoryRes() {
+        ServiceAPI serviceAPI = getRetrofit().create(ServiceAPI.class);
+        Call<GetCategoryResModel> call = serviceAPI.GetCategoryRes();
+        call.enqueue(new Callback<GetCategoryResModel>() {
+            @Override
+            public void onResponse(Call<GetCategoryResModel> call, Response<GetCategoryResModel> response) {
+                if (response.body() != null && response.body().getStatus().equals("1") && response.body().getCategoryResList().size() > 0) {
+                    categoryModelArrayList = new ArrayList<>();
+                    categoryModelArrayList = response.body().getCategoryResList();
+                    categoryAdapter = new CategoryAdapter(categoryModelArrayList, MainActivity.this::onCategoryClick, MainActivity.this);
+                    binding.recycleViewCategory.setAdapter(categoryAdapter);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetCategoryResModel> call, Throwable t) {
+                Log.d("Log:", t.getMessage());
+            }
+        });
+    }
+
+    private GetRestaurantModel getRestaurantModels;
+
+    private void GetRestaurantByDistance(GetRestaurantByDistance getRestaurantByDistance) {
+
+        ServiceAPI serviceAPI = getRetrofit().create(ServiceAPI.class);
+        Call<GetRestaurantModel> call = serviceAPI.GetResByDistance(getRestaurantByDistance);
+        call.enqueue(new Callback<GetRestaurantModel>() {
+            @Override
+            public void onResponse(Call<GetRestaurantModel> call, Response<GetRestaurantModel> response) {
+                if (response.body() != null && response.body().getStatus().equals("1")) {
+                    if (response.body().getResList().size() > 0) {
+                        getRestaurantModels = response.body();
+                        restaurantPostAdapter = new RestaurantPostAdapter(getRestaurantModels.getResList(), MainActivity.this::onRestaurantPostClicked, getApplicationContext());
+                        binding.recycleViewPostFoodRestaurant.setAdapter(restaurantPostAdapter);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetRestaurantModel> call, Throwable t) {
+                Log.d("Log:", t.getMessage());
+            }
+        });
+    }
+
+    @Override
+    public void onRestaurantPostClicked(RestaurantModel restaurantModel) {
+        Intent intent=new Intent(getApplicationContext(), RestaurantDetailsActivity.class);
+        Bundle bundle=new Bundle();
+        bundle.putSerializable("restaurantModel",restaurantModel);
+        intent.putExtra("bundle",bundle);
+        startActivity(intent);
     }
 }

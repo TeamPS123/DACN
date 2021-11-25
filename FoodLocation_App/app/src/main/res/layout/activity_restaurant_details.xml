@@ -68,7 +68,6 @@
             android:background="#F5F5F5"
             android:paddingBottom="@dimen/_8sdp">
 
-
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/viewPagerSlideImageRestaurant"
                 android:layout_width="match_parent"
@@ -83,7 +82,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/_2sdp"
-
                 app:layout_constraintBottom_toBottomOf="@id/viewPagerSlideImageRestaurant"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -101,6 +99,7 @@
                 android:textColor="#CA1D1D"
                 android:textSize="@dimen/_12ssp"
                 android:textStyle="bold"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/viewPagerSlideImageRestaurant" />
 
@@ -140,7 +139,6 @@
                 android:numStars="5"
                 android:rating="4.5"
                 android:stepSize="0.5"
-
                 android:theme="@style/RatingBar"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textViewCategory" />
@@ -226,7 +224,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-
                 <LinearLayout
                     android:id="@+id/layoutAddress"
                     android:layout_width="0dp"
@@ -266,7 +263,6 @@
                         android:drawableTint="#000000"
                         android:gravity="center"
                         android:lines="1"
-                        android:text="(156.6km)"
                         android:textColor="#000000"
                         android:textSize="@dimen/_9ssp" />
 
@@ -285,7 +281,7 @@
                     android:gravity="center_vertical"
                     android:maxLines="1"
                     android:paddingHorizontal="@dimen/_2sdp"
-                    android:text="2 Khách"
+                    android:text="1 Khách"
                     android:textColor="#000000"
                     android:textSize="@dimen/_9ssp"
                     app:layout_constraintBottom_toBottomOf="@id/layoutAddress"
@@ -324,25 +320,21 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/layoutAddress" />
 
-
-
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycleViewTimeBookTable"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:clipToPadding="false"
-                    android:overScrollMode="never"
-                    android:scrollbars="none"
                     android:layout_marginStart="@dimen/_8sdp"
                     android:layout_marginTop="@dimen/_8sdp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/textViewChooseDate"
+                    android:clipToPadding="false"
+                    android:orientation="horizontal"
+                    android:overScrollMode="never"
+                    android:scrollbars="none"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    android:orientation="horizontal"/>
-
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textViewChooseDate" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layout3"
@@ -354,7 +346,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/layout1">
 
-
                 <LinearLayout
                     android:id="@+id/layout2"
                     android:layout_width="wrap_content"
@@ -365,7 +356,6 @@
                     android:orientation="vertical"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
-
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -380,7 +370,6 @@
                         android:layout_marginTop="@dimen/_1sdp"
                         android:background="#E63141" />
                 </LinearLayout>
-
 
                 <TextView
                     android:id="@+id/textTitle"
@@ -420,7 +409,6 @@ I/ Chương trình: 15% cho tất cả các gói buffet\n
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/textTitle" />
 
-
                 <TextView
                     android:id="@+id/textViewReadMore"
                     android:layout_width="wrap_content"
@@ -431,9 +419,9 @@ I/ Chương trình: 15% cho tất cả các gói buffet\n
                     android:drawablePadding="0dp"
                     android:drawableTint="#E63342"
                     android:gravity="center"
+                    android:paddingVertical="@dimen/_2sdp"
                     android:paddingLeft="@dimen/_6sdp"
                     android:paddingRight="@dimen/_4sdp"
-                    android:paddingVertical="@dimen/_2sdp"
                     android:text="@string/read_more"
                     android:textColor="#E63342"
                     android:textSize="@dimen/_9ssp"
@@ -466,7 +454,6 @@ I/ Chương trình: 15% cho tất cả các gói buffet\n
                     app:layout_constraintTop_toBottomOf="@id/line1" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
 
             <LinearLayout
                 android:id="@+id/layout4"
@@ -678,7 +665,6 @@ I/ Chương trình: 15% cho tất cả các gói buffet\n
                     app:layout_constraintStart_toEndOf="@id/textViewAddress"
                     app:layout_constraintTop_toTopOf="@id/textViewAddress" />
 
-
                 <LinearLayout
                     android:id="@+id/layoutCall"
                     android:layout_width="0dp"
@@ -694,7 +680,6 @@ I/ Chương trình: 15% cho tất cả các gói buffet\n
                     app:layout_constraintEnd_toStartOf="@id/layoutDirection"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/textViewAddress">
-
 
                     <TextView
                         android:id="@+id/textViewCall"
@@ -735,7 +720,6 @@ I/ Chương trình: 15% cho tất cả các gói buffet\n
                         android:textSize="@dimen/_11ssp" />
                 </LinearLayout>
 
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -747,7 +731,6 @@ I/ Chương trình: 15% cho tất cả các gói buffet\n
                 android:paddingBottom="@dimen/_16sdp"
                 app:layout_constraintTop_toBottomOf="@id/layout5">
 
-
                 <LinearLayout
                     android:id="@+id/layout8"
                     android:layout_width="wrap_content"
@@ -758,7 +741,6 @@ I/ Chương trình: 15% cho tất cả các gói buffet\n
                     android:orientation="vertical"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
-
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -773,7 +755,6 @@ I/ Chương trình: 15% cho tất cả các gói buffet\n
                         android:layout_marginTop="@dimen/_1sdp"
                         android:background="#E63141" />
                 </LinearLayout>
-
 
                 <com.makeramen.roundedimageview.RoundedImageView
                     android:id="@+id/imageViewRestaurant"
@@ -822,7 +803,6 @@ I/ Chương trình: 15% cho tất cả các gói buffet\n
                     app:layout_constraintStart_toStartOf="@id/textViewCategoryRestaurant"
                     app:layout_constraintTop_toBottomOf="@id/imageViewRestaurant" />
 
-
                 <androidx.cardview.widget.CardView
                     android:id="@+id/layoutFollow"
                     android:layout_width="0dp"
@@ -847,7 +827,7 @@ I/ Chương trình: 15% cho tất cả các gói buffet\n
                             android:drawableLeft="@drawable/ic_round_add"
                             android:drawablePadding="@dimen/_2sdp"
                             android:gravity="center"
-                            android:text="Theo dõi (477)" />
+                            android:text="Theo dõi" />
                     </LinearLayout>
 
                 </androidx.cardview.widget.CardView>
@@ -908,9 +888,9 @@ I/ Chương trình: 15% cho tất cả các gói buffet\n
                     android:drawablePadding="0dp"
                     android:drawableTint="#E63342"
                     android:gravity="center"
+                    android:paddingVertical="@dimen/_2sdp"
                     android:paddingLeft="@dimen/_6sdp"
                     android:paddingRight="@dimen/_4sdp"
-                    android:paddingVertical="@dimen/_2sdp"
                     android:text="@string/read_more"
                     android:textColor="#E63342"
                     android:textSize="@dimen/_9ssp"
@@ -920,16 +900,15 @@ I/ Chương trình: 15% cho tất cả các gói buffet\n
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layout9"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_16sdp"
-                android:paddingBottom="@dimen/_16sdp"
                 android:background="@color/white"
-                app:layout_constraintTop_toBottomOf="@id/layout7"
-                app:layout_constraintBottom_toBottomOf="parent">
+                android:paddingBottom="@dimen/_16sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout7">
 
                 <LinearLayout
                     android:id="@+id/layout10"
@@ -957,24 +936,19 @@ I/ Chương trình: 15% cho tất cả các gói buffet\n
                         android:background="#E63141" />
                 </LinearLayout>
 
-
-
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycleViewPostFoodRestaurant"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:overScrollMode="never"
-                    android:clipToPadding="false"
-                    android:scrollbars="none"
                     android:layout_marginTop="@dimen/_16sdp"
-                    app:layout_constraintTop_toBottomOf="@id/layout10"
+                    android:clipToPadding="false"
+                    android:orientation="vertical"
+                    android:overScrollMode="never"
+                    android:scrollbars="none"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    android:orientation="vertical"/>
-
-
+                    app:layout_constraintTop_toBottomOf="@id/layout10" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
@@ -983,13 +957,13 @@ I/ Chương trình: 15% cho tất cả các gói buffet\n
         android:id="@+id/buttonReserve"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:maxHeight="@dimen/_40sdp"
         android:layout_marginHorizontal="@dimen/_12sdp"
         android:layout_weight="1"
+        android:maxHeight="@dimen/_40sdp"
         android:text="đặt chỗ ngay"
-        app:backgroundTint="#E73948"
-        app:cornerRadius="@dimen/_6sdp"
+        android:textStyle="bold"
         android:visibility="visible"
-        android:textStyle="bold"/>
+        app:backgroundTint="#E73948"
+        app:cornerRadius="@dimen/_6sdp" />
 
 </LinearLayout>

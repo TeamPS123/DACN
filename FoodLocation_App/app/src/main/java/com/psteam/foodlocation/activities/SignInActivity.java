@@ -21,6 +21,7 @@ import com.psteam.foodlocation.databinding.ActivitySignInBinding;
 import com.psteam.foodlocation.ultilities.Constants;
 import com.psteam.foodlocation.ultilities.CustomToast;
 import com.psteam.foodlocation.ultilities.PreferenceManager;
+import com.psteam.foodlocation.ultilities.Token;
 import com.psteam.lib.Services.ServiceAPI;
 import com.psteam.lib.modeluser.LoginModel;
 import com.psteam.lib.modeluser.message;
@@ -34,6 +35,7 @@ public class SignInActivity extends AppCompatActivity {
     private ActivitySignInBinding binding;
     //Sharepre
     private PreferenceManager preferenceManager;
+    private Token token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,7 @@ public class SignInActivity extends AppCompatActivity {
         binding = ActivitySignInBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         preferenceManager = new PreferenceManager(getApplicationContext());
+        token=new Token(getApplicationContext());
         init();
         setListeners();
     }
@@ -113,6 +116,7 @@ public class SignInActivity extends AppCompatActivity {
             public void onResponse(Call<message> call, Response<message> response) {
                 if (response.body() != null && response.body().getStatus().equals("1")) {
                     preferenceManager.putString(Constants.USER_ID, response.body().getId());
+                    token.saveToken(response.body().getNotification());// Lưu ToKen
                     Intent intent = new Intent(SignInActivity.this, MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);

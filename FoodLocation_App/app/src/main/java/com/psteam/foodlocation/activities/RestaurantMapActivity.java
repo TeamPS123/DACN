@@ -22,12 +22,14 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.psteam.foodlocation.R;
 import com.psteam.foodlocation.databinding.ActivityRestaurantMapBinding;
 import com.psteam.foodlocation.ultilities.Para;
+import com.psteam.lib.modeluser.RestaurantModel;
 
 public class RestaurantMapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private ActivityRestaurantMapBinding binding;
     private GoogleMap mMap;
     private View mapView;
+    private RestaurantModel restaurantModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,7 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         mapView = mapFragment.getView();
+        restaurantModel=(RestaurantModel)getIntent().getSerializableExtra("restaurantModel");
     }
 
     private void setFullScreen() {
@@ -60,7 +63,7 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
     private void setListeners() {
         binding.buttonDirection.setOnClickListener(v -> {
             Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                    Uri.parse("http://maps.google.com/maps?saddr=+"+ Para.currentLatLng() +"&daddr=11.5572771,107.8486486"));
+                    Uri.parse("http://maps.google.com/maps?saddr=+"+ Para.currentLatLng() +"&daddr="+restaurantModel.getLatLng().latitude+","+restaurantModel.getLatLng().longitude));
             startActivity(intent);
         });
     }
@@ -68,7 +71,7 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
-        LatLng latLng = new LatLng(11.5572771, 107.8466486);
+        LatLng latLng = restaurantModel.getLatLng();
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
         mMap.addMarker(new MarkerOptions().position(latLng));
         googleMap.getUiSettings().setMapToolbarEnabled(false);
