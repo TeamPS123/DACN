@@ -4,7 +4,8 @@ public class CategoryModel {
     private int image;
     private String name;
 
-    public CategoryModel(int image, String name) {
+
+    public CategoryModel( String name,int image) {
         this.image = image;
         this.name = name;
     }

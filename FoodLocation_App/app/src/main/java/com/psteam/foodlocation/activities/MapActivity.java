@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -21,6 +22,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -55,8 +57,10 @@ import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 import com.google.maps.android.ui.IconGenerator;
 import com.psteam.foodlocation.R;
+import com.psteam.foodlocation.adapters.CategoryRestaurantAdapter;
 import com.psteam.foodlocation.adapters.MapRestaurantAdapter;
 import com.psteam.foodlocation.databinding.ActivityMapBinding;
+import com.psteam.foodlocation.databinding.LayoutCategoryRestaurantDialogBinding;
 import com.psteam.foodlocation.listeners.MapRestaurantListener;
 import com.psteam.foodlocation.models.GoogleMapApiModels.DirectionResponses;
 import com.psteam.foodlocation.models.MyItem;
@@ -171,10 +175,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         recyclerViewSearch = findViewById(R.id.recycleViewSearchRestaurant);
         initSearchRestaurant();
-         checkSelfPermission();
+       // checkSelfPermission();
 
-        layoutLocationInfo.setOnClickListener(v->{
-            startActivity(new Intent(getApplicationContext(),RestaurantDetailsActivity.class));
+        layoutLocationInfo.setOnClickListener(v -> {
+            startActivity(new Intent(getApplicationContext(), RestaurantDetailsActivity.class));
         });
 
     }
@@ -538,7 +542,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         call.enqueue(new Callback<DirectionResponses>() {
             @Override
             public void onResponse(Call<DirectionResponses> call, Response<DirectionResponses> response) {
-                if (response.body().getStatus().equals("OK")) {
+                if (response.body()!=null && response.body().getStatus().equals("OK")) {
                     drawPolyline(response);
                     Log.d("OKAY", response.message());
                 } else {
@@ -573,4 +577,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             }
         }
     }
+
+
 }

@@ -2,6 +2,8 @@ package com.psteam.foodlocation.adapters;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,17 +11,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.psteam.foodlocation.databinding.FoodItemContainerBinding;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder> {
+public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder> implements Filterable {
 
-    private final List<Food> foodList;
+    private List<Food> foodList;
     private final FoodListeners foodListeners;
+    private List<Food> oldFoodList;
 
     public FoodAdapter(List<Food> foodList, FoodListeners foodListeners) {
         this.foodList = foodList;
         this.foodListeners = foodListeners;
+        oldFoodList=foodList;
     }
 
     @NonNull
@@ -30,6 +35,42 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
                 parent,
                 false
         ));
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String charString = charSequence.toString();
+                if (charString.isEmpty()) {
+                    foodList = oldFoodList;
+                } else {
+                    List<Food> filteredList = new ArrayList<>();
+                    for (Food row : oldFoodList) {
+
+                        // name match condition. this might differ depending on your requirement
+                        // here we are looking for name or phone number match
+                        if (row.getName().toLowerCase().contains(charString.toLowerCase())) {
+                            filteredList.add(row);
+                        }
+                    }
+
+                    foodList = filteredList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = foodList;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                foodList = (ArrayList<Food>) filterResults.values;
+                // refresh the list with filtered data
+                notifyDataSetChanged();
+            }
+        };
     }
 
     @Override
@@ -65,6 +106,8 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         }
     }
 
+
+
     public interface FoodListeners {
         void onAddFoodClick(Food food);
         void onFoodClick(Food food);
@@ -76,13 +119,23 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         private String name;
         private double price;
         private String info;
+        private int menuId;
 
 
-        public Food(int image, String name, double price, String info) {
+        public Food(int image, String name, double price, String info, int menuId) {
             this.image = image;
             this.name = name;
             this.price = price;
             this.info = info;
+            this.menuId = menuId;
+        }
+
+        public int getMenuId() {
+            return menuId;
+        }
+
+        public void setMenuId(int menuId) {
+            this.menuId = menuId;
         }
 
         public int getImage() {

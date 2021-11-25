@@ -2,7 +2,9 @@ package com.psteam.foodlocation.fragments;
 
 import static android.app.Activity.RESULT_OK;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,14 +22,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
+import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.psteam.foodlocation.R;
+import com.psteam.foodlocation.activities.ManagerCategoryActivity;
 import com.psteam.foodlocation.adapters.ImageRestaurantAdapter;
+import com.psteam.foodlocation.adapters.ManagerCategoryAdapter;
 import com.psteam.foodlocation.adapters.ManagerFoodAdapter;
 import com.psteam.foodlocation.databinding.FragmentMenuBinding;
+import com.psteam.foodlocation.databinding.LayoutInsertCategoryDialogBinding;
 import com.psteam.foodlocation.databinding.LayoutInsertFoodDialogBinding;
 import com.psteam.foodlocation.ultilities.CustomToast;
 import com.psteam.foodlocation.ultilities.DividerItemDecorator;
@@ -42,6 +51,9 @@ public class MenuFragment extends Fragment {
 
     private ManagerFoodAdapter managerFoodAdapter;
     private ArrayList<ManagerFoodAdapter.Food> foods;
+
+    private ArrayList<ManagerCategoryAdapter.Category> categories;
+
 
     public static Fragment newInstance() {
         return new MenuFragment();
@@ -63,18 +75,17 @@ public class MenuFragment extends Fragment {
     }
 
     private void setListeners() {
-
         binding.buttonAddFood.setOnClickListener(v -> {
             openDialogInsertFood();
         });
-
     }
 
     private AlertDialog dialog;
+    private LayoutInsertFoodDialogBinding layoutInsertFoodDialogBinding;
 
     private void openDialogInsertFood() {
         bitmaps.clear();
-        final LayoutInsertFoodDialogBinding layoutInsertFoodDialogBinding
+        layoutInsertFoodDialogBinding
                 = LayoutInsertFoodDialogBinding.inflate(LayoutInflater.from(getContext()));
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -87,7 +98,7 @@ public class MenuFragment extends Fragment {
             imageRestaurantAdapter.notifyDataSetChanged();
             dialog.dismiss();
         });
-
+        spinnerCategory();
         imageRestaurantAdapter = new ImageRestaurantAdapter(bitmaps);
         layoutInsertFoodDialogBinding.recycleView.setAdapter(imageRestaurantAdapter);
         PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
@@ -95,9 +106,12 @@ public class MenuFragment extends Fragment {
 
         layoutInsertFoodDialogBinding.circleIndicator.attachToRecyclerView(layoutInsertFoodDialogBinding.recycleView, pagerSnapHelper);
 
+        layoutInsertFoodDialogBinding.buttonAddCategory.setOnClickListener(v -> {
+            openInsertCategoryDialog();
+        });
 
         layoutInsertFoodDialogBinding.buttonAddMenu.setOnClickListener(v -> {
-            if(isValidateInsertFood(layoutInsertFoodDialogBinding.inputFoodName.getText().toString(),layoutInsertFoodDialogBinding.inputPreice.getText().toString(),
+            if (isValidateInsertFood(layoutInsertFoodDialogBinding.inputFoodName.getText().toString(), layoutInsertFoodDialogBinding.inputPreice.getText().toString(),
                     layoutInsertFoodDialogBinding.inputUnit.getText().toString())) {
 
                 foods.add(new ManagerFoodAdapter.Food(bitmaps, layoutInsertFoodDialogBinding.inputFoodName.getText().toString(),
@@ -172,6 +186,72 @@ public class MenuFragment extends Fragment {
             }
     );
 
+    private ArrayAdapter<ManagerCategoryAdapter.Category> categoryArrayAdapter;
+
+    private void spinnerCategory() {
+        categories = new ArrayList<>();
+        categories.add(new ManagerCategoryAdapter.Category("Loại món ăn 1", "1", true));
+        categories.add(new ManagerCategoryAdapter.Category("Loại món ăn 2", "2", true));
+        categories.add(new ManagerCategoryAdapter.Category("Loại món ăn 3", "3", true));
+        categories.add(new ManagerCategoryAdapter.Category("Loại món ăn 4", "4", true));
+
+        categoryArrayAdapter = new ArrayAdapter<ManagerCategoryAdapter.Category>(getContext()
+                , android.R.layout.simple_list_item_1, categories);
+        categoryArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        layoutInsertFoodDialogBinding.spinnerCategory.setAdapter(categoryArrayAdapter);
+        layoutInsertFoodDialogBinding.spinnerCategory.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
+                ManagerCategoryAdapter.Category category= (ManagerCategoryAdapter.Category) item;
+            }
+        });
+
+        layoutInsertFoodDialogBinding.spinnerCategory.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                InputMethodManager imm=(InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(layoutInsertFoodDialogBinding.inputFoodName.getWindowToken(), 0);
+                return false;
+            }
+        });
+
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private void openInsertCategoryDialog() {
+        AlertDialog dialog;
+        final LayoutInsertCategoryDialogBinding insertCategoryDialogBinding
+                = LayoutInsertCategoryDialogBinding.inflate(LayoutInflater.from(getContext()));
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setView(insertCategoryDialogBinding.getRoot());
+        builder.setCancelable(false);
+        dialog = builder.create();
+
+        insertCategoryDialogBinding.buttonBack.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+        insertCategoryDialogBinding.buttonAddCategory.setOnClickListener(v -> {
+
+            if (isValidateInsertCategory(insertCategoryDialogBinding.inputNameCategory.getText().toString())) {
+                categories.add(new ManagerCategoryAdapter.Category(insertCategoryDialogBinding.inputNameCategory.getText().toString(), "1", true));
+                categoryArrayAdapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
+    private boolean isValidateInsertCategory(String name) {
+        if (name.trim().isEmpty()) {
+            CustomToast.makeText(getContext(), "Tên loại món ăn không được bỏ trống", CustomToast.LENGTH_SHORT, CustomToast.WARNING).show();
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == 1) {
@@ -181,20 +261,20 @@ public class MenuFragment extends Fragment {
         return super.onContextItemSelected(item);
     }
 
-    private boolean isValidateInsertFood(String name,String price,String unit) {
-        if(name.trim().isEmpty()){
-            CustomToast.makeText(getContext(),"Tên món ăn không được để trống",CustomToast.LENGTH_SHORT,CustomToast.WARNING).show();
+    private boolean isValidateInsertFood(String name, String price, String unit) {
+        if (name.trim().isEmpty()) {
+            CustomToast.makeText(getContext(), "Tên món ăn không được để trống", CustomToast.LENGTH_SHORT, CustomToast.WARNING).show();
             return false;
-        }else if(price.trim().isEmpty()){
-            CustomToast.makeText(getContext(),"Giá không được để trống",CustomToast.LENGTH_SHORT,CustomToast.WARNING).show();
+        } else if (price.trim().isEmpty()) {
+            CustomToast.makeText(getContext(), "Giá không được để trống", CustomToast.LENGTH_SHORT, CustomToast.WARNING).show();
             return false;
-        }else if (unit.trim().isEmpty()){
-            CustomToast.makeText(getContext(),"Đơn vị tính không được để trống",CustomToast.LENGTH_SHORT,CustomToast.WARNING).show();
+        } else if (unit.trim().isEmpty()) {
+            CustomToast.makeText(getContext(), "Đơn vị tính không được để trống", CustomToast.LENGTH_SHORT, CustomToast.WARNING).show();
             return false;
-        }else if (bitmaps.size()==0 || imageRestaurantAdapter.getItemCount()==0){
-            CustomToast.makeText(getContext(),"Vui lòng thêm hình ảnh món ăn",CustomToast.LENGTH_SHORT,CustomToast.WARNING).show();
+        } else if (bitmaps.size() == 0 || imageRestaurantAdapter.getItemCount() == 0) {
+            CustomToast.makeText(getContext(), "Vui lòng thêm hình ảnh món ăn", CustomToast.LENGTH_SHORT, CustomToast.WARNING).show();
             return false;
-        }else {
+        } else {
             return true;
         }
     }

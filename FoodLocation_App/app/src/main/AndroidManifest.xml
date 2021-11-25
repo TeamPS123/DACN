@@ -19,8 +19,26 @@
         android:theme="@style/Theme.FoodLocation"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".activities.UserBookTableHistoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.OrderFoodActivity"
+            android:exported="true"></activity>
+        <activity
+            android:name=".activities.RestaurantMapActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activities.UserInfoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.UserReserveTableDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.ManagerCategoryActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.MapRegistrationActivity"
-            android:exported="true"/>
+            android:exported="true" />
         <activity
             android:name=".activities.ReserveTableDetailsActivity"
             android:exported="false" />
@@ -56,7 +74,7 @@
             android:exported="true" />
         <activity
             android:name=".activities.BusinessActivity"
-            android:exported="true"/>
+            android:exported="true" />
         <activity
             android:name=".activities.VerifyOTPActivity"
             android:exported="true"

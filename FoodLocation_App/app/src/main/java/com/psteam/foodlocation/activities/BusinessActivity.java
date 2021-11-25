@@ -6,7 +6,11 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+<<<<<<< HEAD
 import android.util.Log;
+=======
+import android.view.MenuItem;
+>>>>>>> dev_PAM
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -75,9 +79,6 @@ public class BusinessActivity extends AppCompatActivity {
     }
 
     private void setListeners() {
-        binding.imageMenu.setOnClickListener(v->{
-            startActivity(new Intent(getApplicationContext(),ReserveTableDetailsActivity.class));
-        });
 
         binding.imageMenu.setOnClickListener(v -> {
             binding.drawerLayout.openDrawer(GravityCompat.START);
@@ -98,9 +99,12 @@ public class BusinessActivity extends AppCompatActivity {
 
     private void init() {
         setFullScreen();
+<<<<<<< HEAD
         setFCM();
         socket();
 
+=======
+>>>>>>> dev_PAM
     }
 
     private void setFullScreen() {
@@ -113,6 +117,7 @@ public class BusinessActivity extends AppCompatActivity {
             getWindow().setStatusBarColor(ContextCompat.getColor(getApplicationContext(), R.color.white));// set status background white
         }
     }
+<<<<<<< HEAD
 
     //FCM
     private void setFCM(){
@@ -221,4 +226,6 @@ public class BusinessActivity extends AppCompatActivity {
 
         setupSocket.reconnect(user, mSocket);
     }
+=======
+>>>>>>> dev_PAM
 }

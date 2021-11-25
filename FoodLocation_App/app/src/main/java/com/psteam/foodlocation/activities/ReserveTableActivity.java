@@ -118,15 +118,21 @@ public class ReserveTableActivity extends AppCompatActivity {
         menus = new ArrayList<>();
 
         ArrayList<FoodAdapter.Food> foods = new ArrayList<>();
-        foods.add(new FoodAdapter.Food(R.drawable.suatuoi, "Món ăn 1", 99000, "Sữa tươi mộc Châu"));
-        foods.add(new FoodAdapter.Food(R.drawable.suatuoi, "Món ăn 2", 99000, "Sữa tươi mộc Châu"));
-        foods.add(new FoodAdapter.Food(R.drawable.suatuoi, "Món ăn 3", 99000, "Sữa tươi mộc Châu"));
-        foods.add(new FoodAdapter.Food(R.drawable.suatuoi, "Món ăn 4", 99000, "Sữa tươi mộc Châu"));
-        foods.add(new FoodAdapter.Food(R.drawable.suatuoi, "Món ăn 5", 99000, "Sữa tươi mộc Châu"));
-        menus.add(new MenuAdapter.Menu("Menu 1", foods));
-        menus.add(new MenuAdapter.Menu("Menu 2", foods));
-        menus.add(new MenuAdapter.Menu("Menu 3", foods));
-        menus.add(new MenuAdapter.Menu("Menu 4", foods));
+        ArrayList<FoodAdapter.Food> foods2 = new ArrayList<>();
+        foods.add(new FoodAdapter.Food(R.drawable.suatuoi, "Lẩu xa tế", 99000, "Sữa tươi mộc Châu", 1));
+        foods.add(new FoodAdapter.Food(R.drawable.suatuoi, "Lẩu cua", 99000, "Sữa tươi mộc Châu", 1));
+        foods.add(new FoodAdapter.Food(R.drawable.suatuoi, "Bia 333", 99000, "Sữa tươi mộc Châu", 1));
+        foods.add(new FoodAdapter.Food(R.drawable.suatuoi, "Cơm chiên trân châu", 99000, "Sữa tươi mộc Châu", 1));
+        foods.add(new FoodAdapter.Food(R.drawable.suatuoi, "Lẩu thái", 99000, "Sữa tươi mộc Châu", 1));
+
+        foods2.add(new FoodAdapter.Food(R.drawable.suatuoi, "Ba chỉ nướng ngói", 99000, "Sữa tươi mộc Châu", 2));
+        foods2.add(new FoodAdapter.Food(R.drawable.suatuoi, "Cơm gà", 99000, "Sữa tươi mộc Châu", 2));
+
+
+
+        menus.add(new MenuAdapter.Menu("Menu 1", 1, foods));
+        menus.add(new MenuAdapter.Menu("Menu 2", 2, foods2));
+
 
         menuBottomSheetFragment = new MenuBottomSheetFragment(menus, new FoodAdapter.FoodListeners() {
             @Override
