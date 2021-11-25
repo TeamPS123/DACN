@@ -1,14 +1,19 @@
 package com.psteam.lib.Services;
 
-import java.util.ArrayList;
+import com.psteam.lib.modeluser.LoginModel;
+import com.psteam.lib.modeluser.message;
+
 
 import retrofit2.Call;
-import retrofit2.http.GET;
+import retrofit2.http.Body;
+import retrofit2.http.POST;
 
 public interface ServiceAPI {
 
-    @GET("api/p/")
-    Call<ArrayList<String>> GetProvinces();
+    @POST("api/signin")
+    Call<message> SignIn(@Body LoginModel loginModel);
 
+    @POST("api/signup")
+    Call<message> SignUp(@Body LoginModel loginModel);
 
 }
