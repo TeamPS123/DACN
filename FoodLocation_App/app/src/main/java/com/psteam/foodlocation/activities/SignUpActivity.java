@@ -68,6 +68,7 @@ public class SignUpActivity extends AppCompatActivity {
                 String strPhone=binding.inputPhone.getText().toString().trim();
                 String strPassword=binding.inputPassword.getText().toString().trim();
                 boolean strGender=binding.radioButtonMale.isChecked();
+
                 signUP(new LogUpModel(true,strGender,strPhone,strPassword,strName));
 
             }
