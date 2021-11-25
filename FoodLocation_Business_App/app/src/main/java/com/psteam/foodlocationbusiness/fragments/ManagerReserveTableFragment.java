@@ -18,6 +18,7 @@ import com.psteam.foodlocationbusiness.adapters.BusinessReserveTableAdapter;
 import com.psteam.foodlocationbusiness.databinding.FragmentManagerReserveTableBinding;
 import com.psteam.foodlocationbusiness.socket.setupSocket;
 import com.psteam.foodlocationbusiness.ultilities.Constants;
+import com.psteam.foodlocationbusiness.ultilities.DataTokenAndUserId;
 
 import java.net.URISyntaxException;
 
@@ -28,7 +29,7 @@ public class ManagerReserveTableFragment extends Fragment {
 
     private FragmentManagerReserveTableBinding binding;
 
-    private String userId = "restaurant";
+    private String userId;
     public Socket mSocket;
     {
         try {
@@ -56,6 +57,7 @@ public class ManagerReserveTableFragment extends Fragment {
     private void init() {
         initTabReserveTable();
 
+        getDataSharedPref();
         socket();
     }
 
@@ -129,6 +131,11 @@ public class ManagerReserveTableFragment extends Fragment {
             }
         });
 
+    }
+
+    private void getDataSharedPref(){
+        DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getContext());
+        userId = dataTokenAndUserId.getUserId();
     }
 
     private void socket(){

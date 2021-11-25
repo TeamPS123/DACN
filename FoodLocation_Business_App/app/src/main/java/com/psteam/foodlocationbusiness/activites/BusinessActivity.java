@@ -44,7 +44,6 @@ import io.socket.emitter.Emitter;
 
 public class BusinessActivity extends AppCompatActivity {
     private ActivityBusinessBinding binding;
-    private String userId = "restaurant";
 
     public Socket mSocket;
     {
@@ -114,7 +113,6 @@ public class BusinessActivity extends AppCompatActivity {
     private void init() {
         setFullScreen();
 
-        getDataSharedPref();
         setFCM();
     }
 
@@ -129,10 +127,6 @@ public class BusinessActivity extends AppCompatActivity {
         }
     }
 
-    private void getDataSharedPref(){
-        DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(this);
-        userId = dataTokenAndUserId.getUserId();
-    }
 
     //FCM
     private void setFCM(){

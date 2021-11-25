@@ -15,6 +15,16 @@ import androidx.core.content.ContextCompat;
 
 import com.psteam.foodlocationbusiness.R;
 import com.psteam.foodlocationbusiness.databinding.ActivitySignInBinding;
+import com.psteam.foodlocationbusiness.ultilities.DataTokenAndUserId;
+import com.psteam.lib.Models.Input.signIn;
+import com.psteam.lib.Models.message;
+import com.psteam.lib.Service.ServiceAPI_lib;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.psteam.lib.RetrofitServer.getRetrofit_lib;
 
 
 public class SignInActivity extends AppCompatActivity {
@@ -35,18 +45,26 @@ public class SignInActivity extends AppCompatActivity {
         binding = ActivitySignInBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        checkSaveUser();
         setListeners();
+    }
+
+    private void checkSaveUser() {
+        DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getApplicationContext());
+        if(!dataTokenAndUserId.getUserId().equals("")){
+            Intent intent = new Intent(SignInActivity.this, BusinessActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            loading(false);
+            finish();
+        }
     }
 
     private void setListeners() {
         binding.buttonSignIn.setOnClickListener(v -> {
             loading(true);
             if (isValidSignIn()) {
-                Intent intent = new Intent(SignInActivity.this, BusinessActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-                loading(false);
-                finish();
+                signIn();
             }
             loading(false);
         });
@@ -85,4 +103,34 @@ public class SignInActivity extends AppCompatActivity {
         }
     }
 
+    private void signIn(){
+        ServiceAPI_lib serviceAPI = getRetrofit_lib().create(ServiceAPI_lib.class);
+        Call<message> call = serviceAPI.signin(new signIn(binding.inputPhone.getText()+"", binding.inputPassword.getText()+""));
+        call.enqueue(new Callback<message>() {
+            @Override
+            public void onResponse(Call<message> call, Response<message> response) {
+
+                if(response.body().getStatus() == 1){
+                    DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getApplication());
+                    dataTokenAndUserId.saveToken(response.body().getNotification());
+                    dataTokenAndUserId.saveUserId(response.body().getId());
+
+                    Intent intent = new Intent(SignInActivity.this, BusinessActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    loading(false);
+                    finish();
+
+                    Toast.makeText(SignInActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(SignInActivity.this, response.body().getNotification(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<message> call, Throwable t) {
+                Toast.makeText(SignInActivity.this, "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }
