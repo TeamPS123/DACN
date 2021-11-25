@@ -1,28 +1,47 @@
 package com.psteam.foodlocation.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.gson.Gson;
 import com.psteam.foodlocation.R;
 import com.psteam.foodlocation.adapters.FoodAdapter;
 import com.psteam.foodlocation.adapters.FoodReserveAdapter;
 import com.psteam.foodlocation.adapters.MenuAdapter;
 import com.psteam.foodlocation.databinding.ActivityReserveTableBinding;
+import com.psteam.foodlocation.socket.models.BodySenderFromUser;
+import com.psteam.foodlocation.socket.models.MessageSenderFromUser;
+import com.psteam.foodlocation.socket.setupSocket;
 import com.psteam.foodlocation.ultilities.CustomToast;
 import com.psteam.foodlocation.ultilities.DividerItemDecorator;
 
+import org.json.JSONObject;
+
+import java.net.URISyntaxException;
+import java.sql.Time;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
+
+import io.socket.client.IO;
+import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
 
 public class ReserveTableActivity extends AppCompatActivity {
 
@@ -35,6 +54,17 @@ public class ReserveTableActivity extends AppCompatActivity {
 
     private double totalPrice = 0;
     private int totalCount = 0;
+
+    private String user = "user";
+
+    public Socket mSocket;
+    {
+        try {
+            mSocket = IO.socket(setupSocket.uriLocal);
+        } catch (URISyntaxException e) {
+            e.getMessage();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +79,9 @@ public class ReserveTableActivity extends AppCompatActivity {
     private void init() {
         setFullScreen();
         initFoodReserve();
+
+        setFCM();
+        socket();
     }
 
     private void setFullScreen() {
@@ -68,6 +101,14 @@ public class ReserveTableActivity extends AppCompatActivity {
 
         binding.imageViewClose.setOnClickListener(v -> {
             finish();
+        });
+
+        binding.buttonReserve.setOnClickListener(v -> {
+            //lấy thời gian và ngày bắt buộc SDK >= 26
+            BodySenderFromUser body = new BodySenderFromUser("i", 5, java.time.LocalTime.now()+" "+java.time.LocalDate.now(), "1", "phàm", "0589674321", "1");
+            MessageSenderFromUser message = new MessageSenderFromUser("user", "restaurant", "Thông báo", body);
+
+            setupSocket.notificationFromUser(message, mSocket);
         });
     }
 
@@ -186,5 +227,88 @@ public class ReserveTableActivity extends AppCompatActivity {
 
         RecyclerView.ItemDecoration dividerItemDecoration = new DividerItemDecorator(ContextCompat.getDrawable(getApplicationContext(), R.drawable.divider));
         binding.recycleViewFoodReserve.addItemDecoration(dividerItemDecoration);
+    }
+
+    //FCM
+    private void setFCM(){
+        // set notification FCM
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("notification_channel", "notification_channel", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+        }
+
+        FirebaseMessaging.getInstance().subscribeToTopic("general")
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        String msg = "Subscribed Successfully";
+                        if (!task.isSuccessful()) {
+                            msg = "Subscription failed";
+                        }
+                        Log.e("Notification form FCM",msg);
+                    }
+                });
+    }
+
+    //socket.io
+    private void socket(){
+        setupSocket.mSocket = mSocket;
+
+        setupSocket.mSocket.connect();
+        // notification login success or fail
+        setupSocket.mSocket.on("noti_login", onLogin);
+        // receiver notification when used app
+        setupSocket.mSocket.on("send_notication", onNotification);
+
+        setupSocket.signIn(user);
+    }
+
+    private final Emitter.Listener onLogin = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject) args[0];
+                    String notification = data.optString("message");
+                    Toast.makeText(ReserveTableActivity.this, notification, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    };
+
+    private final Emitter.Listener onNotification = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject) args[0];
+                    String senderUser = data.optString("sender");
+                    String title = data.optString("title");
+                    String body = data.optString("body");
+                    //receiver.setText(sender+": "+body);
+                }
+            });
+        }
+    };
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        //notification when out activity
+        mSocket.disconnect();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+        //notification when come back activity
+        mSocket.connect();
+
+        setupSocket.reconnect(user, mSocket);
     }
 }

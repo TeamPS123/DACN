@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import com.psteam.foodlocation.R;
 import com.psteam.foodlocation.adapters.ReserveTableAdapter;
 import com.psteam.foodlocation.databinding.FragmentPendingReservedTableBinding;
+import com.psteam.foodlocation.socket.models.MessageSenderFromRes;
+import com.psteam.foodlocation.socket.setupSocket;
 import com.psteam.foodlocation.ultilities.DividerItemDecorator;
 
 import java.util.ArrayList;
@@ -56,12 +58,14 @@ public class PendingReservedTableFragment extends Fragment {
         reserveTableAdapter=new ReserveTableAdapter(reserveTables, new ReserveTableAdapter.ReserveTableListeners() {
             @Override
             public void onConfirmClicked(ReserveTableAdapter.ReserveTable reserveTable, int position) {
-
+                MessageSenderFromRes message = new MessageSenderFromRes("restaurant", "user", "thông báo", "Nhà hàng đã xác nhận đơn của bạn");
+                setupSocket.reserveTable(message);
             }
 
             @Override
             public void onDenyClicked(ReserveTableAdapter.ReserveTable reserveTable, int position) {
-
+                MessageSenderFromRes message = new MessageSenderFromRes("restaurant", "user", "thông báo", "Nhà hàng đã từ chối đơn của bạn");
+                setupSocket.reserveTable(message);
             }
         });
 

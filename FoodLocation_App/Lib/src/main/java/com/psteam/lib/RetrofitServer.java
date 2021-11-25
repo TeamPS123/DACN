@@ -3,12 +3,13 @@ package com.psteam.lib;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class RetrofitClientA {
+public class RetrofitServer {
+
     private static Retrofit retrofit;
-    private static String BASE_URL = "https://pamle.pro";
+    private static String BASE_URL = "https://ps.covid21tsp.space/api/";
     private static String GOOGLE_MAP_URL = "https://maps.googleapis.com";
 
-    public static Retrofit getRetrofit() {
+    public static Retrofit getRetrofit_lib() {
         if (retrofit == null) {
             retrofit = new Retrofit.Builder().baseUrl(BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())

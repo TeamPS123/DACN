@@ -32,7 +32,13 @@
             android:exported="false" />
         <activity
             android:name=".activities.UserReserveTableDetailsActivity"
-            android:exported="false" />
+            android:exported="false" >
+            <intent-filter>
+            <action android:name="com.psteam.location_User" />
+
+            <category android:name="android.intent.category.DEFAULT" />
+        </intent-filter>
+        </activity>
         <activity
             android:name=".activities.ManagerCategoryActivity"
             android:exported="false" />
@@ -109,6 +115,13 @@
             android:name=".services.FetchAddressIntentServices"
             android:enabled="true"
             android:exported="false" />
+        <service
+            android:name=".services.ServiceFCM"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
