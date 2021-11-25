@@ -1,6 +1,7 @@
 package com.psteam.foodlocationbusiness.adapters;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +15,9 @@ import com.psteam.foodlocationbusiness.databinding.ContainerItemImageRestaurantB
 import java.util.ArrayList;
 
 public class ImageRestaurantAdapter extends RecyclerView.Adapter<ImageRestaurantAdapter.ImageRestaurantViewHolder>{
-    private final ArrayList<Bitmap> bitmaps;
+    private final ArrayList<Uri> bitmaps;
 
-    public ImageRestaurantAdapter(ArrayList<Bitmap> bitmaps ) {
+    public ImageRestaurantAdapter(ArrayList<Uri> bitmaps ) {
         this.bitmaps = bitmaps;
 
     }
@@ -51,8 +52,8 @@ public class ImageRestaurantAdapter extends RecyclerView.Adapter<ImageRestaurant
             binding=itemView;
         }
 
-        public void setData(Bitmap bitmap){
-            binding.imageViewRestaurant.setImageBitmap(bitmap);
+        public void setData(Uri bitmap){
+            binding.imageViewRestaurant.setImageURI(bitmap);
             binding.getRoot().setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {

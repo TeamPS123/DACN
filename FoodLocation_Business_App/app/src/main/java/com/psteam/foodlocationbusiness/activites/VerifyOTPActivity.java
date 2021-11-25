@@ -17,13 +17,23 @@ import androidx.core.content.ContextCompat;
 
 import com.psteam.foodlocationbusiness.R;
 import com.psteam.foodlocationbusiness.databinding.ActivityVerifyOtpBinding;
+import com.psteam.foodlocationbusiness.ultilities.DataTokenAndUserId;
 import com.psteam.foodlocationbusiness.ultilities.GenericTextWatcher;
+import com.psteam.lib.Models.Insert.signUp;
+import com.psteam.lib.Models.message;
+import com.psteam.lib.Service.ServiceAPI_lib;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.psteam.lib.RetrofitServer.getRetrofit_lib;
 
 public class VerifyOTPActivity extends AppCompatActivity {
 
     private ActivityVerifyOtpBinding binding;
     private String phoneNumber;
-    private Bundle bundle;
+    private signUp account;
 
     private long leftTimeInSecond = 60000;
 
@@ -65,8 +75,7 @@ public class VerifyOTPActivity extends AppCompatActivity {
                     binding.inputCode5.getText().toString() +
                     binding.inputCode6.getText().toString();
             if (code.length() == 6) {
-                startActivity(new Intent(VerifyOTPActivity.this, RestaurantRegistrationActivity.class));
-                loading(false);
+                signUp();
             }
         });
 
@@ -104,11 +113,9 @@ public class VerifyOTPActivity extends AppCompatActivity {
     }
 
     private void init() {
-        bundle = getIntent().getBundleExtra("bundle");
-        if (bundle != null) {
-            phoneNumber = bundle.getString("phoneNumber");
-            binding.textviewPhone.setText(phoneNumber);
-        }
+        account = (signUp)getIntent().getSerializableExtra("account");
+        binding.textviewPhone.setText(account.getPhone()+"");
+
         countDownResendOTP(leftTimeInSecond);
     }
 
@@ -149,4 +156,33 @@ public class VerifyOTPActivity extends AppCompatActivity {
             return false;
         }
     }
+
+    private void signUp(){
+        ServiceAPI_lib serviceAPI = getRetrofit_lib().create(ServiceAPI_lib.class);
+        Call<message> call = serviceAPI.signup(account);
+        call.enqueue(new Callback<message>() {
+            @Override
+            public void onResponse(Call<message> call, Response<message> response) {
+
+                if(response.body().getStatus() == 1){
+                    DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getApplication());
+                    dataTokenAndUserId.saveToken(response.body().getNotification());
+                    dataTokenAndUserId.saveUserId(response.body().getId());
+
+                    startActivity(new Intent(VerifyOTPActivity.this, RestaurantRegistrationActivity.class));
+                    loading(false);
+
+                    Toast.makeText(VerifyOTPActivity.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(VerifyOTPActivity.this, response.body().getNotification(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<message> call, Throwable t) {
+                Toast.makeText(VerifyOTPActivity.this, "Đăng ký thất bại", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 }

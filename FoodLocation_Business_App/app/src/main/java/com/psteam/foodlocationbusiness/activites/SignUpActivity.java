@@ -15,9 +15,20 @@ import androidx.core.content.ContextCompat;
 
 import com.psteam.foodlocationbusiness.R;
 import com.psteam.foodlocationbusiness.databinding.ActivitySignUpBinding;
+import com.psteam.foodlocationbusiness.ultilities.DataTokenAndUserId;
+import com.psteam.lib.Models.Input.signIn;
+import com.psteam.lib.Models.Insert.signUp;
+import com.psteam.lib.Models.message;
+import com.psteam.lib.Service.ServiceAPI_lib;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.psteam.lib.RetrofitServer.getRetrofit_lib;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -43,9 +54,7 @@ public class SignUpActivity extends AppCompatActivity {
         binding.buttonSignUp.setOnClickListener(v -> {
             if (isValidSignUp()) {
                 Intent intent = new Intent(getApplicationContext(), VerifyOTPActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("phoneNumber", binding.inputPhone.getText().toString());
-                intent.putExtra("bundle", bundle);
+                intent.putExtra("account", new signUp(binding.inputFullName.getText()+"", binding.inputPhone.getText()+"", binding.inputPassword.getText()+"", true, true));
                 startActivity(intent);
             }
         });

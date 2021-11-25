@@ -21,4 +21,6 @@
         <item>Quận 9</item>
         <item>Quận 10</item>
     </string-array>
+
+    <string name="choose_file">Choose File</string>
 </resources>

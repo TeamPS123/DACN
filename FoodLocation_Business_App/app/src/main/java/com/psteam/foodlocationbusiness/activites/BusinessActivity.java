@@ -81,6 +81,10 @@ public class BusinessActivity extends AppCompatActivity {
                     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
                         if (menuItem.getItemId() == R.id.menuLogOut) {
+                            DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getApplication());
+                            dataTokenAndUserId.saveUserId(null);
+                            dataTokenAndUserId.saveToken(null);
+
                             setupSocket.signOut();
                             Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

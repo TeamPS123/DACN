@@ -43,4 +43,15 @@ public class DataTokenAndUserId {
     public String getUserId(){
         return settings.getString("userId","");
     }
+
+    public void saveRestaurantId(String restaurantId){
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString("restaurantId", restaurantId);
+        editor.apply();
+        editor.commit();
+    }
+
+    public String getRestaurantId(){
+        return settings.getString("restaurantId", "");
+    }
 }

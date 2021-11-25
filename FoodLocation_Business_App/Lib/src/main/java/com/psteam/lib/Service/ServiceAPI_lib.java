@@ -14,11 +14,17 @@ import com.psteam.lib.Models.Insert.reserveTable;
 import com.psteam.lib.Models.Insert.signUp;
 import com.psteam.lib.Models.message;
 
+import java.util.List;
+
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 public interface ServiceAPI_lib {
@@ -61,6 +67,10 @@ public interface ServiceAPI_lib {
 
     @POST("confirmTable")
     Call<message> confirmTable(@Header("Authorization") String token,@Body confirmTable input);
+
+    @Multipart
+    @POST("upImageOfRes")
+    Call<message> addImgRes(@Header("Authorization") String token, @Part List<MultipartBody.Part> photo, @Query("userId") String userId, @Query("restaurantId") String restaurantId);
 
 
 

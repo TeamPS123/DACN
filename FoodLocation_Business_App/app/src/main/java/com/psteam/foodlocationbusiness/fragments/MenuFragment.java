@@ -75,61 +75,61 @@ public class MenuFragment extends Fragment {
 
     private void setListeners() {
         binding.buttonAddFood.setOnClickListener(v -> {
-            openDialogInsertFood();
+//            openDialogInsertFood();
         });
     }
 
     private AlertDialog dialog;
     private LayoutInsertFoodDialogBinding layoutInsertFoodDialogBinding;
 
-    private void openDialogInsertFood() {
-        bitmaps.clear();
-        layoutInsertFoodDialogBinding
-                = LayoutInsertFoodDialogBinding.inflate(LayoutInflater.from(getContext()));
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setView(layoutInsertFoodDialogBinding.getRoot());
-
-        dialog = builder.create();
-
-        layoutInsertFoodDialogBinding.buttonBack.setOnClickListener(v -> {
-            bitmaps.clear();
-            imageRestaurantAdapter.notifyDataSetChanged();
-            dialog.dismiss();
-        });
-        spinnerCategory();
-        imageRestaurantAdapter = new ImageRestaurantAdapter(bitmaps);
-        layoutInsertFoodDialogBinding.recycleView.setAdapter(imageRestaurantAdapter);
-        PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
-        pagerSnapHelper.attachToRecyclerView(layoutInsertFoodDialogBinding.recycleView);
-
-        layoutInsertFoodDialogBinding.circleIndicator.attachToRecyclerView(layoutInsertFoodDialogBinding.recycleView, pagerSnapHelper);
-
-        layoutInsertFoodDialogBinding.buttonAddCategory.setOnClickListener(v -> {
-            openInsertCategoryDialog();
-        });
-
-        layoutInsertFoodDialogBinding.buttonAddMenu.setOnClickListener(v -> {
-            if (isValidateInsertFood(layoutInsertFoodDialogBinding.inputFoodName.getText().toString(), layoutInsertFoodDialogBinding.inputPreice.getText().toString(),
-                    layoutInsertFoodDialogBinding.inputUnit.getText().toString())) {
-
-                foods.add(new ManagerFoodAdapter.Food(bitmaps, layoutInsertFoodDialogBinding.inputFoodName.getText().toString(),
-                        Double.parseDouble(layoutInsertFoodDialogBinding.inputPreice.getText().toString()), "Đồ ăn"));
-                managerFoodAdapter.notifyDataSetChanged();
-                dialog.dismiss();
-            }
-        });
-
-        layoutInsertFoodDialogBinding.buttonAddImageFood.setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            pickImage.launch(intent);
-        });
-
-        dialog.show();
-
-    }
+//    private void openDialogInsertFood() {
+//        bitmaps.clear();
+//        layoutInsertFoodDialogBinding
+//                = LayoutInsertFoodDialogBinding.inflate(LayoutInflater.from(getContext()));
+//
+//        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+//        builder.setView(layoutInsertFoodDialogBinding.getRoot());
+//
+//        dialog = builder.create();
+//
+//        layoutInsertFoodDialogBinding.buttonBack.setOnClickListener(v -> {
+//            bitmaps.clear();
+//            imageRestaurantAdapter.notifyDataSetChanged();
+//            dialog.dismiss();
+//        });
+//        spinnerCategory();
+//        imageRestaurantAdapter = new ImageRestaurantAdapter(bitmaps);
+//        layoutInsertFoodDialogBinding.recycleView.setAdapter(imageRestaurantAdapter);
+//        PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
+//        pagerSnapHelper.attachToRecyclerView(layoutInsertFoodDialogBinding.recycleView);
+//
+//        layoutInsertFoodDialogBinding.circleIndicator.attachToRecyclerView(layoutInsertFoodDialogBinding.recycleView, pagerSnapHelper);
+//
+//        layoutInsertFoodDialogBinding.buttonAddCategory.setOnClickListener(v -> {
+//            openInsertCategoryDialog();
+//        });
+//
+//        layoutInsertFoodDialogBinding.buttonAddMenu.setOnClickListener(v -> {
+//            if (isValidateInsertFood(layoutInsertFoodDialogBinding.inputFoodName.getText().toString(), layoutInsertFoodDialogBinding.inputPreice.getText().toString(),
+//                    layoutInsertFoodDialogBinding.inputUnit.getText().toString())) {
+//
+//                foods.add(new ManagerFoodAdapter.Food(bitmaps, layoutInsertFoodDialogBinding.inputFoodName.getText().toString(),
+//                        Double.parseDouble(layoutInsertFoodDialogBinding.inputPreice.getText().toString()), "Đồ ăn"));
+//                managerFoodAdapter.notifyDataSetChanged();
+//                dialog.dismiss();
+//            }
+//        });
+//
+//        layoutInsertFoodDialogBinding.buttonAddImageFood.setOnClickListener(v -> {
+//            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+//            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//            pickImage.launch(intent);
+//        });
+//
+//        dialog.show();
+//
+//    }
 
     private ArrayList<Bitmap> bitmaps;
     private ImageRestaurantAdapter imageRestaurantAdapter;

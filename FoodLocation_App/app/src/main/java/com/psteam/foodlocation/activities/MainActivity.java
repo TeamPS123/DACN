@@ -223,6 +223,9 @@ public class MainActivity extends AppCompatActivity implements CategoryListener 
                     Intent intent = new Intent(getApplicationContext(), UserReserveTableDetailsActivity.class);
                     intent.putExtra("response", new BodySenderFromRes(notification.getContent(), notification.getType()));
                     startActivity(intent);
+
+                    notifications.remove(position);
+                    notificationAdapter.notifyDataSetChanged();
                 }
             });
             binding.recycleViewNotification.setAdapter(notificationAdapter);
@@ -537,6 +540,9 @@ public class MainActivity extends AppCompatActivity implements CategoryListener 
                             Intent intent = new Intent(getApplicationContext(), UserReserveTableDetailsActivity.class);
                             intent.putExtra("response", new BodySenderFromRes(notification.getContent(), notification.getType()));
                             startActivity(intent);
+
+                            notifications.remove(position);
+                            notificationAdapter.notifyDataSetChanged();
                         }
                     });
                     binding.recycleViewNotification.setAdapter(notificationAdapter);

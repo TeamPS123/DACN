@@ -62,11 +62,11 @@ public class ReserveTableDetailsActivity extends AppCompatActivity {
 
     private void setListeners(){
         binding.buttonConfirmed.setOnClickListener((v) -> {
-            MessageSenderFromRes message = new MessageSenderFromRes(userId, response.getUserId(), "thông báo", new BodySenderFromRes("Nhà hàng đã xác nhận đơn của bạn", response.getReserveTableId()));
+            MessageSenderFromRes message = new MessageSenderFromRes(userId, response.getUserId(), "thông báo", new BodySenderFromRes("Nhà hàng đã xác nhận đơn đặt bàn của bạn", response.getReserveTableId()));
             setupSocket.reserveTable(message);
         });
         binding.buttonDeny.setOnClickListener((v) -> {
-            MessageSenderFromRes message = new MessageSenderFromRes(userId, response.getUserId(), "thông báo", new BodySenderFromRes("Nhà hàng đã từ chối đơn của bạn", response.getReserveTableId()));
+            MessageSenderFromRes message = new MessageSenderFromRes(userId, response.getUserId(), "thông báo", new BodySenderFromRes("Nhà hàng đã từ chối đơn đặt bàn của bạn", response.getReserveTableId()));
             setupSocket.reserveTable(message);
         });
     }

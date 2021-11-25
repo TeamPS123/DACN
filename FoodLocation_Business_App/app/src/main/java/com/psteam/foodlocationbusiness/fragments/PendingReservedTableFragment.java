@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 
@@ -73,13 +74,13 @@ public class PendingReservedTableFragment extends Fragment {
         reserveTableAdapter=new ReserveTableAdapter(reserveTables, new ReserveTableAdapter.ReserveTableListeners() {
             @Override
             public void onConfirmClicked(BodySenderFromUser reserveTable, int position) {
-                MessageSenderFromRes message = new MessageSenderFromRes(userId, reserveTable.getUserId(), "thông báo", new BodySenderFromRes("Nhà hàng đã xác nhận đơn của bạn", reserveTable.getReserveTableId()));
+                MessageSenderFromRes message = new MessageSenderFromRes(userId, reserveTable.getUserId(), "thông báo", new BodySenderFromRes("Nhà hàng đã xác nhận đơn đặt bàn của bạn", reserveTable.getReserveTableId()));
                 setupSocket.reserveTable(message);
             }
 
             @Override
             public void onDenyClicked(BodySenderFromUser reserveTable, int position) {
-                MessageSenderFromRes message = new MessageSenderFromRes(userId, reserveTable.getUserId(), "thông báo", new BodySenderFromRes("Nhà hàng đã xác nhận đơn của bạn", reserveTable.getReserveTableId()));
+                MessageSenderFromRes message = new MessageSenderFromRes(userId, reserveTable.getUserId(), "thông báo", new BodySenderFromRes("Nhà hàng đã từ chối đơn đặt bàn của bạn", reserveTable.getReserveTableId()));
                 setupSocket.reserveTable(message);
             }
 
@@ -88,6 +89,9 @@ public class PendingReservedTableFragment extends Fragment {
                 Intent intent = new Intent(getContext(), ReserveTableDetailsActivity.class);
                 intent.putExtra("response", reserveTable);
                 startActivity(intent);
+
+                reserveTables.remove(position);
+                reserveTableAdapter.notifyDataSetChanged();
             }
         });
 
@@ -105,25 +109,32 @@ public class PendingReservedTableFragment extends Fragment {
     private final Emitter.Listener onNotification = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
-            JSONObject data = (JSONObject) args[0];
-            String sender = data.optString("sender");
-            String title = data.optString("title");
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject) args[0];
+                    String sender = data.optString("sender");
+                    String title = data.optString("title");
 
-            JSONObject body = data.optJSONObject("body");
+                    JSONObject body = data.optJSONObject("body");
 
-            BodySenderFromUser reserveTable = new BodySenderFromUser();
-            reserveTable.setName(body.optString("name"));
-            reserveTable.setQuantity(Integer.parseInt(body.optString("quantity")));
-            reserveTable.setReserveTableId(body.optString("reserveTableId"));
-            reserveTable.setReserveTableId(body.optString("reserveTableId"));
-            reserveTable.setNote(body.optString("note"));
-            reserveTable.setPhone(body.optString("phone"));
-            reserveTable.setPromotionId(body.optString("promotionId"));
-            reserveTable.setRestaurantId(body.optString("restaurantId"));
-            reserveTable.setTime(body.optString("time"));
-            reserveTable.setUserId(data.optString("sender"));
+                    BodySenderFromUser reserveTable = new BodySenderFromUser();
+                    reserveTable.setName(body.optString("name"));
+                    reserveTable.setQuantity(Integer.parseInt(body.optString("quantity")));
+                    reserveTable.setReserveTableId(body.optString("reserveTableId"));
+                    reserveTable.setReserveTableId(body.optString("reserveTableId"));
+                    reserveTable.setNote(body.optString("note"));
+                    reserveTable.setPhone(body.optString("phone"));
+                    reserveTable.setPromotionId(body.optString("promotionId"));
+                    reserveTable.setRestaurantId(body.optString("restaurantId"));
+                    reserveTable.setTime(body.optString("time"));
+                    reserveTable.setUserId(data.optString("sender"));
 
-            reserveTables.add(reserveTable);
+                    reserveTables.add(reserveTable);
+                    reserveTableAdapter.notifyDataSetChanged();
+                }
+            });
+
         }
     };
 }

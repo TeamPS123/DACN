@@ -1,6 +1,7 @@
 package com.psteam.foodlocationbusiness.activites;
 
 import static com.psteam.foodlocationbusiness.ultilities.RetrofitClient.getRetrofit;
+import static com.psteam.lib.RetrofitServer.getRetrofit_lib;
 
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +27,10 @@ import com.psteam.foodlocationbusiness.models.DistrictModel;
 import com.psteam.foodlocationbusiness.models.ProvinceModel;
 import com.psteam.foodlocationbusiness.models.WardModel;
 import com.psteam.foodlocationbusiness.services.ServiceAPI;
+import com.psteam.foodlocationbusiness.ultilities.DataTokenAndUserId;
+import com.psteam.lib.Models.Insert.insertRestaurant;
+import com.psteam.lib.Models.message;
+import com.psteam.lib.Service.ServiceAPI_lib;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -183,9 +189,11 @@ public class RestaurantRegistrationActivity extends AppCompatActivity {
     private void setListeners() {
 
         binding.buttonNextStep.setOnClickListener(v -> {
+            loading(true);
             if (isValidRestaurantRegistration()) {
-                startActivity(new Intent(RestaurantRegistrationActivity.this, RestaurantRegistrationStep2Activity.class));
+                addRes();
             }
+            loading(false);
         });
 
         TimePickerDialog.OnTimeSetListener onTimeOpenSetListener = new TimePickerDialog.OnTimeSetListener() {
@@ -266,4 +274,52 @@ public class RestaurantRegistrationActivity extends AppCompatActivity {
         }
     }
 
+    private void addRes(){
+        DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getApplication());
+
+        insertRestaurant restaurant = new insertRestaurant();
+        restaurant.setName(binding.inputNameRestaurant.getText()+"");
+        restaurant.setPhone(binding.inputPhoneNumber.getText()+"");
+        restaurant.setCity(binding.spinnerCity.getText() +"");
+        restaurant.setDistrict(binding.spinnerDistrict.getText()+"");
+        restaurant.setLine(binding.spinnerWard.getText()+"");
+        restaurant.setOpenTime(binding.inputTimeOpen.getText()+"");
+        restaurant.setCloseTime(binding.inputTimeClose.getText()+"");
+        restaurant.setUserId(dataTokenAndUserId.getUserId());
+        restaurant.setLongLat("108.200364,16.080288");
+
+        ServiceAPI_lib serviceAPI = getRetrofit_lib().create(ServiceAPI_lib.class);
+        Call<message> call = serviceAPI.addRestaurant(dataTokenAndUserId.getToken(), restaurant);
+        call.enqueue(new Callback<message>() {
+            @Override
+            public void onResponse(Call<message> call, Response<message> response) {
+                if(response.body().getStatus() == 1){
+                    dataTokenAndUserId.saveRestaurantId(response.body().getId());
+
+                    Intent intent = new Intent(RestaurantRegistrationActivity.this, RestaurantRegistrationStep2Activity.class);
+
+                    startActivity(intent);
+
+                }
+                Toast.makeText(RestaurantRegistrationActivity.this, response.body().getNotification(), Toast.LENGTH_SHORT).show();
+                loading(false);
+            }
+
+            @Override
+            public void onFailure(Call<message> call, Throwable t) {
+                Toast.makeText(RestaurantRegistrationActivity.this, "Thêm nhà hàng thất bại", Toast.LENGTH_SHORT).show();
+                loading(false);
+            }
+        });
+    }
+
+    private void loading(boolean Loading) {
+        if (Loading) {
+            binding.progressBar.setVisibility(View.VISIBLE);
+            binding.buttonNextStep.setVisibility(View.GONE);
+        } else {
+            binding.progressBar.setVisibility(View.GONE);
+            binding.buttonNextStep.setVisibility(View.VISIBLE);
+        }
+    }
 }

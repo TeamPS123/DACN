@@ -142,7 +142,7 @@ public class ManagerReserveTableFragment extends Fragment {
         setupSocket.mSocket = mSocket;
         setupSocket.mSocket.connect();
 
-        setupSocket.signIn(userId);
+        setupSocket.signIn("restaurant");
     }
 
 
