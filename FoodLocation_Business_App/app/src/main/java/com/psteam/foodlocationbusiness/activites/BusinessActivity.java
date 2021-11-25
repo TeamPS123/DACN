@@ -32,6 +32,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.psteam.foodlocationbusiness.R;
 import com.psteam.foodlocationbusiness.databinding.ActivityBusinessBinding;
 import com.psteam.foodlocationbusiness.socket.setupSocket;
+import com.psteam.foodlocationbusiness.ultilities.DataTokenAndUserId;
 
 import org.json.JSONObject;
 
@@ -43,7 +44,7 @@ import io.socket.emitter.Emitter;
 
 public class BusinessActivity extends AppCompatActivity {
     private ActivityBusinessBinding binding;
-    private String user = "restaurant";
+    private String userId = "restaurant";
 
     public Socket mSocket;
     {
@@ -81,6 +82,7 @@ public class BusinessActivity extends AppCompatActivity {
                     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
                         if (menuItem.getItemId() == R.id.menuLogOut) {
+                            setupSocket.signOut();
                             Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
@@ -111,6 +113,9 @@ public class BusinessActivity extends AppCompatActivity {
 
     private void init() {
         setFullScreen();
+
+        getDataSharedPref();
+        setFCM();
     }
 
     private void setFullScreen() {
@@ -122,6 +127,11 @@ public class BusinessActivity extends AppCompatActivity {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);//  set status text dark
             getWindow().setStatusBarColor(ContextCompat.getColor(getApplicationContext(), R.color.white));// set status background white
         }
+    }
+
+    private void getDataSharedPref(){
+        DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(this);
+        userId = dataTokenAndUserId.getUserId();
     }
 
     //FCM
@@ -146,20 +156,6 @@ public class BusinessActivity extends AppCompatActivity {
                 });
     }
 
-    private final Emitter.Listener onLogin = new Emitter.Listener() {
-        @Override
-        public void call(Object... args) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    JSONObject data = (JSONObject) args[0];
-                    String notification = data.optString("message");
-                    Toast.makeText(BusinessActivity.this, notification, Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-    };
-
     private final Emitter.Listener onNotification = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
@@ -178,28 +174,11 @@ public class BusinessActivity extends AppCompatActivity {
                     String name = body.optString("name");
                     String phone = body.optString("phone");
                     String promotionId = body.optString("promotionId");
+                    String note = body.optString("note");
 
                     //receiver.setText(sender+": "+body);
                 }
             });
         }
     };
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        //notification when out activity
-        mSocket.disconnect();
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-
-        //notification when come back activity
-        mSocket.connect();
-
-        setupSocket.reconnect(user, mSocket);
-    }
 }

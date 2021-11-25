@@ -1,7 +1,5 @@
 package com.psteam.foodlocation.socket;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -10,22 +8,16 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
-import com.psteam.foodlocation.socket.models.BodySenderFromUser;
 import com.psteam.foodlocation.socket.models.MessageSenderFromRes;
 import com.psteam.foodlocation.socket.models.MessageSenderFromUser;
 import com.psteam.foodlocation.socket.models.User;
 
-import java.net.URISyntaxException;
-
-import io.socket.client.IO;
 import io.socket.client.Socket;
-
-import static androidx.core.content.ContextCompat.getSystemService;
 
 public class setupSocket {
     //uriGlobal = "https://food-location.herokuapp.com/";
-    //uriLocal = "http://192.168.1.4:303"
-    public static String uriLocal = "https://food-location.herokuapp.com/";
+    //uriLocal = "http://192.168.1.4:3030"
+    public static String uriLocal = "http://192.168.1.6:3000";
     public static String deviceId;
     public static Socket mSocket;
 
@@ -77,5 +69,10 @@ public class setupSocket {
         Gson gson = new Gson();
 
         mSocket.emit("notificationFromRes", gson.toJson(message));
+    }
+
+    //signout
+    public static void signOut(){
+        mSocket.emit("signout");
     }
 }

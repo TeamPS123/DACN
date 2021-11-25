@@ -16,8 +16,8 @@ import io.socket.client.Socket;
 
 public class setupSocket {
     //uriGlobal = "https://food-location.herokuapp.com/";
-    //uriLocal = "http://192.168.1.4:303"
-    public static String uriLocal = "https://food-location.herokuapp.com/";
+    //uriLocal = "http://192.168.1.4:3030"
+    public static String uriLocal = "http://192.168.1.6:3000";
     public static String deviceId;
     public static Socket mSocket;
 
@@ -69,5 +69,10 @@ public class setupSocket {
         Gson gson = new Gson();
 
         mSocket.emit("notificationFromRes", gson.toJson(message));
+    }
+
+    //signout
+    public static void signOut(){
+        mSocket.emit("signout");
     }
 }

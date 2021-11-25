@@ -16,11 +16,27 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import com.psteam.foodlocationbusiness.R;
 import com.psteam.foodlocationbusiness.adapters.BusinessReserveTableAdapter;
 import com.psteam.foodlocationbusiness.databinding.FragmentManagerReserveTableBinding;
+import com.psteam.foodlocationbusiness.socket.setupSocket;
 import com.psteam.foodlocationbusiness.ultilities.Constants;
+
+import java.net.URISyntaxException;
+
+import io.socket.client.IO;
+import io.socket.client.Socket;
 
 public class ManagerReserveTableFragment extends Fragment {
 
     private FragmentManagerReserveTableBinding binding;
+
+    private String userId = "restaurant";
+    public Socket mSocket;
+    {
+        try {
+            mSocket = IO.socket(setupSocket.uriLocal);
+        } catch (URISyntaxException e) {
+            e.getMessage();
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,6 +55,8 @@ public class ManagerReserveTableFragment extends Fragment {
 
     private void init() {
         initTabReserveTable();
+
+        socket();
     }
 
     private void initTabReserveTable() {
@@ -112,4 +130,13 @@ public class ManagerReserveTableFragment extends Fragment {
         });
 
     }
+
+    private void socket(){
+        setupSocket.mSocket = mSocket;
+        setupSocket.mSocket.connect();
+
+        setupSocket.signIn(userId);
+    }
+
+
 }

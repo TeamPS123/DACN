@@ -14,8 +14,11 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     private final List<Notification> notifications;
 
-    public NotificationAdapter(List<Notification> notifications) {
+    private final NotificationListeners notificationListeners;
+
+    public NotificationAdapter(List<Notification> notifications, NotificationListeners notificationListeners) {
         this.notifications = notifications;
+        this.notificationListeners = notificationListeners;
     }
 
     @NonNull
@@ -49,7 +52,15 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
         public void setData(Notification notification) {
             binding.textViewNotificationContent.setText(notification.getContent());
+
+            binding.textViewNotificationContent.setOnClickListener(v -> {
+                notificationListeners.onClicked(notification, getAdapterPosition());
+            });
         }
+    }
+
+    public interface NotificationListeners{
+        void onClicked(Notification notification, int position);
     }
 
     public static class Notification {

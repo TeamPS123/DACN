@@ -8,14 +8,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.psteam.foodlocationbusiness.databinding.ReservedTableItemContainerBinding;
+import com.psteam.foodlocationbusiness.socket.models.BodySenderFromUser;
 
 import java.util.List;
 
 public class ReserveTableAdapter extends RecyclerView.Adapter<ReserveTableAdapter.ReserveTableViewHolder> {
-    private final List<ReserveTable> reserveTableList;
+    private final List<BodySenderFromUser> reserveTableList;
     private final ReserveTableListeners reserveTableListeners;
 
-    public ReserveTableAdapter(List<ReserveTable> reserveTableList, ReserveTableListeners reserveTableListeners) {
+    public ReserveTableAdapter(List<BodySenderFromUser> reserveTableList, ReserveTableListeners reserveTableListeners) {
         this.reserveTableList = reserveTableList;
         this.reserveTableListeners = reserveTableListeners;
     }
@@ -49,11 +50,11 @@ public class ReserveTableAdapter extends RecyclerView.Adapter<ReserveTableAdapte
             binding = itemView;
         }
 
-        public void setData(ReserveTable reserveTable) {
+        public void setData(BodySenderFromUser reserveTable) {
             binding.textViewFullName.setText(reserveTable.getName());
             binding.textViewNumberPeople.setText(reserveTable.getPhone());
-            binding.textViewDateReserve.setText(reserveTable.getDateReserve());
-            binding.textViewNumberPeople.setText(String.format("Đặt chỗ cho %d người", reserveTable.getNumberPeople()));
+            binding.textViewDateReserve.setText(reserveTable.getTime());
+            binding.textViewNumberPeople.setText(String.format("Đặt chỗ cho %d người", reserveTable.getQuantity()));
 
             binding.buttonConfirmed.setOnClickListener(v -> {
                 reserveTableListeners.onConfirmClicked(reserveTable, getAdapterPosition());
@@ -71,11 +72,11 @@ public class ReserveTableAdapter extends RecyclerView.Adapter<ReserveTableAdapte
     }
 
     public interface ReserveTableListeners {
-        void onConfirmClicked(ReserveTable reserveTable, int position);
+        void onConfirmClicked(BodySenderFromUser reserveTable, int position);
 
-        void onDenyClicked(ReserveTable reserveTable, int position);
+        void onDenyClicked(BodySenderFromUser reserveTable, int position);
 
-        void onClicked(ReserveTable reserveTable, int position);
+        void onClicked(BodySenderFromUser reserveTable, int position);
     }
 
 

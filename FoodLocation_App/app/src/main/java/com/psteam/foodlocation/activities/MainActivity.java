@@ -13,6 +13,8 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -22,6 +24,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.ResultReceiver;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -34,10 +37,13 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.badge.BadgeUtils;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.psteam.foodlocation.R;
 import com.psteam.foodlocation.adapters.CategoryAdapter;
 import com.psteam.foodlocation.adapters.ChooseCityAdapter;
@@ -52,6 +58,8 @@ import com.psteam.foodlocation.models.CategoryModel;
 import com.psteam.foodlocation.models.PromotionModel;
 import com.psteam.foodlocation.models.SliderItem;
 import com.psteam.foodlocation.services.FetchAddressIntentServices;
+import com.psteam.foodlocation.socket.models.BodySenderFromRes;
+import com.psteam.foodlocation.socket.setupSocket;
 import com.psteam.foodlocation.ultilities.Constants;
 import com.psteam.foodlocation.ultilities.CustomToast;
 import com.psteam.foodlocation.ultilities.DividerItemDecorator;
@@ -59,8 +67,15 @@ import com.psteam.foodlocation.ultilities.Para;
 import com.psteam.library.TopSheetBehavior;
 import com.psteam.library.TopSheetDialog;
 
+import org.json.JSONObject;
+
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+
+import io.socket.client.IO;
+import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
 
 
 public class MainActivity extends AppCompatActivity implements CategoryListener {
@@ -86,6 +101,16 @@ public class MainActivity extends AppCompatActivity implements CategoryListener 
 
     private MaterialButton buttonSignIn;
 
+    private String userId ="user";
+    public Socket mSocket;
+    {
+        try {
+            mSocket = IO.socket(setupSocket.uriLocal);
+        } catch (URISyntaxException e) {
+            e.getMessage();
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +129,9 @@ public class MainActivity extends AppCompatActivity implements CategoryListener 
         initPromotion();
         initFoodRestaurant();
         setNumberNotification(0);
+
+        setFCM();
+        socket();
     }
 
     private void setFullScreen() {
@@ -183,15 +211,20 @@ public class MainActivity extends AppCompatActivity implements CategoryListener 
         });
 
         binding.buttonNotification.setOnClickListener(v -> {
-            notifications.add(new NotificationAdapter.Notification("Đơn đặt bàn của bạn đã được xác nhận", "1"));
-            notifications.add(new NotificationAdapter.Notification("Bạn đã đến nhà hàng, bạn có thể gói món ngay trên ứng dụng", "1"));
             badgeDrawable.setNumber(notifications.size());
             if (notifications.size() > 0) {
                 binding.textEmptyNotification.setVisibility(View.GONE);
             } else {
                 binding.textEmptyNotification.setVisibility(View.VISIBLE);
             }
-            notificationAdapter = new NotificationAdapter(notifications);
+            notificationAdapter = new NotificationAdapter(notifications, new NotificationAdapter.NotificationListeners() {
+                @Override
+                public void onClicked(NotificationAdapter.Notification notification, int position) {
+                    Intent intent = new Intent(getApplicationContext(), UserReserveTableDetailsActivity.class);
+                    intent.putExtra("response", new BodySenderFromRes(notification.getContent(), notification.getType()));
+                    startActivity(intent);
+                }
+            });
             binding.recycleViewNotification.setAdapter(notificationAdapter);
             new ItemTouchHelper(simpleCallback).attachToRecyclerView(binding.recycleViewNotification);
             RecyclerView.ItemDecoration itemDecoration = new DividerItemDecorator(getDrawable(R.drawable.divider));
@@ -229,6 +262,7 @@ public class MainActivity extends AppCompatActivity implements CategoryListener 
                     }
 
                     case R.id.menuLogOut: {
+                        setupSocket.signOut();
                         startActivity(new Intent(MainActivity.this, SignInActivity.class));
                         finishAffinity();
                         break;
@@ -454,5 +488,91 @@ public class MainActivity extends AppCompatActivity implements CategoryListener 
 
         chooseCityBottomSheetFragment.show(getSupportFragmentManager(), chooseCityBottomSheetFragment.getTag());
 
+    }
+
+    //FCM
+    private void setFCM(){
+        // set notification FCM
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("notification_channel", "notification_channel", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+        }
+
+        FirebaseMessaging.getInstance().subscribeToTopic("general")
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        String msg = "Subscribed Successfully";
+                        if (!task.isSuccessful()) {
+                            msg = "Subscription failed";
+                        }
+                        Log.e("Notification form FCM",msg);
+                    }
+                });
+    }
+
+    //socket
+    private final Emitter.Listener onNotification = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject) args[0];
+                    String senderUser = data.optString("sender");
+                    String title = data.optString("title");
+                    JSONObject body = data.optJSONObject("body");
+
+                    notifications.add(new NotificationAdapter.Notification(body.optString("notification"), body.optString("reserveTableId")));
+                    badgeDrawable.setNumber(notifications.size());
+                    if (notifications.size() > 0) {
+                        binding.textEmptyNotification.setVisibility(View.GONE);
+                    } else {
+                        binding.textEmptyNotification.setVisibility(View.VISIBLE);
+                    }
+                    notificationAdapter = new NotificationAdapter(notifications, new NotificationAdapter.NotificationListeners() {
+                        @Override
+                        public void onClicked(NotificationAdapter.Notification notification, int position) {
+                            Intent intent = new Intent(getApplicationContext(), UserReserveTableDetailsActivity.class);
+                            intent.putExtra("response", new BodySenderFromRes(notification.getContent(), notification.getType()));
+                            startActivity(intent);
+                        }
+                    });
+                    binding.recycleViewNotification.setAdapter(notificationAdapter);
+                    new ItemTouchHelper(simpleCallback).attachToRecyclerView(binding.recycleViewNotification);
+                    RecyclerView.ItemDecoration itemDecoration = new DividerItemDecorator(getDrawable(R.drawable.divider));
+                    binding.recycleViewNotification.addItemDecoration(itemDecoration);
+
+                    topSheetBehavior.from(binding.topSheet).setState(TopSheetBehavior.STATE_EXPANDED);
+                }
+            });
+        }
+    };
+
+    private void socket() {
+        setupSocket.mSocket = mSocket;
+
+        setupSocket.mSocket.connect();
+        // receiver notification when used app
+        setupSocket.mSocket.on("send_notication", onNotification);
+        setupSocket.signIn(userId);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        setupSocket.mSocket.disconnect();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+        //notification when come back activity
+        setupSocket.mSocket.connect();
+
+        setupSocket.reconnect(userId, setupSocket.mSocket);
     }
 }

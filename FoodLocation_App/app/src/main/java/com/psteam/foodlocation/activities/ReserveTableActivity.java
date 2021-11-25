@@ -19,7 +19,6 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.gson.Gson;
 import com.psteam.foodlocation.R;
 import com.psteam.foodlocation.adapters.FoodAdapter;
 import com.psteam.foodlocation.adapters.FoodReserveAdapter;
@@ -34,7 +33,6 @@ import com.psteam.foodlocation.ultilities.DividerItemDecorator;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
-import java.sql.Time;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -57,15 +55,6 @@ public class ReserveTableActivity extends AppCompatActivity {
 
     private String user = "user";
 
-    public Socket mSocket;
-    {
-        try {
-            mSocket = IO.socket(setupSocket.uriLocal);
-        } catch (URISyntaxException e) {
-            e.getMessage();
-        }
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +69,6 @@ public class ReserveTableActivity extends AppCompatActivity {
         setFullScreen();
         initFoodReserve();
 
-        setFCM();
         socket();
     }
 
@@ -105,10 +93,10 @@ public class ReserveTableActivity extends AppCompatActivity {
 
         binding.buttonReserve.setOnClickListener(v -> {
             //lấy thời gian và ngày bắt buộc SDK >= 26
-            BodySenderFromUser body = new BodySenderFromUser("i", 5, java.time.LocalTime.now()+" "+java.time.LocalDate.now(), "1", "phàm", "0589674321", "1");
+            BodySenderFromUser body = new BodySenderFromUser("i", 5, java.time.LocalTime.now()+" "+java.time.LocalDate.now(), "1", "phàm", "0589674321", "1", "hello");
             MessageSenderFromUser message = new MessageSenderFromUser("user", "restaurant", "Thông báo", body);
 
-            setupSocket.notificationFromUser(message, mSocket);
+            setupSocket.notificationFromUser(message, setupSocket.mSocket);
         });
     }
 
@@ -229,77 +217,24 @@ public class ReserveTableActivity extends AppCompatActivity {
         binding.recycleViewFoodReserve.addItemDecoration(dividerItemDecoration);
     }
 
-    //FCM
-    private void setFCM(){
-        // set notification FCM
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel("notification_channel", "notification_channel", NotificationManager.IMPORTANCE_DEFAULT);
-            NotificationManager manager = getSystemService(NotificationManager.class);
-            manager.createNotificationChannel(channel);
-        }
-
-        FirebaseMessaging.getInstance().subscribeToTopic("general")
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        String msg = "Subscribed Successfully";
-                        if (!task.isSuccessful()) {
-                            msg = "Subscription failed";
-                        }
-                        Log.e("Notification form FCM",msg);
-                    }
-                });
-    }
 
     //socket.io
     private void socket(){
-        setupSocket.mSocket = mSocket;
-
         setupSocket.mSocket.connect();
         // notification login success or fail
-        setupSocket.mSocket.on("noti_login", onLogin);
+        //setupSocket.mSocket.on("noti_login", onLogin);
         // receiver notification when used app
-        setupSocket.mSocket.on("send_notication", onNotification);
+        //setupSocket.mSocket.on("send_notication", onNotification);
 
-        setupSocket.signIn(user);
+        //setupSocket.signIn(user);
     }
-
-    private final Emitter.Listener onLogin = new Emitter.Listener() {
-        @Override
-        public void call(Object... args) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    JSONObject data = (JSONObject) args[0];
-                    String notification = data.optString("message");
-                    Toast.makeText(ReserveTableActivity.this, notification, Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-    };
-
-    private final Emitter.Listener onNotification = new Emitter.Listener() {
-        @Override
-        public void call(Object... args) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    JSONObject data = (JSONObject) args[0];
-                    String senderUser = data.optString("sender");
-                    String title = data.optString("title");
-                    String body = data.optString("body");
-                    //receiver.setText(sender+": "+body);
-                }
-            });
-        }
-    };
 
     @Override
     protected void onStop() {
         super.onStop();
 
         //notification when out activity
-        mSocket.disconnect();
+        setupSocket.mSocket.disconnect();
     }
 
     @Override
@@ -307,8 +242,8 @@ public class ReserveTableActivity extends AppCompatActivity {
         super.onRestart();
 
         //notification when come back activity
-        mSocket.connect();
+        setupSocket.mSocket.connect();
 
-        setupSocket.reconnect(user, mSocket);
+        //setupSocket.reconnect(user, setupSocket.mSocket);
     }
 }
