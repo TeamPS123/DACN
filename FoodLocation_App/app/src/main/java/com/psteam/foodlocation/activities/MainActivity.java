@@ -56,6 +56,7 @@ import com.psteam.foodlocation.ultilities.Constants;
 import com.psteam.foodlocation.ultilities.CustomToast;
 import com.psteam.foodlocation.ultilities.DividerItemDecorator;
 import com.psteam.foodlocation.ultilities.Para;
+import com.psteam.foodlocation.ultilities.PreferenceManager;
 import com.psteam.library.TopSheetBehavior;
 import com.psteam.library.TopSheetDialog;
 
@@ -229,6 +230,10 @@ public class MainActivity extends AppCompatActivity implements CategoryListener 
                     }
 
                     case R.id.menuLogOut: {
+
+                        PreferenceManager preferenceManager = new PreferenceManager(getApplicationContext());
+                        preferenceManager.clear();
+
                         startActivity(new Intent(MainActivity.this, SignInActivity.class));
                         finishAffinity();
                         break;

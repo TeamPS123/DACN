@@ -1,5 +1,7 @@
 package com.psteam.foodlocation.activities;
 
+import static com.psteam.lib.RetrofitClient.getRetrofit;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -8,6 +10,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.view.Window;
@@ -16,14 +19,25 @@ import android.widget.Toast;
 
 import com.psteam.foodlocation.R;
 import com.psteam.foodlocation.databinding.ActivitySignUpBinding;
+import com.psteam.foodlocation.ultilities.Constants;
+import com.psteam.foodlocation.ultilities.CustomToast;
+import com.psteam.foodlocation.ultilities.PreferenceManager;
+import com.psteam.lib.Services.ServiceAPI;
+import com.psteam.lib.modeluser.LogUpModel;
+import com.psteam.lib.modeluser.LoginModel;
+import com.psteam.lib.modeluser.message;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class SignUpActivity extends AppCompatActivity {
 
     private ActivitySignUpBinding binding;
-
+    private PreferenceManager preferenceManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +49,8 @@ public class SignUpActivity extends AppCompatActivity {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);//  set status text dark
             getWindow().setStatusBarColor(ContextCompat.getColor(getApplicationContext(), R.color.white));// set status background white
         }
+        preferenceManager = new PreferenceManager(getApplicationContext());
+
         binding = ActivitySignUpBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setListeners();
@@ -43,15 +59,48 @@ public class SignUpActivity extends AppCompatActivity {
     private void setListeners() {
         binding.buttonSignUp.setOnClickListener(v -> {
             if (isValidSignUp()) {
-                Intent intent = new Intent(getApplicationContext(), VerifyOTPActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("phoneNumber", binding.inputPhone.getText().toString());
-                intent.putExtra("bundle", bundle);
-                startActivity(intent);
+//                Intent intent = new Intent(getApplicationContext(), VerifyOTPActivity.class);
+//                Bundle bundle = new Bundle();
+//                bundle.putString("phoneNumber", binding.inputPhone.getText().toString());
+//                intent.putExtra("bundle", bundle);
+//                startActivity(intent);
+                String strName=binding.inputFullName.getText().toString().trim();
+                String strPhone=binding.inputPhone.getText().toString().trim();
+                String strPassword=binding.inputPassword.getText().toString().trim();
+
+                boolean strGender=binding.radioButtonMale.isChecked();
+                signUP(new LogUpModel(true,strGender,strPhone,strPassword,strName));
+
             }
         });
         binding.buttonSignIn.setOnClickListener(v -> {
             startActivity(new Intent(SignUpActivity.this, SignInActivity.class));
+        });
+    }
+
+    private void signUP(LogUpModel logUpModel) {
+        ServiceAPI serviceAPI = getRetrofit().create(ServiceAPI.class);
+        Call<message> call = serviceAPI.SignUp(logUpModel);
+        call.enqueue(new Callback<message>() {
+            @Override
+            public void onResponse(Call<message> call, Response<message> response) {
+                if (response.body() != null && response.body().getStatus().equals("1")) {
+                    preferenceManager.putString(Constants.USER_ID, response.body().getId());
+                    preferenceManager.putBoolean(Constants.IsLogin,true);
+                    Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    CustomToast.makeText(getApplicationContext(), response.body().getNotification(), CustomToast.LENGTH_SHORT, CustomToast.ERROR).show();
+                }
+                loading(false);
+            }
+
+            @Override
+            public void onFailure(Call<message> call, Throwable t) {
+                Log.d("Log:", t.getMessage());
+            }
         });
     }
 
@@ -93,5 +142,14 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void showToast(String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    }
+    private void loading(boolean Loading) {
+        if (Loading) {
+            binding.progressBar.setVisibility(View.VISIBLE);
+            binding.buttonSignIn.setVisibility(View.GONE);
+        } else {
+            binding.progressBar.setVisibility(View.GONE);
+            binding.buttonSignIn.setVisibility(View.VISIBLE);
+        }
     }
 }
