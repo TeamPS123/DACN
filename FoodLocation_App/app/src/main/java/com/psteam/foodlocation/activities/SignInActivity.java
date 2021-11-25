@@ -32,6 +32,7 @@ import retrofit2.Response;
 public class SignInActivity extends AppCompatActivity {
 
     private ActivitySignInBinding binding;
+    //Sharepre
     private PreferenceManager preferenceManager;
 
     @Override
