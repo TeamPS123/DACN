@@ -11,6 +11,7 @@ public class LogUpModel {
 
     private String fullName;
 
+
     public LogUpModel(boolean business, boolean gender, String phone, String pass, String fullName) {
         this.business = business;
         this.gender = gender;

@@ -27,4 +27,5 @@ public class Constants {
 
     public static final String USER_ID = "userId";
     public static final String IsLogin = "IsLogin";
+    public static final String Password = "Password";
 }

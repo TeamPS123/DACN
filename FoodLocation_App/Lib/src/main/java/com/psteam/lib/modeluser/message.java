@@ -5,6 +5,17 @@ public class message {
     private String id;
     private String status;
 
+    public message(String notification, String id, String status) {
+        this.notification = notification;
+        this.id = id;
+        this.status = status;
+    }
+
+    public message(String notification, String status) {
+        this.notification = notification;
+        this.status = status;
+    }
+
     public String getNotification() {
         return notification;
     }

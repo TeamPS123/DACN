@@ -21,6 +21,7 @@ import com.psteam.foodlocation.databinding.ActivitySignInBinding;
 import com.psteam.foodlocation.ultilities.Constants;
 import com.psteam.foodlocation.ultilities.CustomToast;
 import com.psteam.foodlocation.ultilities.PreferenceManager;
+import com.psteam.foodlocation.ultilities.Token;
 import com.psteam.lib.Services.ServiceAPI;
 import com.psteam.lib.modeluser.LoginModel;
 import com.psteam.lib.modeluser.message;
@@ -33,13 +34,15 @@ public class SignInActivity extends AppCompatActivity {
 
     private ActivitySignInBinding binding;
     private PreferenceManager preferenceManager;
-
+    private Token dataToken;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivitySignInBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         preferenceManager = new PreferenceManager(getApplicationContext());
+        dataToken = new Token(SignInActivity.this);
+
         init();
         setListeners();
     }
@@ -65,7 +68,7 @@ public class SignInActivity extends AppCompatActivity {
             if (isValidSignIn()) {
                 String phone = binding.inputPhone.getText().toString();
                 String pass = binding.inputPassword.getText().toString();
-                signIn(new LoginModel(phone, pass));
+                signIn(new LoginModel(phone, pass),pass);
             }
 
         });
@@ -104,7 +107,7 @@ public class SignInActivity extends AppCompatActivity {
         }
     }
 
-    private void signIn(LoginModel loginModel) {
+    private void signIn(LoginModel loginModel,String password) {
         ServiceAPI serviceAPI = getRetrofit().create(ServiceAPI.class);
         Call<message> call = serviceAPI.SignIn(loginModel);
         call.enqueue(new Callback<message>() {
@@ -113,6 +116,8 @@ public class SignInActivity extends AppCompatActivity {
                 if (response.body() != null && response.body().getStatus().equals("1")) {
                     preferenceManager.putString(Constants.USER_ID, response.body().getId());
                     preferenceManager.putBoolean(Constants.IsLogin,true);
+                    preferenceManager.putString(Constants.Password, password);
+                    dataToken.saveToken(response.body().getNotification());
                     Intent intent = new Intent(SignInActivity.this, MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);

@@ -22,6 +22,7 @@ import com.psteam.foodlocation.databinding.ActivitySignUpBinding;
 import com.psteam.foodlocation.ultilities.Constants;
 import com.psteam.foodlocation.ultilities.CustomToast;
 import com.psteam.foodlocation.ultilities.PreferenceManager;
+import com.psteam.foodlocation.ultilities.Token;
 import com.psteam.lib.Services.ServiceAPI;
 import com.psteam.lib.modeluser.LogUpModel;
 import com.psteam.lib.modeluser.LoginModel;
@@ -38,6 +39,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     private ActivitySignUpBinding binding;
     private PreferenceManager preferenceManager;
+    private Token dataToken;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,8 +52,12 @@ public class SignUpActivity extends AppCompatActivity {
             getWindow().setStatusBarColor(ContextCompat.getColor(getApplicationContext(), R.color.white));// set status background white
         }
         preferenceManager = new PreferenceManager(getApplicationContext());
+        dataToken = new Token(SignUpActivity.this);
+
 
         binding = ActivitySignUpBinding.inflate(getLayoutInflater());
+
+
         setContentView(binding.getRoot());
         setListeners();
     }
@@ -69,7 +75,7 @@ public class SignUpActivity extends AppCompatActivity {
                 String strPassword=binding.inputPassword.getText().toString().trim();
                 boolean strGender=binding.radioButtonMale.isChecked();
 
-                signUP(new LogUpModel(true,strGender,strPhone,strPassword,strName));
+                signUP(new LogUpModel(true,strGender,strPhone,strPassword,strName),strPassword);
 
             }
         });
@@ -78,7 +84,7 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
-    private void signUP(LogUpModel logUpModel) {
+    private void signUP(LogUpModel logUpModel,String password) {
         ServiceAPI serviceAPI = getRetrofit().create(ServiceAPI.class);
         Call<message> call = serviceAPI.SignUp(logUpModel);
         call.enqueue(new Callback<message>() {
@@ -87,6 +93,8 @@ public class SignUpActivity extends AppCompatActivity {
                 if (response.body() != null && response.body().getStatus().equals("1")) {
                     preferenceManager.putString(Constants.USER_ID, response.body().getId());
                     preferenceManager.putBoolean(Constants.IsLogin,true);
+                    preferenceManager.putString(Constants.Password, password);
+                    dataToken.saveToken(response.body().getNotification());
                     Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
