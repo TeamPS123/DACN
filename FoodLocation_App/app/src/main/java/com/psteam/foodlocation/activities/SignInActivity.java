@@ -112,6 +112,7 @@ public class SignInActivity extends AppCompatActivity {
             public void onResponse(Call<message> call, Response<message> response) {
                 if (response.body() != null && response.body().getStatus().equals("1")) {
                     preferenceManager.putString(Constants.USER_ID, response.body().getId());
+                    preferenceManager.putBoolean(Constants.IsLogin,true);
                     Intent intent = new Intent(SignInActivity.this, MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);

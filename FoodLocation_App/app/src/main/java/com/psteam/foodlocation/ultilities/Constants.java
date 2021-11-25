@@ -26,4 +26,5 @@ public class Constants {
     public static final int FLAG_UPDATE_USER_INFO = 2;
 
     public static final String USER_ID = "userId";
+    public static final String IsLogin = "IsLogin";
 }

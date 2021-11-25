@@ -1,5 +1,6 @@
 package com.psteam.lib.Services;
 
+import com.psteam.lib.modeluser.LogUpModel;
 import com.psteam.lib.modeluser.LoginModel;
 import com.psteam.lib.modeluser.message;
 
@@ -14,6 +15,6 @@ public interface ServiceAPI {
     Call<message> SignIn(@Body LoginModel loginModel);
 
     @POST("api/signup")
-    Call<message> SignUp(@Body LoginModel loginModel);
+    Call<message> SignUp(@Body LogUpModel logUpModel);
 
 }
