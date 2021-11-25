@@ -32,7 +32,13 @@
             android:exported="false" />
         <activity
             android:name=".activities.UserReserveTableDetailsActivity"
-            android:exported="false" />
+            android:exported="false" >
+            <intent-filter>
+            <action android:name="com.psteam.location_User" />
+
+            <category android:name="android.intent.category.DEFAULT" />
+        </intent-filter>
+        </activity>
         <activity
             android:name=".activities.ManagerCategoryActivity"
             android:exported="false" />

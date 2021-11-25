@@ -30,7 +30,13 @@
             android:exported="true">
 
         </activity>
-        <activity android:name=".activites.ReserveTableDetailsActivity" />
+        <activity android:name=".activites.ReserveTableDetailsActivity" >
+            <intent-filter>
+                <action android:name="com.psteam.foodlocationbusiness_Res" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".activites.SignUpActivity"
