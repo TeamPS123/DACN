@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -14,13 +15,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.psteam.foodlocationbusiness.R;
 import com.psteam.foodlocationbusiness.activites.ReserveTableDetailsActivity;
+import com.psteam.foodlocationbusiness.activites.RestaurantRegistrationActivity;
+import com.psteam.foodlocationbusiness.activites.VerifyOTPActivity;
 import com.psteam.foodlocationbusiness.adapters.ReserveTableAdapter;
 import com.psteam.foodlocationbusiness.databinding.FragmentPendingReservedTableBinding;
 import com.psteam.foodlocationbusiness.socket.models.BodySenderFromRes;
 import com.psteam.foodlocationbusiness.socket.models.BodySenderFromUser;
 import com.psteam.foodlocationbusiness.socket.models.MessageSenderFromRes;
 import com.psteam.foodlocationbusiness.socket.setupSocket;
+import com.psteam.foodlocationbusiness.ultilities.DataTokenAndUserId;
 import com.psteam.foodlocationbusiness.ultilities.DividerItemDecorator;
+import com.psteam.lib.Models.Get.messageAllReserveTable;
+import com.psteam.lib.Models.message;
+import com.psteam.lib.Service.ServiceAPI_lib;
 
 import org.json.JSONObject;
 
@@ -30,6 +37,11 @@ import java.util.ArrayList;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.psteam.lib.RetrofitServer.getRetrofit_lib;
 
 
 public class PendingReservedTableFragment extends Fragment {
@@ -65,11 +77,7 @@ public class PendingReservedTableFragment extends Fragment {
     private void initReserveTable() {
         reserveTables=new ArrayList<>();
 
-        reserveTables.add(new BodySenderFromUser("1", 2, "11:03 SA, 11/19/2021", "1", "Lê Tiểu Phàm", "0123456789", "1", "hello", "user"));
-        reserveTables.add(new BodySenderFromUser("1", 2, "11:03 SA, 11/19/2021", "1", "Lê Tiểu Phàm", "0123456789", "1", "hello","user"));
-        reserveTables.add(new BodySenderFromUser("1", 2, "11:03 SA, 11/19/2021", "1", "Lê Tiểu Phàm", "0123456789", "1", "hello","user"));
-        reserveTables.add(new BodySenderFromUser("1", 2, "11:03 SA, 11/19/2021", "1", "Lê Tiểu Phàm", "0123456789", "1", "hello","user"));
-        reserveTables.add(new BodySenderFromUser("1", 2, "11:03 SA, 11/19/2021", "1", "Lê Tiểu Phàm", "0123456789", "1", "hello","user"));
+        getAllReserveTable();
 
         reserveTableAdapter=new ReserveTableAdapter(reserveTables, new ReserveTableAdapter.ReserveTableListeners() {
             @Override
@@ -137,4 +145,39 @@ public class PendingReservedTableFragment extends Fragment {
 
         }
     };
+
+    private void getAllReserveTable(){
+        DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getActivity());
+
+        ServiceAPI_lib serviceAPI = getRetrofit_lib().create(ServiceAPI_lib.class);
+        Call<messageAllReserveTable> call = serviceAPI.getAllReserveTables(dataTokenAndUserId.getToken(), dataTokenAndUserId.getUserId(), dataTokenAndUserId.getRestaurantId());
+        call.enqueue(new Callback<messageAllReserveTable>() {
+            @Override
+            public void onResponse(Call<messageAllReserveTable> call, Response<messageAllReserveTable> response) {
+                if(response.body().getStatus() == 1){
+                    if(response.body().getReserveTables().size() < 1) {
+                        for (int i = 0; i < response.body().getReserveTables().size(); i++) {
+                            BodySenderFromUser bodySenderFromUser = new BodySenderFromUser();
+                            bodySenderFromUser.setUserId(response.body().getReserveTables().get(i).getUserId());
+                            bodySenderFromUser.setTime(response.body().getReserveTables().get(i).getTime());
+                            bodySenderFromUser.setRestaurantId(response.body().getReserveTables().get(i).getRestaurantId());
+                            bodySenderFromUser.setPromotionId(response.body().getReserveTables().get(i).getPromotionId());
+                            bodySenderFromUser.setPhone(response.body().getReserveTables().get(i).getPhone());
+                            bodySenderFromUser.setNote(response.body().getReserveTables().get(i).getNote());
+                            bodySenderFromUser.setReserveTableId(response.body().getReserveTables().get(i).getReserveTableId());
+                            bodySenderFromUser.setQuantity(response.body().getReserveTables().get(i).getQuantity());
+                            bodySenderFromUser.setName(response.body().getReserveTables().get(i).getName());
+
+                            reserveTables.add(bodySenderFromUser);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<messageAllReserveTable> call, Throwable t) {
+
+            }
+        });
+    }
 }

@@ -1,6 +1,7 @@
 package com.psteam.lib.Service;
 
 import com.psteam.lib.Models.Get.messResDetail;
+import com.psteam.lib.Models.Get.messageAllReserveTable;
 import com.psteam.lib.Models.Get.messagePromotion;
 import com.psteam.lib.Models.Get.messageRestaurant;
 import com.psteam.lib.Models.Input.confirmTable;
@@ -72,6 +73,8 @@ public interface ServiceAPI_lib {
     @POST("upImageOfRes")
     Call<message> addImgRes(@Header("Authorization") String token, @Part List<MultipartBody.Part> photo, @Query("userId") String userId, @Query("restaurantId") String restaurantId);
 
+    @POST("getAllReserveTableByRestaurantId")
+    Call<messageAllReserveTable> getAllReserveTables(@Header("Authorization") String token, @Query("userId") String userId, @Query("restaurantId") String restaurantId);
 
 
 //    private void get(){

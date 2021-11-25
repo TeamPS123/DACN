@@ -1,9 +1,7 @@
-package com.psteam.foodlocationbusiness.socket.models;
+package com.psteam.lib.Models.Get;
 
-import java.io.Serializable;
-
-public class BodySenderFromUser implements Serializable {
-    public BodySenderFromUser() {
+public class getReserveTable {
+    public getReserveTable() {
     }
 
     public String getReserveTableId() {
@@ -70,7 +68,7 @@ public class BodySenderFromUser implements Serializable {
         this.note = note;
     }
 
-    public BodySenderFromUser(String reserveTableId, int quantity, String time, String restaurantId, String name, String phone, String promotionId, String note, String userId) {
+    public getReserveTable(String reserveTableId, int quantity, String time, String restaurantId, String name, String phone, String promotionId, String note, String userId) {
         this.reserveTableId = reserveTableId;
         this.quantity = quantity;
         this.time = time;
@@ -100,6 +98,4 @@ public class BodySenderFromUser implements Serializable {
     public void setUserId(String userId) {
         this.userId = userId;
     }
-
-
 }
