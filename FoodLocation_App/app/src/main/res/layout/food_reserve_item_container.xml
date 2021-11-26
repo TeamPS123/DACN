@@ -43,19 +43,34 @@
         app:layout_constraintTop_toTopOf="@id/imageViewFood" />
 
     <TextView
-        android:id="@+id/textViewFoodInfo"
+        android:id="@+id/textViewCategory"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_2sdp"
         android:layout_marginEnd="@dimen/_8sdp"
         android:ellipsize="end"
         android:maxLines="1"
-        android:text="Thông tin món ăn"
+        android:text="Loại sản phẩm"
         android:textColor="@color/TextColorSub"
         android:textSize="@dimen/_11ssp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/textViewFoodName"
         app:layout_constraintTop_toBottomOf="@id/textViewFoodName" />
+
+    <TextView
+        android:id="@+id/textViewUnit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginEnd="@dimen/_8sdp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="Phần"
+        android:textColor="@color/TextColorSub"
+        android:textSize="@dimen/_11ssp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/textViewCategory"
+        app:layout_constraintTop_toBottomOf="@id/textViewCategory" />
 
     <TextView
         android:id="@+id/textViewPrice"

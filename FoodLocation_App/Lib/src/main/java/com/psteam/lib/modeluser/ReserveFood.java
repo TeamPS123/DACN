@@ -31,5 +31,9 @@ public class ReserveFood {
         this.foodId = foodId;
     }
 
-
+    public ReserveFood(String quantity, String price, String foodId) {
+        this.quantity = quantity;
+        this.price = price;
+        this.foodId = foodId;
+    }
 }

@@ -2,34 +2,42 @@ package com.psteam.foodlocation.activities;
 
 import static com.psteam.lib.RetrofitClient.getRetrofit;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.psteam.foodlocation.R;
 import com.psteam.foodlocation.adapters.FoodAdapter;
 import com.psteam.foodlocation.adapters.FoodReserveAdapter;
-import com.psteam.foodlocation.adapters.MenuAdapter;
 import com.psteam.foodlocation.databinding.ActivityReserveTableBinding;
+import com.psteam.foodlocation.databinding.LayoutReserveTableSuccessDialogBinding;
+import com.psteam.foodlocation.databinding.LayoutUpdateUserInfoDialogBinding;
 import com.psteam.foodlocation.ultilities.Constants;
 import com.psteam.foodlocation.ultilities.CustomToast;
 import com.psteam.foodlocation.ultilities.DividerItemDecorator;
 import com.psteam.foodlocation.ultilities.PreferenceManager;
 import com.psteam.foodlocation.ultilities.Token;
 import com.psteam.lib.Services.ServiceAPI;
+import com.psteam.lib.modeluser.FoodModel;
+import com.psteam.lib.modeluser.GetMenuResModel;
 import com.psteam.lib.modeluser.InsertReserveFoodModel;
 import com.psteam.lib.modeluser.InsertReserveTableModel;
+import com.psteam.lib.modeluser.MenuModel;
+import com.psteam.lib.modeluser.ReserveFood;
 import com.psteam.lib.modeluser.RestaurantModel;
 import com.psteam.lib.modeluser.message;
 
@@ -39,7 +47,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -54,10 +61,10 @@ public class ReserveTableActivity extends AppCompatActivity {
     private ActivityReserveTableBinding binding;
     private PreferenceManager preferenceManager;
     private Token token;
-    private ArrayList<MenuAdapter.Menu> menus;
+    private ArrayList<MenuModel> menus;
 
     private FoodReserveAdapter foodReserveAdapter;
-    private ArrayList<FoodReserveAdapter.FoodReserve> foodReserves;
+    private ArrayList<FoodModel> foodReserves;
 
     private double totalPrice = 0;
     private int totalCount = 0;
@@ -84,6 +91,7 @@ public class ReserveTableActivity extends AppCompatActivity {
         setFullScreen();
         initFoodReserve();
         initData();
+        GetMenuRes(restaurantModel.getRestaurantId());
     }
 
     private void initData() {
@@ -155,6 +163,7 @@ public class ReserveTableActivity extends AppCompatActivity {
 
         binding.buttonReserve.setOnClickListener(v -> {
             if (isValidateReserveTable()) {
+                loading(true);
                 InsertReserveTableModel insertReserveTableModel = new InsertReserveTableModel();
                 insertReserveTableModel.setPhone(binding.inputPhoneNumber.getText().toString().trim());
                 insertReserveTableModel.setName(binding.inputFullName.getText().toString().trim());
@@ -162,12 +171,16 @@ public class ReserveTableActivity extends AppCompatActivity {
                 insertReserveTableModel.setTime(String.format("%s,%s", TimeReserve, DateReserve));
                 insertReserveTableModel.setUserId(preferenceManager.getString(Constants.USER_ID));
                 insertReserveTableModel.setRestaurantId(restaurantModel.getRestaurantId());
+                insertReserveTableModel.setNote(binding.inputNote.getText().toString().trim());
                 if (restaurantModel.getPromotionRes().size() > 0) {
                     insertReserveTableModel.setPromotionId(restaurantModel.getPromotionRes().get(0).getId());
                 }
                 ReserveTable(insertReserveTableModel);
             }
+
         });
+
+
     }
 
     private boolean isValidateReserveTable() {
@@ -191,63 +204,6 @@ public class ReserveTableActivity extends AppCompatActivity {
 
     private MenuBottomSheetFragment menuBottomSheetFragment;
 
-    private void clickOpenBottomSheetMenuFragment() {
-        menus = new ArrayList<>();
-
-        ArrayList<FoodAdapter.Food> foods = new ArrayList<>();
-        ArrayList<FoodAdapter.Food> foods2 = new ArrayList<>();
-        foods.add(new FoodAdapter.Food(R.drawable.suatuoi, "Lẩu xa tế", 99000, "Sữa tươi mộc Châu", 1));
-        foods.add(new FoodAdapter.Food(R.drawable.suatuoi, "Lẩu cua", 99000, "Sữa tươi mộc Châu", 1));
-        foods.add(new FoodAdapter.Food(R.drawable.suatuoi, "Bia 333", 99000, "Sữa tươi mộc Châu", 1));
-        foods.add(new FoodAdapter.Food(R.drawable.suatuoi, "Cơm chiên trân châu", 99000, "Sữa tươi mộc Châu", 1));
-        foods.add(new FoodAdapter.Food(R.drawable.suatuoi, "Lẩu thái", 99000, "Sữa tươi mộc Châu", 1));
-
-        foods2.add(new FoodAdapter.Food(R.drawable.suatuoi, "Ba chỉ nướng ngói", 99000, "Sữa tươi mộc Châu", 2));
-        foods2.add(new FoodAdapter.Food(R.drawable.suatuoi, "Cơm gà", 99000, "Sữa tươi mộc Châu", 2));
-
-
-        menus.add(new MenuAdapter.Menu("Menu 1", 1, foods));
-        menus.add(new MenuAdapter.Menu("Menu 2", 2, foods2));
-
-
-        menuBottomSheetFragment = new MenuBottomSheetFragment(menus, new FoodAdapter.FoodListeners() {
-            @Override
-            public void onAddFoodClick(FoodAdapter.Food food) {
-                CustomToast.makeText(getApplicationContext(), "Đã thêm món ăn vào thực đơn", CustomToast.LENGTH_SHORT, CustomToast.SUCCESS).show();
-                boolean flag = false;
-                for (FoodReserveAdapter.FoodReserve foodReserve : foodReserves) {
-                    if (foodReserve.getName().equals(food.getName())) {
-                        int count = foodReserve.getCount() + 1;
-                        foodReserves.remove(foodReserve);
-                        foodReserves.add(new FoodReserveAdapter.FoodReserve(food.getImage(), food.getName(), food.getPrice(), food.getInfo(), count));
-                        totalPrice += food.getPrice();
-                        totalCount++;
-                        setTotalPrice(totalCount, totalPrice);
-                        foodReserveAdapter.notifyDataSetChanged();
-                        flag = true;
-                        setVisibilityText11(true);
-                        break;
-                    }
-                }
-                if (!flag) {
-                    foodReserves.add(new FoodReserveAdapter.FoodReserve(food.getImage(), food.getName(), food.getPrice(), food.getInfo(), 1));
-                    totalPrice += food.getPrice();
-                    totalCount++;
-                    setTotalPrice(totalCount, totalPrice);
-                    foodReserveAdapter.notifyDataSetChanged();
-                    setVisibilityText11(true);
-                }
-            }
-
-            @Override
-            public void onFoodClick(FoodAdapter.Food food) {
-                Toast.makeText(getApplicationContext(), food.getName(), Toast.LENGTH_SHORT).show();
-            }
-        });
-        menuBottomSheetFragment.show(getSupportFragmentManager(), menuBottomSheetFragment.getTag());
-
-
-    }
 
     public void setVisibilityText11(boolean b) {
         if (b && binding.text11.getVisibility() == View.GONE) {
@@ -268,25 +224,26 @@ public class ReserveTableActivity extends AppCompatActivity {
         foodReserves = new ArrayList<>();
         foodReserveAdapter = new FoodReserveAdapter(foodReserves, new FoodReserveAdapter.FoodReserveListeners() {
 
-
             @Override
-            public void onAddFoodReserveClick(FoodReserveAdapter.FoodReserve food) {
-                totalPrice += food.getPrice();
+            public void onAddFoodReserveClick(FoodModel food) {
+                totalPrice += Double.parseDouble(food.getPrice());
                 totalCount++;
                 setTotalPrice(totalCount, totalPrice);
             }
 
             @Override
-            public void onMinusFoodReserveClick(FoodReserveAdapter.FoodReserve food) {
-                totalPrice -= food.getPrice();
+            public void onMinusFoodReserveClick(FoodModel food) {
+                totalPrice -= Double.parseDouble(food.getPrice());
                 totalCount--;
                 setTotalPrice(totalCount, totalPrice);
             }
 
             @Override
-            public void onRemoveFoodReserveClick(FoodReserveAdapter.FoodReserve food, int count, double price) {
+            public void onRemoveFoodReserveClick(FoodModel food, int count, double price) {
                 totalPrice -= price * count;
                 totalCount -= count;
+                foodReserves.remove(food);
+                foodReserveAdapter.notifyDataSetChanged();
                 setTotalPrice(totalCount, totalPrice);
                 if (foodReserveAdapter.getItemCount() <= 0) {
                     setVisibilityText11(false);
@@ -294,11 +251,11 @@ public class ReserveTableActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFoodClick(FoodReserveAdapter.FoodReserve food) {
+            public void onFoodClick(FoodModel food) {
 
             }
 
-        });
+        }, getApplicationContext());
         binding.recycleViewFoodReserve.setAdapter(foodReserveAdapter);
 
         RecyclerView.ItemDecoration dividerItemDecoration = new DividerItemDecorator(ContextCompat.getDrawable(getApplicationContext(), R.drawable.divider));
@@ -312,9 +269,19 @@ public class ReserveTableActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<message> call, Response<message> response) {
                 if (response.body() != null && response.body().getStatus().equals("1")) {
-                    CustomToast.makeText(getApplicationContext(), response.body().getNotification(), CustomToast.LENGTH_SHORT, CustomToast.SUCCESS).show();
+                    if (foodReserves.size() > 0) {
+                        ArrayList<ReserveFood> foods = new ArrayList<>();
+                        for (FoodModel foodModel : foodReserves) {
+                            foods.add(new ReserveFood(String.valueOf(foodModel.getCount()), String.valueOf(foodModel.getPrice()), foodModel.getFoodId()));
+                        }
+                        ReserveFood(new InsertReserveFoodModel(response.body().getId(), foods, preferenceManager.getString(Constants.USER_ID)));
+                    } else {
+                        openDialogReserveDialog("success");
+                        loading(false);
+                    }
                 } else if (response.body() != null) {
-                    CustomToast.makeText(getApplicationContext(), response.body().getNotification(), CustomToast.LENGTH_SHORT, CustomToast.WARNING).show();
+                    openDialogReserveDialog("failed");
+                    loading(false);
                 }
             }
 
@@ -332,10 +299,11 @@ public class ReserveTableActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<message> call, Response<message> response) {
                 if (response.body() != null && response.body().getStatus().equals("1")) {
-                    CustomToast.makeText(getApplicationContext(), response.body().getNotification(), CustomToast.LENGTH_SHORT, CustomToast.SUCCESS).show();
+                    openDialogReserveDialog("success");
                 } else {
-                    CustomToast.makeText(getApplicationContext(), response.message(), CustomToast.LENGTH_SHORT, CustomToast.SUCCESS).show();
+                    openDialogReserveDialog("failed");
                 }
+                loading(false);
             }
 
             @Override
@@ -343,5 +311,113 @@ public class ReserveTableActivity extends AppCompatActivity {
                 Log.d("Log:", t.getMessage());
             }
         });
+    }
+
+    private void GetMenuRes(String restaurantId) {
+        menus = new ArrayList<>();
+        ServiceAPI serviceAPI = getRetrofit().create(ServiceAPI.class);
+        Call<GetMenuResModel> call = serviceAPI.GetMenuRes(restaurantId);
+        call.enqueue(new Callback<GetMenuResModel>() {
+            @Override
+            public void onResponse(Call<GetMenuResModel> call, Response<GetMenuResModel> response) {
+                if (response.body() != null && response.body().getStatus().equals("1")) {
+                    menus = response.body().getMenuList();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetMenuResModel> call, Throwable t) {
+                Log.d("Log:", t.getMessage());
+            }
+        });
+    }
+
+    private void clickOpenBottomSheetMenuFragment() {
+
+        menuBottomSheetFragment = new MenuBottomSheetFragment(menus, new FoodAdapter.FoodListeners() {
+            @Override
+            public void onAddFoodClick(FoodModel food) {
+                CustomToast.makeText(getApplicationContext(), "Đã thêm món ăn vào thực đơn", CustomToast.LENGTH_SHORT, CustomToast.SUCCESS).show();
+                boolean flag = false;
+                for (FoodModel foodReserve : foodReserves) {
+                    if (foodReserve.getName().equals(food.getName())) {
+                        food.setCount(foodReserve.getCount()+1);
+                        foodReserves.remove(foodReserve);
+                        foodReserves.add(food);
+                        totalPrice += Double.parseDouble(food.getPrice());
+                        totalCount++;
+                        setTotalPrice(totalCount, totalPrice);
+                        foodReserveAdapter.notifyDataSetChanged();
+                        flag = true;
+                        setVisibilityText11(true);
+                        break;
+                    }
+                }
+                if (!flag) {
+                    food.setCount(1);
+                    foodReserves.add(food);
+                    totalPrice += Double.parseDouble(food.getPrice());
+                    totalCount++;
+                    setTotalPrice(totalCount, totalPrice);
+                    foodReserveAdapter.notifyDataSetChanged();
+                    setVisibilityText11(true);
+                }
+            }
+
+            @Override
+            public void onRemoveFoodClick(FoodModel foodModel) {
+                totalPrice -= foodModel.getCount() * Double.parseDouble(foodModel.getPrice());
+                totalCount-=foodModel.getCount();
+                setTotalPrice(totalCount, totalPrice);
+                foodModel.setCount(0);
+                foodReserves.remove(foodModel);
+                foodReserveAdapter.notifyDataSetChanged();
+                if(foodReserves.size()<=0)
+                setVisibilityText11(false);
+            }
+
+            @Override
+            public void onFoodClick(FoodModel food) {
+                Toast.makeText(getApplicationContext(), food.getName(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        menuBottomSheetFragment.show(getSupportFragmentManager(), menuBottomSheetFragment.getTag());
+    }
+
+    AlertDialog dialog;
+
+    private void openDialogReserveDialog(String status) {
+        final LayoutReserveTableSuccessDialogBinding
+                layoutReserveTableSuccessDialogBinding = LayoutReserveTableSuccessDialogBinding.inflate(LayoutInflater.from(ReserveTableActivity.this));
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(ReserveTableActivity.this);
+        builder.setView(layoutReserveTableSuccessDialogBinding.getRoot());
+        builder.setCancelable(false);
+        dialog = builder.create();
+
+        if (!status.equals("success")) {
+            layoutReserveTableSuccessDialogBinding.icon.setAnimation(R.raw.failed);
+            layoutReserveTableSuccessDialogBinding.textViewTitle.setText("Lỗi khi đặt bàn\nvui lòng thử lại sau");
+        }
+
+        layoutReserveTableSuccessDialogBinding.buttonOk.setOnClickListener(v -> {
+            Intent intent = new Intent(ReserveTableActivity.this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            dialog.dismiss();
+            finishAffinity();
+        });
+        dialog.show();
+
+    }
+
+    private void loading(boolean Loading){
+        if(Loading){
+            binding.progressBar.setVisibility(View.VISIBLE);
+            binding.buttonReserve.setVisibility(View.GONE);
+        }else {
+            binding.progressBar.setVisibility(View.GONE);
+            binding.buttonReserve.setVisibility(View.VISIBLE);
+        }
     }
 }

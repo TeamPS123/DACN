@@ -32,4 +32,10 @@ public class InsertReserveFoodModel {
     public void setUserId(String userId) {
         this.userId = userId;
     }
+
+    public InsertReserveFoodModel(String reserveTableId, ArrayList<ReserveFood> foods, String userId) {
+        this.reserveTableId = reserveTableId;
+        this.foods = foods;
+        this.userId = userId;
+    }
 }

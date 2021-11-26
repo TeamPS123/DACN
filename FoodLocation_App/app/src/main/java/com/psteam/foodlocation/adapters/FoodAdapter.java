@@ -1,5 +1,6 @@
 package com.psteam.foodlocation.adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.Filter;
@@ -8,23 +9,27 @@ import android.widget.Filterable;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.psteam.foodlocation.databinding.FoodItemContainerBinding;
+import com.psteam.lib.modeluser.FoodModel;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder> implements Filterable {
+public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder>  {
 
-    private List<Food> foodList;
+    private List<FoodModel> foodList;
     private final FoodListeners foodListeners;
-    private List<Food> oldFoodList;
+    private List<FoodModel> oldFoodList;
+    private final Context context;
 
-    public FoodAdapter(List<Food> foodList, FoodListeners foodListeners) {
+    public FoodAdapter(List<FoodModel> foodList, FoodListeners foodListeners, Context context) {
         this.foodList = foodList;
         this.foodListeners = foodListeners;
         oldFoodList=foodList;
+        this.context = context;
     }
 
     @NonNull
@@ -35,42 +40,6 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
                 parent,
                 false
         ));
-    }
-
-    @Override
-    public Filter getFilter() {
-        return new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence charSequence) {
-                String charString = charSequence.toString();
-                if (charString.isEmpty()) {
-                    foodList = oldFoodList;
-                } else {
-                    List<Food> filteredList = new ArrayList<>();
-                    for (Food row : oldFoodList) {
-
-                        // name match condition. this might differ depending on your requirement
-                        // here we are looking for name or phone number match
-                        if (row.getName().toLowerCase().contains(charString.toLowerCase())) {
-                            filteredList.add(row);
-                        }
-                    }
-
-                    foodList = filteredList;
-                }
-
-                FilterResults filterResults = new FilterResults();
-                filterResults.values = foodList;
-                return filterResults;
-            }
-
-            @Override
-            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                foodList = (ArrayList<Food>) filterResults.values;
-                // refresh the list with filtered data
-                notifyDataSetChanged();
-            }
-        };
     }
 
     @Override
@@ -92,82 +61,40 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
             binding = itemView;
         }
 
-        public void setData(Food food) {
-            binding.imageViewFood.setImageResource(food.getImage());
+        public void setData(FoodModel food) {
+            if (food.getPic().size()>0){
+                Glide.with(context).load(food.getPic().get(0)).thumbnail(0.3f).into(binding.imageViewFood);
+            }
             binding.textViewFoodName.setText(food.getName());
-            binding.textViewPrice.setText(DecimalFormat.getCurrencyInstance(new Locale("vi", "VN")).format(food.getPrice()));
-            binding.textViewFoodInfo.setText(food.getInfo());
+            binding.textViewPrice.setText(DecimalFormat.getCurrencyInstance(new Locale("vi", "VN")).format(Double.parseDouble(food.getPrice())));
+            binding.textViewUnit.setText(food.getUnit());
+            binding.textViewCategory.setText(food.getCategoryName());
+
             binding.textViewAddFood.setOnClickListener(v -> {
-                foodListeners.onAddFoodClick(food);
+                if(binding.textViewAddFood.getText().equals("Thêm món")) {
+                    foodListeners.onAddFoodClick(food);
+                    binding.textViewAddFood.setText("Xoá món");
+                }else {
+                    foodListeners.onRemoveFoodClick(food);
+                    binding.textViewAddFood.setText("Thêm món");
+                }
             });
+            if(food.getCount()>0){
+                binding.textViewAddFood.setText("Xoá món");
+            }else {
+                binding.textViewAddFood.setText("Thêm món");
+            }
             binding.getRoot().setOnClickListener(v -> {
                 foodListeners.onFoodClick(food);
             });
         }
     }
 
-
-
     public interface FoodListeners {
-        void onAddFoodClick(Food food);
-        void onFoodClick(Food food);
+        void onAddFoodClick(FoodModel food);
+        void onRemoveFoodClick(FoodModel foodModel);
+        void onFoodClick(FoodModel food);
     }
 
-    public static class Food {
 
-        private int image;
-        private String name;
-        private double price;
-        private String info;
-        private int menuId;
-
-
-        public Food(int image, String name, double price, String info, int menuId) {
-            this.image = image;
-            this.name = name;
-            this.price = price;
-            this.info = info;
-            this.menuId = menuId;
-        }
-
-        public int getMenuId() {
-            return menuId;
-        }
-
-        public void setMenuId(int menuId) {
-            this.menuId = menuId;
-        }
-
-        public int getImage() {
-            return image;
-        }
-
-        public String getInfo() {
-            return info;
-        }
-
-        public void setInfo(String info) {
-            this.info = info;
-        }
-
-        public void setImage(int image) {
-            this.image = image;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public double getPrice() {
-            return price;
-        }
-
-        public void setPrice(double price) {
-            this.price = price;
-        }
-    }
 }

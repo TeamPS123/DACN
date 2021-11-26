@@ -10,10 +10,19 @@ public class InsertReserveTableModel {
     private String time;
 
     private String restaurantId;
+    private String note;
 
     private String userId;
 
     private String promotionId;
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
 
     public String getQuantity() {
         return quantity;

@@ -1,6 +1,7 @@
 package com.psteam.lib.Services;
 
 import com.psteam.lib.modeluser.GetCategoryResModel;
+import com.psteam.lib.modeluser.GetMenuResModel;
 import com.psteam.lib.modeluser.GetRestaurantByDistance;
 import com.psteam.lib.modeluser.GetRestaurantModel;
 import com.psteam.lib.modeluser.InsertReserveFoodModel;
@@ -14,6 +15,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 public interface ServiceAPI {
 
@@ -31,5 +33,8 @@ public interface ServiceAPI {
 
     @POST("api/reserveFood")
     Call<message> ReserveFood(@Header("Authorization") String token, @Body InsertReserveFoodModel insertReserveFoodModel);
+
+    @GET("api/getAllMenuWithRes")
+    Call<GetMenuResModel> GetMenuRes(@Query("restaurantId") String restaurantId);
 
 }
