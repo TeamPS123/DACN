@@ -54,20 +54,16 @@ public class SearchActivity extends AppCompatActivity implements SearchRestauran
     private ActivitySearchBinding binding;
     private SearchRestaurantAdapter searchRestaurantAdapter;
     private ArrayList<RestaurantModel> restaurantModels;
-
     private ArrayList<View> selectedViewArrayList;
     private ArrayList<String> selectedDistrictList;
     private ArrayList<String> selectedCategoryRes;
-
     private ArrayList<CategoryRes> categoryModelArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         binding = ActivitySearchBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
         init();
         setListeners();
     }
@@ -75,6 +71,7 @@ public class SearchActivity extends AppCompatActivity implements SearchRestauran
     private void init() {
         setFullScreen();
         categoryModelArrayList = new ArrayList<>();
+        restaurantModel = new GetRestaurantModel();
         selectedCategoryRestaurants = new ArrayList<>();
         selectedViewArrayList = new ArrayList<>();
         selectedImageViews = new ArrayList<>();
@@ -82,17 +79,42 @@ public class SearchActivity extends AppCompatActivity implements SearchRestauran
         districtModels = new ArrayList<>();
         selectedCategoryRes = new ArrayList<>();
         restaurantModels = new ArrayList<>();
-        initData();
         initSearchRestaurantAdapter();
+        initData();
         getDistrict(Para.cityCode);
-
     }
+
+    private void loading(Boolean Loading) {
+        if (Loading) {
+            binding.recycleViewSearch.setVisibility(View.GONE);
+            binding.progressBar.setVisibility(View.VISIBLE);
+        } else {
+            binding.recycleViewSearch.setVisibility(View.VISIBLE);
+            binding.progressBar.setVisibility(View.GONE);
+        }
+    }
+
+    private GetRestaurantModel restaurantModel;
 
     private void initData() {
         Bundle bundle = getIntent().getBundleExtra("bundle");
         categoryModelArrayList = (ArrayList<CategoryRes>) bundle.getSerializable("categoryModelArrayList");
-
-
+        if (bundle.getString("flag").equals("normal")) {
+            restaurantModel = (GetRestaurantModel) bundle.getSerializable("getRestaurantModels");
+            if (restaurantModel != null)
+                restaurantModels.addAll(restaurantModel.getResList());
+            searchRestaurantAdapter.notifyDataSetChanged();
+        } else if (bundle.getString("flag").equals("categoryRes")) {
+            CategoryRes categoryModel = (CategoryRes) bundle.getSerializable("categoryModel");
+            for (CategoryRes categoryRes : categoryModelArrayList) {
+                if (categoryModel.getId().equals(categoryRes.getId())) {
+                    categoryRes.setSelected(true);
+                    break;
+                }
+            }
+            selectedCategoryRes.add(categoryModel.getId());
+            runThread(AfterTextChange, selectedDistrictList, selectedCategoryRes, 0);
+        }
     }
 
     private void setFullScreen() {
@@ -110,7 +132,11 @@ public class SearchActivity extends AppCompatActivity implements SearchRestauran
 
     private void setListeners() {
         binding.buttonMap.setOnClickListener(v -> {
-            startActivity(new Intent(SearchActivity.this, MapActivity.class));
+            Intent intent = new Intent(getApplicationContext(), MapActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("restaurantModels", restaurantModels);
+            intent.putExtras(bundle);
+            startActivity(intent);
         });
 
         binding.iconClose.setOnClickListener(v -> {
@@ -153,7 +179,8 @@ public class SearchActivity extends AppCompatActivity implements SearchRestauran
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(getApplicationContext(), textChange, Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(getApplicationContext(), textChange, Toast.LENGTH_SHORT).show();
+                                loading(true);
                                 // getRestaurantBySearch(new GetRestaurantBySearch(district, category, textChange, String.valueOf(Para.longitude), String.valueOf(Para.latitude)));
                                 getRestaurantBySearch(new GetRestaurantBySearch(district, category, textChange, String.valueOf(108.200364), String.valueOf(16.090288)));
                             }
@@ -247,7 +274,7 @@ public class SearchActivity extends AppCompatActivity implements SearchRestauran
             }
             selectedDistrictList.clear();
             selectedViewArrayList.clear();
-            if(searchDistrictsAdapter!=null){
+            if (searchDistrictsAdapter != null) {
                 searchDistrictsAdapter.notifyDataSetChanged();
             }
         });
@@ -310,16 +337,20 @@ public class SearchActivity extends AppCompatActivity implements SearchRestauran
             public void onResponse(Call<GetRestaurantModel> call, Response<GetRestaurantModel> response) {
                 if (response.body() != null && response.body().getStatus().equals("1")) {
                     if (response.body().getResList().size() > 0) {
+                        binding.textViewNoFind.setVisibility(View.GONE);
                         restaurantModels.clear();
                         restaurantModels.addAll(response.body().getResList());
-                        searchRestaurantAdapter.notifyItemRangeChanged(0, restaurantModels.size());
+                        searchRestaurantAdapter.notifyDataSetChanged();
+                        loading(false);
                     } else {
-
+                        binding.textViewNoFind.setVisibility(View.VISIBLE);
                     }
                 } else if (response.body() != null && response.body().getStatus().equals("0")) {
+                    binding.textViewNoFind.setVisibility(View.VISIBLE);
                     if (searchRestaurantAdapter != null) {
                         restaurantModels.clear();
                         searchRestaurantAdapter.notifyDataSetChanged();
+                        loading(false);
                     }
                 }
             }

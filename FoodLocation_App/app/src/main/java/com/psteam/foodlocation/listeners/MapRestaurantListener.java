@@ -1,6 +1,7 @@
 package com.psteam.foodlocation.listeners;
 
-import com.psteam.foodlocation.models.RestaurantModel;
+
+import com.psteam.lib.modeluser.RestaurantModel;
 
 public interface MapRestaurantListener {
     void onRestaurantGuideClicked(RestaurantModel restaurantModel);

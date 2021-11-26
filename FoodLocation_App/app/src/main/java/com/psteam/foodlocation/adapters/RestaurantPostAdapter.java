@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.psteam.foodlocation.R;
 import com.psteam.foodlocation.databinding.FoodRestaurantItemContainerBinding;
 import com.psteam.lib.modeluser.RestaurantModel;
 
@@ -59,7 +60,7 @@ public class RestaurantPostAdapter extends RecyclerView.Adapter<RestaurantPostAd
 
         public void setData(RestaurantModel foodRestaurant) {
             if (foodRestaurant.getPic().size()>0) {
-                Glide.with(context).load(foodRestaurant.getPic().get(new Random().nextInt(foodRestaurant.getPic().size()))).thumbnail(0.3f).into(binding.imageViewRestaurant);
+                Glide.with(context).load(foodRestaurant.getPic().get(0)).error(R.drawable.lau).thumbnail(0.3f).into(binding.imageViewRestaurant);
             }
             if (foodRestaurant.getPromotionRes().size()>0) {
                 binding.textViewRestaurantName.setText(String.format("%s: %s",foodRestaurant.getName(),foodRestaurant.getPromotionRes().get(0).getName()));

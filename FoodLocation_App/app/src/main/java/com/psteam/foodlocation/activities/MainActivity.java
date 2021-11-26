@@ -226,6 +226,8 @@ public class MainActivity extends AppCompatActivity implements CategoryListener,
             Intent intent = new Intent(MainActivity.this, SearchActivity.class);
             Bundle bundle = new Bundle();
             bundle.putSerializable("categoryModelArrayList", categoryModelArrayList);
+            bundle.putSerializable("getRestaurantModels",getRestaurantModels);
+            bundle.putString("flag","normal");
             intent.putExtra("bundle", bundle);
             startActivity(intent);
         });
@@ -449,7 +451,13 @@ public class MainActivity extends AppCompatActivity implements CategoryListener,
 
     @Override
     public void onCategoryClick(CategoryRes categoryModel) {
-        startActivity(new Intent(getApplicationContext(), SearchActivity.class));
+        Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("categoryModelArrayList", categoryModelArrayList);
+        bundle.putSerializable("categoryModel",categoryModel);
+        bundle.putString("flag","categoryRes");
+        intent.putExtra("bundle", bundle);
+        startActivity(intent);
     }
 
 

@@ -2,9 +2,11 @@ package com.psteam.lib.Services;
 
 import com.psteam.lib.modeluser.GetCategoryResModel;
 import com.psteam.lib.modeluser.GetMenuResModel;
+import com.psteam.lib.modeluser.GetReserveTableInput;
 import com.psteam.lib.modeluser.GetRestaurantByDistance;
 import com.psteam.lib.modeluser.GetRestaurantBySearch;
 import com.psteam.lib.modeluser.GetRestaurantModel;
+import com.psteam.lib.modeluser.GetUserReserveTableModel;
 import com.psteam.lib.modeluser.InsertReserveFoodModel;
 import com.psteam.lib.modeluser.InsertReserveTableModel;
 
@@ -57,4 +59,7 @@ public interface ServiceAPI {
 
     @POST("api/updateInfo")
     Call<message> ChangeInfoUser(@Header("Authorization") String token,@Body ChangeInfoModel user);
+
+    @POST("api/getAllReserverTable")
+    Call<GetUserReserveTableModel> GetUserReserveTableModel(@Header("Authorization") String token, @Body GetReserveTableInput getReserveTableInput);
 }
