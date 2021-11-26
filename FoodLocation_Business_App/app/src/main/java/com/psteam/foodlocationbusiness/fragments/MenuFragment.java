@@ -38,6 +38,7 @@ import com.psteam.foodlocationbusiness.databinding.LayoutInsertCategoryDialogBin
 import com.psteam.foodlocationbusiness.databinding.LayoutInsertFoodDialogBinding;
 import com.psteam.foodlocationbusiness.ultilities.CustomToast;
 import com.psteam.foodlocationbusiness.ultilities.DividerItemDecorator;
+import com.psteam.lib.Models.Get.getCategory;
 
 
 import java.io.InputStream;
@@ -51,7 +52,7 @@ public class MenuFragment extends Fragment {
     private ManagerFoodAdapter managerFoodAdapter;
     private ArrayList<ManagerFoodAdapter.Food> foods;
 
-    private ArrayList<ManagerCategoryAdapter.Category> categories;
+    private ArrayList<getCategory> categories;
 
 
     public static Fragment newInstance() {
@@ -185,23 +186,23 @@ public class MenuFragment extends Fragment {
             }
     );
 
-    private ArrayAdapter<ManagerCategoryAdapter.Category> categoryArrayAdapter;
+    private ArrayAdapter<getCategory> categoryArrayAdapter;
 
     private void spinnerCategory() {
         categories = new ArrayList<>();
-        categories.add(new ManagerCategoryAdapter.Category("Loại món ăn 1", "1", true));
-        categories.add(new ManagerCategoryAdapter.Category("Loại món ăn 2", "2", true));
-        categories.add(new ManagerCategoryAdapter.Category("Loại món ăn 3", "3", true));
-        categories.add(new ManagerCategoryAdapter.Category("Loại món ăn 4", "4", true));
+        categories.add(new getCategory("Loại món ăn 1", "1", true));
+        categories.add(new getCategory("Loại món ăn 2", "2", true));
+        categories.add(new getCategory("Loại món ăn 3", "3", true));
+        categories.add(new getCategory("Loại món ăn 4", "4", true));
 
-        categoryArrayAdapter = new ArrayAdapter<ManagerCategoryAdapter.Category>(getContext()
+        categoryArrayAdapter = new ArrayAdapter<getCategory>(getContext()
                 , android.R.layout.simple_list_item_1, categories);
         categoryArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         layoutInsertFoodDialogBinding.spinnerCategory.setAdapter(categoryArrayAdapter);
         layoutInsertFoodDialogBinding.spinnerCategory.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
             @Override
             public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
-                ManagerCategoryAdapter.Category category= (ManagerCategoryAdapter.Category) item;
+                getCategory category= (getCategory) item;
             }
         });
 
@@ -234,7 +235,7 @@ public class MenuFragment extends Fragment {
         insertCategoryDialogBinding.buttonAddCategory.setOnClickListener(v -> {
 
             if (isValidateInsertCategory(insertCategoryDialogBinding.inputNameCategory.getText().toString())) {
-                categories.add(new ManagerCategoryAdapter.Category(insertCategoryDialogBinding.inputNameCategory.getText().toString(), "1", true));
+                categories.add(new getCategory(insertCategoryDialogBinding.inputNameCategory.getText().toString(), "1", true));
                 categoryArrayAdapter.notifyDataSetChanged();
                 dialog.dismiss();
             }

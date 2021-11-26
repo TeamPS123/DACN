@@ -1,11 +1,14 @@
 package com.psteam.lib.Service;
 
 import com.psteam.lib.Models.Get.messResDetail;
+import com.psteam.lib.Models.Get.messageAllCategory;
+import com.psteam.lib.Models.Get.messageAllMenu;
 import com.psteam.lib.Models.Get.messageAllReserveTable;
 import com.psteam.lib.Models.Get.messagePromotion;
 import com.psteam.lib.Models.Get.messageRestaurant;
 import com.psteam.lib.Models.Input.confirmTable;
 import com.psteam.lib.Models.Input.signIn;
+import com.psteam.lib.Models.Insert.insertCategory;
 import com.psteam.lib.Models.Insert.insertFood;
 import com.psteam.lib.Models.Insert.insertMenu;
 import com.psteam.lib.Models.Insert.insertPromotion;
@@ -39,6 +42,12 @@ public interface ServiceAPI_lib {
     @GET("getAllPromotion")
     Call<messagePromotion> getAllPromotion();
 
+    @GET("getAllMenuByResId")
+    Call<messageAllMenu> getAllMenu(@Header("Authorization") String token, @Query("userId") String userId, @Query("restaurantId") String restaurantId);
+
+    @GET("getAllCategory")
+    Call<messageAllCategory> getAllCategory(@Header("Authorization") String token, @Query("userId") String userId, @Query("restaurantId") String restaurantId);
+
     @GET("getAllRestaurant")
     Call<messageRestaurant> getAllRestaurant();
 
@@ -58,7 +67,10 @@ public interface ServiceAPI_lib {
     Call<message> addFood_lib(@Header("Authorization") String token,@Body insertFood foodList);
 
     @POST("addPromotion")
-    Call<message> addPromotion(@Header("Authorization") String token,@Body insertPromotion foodList);
+    Call<message> addPromotion(@Header("Authorization") String token,@Body insertPromotion promotion);
+
+    @POST("addCategory")
+    Call<message> addCategory(@Header("Authorization") String token,@Body insertCategory category);
 
     @POST("reserveTable")
     Call<message> reserveTable(@Header("Authorization") String token,@Body reserveTable table);
@@ -73,7 +85,7 @@ public interface ServiceAPI_lib {
     @POST("upImageOfRes")
     Call<message> addImgRes(@Header("Authorization") String token, @Part List<MultipartBody.Part> photo, @Query("userId") String userId, @Query("restaurantId") String restaurantId);
 
-    @POST("getAllReserveTableByRestaurantId")
+    @GET("getAllReserveTableByRestaurantId")
     Call<messageAllReserveTable> getAllReserveTables(@Header("Authorization") String token, @Query("userId") String userId, @Query("restaurantId") String restaurantId);
 
 

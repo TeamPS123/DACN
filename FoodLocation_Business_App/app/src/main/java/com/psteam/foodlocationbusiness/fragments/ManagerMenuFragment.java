@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -15,14 +16,32 @@ import com.psteam.foodlocationbusiness.activites.ManagerCategoryActivity;
 import com.psteam.foodlocationbusiness.adapters.MenuFragmentAdapter;
 import com.psteam.foodlocationbusiness.databinding.FragmentManagerMenuBinding;
 import com.psteam.foodlocationbusiness.databinding.LayoutAddMenuNameDialogBinding;
+import com.psteam.foodlocationbusiness.socket.models.BodySenderFromUser;
 import com.psteam.foodlocationbusiness.ultilities.CustomToast;
+import com.psteam.foodlocationbusiness.ultilities.DataTokenAndUserId;
 import com.psteam.foodlocationbusiness.ultilities.Para;
+import com.psteam.lib.Models.Get.getMenu;
+import com.psteam.lib.Models.Get.messageAllMenu;
+import com.psteam.lib.Models.Get.messageAllReserveTable;
+import com.psteam.lib.Models.Insert.insertMenu;
+import com.psteam.lib.Models.message;
+import com.psteam.lib.Service.ServiceAPI_lib;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.psteam.lib.RetrofitServer.getRetrofit_lib;
 
 
 public class ManagerMenuFragment extends Fragment {
 
     private FragmentManagerMenuBinding binding;
     private MenuFragmentAdapter menuFragmentAdapter;
+    private List<String> menuIdList = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,6 +91,8 @@ public class ManagerMenuFragment extends Fragment {
         });
 
         setDynamicFragmentToTabLayout();
+
+        getAllMenu();
     }
 
     private void setDynamicFragmentToTabLayout() {
@@ -107,16 +128,66 @@ public class ManagerMenuFragment extends Fragment {
                 return;
             }
 
-            binding.tabs.addTab(binding.tabs.newTab().setText(layoutAddMenuNameDialogBinding.inputMenuName.getText().toString()));
-            Para.numberTabs = binding.tabs.getTabCount();
-            menuFragmentAdapter.notifyDataSetChanged();
-            binding.viewPager.setCurrentItem(binding.tabs.getTabCount() - 1);
-            dialog.dismiss();
+            DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getActivity());
+
+            insertMenu menu = new insertMenu(dataTokenAndUserId.getRestaurantId(), layoutAddMenuNameDialogBinding.inputMenuName.getText()+"", dataTokenAndUserId.getUserId());
+
+            ServiceAPI_lib serviceAPI = getRetrofit_lib().create(ServiceAPI_lib.class);
+            Call<message> call = serviceAPI.addMenu(dataTokenAndUserId.getToken(), menu);
+            call.enqueue(new Callback<message>() {
+                @Override
+                public void onResponse(Call<message> call, Response<message> response) {
+                    if(response.body().getStatus() == 1){
+                        menuIdList.add(response.body().getId());
+
+                        binding.tabs.addTab(binding.tabs.newTab().setText(layoutAddMenuNameDialogBinding.inputMenuName.getText().toString()));
+                        Para.numberTabs = binding.tabs.getTabCount();
+                        menuFragmentAdapter.notifyDataSetChanged();
+                        binding.viewPager.setCurrentItem(binding.tabs.getTabCount() - 1);
+                        dialog.dismiss();
+                    }
+                    Toast.makeText(getContext(), response.body().getNotification(), Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFailure(Call<message> call, Throwable t) {
+                    Toast.makeText(getContext(), "Thêm thực đơn thất bại", Toast.LENGTH_SHORT).show();
+                }
+            });
         });
 
         dialog.show();
 
 
+    }
+
+    private void getAllMenu(){
+        DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getActivity());
+
+        ServiceAPI_lib serviceAPI = getRetrofit_lib().create(ServiceAPI_lib.class);
+        Call<messageAllMenu> call = serviceAPI.getAllMenu(dataTokenAndUserId.getToken(), dataTokenAndUserId.getUserId(), dataTokenAndUserId.getRestaurantId());
+        call.enqueue(new Callback<messageAllMenu>() {
+            @Override
+            public void onResponse(Call<messageAllMenu> call, Response<messageAllMenu> response) {
+                if(response.body().getStatus() == 1){
+                    for(int i =0 ; i < response.body().getMenuList().size(); i ++){
+                        getMenu menu = response.body().getMenuList().get(i);
+
+                        menuIdList.add(menu.getMenuId());
+
+                        binding.tabs.addTab(binding.tabs.newTab().setText(menu.getName()));
+                        Para.numberTabs = binding.tabs.getTabCount();
+                        menuFragmentAdapter.notifyDataSetChanged();
+                        binding.viewPager.setCurrentItem(binding.tabs.getTabCount() - 1);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<messageAllMenu> call, Throwable t) {
+
+            }
+        });
     }
 
 
