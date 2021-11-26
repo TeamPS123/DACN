@@ -24,6 +24,7 @@
             android:tint="@color/TextPrimary"/>
 
         <EditText
+            android:id="@+id/inputSearch"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_4sdp"

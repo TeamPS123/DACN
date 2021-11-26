@@ -59,14 +59,17 @@ import com.psteam.foodlocation.ultilities.DividerItemDecorator;
 import com.psteam.foodlocation.ultilities.Para;
 
 
+import com.psteam.foodlocation.ultilities.Token;
 import com.psteam.lib.Services.ServiceAPI;
 import com.psteam.lib.modeluser.CategoryRes;
 import com.psteam.lib.modeluser.GetCategoryResModel;
+import com.psteam.lib.modeluser.GetInfoUser;
 import com.psteam.lib.modeluser.GetRestaurantByDistance;
 import com.psteam.lib.modeluser.GetRestaurantModel;
 import com.psteam.lib.modeluser.RestaurantModel;
 import com.psteam.foodlocation.ultilities.PreferenceManager;
 
+import com.psteam.lib.modeluser.UserModel;
 import com.psteam.library.TopSheetBehavior;
 
 import java.util.ArrayList;
@@ -89,20 +92,23 @@ public class MainActivity extends AppCompatActivity implements CategoryListener,
 
     private CategoryAdapter categoryAdapter;
     private ArrayList<CategoryRes> categoryModelArrayList;
-
+    private Token token;
+    private PreferenceManager preferenceManager;
     private PromotionAdapter promotionAdapter;
     private List<PromotionModel> promotionModels;
 
     private RestaurantPostAdapter restaurantPostAdapter;
 
     private ResultReceiver resultReceiver;
-
+    private UserModel user;
     private MaterialButton buttonSignIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
+        token = new Token(getApplicationContext());
+        preferenceManager = new PreferenceManager(getApplicationContext());
         setContentView(binding.getRoot());
         init();
         setListeners();
@@ -112,10 +118,11 @@ public class MainActivity extends AppCompatActivity implements CategoryListener,
         setFullScreen();
         buttonSignIn = binding.navigationView.getHeaderView(0).findViewById(R.id.buttonSignInNavigation);
         checkSelfPermission();
+        GetInfo(preferenceManager.getString(Constants.USER_ID));
         initSliderImage();
         GetCategoryRes();
         setNumberNotification(0);
-        GetRestaurantByDistance(new GetRestaurantByDistance("10","108.200364","16.080288"));
+        GetRestaurantByDistance(new GetRestaurantByDistance("10", "108.200364", "16.080288"));
     }
 
     private void setFullScreen() {
@@ -192,6 +199,9 @@ public class MainActivity extends AppCompatActivity implements CategoryListener,
         topSheetBehavior = new TopSheetBehavior();
         binding.textviewCurrentLocation.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("categoryModelArrayList", categoryModelArrayList);
+            intent.putExtra("bundle", bundle);
             startActivity(intent);
         });
 
@@ -232,7 +242,11 @@ public class MainActivity extends AppCompatActivity implements CategoryListener,
 
                 switch (item.getItemId()) {
                     case R.id.menuUserInfo: {
-                        startActivity(new Intent(MainActivity.this, UserInfoActivity.class));
+                        Intent intent = new Intent(MainActivity.this, UserInfoActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("user", user);
+                        intent.putExtra("bundle", bundle);
+                        startActivity(intent);
                         break;
                     }
 
@@ -242,12 +256,7 @@ public class MainActivity extends AppCompatActivity implements CategoryListener,
                     }
 
                     case R.id.menuLogOut: {
-
-                        PreferenceManager preferenceManager = new PreferenceManager(getApplicationContext());
-                        preferenceManager.clear();
-
-                        startActivity(new Intent(MainActivity.this, SignInActivity.class));
-                        finishAffinity();
+                        logOut();
                         break;
                     }
 
@@ -344,20 +353,38 @@ public class MainActivity extends AppCompatActivity implements CategoryListener,
     }
 
 
-    private void initPromotion() {
-        promotionModels = new ArrayList<>();
-        promotionModels.add(new PromotionModel(R.drawable.suatuoi, "ToCoToCo", "Đồng giá 32k Toàn menu Size M"));
-        promotionModels.add(new PromotionModel(R.drawable.suatuoi, "ToCoToCo", "Đồng giá 32k Toàn menu Size M"));
-        promotionModels.add(new PromotionModel(R.drawable.suatuoi, "ToCoToCo", "Đồng giá 32k Toàn menu Size M"));
-        promotionModels.add(new PromotionModel(R.drawable.suatuoi, "ToCoToCo", "Đồng giá 32k Toàn menu Size M"));
-        promotionModels.add(new PromotionModel(R.drawable.suatuoi, "ToCoToCo", "Đồng giá 32k Toàn menu Size M"));
-        promotionModels.add(new PromotionModel(R.drawable.suatuoi, "ToCoToCo", "Đồng giá 32k Toàn menu Size M"));
+    private void GetInfo(String id) {
 
-        promotionAdapter = new PromotionAdapter(promotionModels);
-        binding.recycleViewPromotion.setAdapter(promotionAdapter);
-        binding.recycleViewPromotion.setClipToPadding(false);
-        binding.recycleViewPromotion.setClipChildren(false);
+        if (token.getToken().equals(token.expired)) {
+            logOut();
+        }
+
+        ServiceAPI serviceAPI = getRetrofit().create(ServiceAPI.class);
+        Call<GetInfoUser> call = serviceAPI.GetDetailUser(token.getToken(), id);
+        call.enqueue(new Callback<GetInfoUser>() {
+            @Override
+            public void onResponse(Call<GetInfoUser> call, Response<GetInfoUser> response) {
+                if (response.body() != null && response.body().getStatus().equals("1")) {
+                    user = response.body().getUser();
+                    Para.userModel = user;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetInfoUser> call, Throwable t) {
+                Log.d("Log:", t.getMessage());
+            }
+        });
     }
+
+    public void logOut() {
+        preferenceManager.clear();
+        Intent intent = new Intent(MainActivity.this, SignInActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finishAffinity();
+    }
+
 
     private Runnable sliderRunnable = new Runnable() {
         @Override
@@ -486,10 +513,10 @@ public class MainActivity extends AppCompatActivity implements CategoryListener,
 
     @Override
     public void onRestaurantPostClicked(RestaurantModel restaurantModel) {
-        Intent intent=new Intent(getApplicationContext(), RestaurantDetailsActivity.class);
-        Bundle bundle=new Bundle();
-        bundle.putSerializable("restaurantModel",restaurantModel);
-        intent.putExtra("bundle",bundle);
+        Intent intent = new Intent(getApplicationContext(), RestaurantDetailsActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("restaurantModel", restaurantModel);
+        intent.putExtra("bundle", bundle);
         startActivity(intent);
     }
 }

@@ -8,17 +8,19 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.psteam.foodlocation.R;
 import com.psteam.foodlocation.databinding.LayoutCategoryRestaurantItemContainerBinding;
+import com.psteam.lib.modeluser.CategoryRes;
 
 import java.util.List;
 
 public class CategoryRestaurantAdapter extends RecyclerView.Adapter<CategoryRestaurantAdapter.CategoryRestaurantViewHolder> {
-    private final List<CategoryRestaurant> categoryRestaurants;
+    private final List<CategoryRes> categoryRestaurants;
     private final Context context;
     private final CategoryRestaurantListeners categoryRestaurantListeners;
 
-    public CategoryRestaurantAdapter(List<CategoryRestaurant> categoryRestaurants, Context context, CategoryRestaurantListeners categoryRestaurantListeners) {
+    public CategoryRestaurantAdapter(List<CategoryRes> categoryRestaurants, Context context, CategoryRestaurantListeners categoryRestaurantListeners) {
         this.categoryRestaurants = categoryRestaurants;
         this.context = context;
         this.categoryRestaurantListeners = categoryRestaurantListeners;
@@ -54,26 +56,26 @@ public class CategoryRestaurantAdapter extends RecyclerView.Adapter<CategoryRest
             binding = itemView;
         }
 
-        public void setData(CategoryRestaurant categoryRestaurant) {
+        public void setData(CategoryRes categoryRestaurant) {
             binding.textViewName.setText(categoryRestaurant.getName());
-            binding.imageViewIconCategoryRestaurant.setImageResource(categoryRestaurant.getImage());
+            Glide.with(context).load(categoryRestaurant.getIcon()).thumbnail(0.3f).into(binding.imageViewIconCategoryRestaurant);
 
             binding.getRoot().setOnClickListener(v -> {
                 isSelectedItem(categoryRestaurant);
             });
 
-            if(categoryRestaurant.isSelected){
+            if(categoryRestaurant.isSelected()){
                 binding.imageViewIconCategoryRestaurant.setBackground(context.getDrawable(R.drawable.layout_category_restaurant_selected));
                 binding.imageViewIconCategoryRestaurant.setTag("Selected");
-                categoryRestaurantListeners.onCategoryRestaurantClicked(categoryRestaurant,getAdapterPosition(),true,binding.imageViewIconCategoryRestaurant);
+               // categoryRestaurantListeners.onCategoryRestaurantClicked(categoryRestaurant,getAdapterPosition(),true,binding.imageViewIconCategoryRestaurant);
             }else {
                 binding.imageViewIconCategoryRestaurant.setBackground(context.getDrawable(R.drawable.layout_category_restaurant));
                 binding.imageViewIconCategoryRestaurant.setTag("unSelected");
-                categoryRestaurantListeners.onCategoryRestaurantClicked(categoryRestaurant,getAdapterPosition(),false,binding.imageViewIconCategoryRestaurant);
+              //  categoryRestaurantListeners.onCategoryRestaurantClicked(categoryRestaurant,getAdapterPosition(),false,binding.imageViewIconCategoryRestaurant);
             }
         }
 
-        public void isSelectedItem(CategoryRestaurant categoryRestaurant){
+        public void isSelectedItem(CategoryRes categoryRestaurant){
             if(binding.imageViewIconCategoryRestaurant.getTag().equals("unSelected")){
                 binding.imageViewIconCategoryRestaurant.setBackground(context.getDrawable(R.drawable.layout_category_restaurant_selected));
                 binding.imageViewIconCategoryRestaurant.setTag("Selected");
@@ -83,46 +85,14 @@ public class CategoryRestaurantAdapter extends RecyclerView.Adapter<CategoryRest
                 binding.imageViewIconCategoryRestaurant.setTag("unSelected");
                 categoryRestaurantListeners.onCategoryRestaurantClicked(categoryRestaurant,getAdapterPosition(),false,binding.imageViewIconCategoryRestaurant);
             }
+
+
         }
     }
 
     public interface CategoryRestaurantListeners{
-        void onCategoryRestaurantClicked(CategoryRestaurant categoryRestaurant, int position, boolean isSelected, ImageView imageView);
+        void onCategoryRestaurantClicked(CategoryRes categoryRestaurant, int position, boolean isSelected, ImageView imageView);
     }
 
-    public static class CategoryRestaurant {
-        private String name;
-        private int image;
-        private boolean isSelected;
 
-        public CategoryRestaurant(String name, int image, boolean isSelected) {
-            this.name = name;
-            this.image = image;
-            this.isSelected = isSelected;
-        }
-
-        public boolean isSelected() {
-            return isSelected;
-        }
-
-        public void setSelected(boolean selected) {
-            isSelected = selected;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public int getImage() {
-            return image;
-        }
-
-        public void setImage(int image) {
-            this.image = image;
-        }
-    }
 }

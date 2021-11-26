@@ -29,6 +29,7 @@ import com.psteam.foodlocation.databinding.LayoutUpdateUserInfoDialogBinding;
 import com.psteam.foodlocation.ultilities.Constants;
 import com.psteam.foodlocation.ultilities.CustomToast;
 import com.psteam.foodlocation.ultilities.DividerItemDecorator;
+import com.psteam.foodlocation.ultilities.Para;
 import com.psteam.foodlocation.ultilities.PreferenceManager;
 import com.psteam.foodlocation.ultilities.Token;
 import com.psteam.lib.Services.ServiceAPI;
@@ -92,6 +93,7 @@ public class ReserveTableActivity extends AppCompatActivity {
         initFoodReserve();
         initData();
         GetMenuRes(restaurantModel.getRestaurantId());
+
     }
 
     private void initData() {
@@ -116,6 +118,11 @@ public class ReserveTableActivity extends AppCompatActivity {
             binding.line3.setVisibility(View.GONE);
             binding.text5.setVisibility(View.GONE);
             binding.image4.setVisibility(View.GONE);
+        }
+
+        if (Para.userModel != null) {
+            binding.inputFullName.setText(Para.userModel.getFullName().toString());
+            binding.inputPhoneNumber.setText(Para.userModel.getPhone().toString());
         }
     }
 
@@ -341,7 +348,7 @@ public class ReserveTableActivity extends AppCompatActivity {
                 boolean flag = false;
                 for (FoodModel foodReserve : foodReserves) {
                     if (foodReserve.getName().equals(food.getName())) {
-                        food.setCount(foodReserve.getCount()+1);
+                        food.setCount(foodReserve.getCount() + 1);
                         foodReserves.remove(foodReserve);
                         foodReserves.add(food);
                         totalPrice += Double.parseDouble(food.getPrice());
@@ -367,13 +374,13 @@ public class ReserveTableActivity extends AppCompatActivity {
             @Override
             public void onRemoveFoodClick(FoodModel foodModel) {
                 totalPrice -= foodModel.getCount() * Double.parseDouble(foodModel.getPrice());
-                totalCount-=foodModel.getCount();
+                totalCount -= foodModel.getCount();
                 setTotalPrice(totalCount, totalPrice);
                 foodModel.setCount(0);
                 foodReserves.remove(foodModel);
                 foodReserveAdapter.notifyDataSetChanged();
-                if(foodReserves.size()<=0)
-                setVisibilityText11(false);
+                if (foodReserves.size() <= 0)
+                    setVisibilityText11(false);
             }
 
             @Override
@@ -411,11 +418,11 @@ public class ReserveTableActivity extends AppCompatActivity {
 
     }
 
-    private void loading(boolean Loading){
-        if(Loading){
+    private void loading(boolean Loading) {
+        if (Loading) {
             binding.progressBar.setVisibility(View.VISIBLE);
             binding.buttonReserve.setVisibility(View.GONE);
-        }else {
+        } else {
             binding.progressBar.setVisibility(View.GONE);
             binding.buttonReserve.setVisibility(View.VISIBLE);
         }
