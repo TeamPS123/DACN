@@ -58,12 +58,15 @@ import com.psteam.foodlocation.ultilities.CustomToast;
 import com.psteam.foodlocation.ultilities.DividerItemDecorator;
 import com.psteam.foodlocation.ultilities.Para;
 
+
 import com.psteam.lib.Services.ServiceAPI;
 import com.psteam.lib.modeluser.CategoryRes;
 import com.psteam.lib.modeluser.GetCategoryResModel;
 import com.psteam.lib.modeluser.GetRestaurantByDistance;
 import com.psteam.lib.modeluser.GetRestaurantModel;
 import com.psteam.lib.modeluser.RestaurantModel;
+import com.psteam.foodlocation.ultilities.PreferenceManager;
+
 import com.psteam.library.TopSheetBehavior;
 
 import java.util.ArrayList;
@@ -239,6 +242,10 @@ public class MainActivity extends AppCompatActivity implements CategoryListener,
                     }
 
                     case R.id.menuLogOut: {
+
+                        PreferenceManager preferenceManager = new PreferenceManager(getApplicationContext());
+                        preferenceManager.clear();
+
                         startActivity(new Intent(MainActivity.this, SignInActivity.class));
                         finishAffinity();
                         break;

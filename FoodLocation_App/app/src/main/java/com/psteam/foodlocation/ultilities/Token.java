@@ -1,5 +1,6 @@
 package com.psteam.foodlocation.ultilities;
 
+
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -28,4 +29,6 @@ public class Token {
         }
         return settings.getString("token", "");
     }
+
 }
+

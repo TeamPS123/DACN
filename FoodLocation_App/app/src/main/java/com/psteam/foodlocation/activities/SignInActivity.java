@@ -35,7 +35,8 @@ public class SignInActivity extends AppCompatActivity {
     private ActivitySignInBinding binding;
     //Sharepre
     private PreferenceManager preferenceManager;
-    private Token token;
+
+    private Token dataToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +44,9 @@ public class SignInActivity extends AppCompatActivity {
         binding = ActivitySignInBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         preferenceManager = new PreferenceManager(getApplicationContext());
-        token=new Token(getApplicationContext());
+
+        dataToken = new Token(SignInActivity.this);
+
         init();
         setListeners();
     }
@@ -69,7 +72,7 @@ public class SignInActivity extends AppCompatActivity {
             if (isValidSignIn()) {
                 String phone = binding.inputPhone.getText().toString();
                 String pass = binding.inputPassword.getText().toString();
-                signIn(new LoginModel(phone, pass));
+                signIn(new LoginModel(phone, pass),pass);
             }
 
         });
@@ -108,7 +111,7 @@ public class SignInActivity extends AppCompatActivity {
         }
     }
 
-    private void signIn(LoginModel loginModel) {
+    private void signIn(LoginModel loginModel,String password) {
         ServiceAPI serviceAPI = getRetrofit().create(ServiceAPI.class);
         Call<message> call = serviceAPI.SignIn(loginModel);
         call.enqueue(new Callback<message>() {
@@ -116,7 +119,11 @@ public class SignInActivity extends AppCompatActivity {
             public void onResponse(Call<message> call, Response<message> response) {
                 if (response.body() != null && response.body().getStatus().equals("1")) {
                     preferenceManager.putString(Constants.USER_ID, response.body().getId());
-                    token.saveToken(response.body().getNotification());// Lưu ToKen
+
+                    preferenceManager.putBoolean(Constants.IsLogin,true);
+                    preferenceManager.putString(Constants.Password, password);
+                    dataToken.saveToken(response.body().getNotification());
+
                     Intent intent = new Intent(SignInActivity.this, MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);

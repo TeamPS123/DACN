@@ -6,6 +6,11 @@ import com.psteam.lib.modeluser.GetRestaurantByDistance;
 import com.psteam.lib.modeluser.GetRestaurantModel;
 import com.psteam.lib.modeluser.InsertReserveFoodModel;
 import com.psteam.lib.modeluser.InsertReserveTableModel;
+
+import com.psteam.lib.modeluser.ChangeInfoModel;
+import com.psteam.lib.modeluser.GetInfoUser;
+import com.psteam.lib.modeluser.LogUpModel;
+
 import com.psteam.lib.modeluser.LoginModel;
 import com.psteam.lib.modeluser.message;
 
@@ -15,6 +20,9 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+
+import retrofit2.http.Path;
+
 import retrofit2.http.Query;
 
 public interface ServiceAPI {
@@ -37,4 +45,12 @@ public interface ServiceAPI {
     @GET("api/getAllMenuWithRes")
     Call<GetMenuResModel> GetMenuRes(@Query("restaurantId") String restaurantId);
 
+    @POST("api/signup")
+    Call<message> SignUp(@Body LogUpModel logUpModel);
+
+    @GET("api/getInfo")
+    Call<GetInfoUser> GetDetailUser(@Header("Authorization") String token, @Query("userId") String userId);
+
+    @POST("api/updateInfo")
+    Call<message> ChangeInfoUser(@Header("Authorization") String token,@Body ChangeInfoModel user);
 }
