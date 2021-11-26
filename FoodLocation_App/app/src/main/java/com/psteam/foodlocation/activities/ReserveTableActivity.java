@@ -1,6 +1,7 @@
 package com.psteam.foodlocation.activities;
 
 import androidx.annotation.NonNull;
+
 import static com.psteam.lib.RetrofitClient.getRetrofit;
 
 import androidx.appcompat.app.AlertDialog;
@@ -37,6 +38,7 @@ import com.psteam.foodlocation.socket.setupSocket;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
+
 import com.psteam.foodlocation.databinding.LayoutReserveTableSuccessDialogBinding;
 import com.psteam.foodlocation.databinding.LayoutUpdateUserInfoDialogBinding;
 import com.psteam.foodlocation.ultilities.Constants;
@@ -91,6 +93,8 @@ public class ReserveTableActivity extends AppCompatActivity {
     private int NumberReserve;
     private RestaurantModel restaurantModel;
     private String TimeReserve;
+
+    private MenuBottomSheetFragment menuBottomSheetFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -182,16 +186,11 @@ public class ReserveTableActivity extends AppCompatActivity {
 
         binding.buttonReserve.setOnClickListener(v -> {
             //lấy thời gian và ngày bắt buộc SDK >= 26
-            BodySenderFromUser body = new BodySenderFromUser("i", 5, java.time.LocalTime.now()+" "+java.time.LocalDate.now(), "1", "phàm", "0589674321", "1", "hello");
+            BodySenderFromUser body = new BodySenderFromUser("i", 5, java.time.LocalTime.now() + " " + java.time.LocalDate.now(), "1", "phàm", "0589674321", "1", "hello");
             MessageSenderFromUser message = new MessageSenderFromUser("user", "restaurant", "Thông báo", body);
 
             setupSocket.notificationFromUser(message, setupSocket.mSocket);
-        });
-    }
 
-    private MenuBottomSheetFragment menuBottomSheetFragment;
-
-        binding.buttonReserve.setOnClickListener(v -> {
             if (isValidateReserveTable()) {
                 loading(true);
                 InsertReserveTableModel insertReserveTableModel = new InsertReserveTableModel();
@@ -207,11 +206,9 @@ public class ReserveTableActivity extends AppCompatActivity {
                 }
                 ReserveTable(insertReserveTableModel);
             }
-
         });
-
-
     }
+
 
     private boolean isValidateReserveTable() {
         final String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
@@ -232,7 +229,7 @@ public class ReserveTableActivity extends AppCompatActivity {
         }
     }
 
-    private MenuBottomSheetFragment menuBottomSheetFragment;
+
 
 
     public void setVisibilityText11(boolean b) {
@@ -294,7 +291,7 @@ public class ReserveTableActivity extends AppCompatActivity {
 
 
     //socket.io
-    private void socket(){
+    private void socket() {
         setupSocket.mSocket.connect();
         // notification login success or fail
         //setupSocket.mSocket.on("noti_login", onLogin);
@@ -318,8 +315,9 @@ public class ReserveTableActivity extends AppCompatActivity {
 
         //notification when come back activity
         setupSocket.mSocket.connect();
+    }
 
-        //setupSocket.reconnect(user, setupSocket.mSocket);
+    //setupSocket.reconnect(user, setupSocket.mSocket);
     private void ReserveTable(InsertReserveTableModel insertReserveTableModel) {
         ServiceAPI serviceAPI = getRetrofit().create(ServiceAPI.class);
         Call<message> call = serviceAPI.ReserveTable(token.getToken(), insertReserveTableModel);
@@ -399,7 +397,7 @@ public class ReserveTableActivity extends AppCompatActivity {
                 boolean flag = false;
                 for (FoodModel foodReserve : foodReserves) {
                     if (foodReserve.getName().equals(food.getName())) {
-                        food.setCount(foodReserve.getCount()+1);
+                        food.setCount(foodReserve.getCount() + 1);
                         foodReserves.remove(foodReserve);
                         foodReserves.add(food);
                         totalPrice += Double.parseDouble(food.getPrice());
@@ -425,13 +423,13 @@ public class ReserveTableActivity extends AppCompatActivity {
             @Override
             public void onRemoveFoodClick(FoodModel foodModel) {
                 totalPrice -= foodModel.getCount() * Double.parseDouble(foodModel.getPrice());
-                totalCount-=foodModel.getCount();
+                totalCount -= foodModel.getCount();
                 setTotalPrice(totalCount, totalPrice);
                 foodModel.setCount(0);
                 foodReserves.remove(foodModel);
                 foodReserveAdapter.notifyDataSetChanged();
-                if(foodReserves.size()<=0)
-                setVisibilityText11(false);
+                if (foodReserves.size() <= 0)
+                    setVisibilityText11(false);
             }
 
             @Override
@@ -469,11 +467,11 @@ public class ReserveTableActivity extends AppCompatActivity {
 
     }
 
-    private void loading(boolean Loading){
-        if(Loading){
+    private void loading(boolean Loading) {
+        if (Loading) {
             binding.progressBar.setVisibility(View.VISIBLE);
             binding.buttonReserve.setVisibility(View.GONE);
-        }else {
+        } else {
             binding.progressBar.setVisibility(View.GONE);
             binding.buttonReserve.setVisibility(View.VISIBLE);
         }

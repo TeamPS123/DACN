@@ -560,6 +560,7 @@ public class MainActivity extends AppCompatActivity implements CategoryListener,
         setupSocket.mSocket.connect();
 
         setupSocket.reconnect(userId, setupSocket.mSocket);
+    }
     private void GetCategoryRes() {
         ServiceAPI serviceAPI = getRetrofit().create(ServiceAPI.class);
         Call<GetCategoryResModel> call = serviceAPI.GetCategoryRes();
