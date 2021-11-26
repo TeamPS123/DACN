@@ -4,18 +4,21 @@ import static com.psteam.foodlocation.ultilities.RetrofitClient.getRetrofit;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,18 +34,22 @@ import com.psteam.foodlocation.databinding.ActivitySearchBinding;
 import com.psteam.foodlocation.databinding.LayoutCategoryRestaurantDialogBinding;
 import com.psteam.foodlocation.models.DistrictModel;
 import com.psteam.foodlocation.models.ProvinceModel;
-import com.psteam.foodlocation.models.RestaurantModel;
 import com.psteam.foodlocation.services.ServiceAPI;
-import com.psteam.foodlocation.ultilities.DividerItemDecorator;
+
 import com.psteam.foodlocation.ultilities.Para;
+import com.psteam.lib.modeluser.CategoryRes;
+import com.psteam.lib.modeluser.GetRestaurantBySearch;
+import com.psteam.lib.modeluser.GetRestaurantModel;
+import com.psteam.lib.modeluser.RestaurantModel;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SearchActivity extends AppCompatActivity {
+public class SearchActivity extends AppCompatActivity implements SearchRestaurantAdapter.SearchRestaurantListeners {
 
     private ActivitySearchBinding binding;
     private SearchRestaurantAdapter searchRestaurantAdapter;
@@ -50,18 +57,14 @@ public class SearchActivity extends AppCompatActivity {
 
     private ArrayList<View> selectedViewArrayList;
     private ArrayList<String> selectedDistrictList;
+    private ArrayList<String> selectedCategoryRes;
+
+    private ArrayList<CategoryRes> categoryModelArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT >= 21) {
-            Window window = getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(Color.TRANSPARENT);
 
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);//  set status text dark
-            getWindow().setStatusBarColor(ContextCompat.getColor(SearchActivity.this, R.color.white));// set status background white
-        }
         binding = ActivitySearchBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -70,14 +73,40 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void init() {
+        setFullScreen();
+        categoryModelArrayList = new ArrayList<>();
         selectedCategoryRestaurants = new ArrayList<>();
         selectedViewArrayList = new ArrayList<>();
         selectedImageViews = new ArrayList<>();
         selectedDistrictList = new ArrayList<>();
         districtModels = new ArrayList<>();
-        initSearchRestaurant();
+        selectedCategoryRes = new ArrayList<>();
+        restaurantModels = new ArrayList<>();
+        initData();
+        initSearchRestaurantAdapter();
         getDistrict(Para.cityCode);
+
     }
+
+    private void initData() {
+        Bundle bundle = getIntent().getBundleExtra("bundle");
+        categoryModelArrayList = (ArrayList<CategoryRes>) bundle.getSerializable("categoryModelArrayList");
+
+
+    }
+
+    private void setFullScreen() {
+        if (Build.VERSION.SDK_INT >= 21) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.TRANSPARENT);
+
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);//  set status text dark
+            getWindow().setStatusBarColor(ContextCompat.getColor(SearchActivity.this, R.color.white));// set status background white
+        }
+    }
+
+    private static String AfterTextChange = "";
 
     private void setListeners() {
         binding.buttonMap.setOnClickListener(v -> {
@@ -95,50 +124,55 @@ public class SearchActivity extends AppCompatActivity {
         binding.textviewDistrict.setOnClickListener(v -> {
             openDistrictDialog();
         });
+
+
+        binding.inputSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                runThread(s.toString().trim().toLowerCase(Locale.ROOT), selectedDistrictList, selectedCategoryRes, 1000);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                AfterTextChange = s.toString().trim().toLowerCase(Locale.ROOT);
+            }
+        });
     }
 
-    private void initSearchRestaurant() {
-        restaurantModels = new ArrayList<>();
-        restaurantModels.add(new RestaurantModel("ToCoToCo", "875/22, Đường Nguyễn văn Cừ, Phường Lộc Phát, Tp.Bảo Lộc, Tỉnh Lâm Đồng", "2.5", R.drawable.tocotoco_restaurant));
-        restaurantModels.add(new RestaurantModel("ToCoToCo", "875/22, Đường Nguyễn văn Cừ, Phường Lộc Phát, Tp.Bảo Lộc, Tỉnh Lâm Đồng", "2.5", R.drawable.tocotoco_restaurant));
-        restaurantModels.add(new RestaurantModel("ToCoToCo", "875/22, Đường Nguyễn văn Cừ, Phường Lộc Phát, Tp.Bảo Lộc, Tỉnh Lâm Đồng", "2.5", R.drawable.tocotoco_restaurant));
-        restaurantModels.add(new RestaurantModel("ToCoToCo", "875/22, Đường Nguyễn văn Cừ, Phường Lộc Phát, Tp.Bảo Lộc, Tỉnh Lâm Đồng", "2.5", R.drawable.tocotoco_restaurant));
-        restaurantModels.add(new RestaurantModel("ToCoToCo", "875/22, Đường Nguyễn văn Cừ, Phường Lộc Phát, Tp.Bảo Lộc, Tỉnh Lâm Đồng", "2.5", R.drawable.tocotoco_restaurant));
-        restaurantModels.add(new RestaurantModel("ToCoToCo", "875/22, Đường Nguyễn văn Cừ, Phường Lộc Phát, Tp.Bảo Lộc, Tỉnh Lâm Đồng", "2.5", R.drawable.tocotoco_restaurant));
-        restaurantModels.add(new RestaurantModel("ToCoToCo", "875/22, Đường Nguyễn văn Cừ, Phường Lộc Phát, Tp.Bảo Lộc, Tỉnh Lâm Đồng", "2.5", R.drawable.tocotoco_restaurant));
-        restaurantModels.add(new RestaurantModel("ToCoToCo", "875/22, Đường Nguyễn văn Cừ, Phường Lộc Phát, Tp.Bảo Lộc, Tỉnh Lâm Đồng", "2.5", R.drawable.tocotoco_restaurant));
-        restaurantModels.add(new RestaurantModel("ToCoToCo", "875/22, Đường Nguyễn văn Cừ, Phường Lộc Phát, Tp.Bảo Lộc, Tỉnh Lâm Đồng", "2.5", R.drawable.tocotoco_restaurant));
-        restaurantModels.add(new RestaurantModel("ToCoToCo", "875/22, Đường Nguyễn văn Cừ, Phường Lộc Phát, Tp.Bảo Lộc, Tỉnh Lâm Đồng", "2.5", R.drawable.tocotoco_restaurant));
-        restaurantModels.add(new RestaurantModel("ToCoToCo", "875/22, Đường Nguyễn văn Cừ, Phường Lộc Phát, Tp.Bảo Lộc, Tỉnh Lâm Đồng", "2.5", R.drawable.tocotoco_restaurant));
-        restaurantModels.add(new RestaurantModel("ToCoToCo", "875/22, Đường Nguyễn văn Cừ, Phường Lộc Phát, Tp.Bảo Lộc, Tỉnh Lâm Đồng", "2.5", R.drawable.tocotoco_restaurant));
-
-        searchRestaurantAdapter = new SearchRestaurantAdapter(restaurantModels);
-        binding.recycleViewSearch.setAdapter(searchRestaurantAdapter);
-
-       /* RecyclerView.ItemDecoration itemDecoration = new DividerItemDecorator(getDrawable(R.drawable.divider));
-        binding.recycleViewSearch.addItemDecoration(itemDecoration);*/
-
+    private void runThread(String textChange, ArrayList<String> district, ArrayList<String> category, long millis) {
+        new Thread() {
+            public void run() {
+                try {
+                    Thread.sleep(millis);
+                    if (textChange.equals(AfterTextChange)) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getApplicationContext(), textChange, Toast.LENGTH_SHORT).show();
+                                // getRestaurantBySearch(new GetRestaurantBySearch(district, category, textChange, String.valueOf(Para.longitude), String.valueOf(Para.latitude)));
+                                getRestaurantBySearch(new GetRestaurantBySearch(district, category, textChange, String.valueOf(108.200364), String.valueOf(16.090288)));
+                            }
+                        });
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
     }
 
     private AlertDialog dialog;
     private CategoryRestaurantAdapter categoryRestaurantAdapter;
-    private ArrayList<CategoryRestaurantAdapter.CategoryRestaurant> categoryRestaurants;
 
-    private ArrayList<CategoryRestaurantAdapter.CategoryRestaurant> selectedCategoryRestaurants;
+    private ArrayList<CategoryRes> selectedCategoryRestaurants;
     private ArrayList<ImageView> selectedImageViews;
 
     public void openCategoryRestaurantDialog() {
-
-        categoryRestaurants = new ArrayList<>();
-        categoryRestaurants.add(new CategoryRestaurantAdapter.CategoryRestaurant("Cơm", R.drawable.rice, false));
-        categoryRestaurants.add(new CategoryRestaurantAdapter.CategoryRestaurant("Lẩu", R.drawable.hotpot, false));
-        categoryRestaurants.add(new CategoryRestaurantAdapter.CategoryRestaurant("Trà sửa", R.drawable.bubble_tea, true));
-        categoryRestaurants.add(new CategoryRestaurantAdapter.CategoryRestaurant("Bia", R.drawable.beer, true));
-        categoryRestaurants.add(new CategoryRestaurantAdapter.CategoryRestaurant("Nướng", R.drawable.barbecue, false));
-        categoryRestaurants.add(new CategoryRestaurantAdapter.CategoryRestaurant("Coffee", R.drawable.coffee, false));
-        categoryRestaurants.add(new CategoryRestaurantAdapter.CategoryRestaurant("Phở", R.drawable.ramen, true));
-        categoryRestaurants.add(new CategoryRestaurantAdapter.CategoryRestaurant("Nước ép", R.drawable.drink, false));
-        categoryRestaurants.add(new CategoryRestaurantAdapter.CategoryRestaurant("Pizza", R.drawable.pizza, true));
 
         final LayoutCategoryRestaurantDialogBinding layoutCategoryRestaurantDialogBinding
                 = LayoutCategoryRestaurantDialogBinding.inflate(LayoutInflater.from(SearchActivity.this));
@@ -146,7 +180,9 @@ public class SearchActivity extends AppCompatActivity {
         builder.setView(layoutCategoryRestaurantDialogBinding.getRoot());
         dialog = builder.create();
         layoutCategoryRestaurantDialogBinding.buttonApply.setOnClickListener(v -> {
-            Toast.makeText(getApplicationContext(), selectedCategoryRestaurants.size() + "", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), selectedCategoryRes.toString(), Toast.LENGTH_SHORT).show();
+            dialog.dismiss();
+            runThread(AfterTextChange, selectedDistrictList, selectedCategoryRes, 0);
         });
 
         layoutCategoryRestaurantDialogBinding.buttonDeleteAll.setOnClickListener(v -> {
@@ -154,17 +190,28 @@ public class SearchActivity extends AppCompatActivity {
                 imageView.setBackground(getApplicationContext().getDrawable(R.drawable.layout_category_restaurant));
                 imageView.setTag("unSelected");
             }
+            for (CategoryRes categoryRes : categoryModelArrayList) {
+                categoryRes.setSelected(false);
+            }
+            selectedCategoryRes.clear();
             selectedImageViews.clear();
             selectedCategoryRestaurants.clear();
+            if (categoryRestaurantAdapter != null)
+                categoryRestaurantAdapter.notifyDataSetChanged();
+
         });
 
-        categoryRestaurantAdapter = new CategoryRestaurantAdapter(categoryRestaurants, getApplicationContext(), new CategoryRestaurantAdapter.CategoryRestaurantListeners() {
+        categoryRestaurantAdapter = new CategoryRestaurantAdapter(categoryModelArrayList, getApplicationContext(), new CategoryRestaurantAdapter.CategoryRestaurantListeners() {
             @Override
-            public void onCategoryRestaurantClicked(CategoryRestaurantAdapter.CategoryRestaurant categoryRestaurant, int position, boolean isSelected, ImageView imageView) {
+            public void onCategoryRestaurantClicked(CategoryRes categoryRestaurant, int position, boolean isSelected, ImageView imageView) {
                 if (isSelected) {
+                    categoryRestaurant.setSelected(true);
                     selectedCategoryRestaurants.add(categoryRestaurant);
+                    selectedCategoryRes.add(categoryRestaurant.getId());
                     selectedImageViews.add(imageView);
                 } else {
+                    categoryRestaurant.setSelected(false);
+                    selectedCategoryRes.remove(categoryRestaurant.getId());
                     selectedCategoryRestaurants.remove(categoryRestaurant);
                     selectedImageViews.remove(imageView);
                 }
@@ -180,7 +227,6 @@ public class SearchActivity extends AppCompatActivity {
         dialog.show();
     }
 
-
     public void openDistrictDialog() {
 
         final LayoutCategoryRestaurantDialogBinding layoutCategoryRestaurantDialogBinding
@@ -190,20 +236,26 @@ public class SearchActivity extends AppCompatActivity {
         dialog = builder.create();
         layoutCategoryRestaurantDialogBinding.textTitle.setText("Quận/Huyện");
 
-
         layoutCategoryRestaurantDialogBinding.buttonDeleteAll.setOnClickListener(v -> {
             for (View view : selectedViewArrayList) {
                 (view.findViewById(R.id.layoutDistrict)).setBackground(dialog.getContext().getDrawable(R.drawable.background_districts_search));
-
                 ((TextView) view.findViewById(R.id.textViewNameDistrict)).setTag("UnSelected");
                 ((TextView) view.findViewById(R.id.textViewNameDistrict)).setTextColor(dialog.getContext().getColor(R.color.ColorTextUnSelected));
             }
+            for (DistrictModel districtModel : districtModels) {
+                districtModel.setSelected(false);
+            }
             selectedDistrictList.clear();
             selectedViewArrayList.clear();
+            if(searchDistrictsAdapter!=null){
+                searchDistrictsAdapter.notifyDataSetChanged();
+            }
         });
 
         layoutCategoryRestaurantDialogBinding.buttonApply.setOnClickListener(v -> {
             Toast.makeText(getApplicationContext(), selectedDistrictList.toString(), Toast.LENGTH_SHORT).show();
+            dialog.dismiss();
+            runThread(AfterTextChange, selectedDistrictList, selectedCategoryRes, 0);
         });
 
         searchDistrictsAdapter = new SearchDistrictsAdapter(districtModels, getApplicationContext(), new SearchDistrictsAdapter.SearchDistrictsListeners() {
@@ -212,10 +264,11 @@ public class SearchActivity extends AppCompatActivity {
                 if (isSelected) {
                     selectedDistrictList.add(districtModel.getName());
                     selectedViewArrayList.add(view);
-
+                    districtModel.setSelected(true);
                 } else {
                     selectedDistrictList.remove(districtModel.getName());
                     selectedViewArrayList.remove(view);
+                    districtModel.setSelected(false);
                 }
             }
         });
@@ -240,7 +293,6 @@ public class SearchActivity extends AppCompatActivity {
                 if (response.body() != null && response.body().getDistricts().size() > 0) {
                     districtModels = response.body().getDistricts();
                 }
-
             }
 
             @Override
@@ -250,5 +302,48 @@ public class SearchActivity extends AppCompatActivity {
         });
     }
 
+    private void getRestaurantBySearch(GetRestaurantBySearch getRestaurantBySearch) {
+        com.psteam.lib.Services.ServiceAPI serviceAPI = com.psteam.lib.RetrofitClient.getRetrofit().create(com.psteam.lib.Services.ServiceAPI.class);
+        Call<GetRestaurantModel> call = serviceAPI.GetResBySearch(getRestaurantBySearch);
+        call.enqueue(new Callback<GetRestaurantModel>() {
+            @Override
+            public void onResponse(Call<GetRestaurantModel> call, Response<GetRestaurantModel> response) {
+                if (response.body() != null && response.body().getStatus().equals("1")) {
+                    if (response.body().getResList().size() > 0) {
+                        restaurantModels.clear();
+                        restaurantModels.addAll(response.body().getResList());
+                        searchRestaurantAdapter.notifyItemRangeChanged(0, restaurantModels.size());
+                    } else {
 
+                    }
+                } else if (response.body() != null && response.body().getStatus().equals("0")) {
+                    if (searchRestaurantAdapter != null) {
+                        restaurantModels.clear();
+                        searchRestaurantAdapter.notifyDataSetChanged();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetRestaurantModel> call, Throwable t) {
+                Log.d("Log", t.getMessage());
+            }
+        });
+    }
+
+    private void initSearchRestaurantAdapter() {
+        searchRestaurantAdapter = new SearchRestaurantAdapter(restaurantModels, SearchActivity.this, this::onRestaurantClicked);
+        LayoutAnimationController layoutAnimationController = AnimationUtils.loadLayoutAnimation(SearchActivity.this, R.anim.layout_animation_left_tp_right);
+        binding.recycleViewSearch.setLayoutAnimation(layoutAnimationController);
+        binding.recycleViewSearch.setAdapter(searchRestaurantAdapter);
+    }
+
+    @Override
+    public void onRestaurantClicked(RestaurantModel restaurantModel) {
+        Intent intent = new Intent(getApplicationContext(), RestaurantDetailsActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("restaurantModel", restaurantModel);
+        intent.putExtra("bundle", bundle);
+        startActivity(intent);
+    }
 }

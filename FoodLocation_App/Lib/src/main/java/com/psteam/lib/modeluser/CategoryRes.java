@@ -6,6 +6,15 @@ public class CategoryRes implements Serializable {
     private String name;
     private String icon;
     private String id;
+    private boolean isSelected;
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
 
     public String getName() {
         return name;

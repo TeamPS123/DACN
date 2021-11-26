@@ -9,6 +9,7 @@ public class DistrictModel {
     private String name;
     private String province_code;
     private ArrayList<WardModel> wards;
+    private boolean selected;
 
     public DistrictModel(String code, String division_type, String codename, String name, String province_code) {
         this.code = code;
@@ -19,6 +20,14 @@ public class DistrictModel {
     }
 
     public DistrictModel() {
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 
     public ArrayList<WardModel> getWards() {

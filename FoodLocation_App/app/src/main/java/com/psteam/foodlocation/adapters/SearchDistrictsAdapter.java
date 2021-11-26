@@ -60,18 +60,32 @@ public class SearchDistrictsAdapter extends RecyclerView.Adapter<SearchDistricts
             binding.textViewNameDistrict.setText(districtModel.getName());
 
             binding.getRoot().setOnClickListener(v -> {
-                if (binding.textViewNameDistrict.getTag().equals("UnSelected")) {
-                    binding.getRoot().setBackground(context.getDrawable(R.drawable.background_districts_search_selected));
-                    binding.textViewNameDistrict.setTag("Selected");
-                    binding.textViewNameDistrict.setTextColor(context.getColor(R.color.ColorTextSelected));
-                    searchDistrictsListeners.onDistrictClicked(districtModel, binding.getRoot(), true);
-                } else {
-                    binding.getRoot().setBackground(context.getDrawable(R.drawable.background_districts_search));
-                    binding.textViewNameDistrict.setTag("UnSelected");
-                    binding.textViewNameDistrict.setTextColor(context.getColor(R.color.ColorTextUnSelected));
-                    searchDistrictsListeners.onDistrictClicked(districtModel, binding.getRoot(), false);
-                }
+                isSelected(districtModel);
             });
+
+            if(districtModel.isSelected()){
+                binding.getRoot().setBackground(context.getDrawable(R.drawable.background_districts_search_selected));
+                binding.textViewNameDistrict.setTag("Selected");
+                binding.textViewNameDistrict.setTextColor(context.getColor(R.color.ColorTextSelected));
+            }else {
+                binding.getRoot().setBackground(context.getDrawable(R.drawable.background_districts_search));
+                binding.textViewNameDistrict.setTag("UnSelected");
+                binding.textViewNameDistrict.setTextColor(context.getColor(R.color.ColorTextUnSelected));
+            }
+        }
+
+        public void isSelected(DistrictModel districtModel){
+            if (binding.textViewNameDistrict.getTag().equals("UnSelected")) {
+                binding.getRoot().setBackground(context.getDrawable(R.drawable.background_districts_search_selected));
+                binding.textViewNameDistrict.setTag("Selected");
+                binding.textViewNameDistrict.setTextColor(context.getColor(R.color.ColorTextSelected));
+                searchDistrictsListeners.onDistrictClicked(districtModel, binding.getRoot(), true);
+            } else {
+                binding.getRoot().setBackground(context.getDrawable(R.drawable.background_districts_search));
+                binding.textViewNameDistrict.setTag("UnSelected");
+                binding.textViewNameDistrict.setTextColor(context.getColor(R.color.ColorTextUnSelected));
+                searchDistrictsListeners.onDistrictClicked(districtModel, binding.getRoot(), false);
+            }
         }
     }
 

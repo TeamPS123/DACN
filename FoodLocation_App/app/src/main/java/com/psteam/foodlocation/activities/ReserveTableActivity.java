@@ -44,6 +44,7 @@ import com.psteam.foodlocation.databinding.LayoutUpdateUserInfoDialogBinding;
 import com.psteam.foodlocation.ultilities.Constants;
 import com.psteam.foodlocation.ultilities.CustomToast;
 import com.psteam.foodlocation.ultilities.DividerItemDecorator;
+import com.psteam.foodlocation.ultilities.Para;
 import com.psteam.foodlocation.ultilities.PreferenceManager;
 import com.psteam.foodlocation.ultilities.Token;
 import com.psteam.lib.Services.ServiceAPI;
@@ -115,6 +116,7 @@ public class ReserveTableActivity extends AppCompatActivity {
         socket();
         initData();
         GetMenuRes(restaurantModel.getRestaurantId());
+
     }
 
     private void initData() {
@@ -139,6 +141,11 @@ public class ReserveTableActivity extends AppCompatActivity {
             binding.line3.setVisibility(View.GONE);
             binding.text5.setVisibility(View.GONE);
             binding.image4.setVisibility(View.GONE);
+        }
+
+        if (Para.userModel != null) {
+            binding.inputFullName.setText(Para.userModel.getFullName().toString());
+            binding.inputPhoneNumber.setText(Para.userModel.getPhone().toString());
         }
     }
 

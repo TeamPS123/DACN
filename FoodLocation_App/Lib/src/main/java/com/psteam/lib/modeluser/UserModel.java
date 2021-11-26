@@ -1,6 +1,8 @@
 package com.psteam.lib.modeluser;
 
-public class UserModel {
+import java.io.Serializable;
+
+public class UserModel implements Serializable {
     private boolean gender;
 
     private String phone;

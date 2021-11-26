@@ -53,27 +53,29 @@ public class UserInfoActivity extends AppCompatActivity {
     private UserModel user;
     private String UserID;
     private Token dataToken;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityUserInfoBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         preferenceManager = new PreferenceManager(getApplicationContext());
-
-        oldPassword=preferenceManager.getString(Constants.Password);
+        oldPassword = preferenceManager.getString(Constants.Password);
         dataToken = new Token(UserInfoActivity.this);
-
-
-          UserID=preferenceManager.getString(Constants.USER_ID);
-        GetInfo(UserID);
+        UserID = preferenceManager.getString(Constants.USER_ID);
         init();
         setListeners();
-
-
     }
 
     private void init() {
         setFullScreen();
+        Bundle bundle = getIntent().getBundleExtra("bundle");
+        user = (UserModel) bundle.getSerializable("user");
+        binding.textViewUserName.setText(user.getFullName());
+        binding.textViewPhoneNumber.setText(user.getPhone());
+        String gender = user.getGender() == true ? "Nam" : "Nữ";
+        binding.textViewGender.setText(gender);
+
     }
 
     private void setFullScreen() {
@@ -128,8 +130,8 @@ public class UserInfoActivity extends AppCompatActivity {
                 boolean gender = layoutUpdateUserInfoDialogBinding.spinnerGender.getSelectedIndex() == 0 ? true : false;
                 String name = layoutUpdateUserInfoDialogBinding.inputFullName.getText().toString().trim();
 
-                ChangeInfoModel  userModel=  new ChangeInfoModel(gender,oldPassword,true,
-                        name,UserID);
+                ChangeInfoModel userModel = new ChangeInfoModel(gender, oldPassword, true,
+                        name, UserID);
                 ChangeInfo(userModel);
             }
 
@@ -144,9 +146,6 @@ public class UserInfoActivity extends AppCompatActivity {
 
     }
 
-
-
-
     private void openDialogChangePassword() {
         final LayoutChangePasswordDialogBinding
                 layoutChangePasswordDialogBinding = LayoutChangePasswordDialogBinding.inflate(LayoutInflater.from(UserInfoActivity.this));
@@ -155,17 +154,17 @@ public class UserInfoActivity extends AppCompatActivity {
         builder.setView(layoutChangePasswordDialogBinding.getRoot());
         builder.setCancelable(false);
         dialog = builder.create();
-        layoutChangePasswordDialogBinding.buttonBack.setOnClickListener(v ->{
+        layoutChangePasswordDialogBinding.buttonBack.setOnClickListener(v -> {
             dialog.dismiss();
         });
         layoutChangePasswordDialogBinding.buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(isValidPass(layoutChangePasswordDialogBinding)){
+                if (isValidPass(layoutChangePasswordDialogBinding)) {
                     String password = layoutChangePasswordDialogBinding.inputNewPassword.getText().toString().trim();
 
-                    ChangeInfoModel  userModel=  new ChangeInfoModel(user.getGender(),password,true,
-                            user.getFullName(),UserID);
+                    ChangeInfoModel userModel = new ChangeInfoModel(user.getGender(), password, false,
+                            user.getFullName(), UserID);
 
                     ChangeIPassword(userModel);
                 }
@@ -184,8 +183,8 @@ public class UserInfoActivity extends AppCompatActivity {
         dialog = builder.create();
 
         layoutCheckPasswordDialogBinding.buttonNext.setOnClickListener(v -> {
-            String strOldPass= layoutCheckPasswordDialogBinding.inputPassword.getText().toString().trim();
-            if (strOldPass.equals(oldPassword)){
+            String strOldPass = layoutCheckPasswordDialogBinding.inputPassword.getText().toString().trim();
+            if (strOldPass.equals(oldPassword)) {
                 if (type == Constants.FLAG_UPDATE_USER_INFO) {
                     dialog.dismiss();
                     openDialogChangeInfo();
@@ -193,12 +192,9 @@ public class UserInfoActivity extends AppCompatActivity {
                     dialog.dismiss();
                     openDialogChangePassword();
                 }
-            }
-            else {
+            } else {
                 Toast.makeText(getApplicationContext(), "Mật khẩu cũ không đúng", Toast.LENGTH_SHORT).show();
             }
-
-
         });
 
         layoutCheckPasswordDialogBinding.buttonBack.setOnClickListener(v -> {
@@ -208,43 +204,39 @@ public class UserInfoActivity extends AppCompatActivity {
     }
 
 
-
     private void GetInfo(String id) {
         ServiceAPI serviceAPI = getRetrofit().create(ServiceAPI.class);
-        Call<GetInfoUser> call = serviceAPI.GetDetailUser(dataToken.getToken(),id);
+        Call<GetInfoUser> call = serviceAPI.GetDetailUser(dataToken.getToken(), id);
         call.enqueue(new Callback<GetInfoUser>() {
             @Override
             public void onResponse(Call<GetInfoUser> call, Response<GetInfoUser> response) {
                 if (response.body() != null && response.body().getStatus().equals("1")) {
-                    user= response.body().getUser();
+                    user = response.body().getUser();
                     binding.textViewUserName.setText(user.getFullName());
                     binding.textViewPhoneNumber.setText(user.getPhone());
-                    String gender= user.getGender() == true ?"Nam":"Nữ";
+                    String gender = user.getGender() == true ? "Nam" : "Nữ";
                     binding.textViewGender.setText(gender);
                 }
-
             }
 
             @Override
             public void onFailure(Call<GetInfoUser> call, Throwable t) {
                 Log.d("Log:", t.getMessage());
-
-
             }
         });
     }
+
     private void ChangeInfo(ChangeInfoModel user) {
         ServiceAPI serviceAPI = getRetrofit().create(ServiceAPI.class);
-        Call<message> call = serviceAPI.ChangeInfoUser(dataToken.getToken(),user);
+        Call<message> call = serviceAPI.ChangeInfoUser(dataToken.getToken(), user);
         call.enqueue(new Callback<message>() {
             @Override
             public void onResponse(Call<message> call, Response<message> response) {
                 if (response.body() != null && response.body().getStatus().equals("1")) {
                     Toast.makeText(getApplicationContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
-                   dialog.dismiss();
+                    dialog.dismiss();
                     GetInfo(UserID);
                 }
-
             }
 
             @Override
@@ -255,16 +247,20 @@ public class UserInfoActivity extends AppCompatActivity {
             }
         });
     }
+
     private void ChangeIPassword(ChangeInfoModel user) {
         ServiceAPI serviceAPI = getRetrofit().create(ServiceAPI.class);
-        Call<message> call = serviceAPI.ChangeInfoUser(dataToken.getToken(),user);
+        Call<message> call = serviceAPI.ChangeInfoUser(dataToken.getToken(), user);
         call.enqueue(new Callback<message>() {
             @Override
             public void onResponse(Call<message> call, Response<message> response) {
                 if (response.body() != null && response.body().getStatus().equals("1")) {
                     Toast.makeText(getApplicationContext(), "Cập nhật thành công, vui lòng đăng nhập lại", Toast.LENGTH_SHORT).show();
                     preferenceManager.clear();
-                    startActivity(new Intent(UserInfoActivity.this, SignInActivity.class));
+                    Intent intent = new Intent(UserInfoActivity.this, SignInActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    dialog.dismiss();
+                    startActivity(intent);
                     finishAffinity();
                 }
 
@@ -278,13 +274,13 @@ public class UserInfoActivity extends AppCompatActivity {
             }
         });
     }
+
     private boolean isValid(LayoutUpdateUserInfoDialogBinding
                                     layoutUpdateUserInfoDialogBinding) {
         if (layoutUpdateUserInfoDialogBinding.inputFullName.getText().toString().trim().isEmpty()) {
             layoutUpdateUserInfoDialogBinding.inputFullName.setError("Họ và tên không được bỏ trống");
             return false;
-        }
-        else {
+        } else {
             return true;
         }
     }

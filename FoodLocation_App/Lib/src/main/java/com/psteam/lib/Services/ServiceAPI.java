@@ -3,6 +3,7 @@ package com.psteam.lib.Services;
 import com.psteam.lib.modeluser.GetCategoryResModel;
 import com.psteam.lib.modeluser.GetMenuResModel;
 import com.psteam.lib.modeluser.GetRestaurantByDistance;
+import com.psteam.lib.modeluser.GetRestaurantBySearch;
 import com.psteam.lib.modeluser.GetRestaurantModel;
 import com.psteam.lib.modeluser.InsertReserveFoodModel;
 import com.psteam.lib.modeluser.InsertReserveTableModel;
@@ -35,6 +36,9 @@ public interface ServiceAPI {
 
     @POST("api/getRes_Distance")
     Call<GetRestaurantModel> GetResByDistance(@Body GetRestaurantByDistance getRestaurantByDistance);
+
+    @POST("api/getResWithSupperSearch")
+    Call<GetRestaurantModel> GetResBySearch(@Body GetRestaurantBySearch getRestaurantBySearch);
 
     @POST("api/reserveTable")
     Call<message> ReserveTable(@Header("Authorization") String token, @Body InsertReserveTableModel insertReserveTableModel);
