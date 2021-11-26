@@ -1,25 +1,30 @@
 package com.psteam.foodlocation.adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.psteam.foodlocation.databinding.CategoryItemContainerBinding;
 import com.psteam.foodlocation.listeners.CategoryListener;
 import com.psteam.foodlocation.models.CategoryModel;
+import com.psteam.lib.modeluser.CategoryRes;
 
 import java.util.List;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
 
-    private final List<CategoryModel> categoryModelList;
+    private final List<CategoryRes> categoryModelList;
     private final CategoryListener categoryListener;
+    private final Context context;
 
-    public CategoryAdapter(List<CategoryModel> categoryModelList, CategoryListener categoryListener) {
+    public CategoryAdapter(List<CategoryRes> categoryModelList, CategoryListener categoryListener, Context context) {
         this.categoryModelList = categoryModelList;
         this.categoryListener = categoryListener;
+        this.context = context;
     }
 
     @NonNull
@@ -51,8 +56,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             binding = itemView;
         }
 
-        public void setData(CategoryModel categoryModel) {
-            binding.imageViewCategory.setImageResource(categoryModel.getImage());
+        public void setData(CategoryRes categoryModel) {
+
+            Glide.with(context).load(categoryModel.getIcon()).into(binding.imageViewCategory);
+
             binding.textViewName.setText(categoryModel.getName());
 
             binding.getRoot().setOnClickListener(v -> {

@@ -1,23 +1,30 @@
 package com.psteam.foodlocation.adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.psteam.foodlocation.databinding.FoodRestaurantItemContainerBinding;
+import com.psteam.lib.modeluser.RestaurantModel;
 
 import java.util.List;
+import java.util.Random;
 
 public class RestaurantPostAdapter extends RecyclerView.Adapter<RestaurantPostAdapter.RestaurantPostViewHolder> {
 
-    private final List<FoodRestaurant> foodRestaurants;
+    private final List<RestaurantModel> foodRestaurants;
     private final RestaurantPostListeners restaurantPostListener;
+    private final Context context;
 
-    public RestaurantPostAdapter(List<FoodRestaurant> foodRestaurants, RestaurantPostListeners restaurantPostListener) {
+    public RestaurantPostAdapter(List<RestaurantModel> foodRestaurants, RestaurantPostListeners restaurantPostListener, Context context) {
         this.foodRestaurants = foodRestaurants;
         this.restaurantPostListener = restaurantPostListener;
+        this.context = context;
     }
 
     @NonNull
@@ -50,13 +57,20 @@ public class RestaurantPostAdapter extends RecyclerView.Adapter<RestaurantPostAd
             binding = itemView;
         }
 
-        public void setData(FoodRestaurant foodRestaurant) {
-            binding.imageViewRestaurant.setImageResource(foodRestaurant.getImageRestaurant());
-            binding.textViewRestaurantName.setText(foodRestaurant.getNameRestaurant());
-            binding.ratingBar.setRating((float) foodRestaurant.getRating());
-            binding.textViewCountReview.setText(String.valueOf(foodRestaurant.getTotalReview()));
-            binding.textViewRestaurantAddress.setText(foodRestaurant.getAddress());
-            binding.textViewPromotion.setText(foodRestaurant.getDiscount());
+        public void setData(RestaurantModel foodRestaurant) {
+            if (foodRestaurant.getPic().size()>0) {
+                Glide.with(context).load(foodRestaurant.getPic().get(new Random().nextInt(foodRestaurant.getPic().size()))).thumbnail(0.3f).into(binding.imageViewRestaurant);
+            }
+            if (foodRestaurant.getPromotionRes().size()>0) {
+                binding.textViewRestaurantName.setText(String.format("%s: %s",foodRestaurant.getName(),foodRestaurant.getPromotionRes().get(0).getName()));
+                binding.textViewPromotion.setText(String.format("-%s%%", foodRestaurant.getPromotionRes().get(0).getValue()));
+                binding.textViewPromotion.setVisibility(View.VISIBLE);
+            }else {
+                binding.textViewRestaurantName.setText(foodRestaurant.getName());
+                binding.textViewPromotion.setVisibility(View.GONE);
+            }
+            binding.ratingBar.setRating(4.5f);
+            binding.textViewRestaurantAddress.setText(String.format("%s %s %s", foodRestaurant.getLine(), foodRestaurant.getDistrict(), foodRestaurant.getCity()));
             binding.getRoot().setOnClickListener(v -> {
                 restaurantPostListener.onRestaurantPostClicked(foodRestaurant);
             });
@@ -64,72 +78,6 @@ public class RestaurantPostAdapter extends RecyclerView.Adapter<RestaurantPostAd
     }
 
     public interface RestaurantPostListeners {
-        void onRestaurantPostClicked(FoodRestaurant foodRestaurant);
-    }
-
-    public static class FoodRestaurant {
-        private int imageRestaurant;
-        private String nameRestaurant;
-        private double rating;
-        private int totalReview;
-        private String address;
-        private String discount;
-
-        public FoodRestaurant(int imageRestaurant, String nameRestaurant, double rating, int totalReview, String address, String discount) {
-            this.imageRestaurant = imageRestaurant;
-            this.nameRestaurant = nameRestaurant;
-            this.rating = rating;
-            this.totalReview = totalReview;
-            this.address = address;
-            this.discount = discount;
-        }
-
-        public int getImageRestaurant() {
-            return imageRestaurant;
-        }
-
-        public void setImageRestaurant(int imageRestaurant) {
-            this.imageRestaurant = imageRestaurant;
-        }
-
-        public String getNameRestaurant() {
-            return nameRestaurant;
-        }
-
-        public void setNameRestaurant(String nameRestaurant) {
-            this.nameRestaurant = nameRestaurant;
-        }
-
-        public double getRating() {
-            return rating;
-        }
-
-        public void setRating(double rating) {
-            this.rating = rating;
-        }
-
-        public int getTotalReview() {
-            return totalReview;
-        }
-
-        public void setTotalReview(int totalReview) {
-            this.totalReview = totalReview;
-        }
-
-        public String getAddress() {
-            return address;
-        }
-
-        public void setAddress(String address) {
-            this.address = address;
-        }
-
-        public String getDiscount() {
-            return discount;
-        }
-
-        public void setDiscount(String discount) {
-            this.discount = discount;
-        }
+        void onRestaurantPostClicked(RestaurantModel foodRestaurant);
     }
 }

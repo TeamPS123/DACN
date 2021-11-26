@@ -1,7 +1,7 @@
 package com.psteam.foodlocation.listeners;
 
-import com.psteam.foodlocation.models.CategoryModel;
+import com.psteam.lib.modeluser.CategoryRes;
 
 public interface CategoryListener {
-    void onCategoryClick(CategoryModel categoryModel);
+    void onCategoryClick(CategoryRes categoryModel);
 }

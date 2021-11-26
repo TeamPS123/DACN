@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.psteam.foodlocation.databinding.ChooseNumberPeopleItemContainerBinding;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class ChooseDateReserveTableAdapter extends RecyclerView.Adapter<ChooseDateReserveTableAdapter.ChooseDateReserveTableViewHolder>{
@@ -80,9 +81,18 @@ public class ChooseDateReserveTableAdapter extends RecyclerView.Adapter<ChooseDa
 
     public static class DateReserveTable{
         private String day;
-
-        public DateReserveTable(String day) {
+        private LocalDate date;
+        public DateReserveTable(String day, LocalDate date) {
             this.day = day;
+            this.date = date;
+        }
+
+        public LocalDate getDate() {
+            return date;
+        }
+
+        public void setDate(LocalDate date) {
+            this.date = date;
         }
 
         public String getDay() {

@@ -1,6 +1,6 @@
 package com.psteam.foodlocation.activities;
 
-import static com.google.gson.internal.$Gson$Types.arrayOf;
+import static com.psteam.foodlocation.ultilities.RetrofitClient.getRetrofitGoogleMapAPI;
 
 import android.Manifest;
 import android.content.Intent;
@@ -11,9 +11,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,18 +34,26 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.psteam.foodlocation.R;
 import com.psteam.foodlocation.adapters.ChooseDateReserveTableAdapter;
 import com.psteam.foodlocation.adapters.ChooseNumberPeopleAdapter;
-import com.psteam.foodlocation.adapters.FoodReserveAdapter;
 import com.psteam.foodlocation.adapters.RestaurantAddressAdapter;
 import com.psteam.foodlocation.adapters.RestaurantPostAdapter;
 import com.psteam.foodlocation.adapters.TimeBookTableAdapter;
 import com.psteam.foodlocation.databinding.ActivityRestaurantDetailsBinding;
 import com.psteam.foodlocation.adapters.RestaurantPhotoAdapter;
+import com.psteam.foodlocation.models.GoogleMapApiModels.DirectionResponses;
+import com.psteam.foodlocation.services.ServiceAPI;
 import com.psteam.foodlocation.ultilities.CustomToast;
+import com.psteam.foodlocation.ultilities.Para;
+import com.psteam.lib.modeluser.RestaurantModel;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RestaurantDetailsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -57,17 +67,22 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
     private ArrayList<TimeBookTableAdapter.TimeBook> timeBooks;
 
     private RestaurantPostAdapter restaurantPostAdapter;
-    private ArrayList<RestaurantPostAdapter.FoodRestaurant> foodRestaurants;
 
     private ArrayList<RestaurantAddressAdapter.AddressRestaurant> addressRestaurants;
     private ArrayList<ChooseNumberPeopleAdapter.NumberPeople> numberPeople;
     private ArrayList<ChooseDateReserveTableAdapter.DateReserveTable> dateReserveTables;
 
+    private String AddressRestaurantReserve;
+    private LocalDate DateReserve;
+    private int NumberReserve;
 
     private Handler sliderHandler = new Handler();
 
     private int currentItem;
     private int totalItem;
+
+    private String distance;
+    private String time;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -88,7 +103,43 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
         setFullScreen();
         initSliderPhotoRestaurant();
         initTimeBookTable();
-        initFoodRestaurant();
+        //initFoodRestaurant();
+
+        getDataIntent();
+    }
+
+    private RestaurantModel restaurantModel;
+
+    private void getDataIntent() {
+        Bundle bundle = getIntent().getBundleExtra("bundle");
+        restaurantModel = (RestaurantModel) bundle.getSerializable("restaurantModel");
+        if (restaurantModel.getPromotionRes().size() > 0) {
+            binding.textViewRestaurantName.setText(String.format("%s: %s", restaurantModel.getName(), restaurantModel.getPromotionRes().get(0).getName()));
+            binding.textViewPromotion.setText(String.format("-%s%%", restaurantModel.getPromotionRes().get(0).getValue()));
+            binding.textViewPromotion.setVisibility(View.VISIBLE);
+        } else {
+            binding.textViewRestaurantName.setText(restaurantModel.getName());
+            binding.textViewPromotion.setVisibility(View.GONE);
+        }
+        binding.textRestaurantName.setText(restaurantModel.getName());
+        binding.textViewCategory.setText(restaurantModel.getCategoryResStr());
+
+        if (restaurantModel.getPic().size() > 0) {
+
+        } else {
+
+        }
+
+        binding.textViewChooseAddress.setText(String.format("%s, %s, %s", restaurantModel.getLine(), restaurantModel.getDistrict(), restaurantModel.getCity()));
+
+        binding.textViewRestaurantNameDetails.setText(restaurantModel.getName());
+        binding.textViewAddress.setText(restaurantModel.getAddress());
+        binding.textViewCategoryRestaurant.setText(restaurantModel.getCategoryResStr());
+
+        AddressRestaurantReserve = restaurantModel.getAddress();
+        NumberReserve = 1;
+        DateReserve = LocalDate.now(ZoneId.of("Asia/Ho_Chi_Minh"));
+        getDistance(new LatLng(Para.latitude,Para.longitude),restaurantModel.getLatLng());
     }
 
     private void setFullScreen() {
@@ -98,7 +149,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
             w.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             w.setStatusBarColor(Color.TRANSPARENT);
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-
         }
     }
 
@@ -117,7 +167,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
                 binding.textViewReadMore.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_round_keyboard_arrow_down_24, 0);
             }
         });
-
 
         binding.textViewReadMoreRestaurantsText.setOnClickListener(v -> {
             if (binding.textViewReadMoreRestaurantsText.getText().equals(getText(R.string.read_more))) {
@@ -161,15 +210,16 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
                         REQUEST_CODE_PHONE_PERMISSION
                 );
             } else {
-                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "0587875442"));
+                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + restaurantModel.getPhoneRes()));
                 startActivity(intent);
             }
         });
 
-        binding.textViewDirections.setOnClickListener(v->{
-            startActivity(new Intent(getApplicationContext(),RestaurantMapActivity.class));
+        binding.textViewDirections.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), RestaurantMapActivity.class);
+            intent.putExtra("restaurantModel", restaurantModel);
+            startActivity(intent);
         });
-
     }
 
     private static final int REQUEST_CODE_PHONE_PERMISSION = 9;
@@ -179,7 +229,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_CODE_PHONE_PERMISSION && grantResults.length > 0) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "0587875442"));
+                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + restaurantModel.getPhoneRes()));
                 startActivity(intent);
             } else {
                 CustomToast.makeText(getApplicationContext(), "Permission denied", CustomToast.LENGTH_SHORT, CustomToast.WARNING).show();
@@ -208,13 +258,14 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
                 formattedString = localDate.format(formatter);
             }
 
-            dateReserveTables.add(new ChooseDateReserveTableAdapter.DateReserveTable(formattedString));
+            dateReserveTables.add(new ChooseDateReserveTableAdapter.DateReserveTable(formattedString, localDate));
         }
 
         chooseDateReserveTableFragment = new ChooseDateReserveTableFragment(dateReserveTables, new ChooseDateReserveTableAdapter.ChooseDateReserveTableListener() {
             @Override
             public void onChooseDateReserveTableClicked(ChooseDateReserveTableAdapter.DateReserveTable dateReserveTable) {
                 binding.textViewChooseDate.setText(dateReserveTable.getDay());
+                DateReserve = dateReserveTable.getDate();
                 chooseDateReserveTableFragment.dismiss();
             }
         });
@@ -227,7 +278,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
 
     private void clickOpenBottomSheetChooseNumberPeopleFragment() {
         numberPeople = new ArrayList<>();
-        for (int i = 2; i <= 21; i++) {
+        for (int i = 1; i <= 21; i++) {
             numberPeople.add(new ChooseNumberPeopleAdapter.NumberPeople(i));
         }
 
@@ -235,6 +286,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
             @Override
             public void ChooseNumberPeopleClicked(ChooseNumberPeopleAdapter.NumberPeople numberPeople) {
                 binding.textViewChoosePersonNumber.setText(String.format("%d Khách", numberPeople.getNumber()));
+                NumberReserve = numberPeople.getNumber();
                 chooseNumberPeopleBottomSheetFragment.dismiss();
             }
         });
@@ -248,11 +300,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
     private void clickOpenBottomSheetChooseAddressFragment() {
 
         addressRestaurants = new ArrayList<>();
-        addressRestaurants.add(new RestaurantAddressAdapter.AddressRestaurant("Nguyễn Văn Cừ", "875/22 Nguyễn Văn Cừ, P.Lộc Phát, Bảo Lộc, Lâm Đồng", "20.0km"));
-        addressRestaurants.add(new RestaurantAddressAdapter.AddressRestaurant("Nguyễn Công Chứ", "875/22 Nguyễn Công Chứ, P.Lộc Phát, Bảo Lộc, Lâm Đồng", "22.0km"));
-        addressRestaurants.add(new RestaurantAddressAdapter.AddressRestaurant("Đình Phong Phú", "875/22 Đình Phong Phú, P.Lộc Phát, Bảo Lộc, Lâm Đồng", "23.0km"));
-        addressRestaurants.add(new RestaurantAddressAdapter.AddressRestaurant("Phạm Văn Đồng", "875/22 Phạm Văn Đồng, P.Lộc Phát, Bảo Lộc, Lâm Đồng", "24.0km"));
-
+        addressRestaurants.add(new RestaurantAddressAdapter.AddressRestaurant(restaurantModel.getLine(), restaurantModel.getAddress(), distance));
 
         chooseAddressBottomSheetFragment = new ChooseAddressBottomSheetFragment(addressRestaurants, new RestaurantAddressAdapter.RestaurantAddressListener() {
             @Override
@@ -323,6 +371,13 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
             @Override
             public void onTimeBookTableClicked(TimeBookTableAdapter.TimeBook timeBook) {
                 Intent intent = new Intent(getApplicationContext(), ReserveTableActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("DateReserve", DateReserve);
+                bundle.putString("AddressRestaurantReserve", AddressRestaurantReserve);
+                bundle.putInt("NumberReserve", NumberReserve);
+                bundle.putString("TimeReserve", timeBook.getTime());
+                bundle.putSerializable("restaurantModel", restaurantModel);
+                intent.putExtra("bundle", bundle);
                 startActivity(intent);
             }
         });
@@ -330,20 +385,14 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
     }
 
     private void initFoodRestaurant() {
-        foodRestaurants = new ArrayList<>();
-        foodRestaurants.add(new RestaurantPostAdapter.FoodRestaurant(R.drawable.lau, "TAKA BBQ: GIẢM 15% TẤT CẢ GÓI BUFFET", 4, 10, "875/22 Nguyễn Văn Cừ", "-15%"));
-        foodRestaurants.add(new RestaurantPostAdapter.FoodRestaurant(R.drawable.lau, "TAKA BBQ: GIẢM 20% TẤT CẢ GÓI BUFFET", 4.6, 10, "875/22 Nguyễn Văn Cừ", "-15%"));
-        foodRestaurants.add(new RestaurantPostAdapter.FoodRestaurant(R.drawable.lau, "TAKA BBQ: GIẢM 25% TẤT CẢ GÓI BUFFET", 4.75, 10, "875/22 Nguyễn Văn Cừ", "-15%"));
-        foodRestaurants.add(new RestaurantPostAdapter.FoodRestaurant(R.drawable.lau, "TAKA BBQ: GIẢM 30% TẤT CẢ GÓI BUFFET", 4.4, 10, "875/22 Nguyễn Văn Cừ", "-15%"));
-        foodRestaurants.add(new RestaurantPostAdapter.FoodRestaurant(R.drawable.lau, "TAKA BBQ: GIẢM 35% TẤT CẢ GÓI BUFFET", 3, 10, "875/22 Nguyễn Văn Cừ", "-15%"));
 
-        restaurantPostAdapter = new RestaurantPostAdapter(foodRestaurants, new RestaurantPostAdapter.RestaurantPostListeners() {
+       /* restaurantPostAdapter = new RestaurantPostAdapter(foodRestaurants, new RestaurantPostAdapter.RestaurantPostListeners() {
             @Override
-            public void onRestaurantPostClicked(RestaurantPostAdapter.FoodRestaurant foodRestaurant) {
+            public void onRestaurantPostClicked(RestaurantModel foodRestaurant) {
                 startActivity(new Intent(getApplicationContext(), RestaurantDetailsActivity.class));
             }
-        });
-        binding.recycleViewPostFoodRestaurant.setAdapter(restaurantPostAdapter);
+        }, getApplicationContext());
+        binding.recycleViewPostFoodRestaurant.setAdapter(restaurantPostAdapter);*/
     }
 
     @Override
@@ -361,7 +410,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
-        LatLng latLng = new LatLng(11.5572771, 107.8466486);
+        LatLng latLng = restaurantModel.getLatLng();
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
         mMap.getUiSettings().setScrollGesturesEnabled(false);
         mMap.addMarker(new MarkerOptions().position(latLng));
@@ -369,6 +418,38 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(@NonNull LatLng latLng) {
+            }
+        });
+    }
+
+
+
+    private void getDistance(LatLng latLngOrigin, LatLng latLngDestination) {
+        String origin = String.valueOf(latLngOrigin.latitude) + "," + String.valueOf(latLngOrigin.longitude);
+        String destination = String.valueOf(latLngDestination.latitude) + "," + String.valueOf(latLngDestination.longitude);
+
+        ServiceAPI serviceAPI = getRetrofitGoogleMapAPI().create(ServiceAPI.class);
+        Call<DirectionResponses> call = serviceAPI.getDirection(origin, destination, getString(R.string.google_map_api_key));
+        call.enqueue(new Callback<DirectionResponses>() {
+            @Override
+            public void onResponse(Call<DirectionResponses> call, Response<DirectionResponses> response) {
+                if (response.body()!=null && response.body().getStatus().equals("OK")) {
+
+                    distance = response.body().getRoutes().get(0).getLegs().get(0).getDistance().getText();
+                    time = response.body().getRoutes().get(0).getLegs().get(0).getDuration().getText();
+
+                    binding.textViewChooseDistance.setText(String.format("(%s)",distance));
+                    binding.textViewDistance.setText(distance);
+
+                    Log.d("OKAY", response.message());
+                } else {
+                    CustomToast.makeText(getApplicationContext(), "Lỗi khi lấy dữ liệu bản đồ", CustomToast.LENGTH_SHORT,CustomToast.ERROR).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DirectionResponses> call, Throwable t) {
+                Log.e("TAG:", t.getLocalizedMessage());
             }
         });
     }

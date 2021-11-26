@@ -20,18 +20,19 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.psteam.foodlocation.R;
 import com.psteam.foodlocation.adapters.FoodAdapter;
 import com.psteam.foodlocation.adapters.MenuAdapter;
+import com.psteam.lib.modeluser.MenuModel;
 
 import java.util.List;
 
 public class MenuBottomSheetFragment extends BottomSheetDialogFragment {
 
-    private List<MenuAdapter.Menu> menus;
+    private List<MenuModel> menus;
     private FoodAdapter.FoodListeners foodListeners;
     private MenuAdapter menuAdapter;
     private BottomSheetDialog bottomSheetDialog;
     private BottomSheetBehavior mBehavior;
 
-    public MenuBottomSheetFragment(List<MenuAdapter.Menu> menus, FoodAdapter.FoodListeners foodListeners) {
+    public MenuBottomSheetFragment(List<MenuModel> menus, FoodAdapter.FoodListeners foodListeners) {
         this.menus = menus;
         this.foodListeners = foodListeners;
     }

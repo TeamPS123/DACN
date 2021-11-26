@@ -14,7 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.psteam.foodlocation.R;
 import com.psteam.foodlocation.databinding.MenuItemContainerBinding;
 import com.psteam.foodlocation.ultilities.DividerItemDecorator;
-import com.psteam.foodlocation.ultilities.VNCharacterUtils;
+import com.psteam.lib.modeluser.FoodModel;
+import com.psteam.lib.modeluser.MenuModel;
 
 import java.text.Normalizer;
 import java.util.ArrayList;
@@ -23,12 +24,12 @@ import java.util.Locale;
 
 public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder> implements Filterable {
 
-    private List<Menu> menus;
-    private List<Menu> oldMenus;
+    private List<MenuModel> menus;
+    private List<MenuModel> oldMenus;
     private final Context context;
     private final FoodAdapter.FoodListeners foodListeners;
 
-    public MenuAdapter(List<Menu> menus, Context context, FoodAdapter.FoodListeners foodListeners) {
+    public MenuAdapter(List<MenuModel> menus, Context context, FoodAdapter.FoodListeners foodListeners) {
         this.menus = menus;
         this.context = context;
         this.foodListeners = foodListeners;
@@ -67,16 +68,16 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
                 if (charStr.isEmpty()) {
                     menus = oldMenus;
                 } else {
-                    List<Menu> filteredList = new ArrayList<>();
-                    for (Menu row : oldMenus) {
-                        List<FoodAdapter.Food> filteredFoodList = new ArrayList<>();
-                        for (FoodAdapter.Food food : row.getFoodList()) {
-                            if (row.getId()==food.getMenuId() && (Normalizer.normalize(food.getName().toLowerCase(Locale.ROOT), Normalizer.Form.NFD).replaceAll("\\p{M}", "")).contains(charStr)) {
+                    List<MenuModel> filteredList = new ArrayList<>();
+                    for (MenuModel row : oldMenus) {
+                        ArrayList<FoodModel> filteredFoodList = new ArrayList<>();
+                        for (FoodModel food : row.getFoodList()) {
+                            if (/*row.getMenuId()==food.getMenuId() &&*/ (Normalizer.normalize(food.getName().toLowerCase(Locale.ROOT), Normalizer.Form.NFD).replaceAll("\\p{M}", "")).contains(charStr)) {
                                 filteredFoodList.add(food);
                             }
                         }
                         if(filteredFoodList.size()>0){
-                            filteredList.add(new Menu(row.getName(), row.getId(), filteredFoodList));
+                            filteredList.add(new MenuModel(filteredFoodList,row.getName(),row.getMenuId()));
                         }
                     }
                     menus = filteredList;
@@ -89,7 +90,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                menus = (ArrayList<Menu>) filterResults.values;
+                menus = (ArrayList<MenuModel>) filterResults.values;
 
                 // refresh the list with filtered data
                 notifyDataSetChanged();
@@ -110,9 +111,9 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
             binding = itemView;
         }
 
-        public void setData(Menu menu) {
+        public void setData(MenuModel menu) {
             binding.textViewNameMenu.setText(menu.getName());
-            foodAdapter = new FoodAdapter(menu.foodList, foodListeners);
+            foodAdapter = new FoodAdapter(menu.getFoodList(), foodListeners, context);
             binding.recycleViewMenuFood.setAdapter(foodAdapter);
 
             RecyclerView.ItemDecoration dividerItemDecoration = new DividerItemDecorator(ContextCompat.getDrawable(context, R.drawable.divider));
@@ -121,40 +122,4 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
         }
     }
 
-    public static class Menu {
-
-        private String name;
-        private int Id;
-        private List<FoodAdapter.Food> foodList;
-
-        public Menu(String name, int id, List<FoodAdapter.Food> foodList) {
-            this.name = name;
-            Id = id;
-            this.foodList = foodList;
-        }
-
-        public int getId() {
-            return Id;
-        }
-
-        public void setId(int id) {
-            Id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public List<FoodAdapter.Food> getFoodList() {
-            return foodList;
-        }
-
-        public void setFoodList(List<FoodAdapter.Food> foodList) {
-            this.foodList = foodList;
-        }
-    }
 }
