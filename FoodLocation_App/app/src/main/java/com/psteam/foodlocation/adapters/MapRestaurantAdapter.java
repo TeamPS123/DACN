@@ -1,24 +1,28 @@
 package com.psteam.foodlocation.adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.psteam.foodlocation.databinding.MapRestaurantItemContainerBinding;
 import com.psteam.foodlocation.listeners.MapRestaurantListener;
-import com.psteam.foodlocation.models.RestaurantModel;
+import com.psteam.lib.modeluser.RestaurantModel;
 
 import java.util.List;
 
 public class MapRestaurantAdapter extends RecyclerView.Adapter<MapRestaurantAdapter.MapRestaurantViewHolder> {
     private final List<RestaurantModel> restaurantModels;
     private final MapRestaurantListener mapRestaurantListener;
+    private final Context context;
 
-    public MapRestaurantAdapter(List<RestaurantModel> restaurantModels, MapRestaurantListener mapRestaurantListener) {
+    public MapRestaurantAdapter(List<RestaurantModel> restaurantModels, MapRestaurantListener mapRestaurantListener, Context context) {
         this.restaurantModels = restaurantModels;
         this.mapRestaurantListener = mapRestaurantListener;
+        this.context = context;
     }
 
     @NonNull
@@ -50,9 +54,9 @@ public class MapRestaurantAdapter extends RecyclerView.Adapter<MapRestaurantAdap
         }
 
         public void setData(RestaurantModel restaurantModel) {
-            binding.imageViewRestaurant.setBackgroundResource(restaurantModel.getImage());
+            Glide.with(context).load(restaurantModel.getMainPic()).into(binding.imageViewRestaurant);
             binding.textViewRestaurantAddress.setText(restaurantModel.getAddress());
-            binding.textviewDistance.setText(restaurantModel.getDistance() + "km");
+            binding.textviewDistance.setText(Math.round(Double.parseDouble(restaurantModel.getDistance())) + "km");
             binding.textViewRestaurantName.setText(restaurantModel.getName());
 
             binding.textViewGuide.setOnClickListener(v -> {
@@ -62,8 +66,6 @@ public class MapRestaurantAdapter extends RecyclerView.Adapter<MapRestaurantAdap
             binding.getRoot().setOnClickListener(v->{
                 mapRestaurantListener.onRestaurantClicked(restaurantModel);
             });
-
-
         }
     }
 }

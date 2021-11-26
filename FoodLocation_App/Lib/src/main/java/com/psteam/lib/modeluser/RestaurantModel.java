@@ -1,14 +1,20 @@
 package com.psteam.lib.modeluser;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.google.android.gms.maps.model.LatLng;
+import com.google.maps.android.clustering.ClusterItem;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class RestaurantModel implements Serializable {
+public class RestaurantModel implements Serializable, ClusterItem {
     private String phoneRes;
 
     private ArrayList<PromotionModel> promotionRes;
+
+    private String userId;
 
     private String distance;
 
@@ -134,9 +140,17 @@ public class RestaurantModel implements Serializable {
 
     public LatLng getLatLng() {
         String[] tempArray = longLat.split(",");
-        double longitude = Double.parseDouble(tempArray[0]);
-        double latitude = Double.parseDouble(tempArray[1]);
+        double longitude = Double.parseDouble(tempArray[1]);
+        double latitude = Double.parseDouble(tempArray[0]);
         return new LatLng(latitude, longitude);
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getAddress(){
@@ -165,5 +179,45 @@ public class RestaurantModel implements Serializable {
 
     public void setOpenTime(String openTime) {
         this.openTime = openTime;
+    }
+
+
+   /* public double getLatitude() {
+        String[] latLng_Array = getLatLng().split(",");
+        return Double.parseDouble(latLng_Array[0]);
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public LatLng LatLng() {
+        String[] latLng_Array = getLatLng().split(",");
+        LatLng latLng = new LatLng(Double.parseDouble(latLng_Array[0]), Double.parseDouble(latLng_Array[1]));
+        return latLng;
+    }
+
+    public double getLongitude() {
+        String[] latLng_Array = getLatLng().split(",");
+        return Double.parseDouble(latLng_Array[1]);
+    }*/
+
+
+    @NonNull
+    @Override
+    public LatLng getPosition() {
+        return getLatLng();
+    }
+
+    @Nullable
+    @Override
+    public String getTitle() {
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public String getSnippet() {
+        return null;
     }
 }

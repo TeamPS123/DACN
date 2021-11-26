@@ -7,6 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.psteam.foodlocation.databinding.LayoutUserReserveTableItemContainerBinding;
+import com.psteam.lib.modeluser.GetUserReserveTableModel;
+import com.psteam.lib.modeluser.ReserveTable;
 
 import java.util.List;
 
@@ -50,9 +52,20 @@ public class UserReserveTableAdapter extends RecyclerView.Adapter<UserReserveTab
         }
 
         public void setData(ReserveTable reserveTable) {
-            binding.textViewRestaurantName.setText(reserveTable.getRestaurantName());
-            binding.textViewStatus.setText(String.format("Trạng thái chưa xác nhận",reserveTable.getStatus()));
-            binding.textViewNumberPeople.setText(String.format("Đặt chỗ cho %s người",reserveTable.getNumberPeople()));
+            binding.textViewRestaurantName.setText(reserveTable.getRestaurant().getName());
+            if (reserveTable.getStatus().equals("0")) {
+                binding.textViewStatus.setText(String.format("Trạng thái chưa xác nhận"));
+            } else if (reserveTable.getStatus().equals("1")) {
+                binding.textViewStatus.setText(String.format("Trạng thái đã được duyệt"));
+            } else if (reserveTable.getStatus().equals("2")) {
+                binding.textViewStatus.setText(String.format("Trạng thái bị huỷ"));
+            } else if (reserveTable.getStatus().equals("3")) {
+                binding.textViewStatus.setText(String.format("Quá hạn"));
+            } else {
+                binding.textViewStatus.setText(String.format("Hoàn tất"));
+            }
+            binding.textViewNumberPeople.setText(String.format("Đặt chỗ cho %s người", reserveTable.getQuantity()));
+
             binding.getRoot().setOnClickListener(v -> {
                 userReserveTableListeners.onUserReserveTableClicked(reserveTable);
             });
@@ -61,52 +74,5 @@ public class UserReserveTableAdapter extends RecyclerView.Adapter<UserReserveTab
 
     public interface UserReserveTableListeners {
         void onUserReserveTableClicked(ReserveTable reserveTable);
-    }
-
-
-    public static class ReserveTable {
-        private String restaurantName;
-        private String date;
-        private int numberPeople;
-        private int status;
-
-        public ReserveTable(String restaurantName, String date, int numberPeople, int status) {
-            this.restaurantName = restaurantName;
-            this.date = date;
-            this.numberPeople = numberPeople;
-            this.status = status;
-        }
-
-        public String getRestaurantName() {
-            return restaurantName;
-        }
-
-        public void setRestaurantName(String restaurantName) {
-            this.restaurantName = restaurantName;
-        }
-
-        public String getDate() {
-            return date;
-        }
-
-        public void setDate(String date) {
-            this.date = date;
-        }
-
-        public int getNumberPeople() {
-            return numberPeople;
-        }
-
-        public void setNumberPeople(int numberPeople) {
-            this.numberPeople = numberPeople;
-        }
-
-        public int getStatus() {
-            return status;
-        }
-
-        public void setStatus(int status) {
-            this.status = status;
-        }
     }
 }

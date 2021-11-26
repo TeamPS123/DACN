@@ -139,7 +139,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
         AddressRestaurantReserve = restaurantModel.getAddress();
         NumberReserve = 1;
         DateReserve = LocalDate.now(ZoneId.of("Asia/Ho_Chi_Minh"));
-        getDistance(new LatLng(Para.latitude,Para.longitude),restaurantModel.getLatLng());
+        getDistance(new LatLng(Para.latitude, Para.longitude), restaurantModel.getLatLng());
     }
 
     private void setFullScreen() {
@@ -219,6 +219,10 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
             Intent intent = new Intent(getApplicationContext(), RestaurantMapActivity.class);
             intent.putExtra("restaurantModel", restaurantModel);
             startActivity(intent);
+        });
+
+        binding.textViewClose.setOnClickListener(v -> {
+            finish();
         });
     }
 
@@ -423,7 +427,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
     }
 
 
-
     private void getDistance(LatLng latLngOrigin, LatLng latLngDestination) {
         String origin = String.valueOf(latLngOrigin.latitude) + "," + String.valueOf(latLngOrigin.longitude);
         String destination = String.valueOf(latLngDestination.latitude) + "," + String.valueOf(latLngDestination.longitude);
@@ -433,17 +436,17 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
         call.enqueue(new Callback<DirectionResponses>() {
             @Override
             public void onResponse(Call<DirectionResponses> call, Response<DirectionResponses> response) {
-                if (response.body()!=null && response.body().getStatus().equals("OK")) {
+                if (response.body() != null && response.body().getStatus().equals("OK")) {
 
                     distance = response.body().getRoutes().get(0).getLegs().get(0).getDistance().getText();
                     time = response.body().getRoutes().get(0).getLegs().get(0).getDuration().getText();
 
-                    binding.textViewChooseDistance.setText(String.format("(%s)",distance));
+                    binding.textViewChooseDistance.setText(String.format("(%s)", distance));
                     binding.textViewDistance.setText(distance);
 
                     Log.d("OKAY", response.message());
                 } else {
-                    CustomToast.makeText(getApplicationContext(), "Lỗi khi lấy dữ liệu bản đồ", CustomToast.LENGTH_SHORT,CustomToast.ERROR).show();
+                    CustomToast.makeText(getApplicationContext(), "Lỗi khi lấy dữ liệu bản đồ", CustomToast.LENGTH_SHORT, CustomToast.ERROR).show();
                 }
             }
 

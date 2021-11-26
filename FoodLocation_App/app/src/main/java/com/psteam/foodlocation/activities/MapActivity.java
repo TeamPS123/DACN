@@ -5,7 +5,6 @@ import static com.psteam.foodlocation.ultilities.RetrofitClient.getRetrofitGoogl
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,16 +12,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -32,21 +28,17 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.internal.maps.zzw;
-import com.google.android.gms.internal.maps.zzx;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -55,25 +47,19 @@ import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
-import com.google.maps.android.ui.IconGenerator;
 import com.psteam.foodlocation.R;
-import com.psteam.foodlocation.adapters.CategoryRestaurantAdapter;
 import com.psteam.foodlocation.adapters.MapRestaurantAdapter;
 import com.psteam.foodlocation.databinding.ActivityMapBinding;
-import com.psteam.foodlocation.databinding.LayoutCategoryRestaurantDialogBinding;
 import com.psteam.foodlocation.listeners.MapRestaurantListener;
 import com.psteam.foodlocation.models.GoogleMapApiModels.DirectionResponses;
-import com.psteam.foodlocation.models.MyItem;
-import com.psteam.foodlocation.models.RestaurantModel;
 import com.psteam.foodlocation.services.LocationService;
 import com.psteam.foodlocation.services.ServiceAPI;
 import com.psteam.foodlocation.ultilities.Constants;
 import com.psteam.foodlocation.ultilities.DividerItemDecorator;
 import com.psteam.foodlocation.ultilities.Para;
+import com.psteam.lib.modeluser.RestaurantModel;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -98,7 +84,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private ArrayList<RestaurantModel> restaurantModels;
 
     private TextView textViewRestaurantName, textViewRestaurantAddress, textViewCloseTime, textViewOpenTime, textViewDistance, textViewDirections, textViewDuration;
-
+    private ImageView imageViewRestaurant;
     private LinearLayout layoutSuggestRestaurant, layoutLocationInfo, layoutProgressBar;
 
     private ProgressBar progressBar;
@@ -128,7 +114,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         mapView = mapFragment.getView();
-
+        restaurantModels = new ArrayList<>();
+        initData();
         buttonMyLocation = findViewById(R.id.buttonMyLocation);
         iconLocation = findViewById(R.id.iconLocation);
         layoutSuggestRestaurant = findViewById(R.id.layoutSuggestRestaurant);
@@ -141,24 +128,25 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         textViewDistance = findViewById(R.id.textviewDistance);
         textViewDirections = findViewById(R.id.textViewDirections);
         textViewDuration = findViewById(R.id.textviewDuration);
+        imageViewRestaurant=findViewById(R.id.imageViewRestaurant);
 
         progressBar = findViewById(R.id.progressBarMap);
         layoutProgressBar = findViewById(R.id.layoutProgressBar);
 
         initBottomSheetRestaurant();
 
+
+    }
+
+    private void initData() {
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        restaurantModels = (ArrayList<RestaurantModel>) bundle.getSerializable("restaurantModels");
     }
 
     private void initSearchRestaurant() {
-        restaurantModels = new ArrayList<>();
-        restaurantModels.add(new RestaurantModel("ToCoToCo1", "875/22, Đường Nguyễn văn Cừ, Phường Lộc Phát, Tp.Bảo Lộc, Tỉnh Lâm Đồng", "2.5", R.drawable.tocotoco_restaurant, "11.5572771,107.8466486"));
-        restaurantModels.add(new RestaurantModel("ToCoToCo2", "875/22, Đường Nguyễn văn Cừ, Phường Lộc Phát, Tp.Bảo Lộc, Tỉnh Lâm Đồng", "2.5", R.drawable.tocotoco_restaurant, "11.5584221,107.8403592"));
-        restaurantModels.add(new RestaurantModel("ToCoToCo3", "875/22, Đường Nguyễn văn Cừ, Phường Lộc Phát, Tp.Bảo Lộc, Tỉnh Lâm Đồng", "2.5", R.drawable.tocotoco_restaurant, "11.5567423,107.842969"));
-        restaurantModels.add(new RestaurantModel("ToCoToCo4", "875/22, Đường Nguyễn văn Cừ, Phường Lộc Phát, Tp.Bảo Lộc, Tỉnh Lâm Đồng", "2.5", R.drawable.tocotoco_restaurant, "11.5612465,107.8423469"));
-        restaurantModels.add(new RestaurantModel("ToCoToCo5", "875/22, Đường Nguyễn văn Cừ, Phường Lộc Phát, Tp.Bảo Lộc, Tỉnh Lâm Đồng", "2.5", R.drawable.tocotoco_restaurant, "11.5612435,107.8521100"));
-        restaurantModels.add(new RestaurantModel("ToCoToCo6", "875/22, Đường Nguyễn văn Cừ, Phường Lộc Phát, Tp.Bảo Lộc, Tỉnh Lâm Đồng", "2.5", R.drawable.tocotoco_restaurant, "11.5612435,107.8321100"));
 
-        mapRestaurantAdapter = new MapRestaurantAdapter(restaurantModels, this);
+        mapRestaurantAdapter = new MapRestaurantAdapter(restaurantModels, this, getApplicationContext());
         recyclerViewSearch.setAdapter(mapRestaurantAdapter);
 
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecorator(getDrawable(R.drawable.divider));
@@ -167,6 +155,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     private static int peekHeight;
+    private RestaurantModel restaurantModel;
 
     private void initBottomSheetRestaurant() {
         layoutBottomSheet = findViewById(R.id.bottomSheetContainer);
@@ -175,10 +164,14 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         recyclerViewSearch = findViewById(R.id.recycleViewSearchRestaurant);
         initSearchRestaurant();
-       // checkSelfPermission();
+        // checkSelfPermission();
 
         layoutLocationInfo.setOnClickListener(v -> {
-            startActivity(new Intent(getApplicationContext(), RestaurantDetailsActivity.class));
+            Intent intent = new Intent(getApplicationContext(), RestaurantDetailsActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("restaurantModel", restaurantModel);
+            intent.putExtra("bundle", bundle);
+            startActivity(intent);
         });
 
     }
@@ -405,7 +398,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     bottomSheetBehavior.setPeekHeight(0);
                     if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_COLLAPSED) {
                         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-
                     }
                 }
 
@@ -439,7 +431,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     private void addItems() {
-
         mClusterManager.addItems(restaurantModels);
     }
 
@@ -450,10 +441,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     private void setRestaurantInfo(RestaurantModel restaurantModel) {
+        this.restaurantModel=restaurantModel;
         textViewRestaurantName.setText(restaurantModel.getName());
         textViewRestaurantAddress.setText(restaurantModel.getAddress());
-        textViewDistance.setText(String.format("%skm", restaurantModel.getDistance()));
-
+        textViewDistance.setText(String.format("%skm", Math.round(Double.parseDouble(restaurantModel.getDistance()))));
+        Glide.with(getApplicationContext()).load(restaurantModel.getMainPic()).thumbnail(0.3f).into(imageViewRestaurant);
         textViewDirections.setOnClickListener(v -> {
             if (polyline == null) {
                 loadingDirection(true);
@@ -464,7 +456,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     @Override
     public void onRestaurantGuideClicked(RestaurantModel restaurantModel) {
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(restaurantModel.LatLng(), 15);
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(restaurantModel.getLatLng(), 15);
         mMap.animateCamera(cameraUpdate, 500, null);
         if (getMarkerFromCluster(restaurantModel.getPosition()) != null)
             mClusterManager.getMarkerManager().onMarkerClick(getMarkerFromCluster(restaurantModel.getPosition()));
@@ -476,10 +468,16 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     @Override
     public void onRestaurantClicked(RestaurantModel restaurantModel) {
-        startActivity(new Intent(getApplicationContext(), RestaurantDetailsActivity.class));
+        Intent intent = new Intent(getApplicationContext(), RestaurantDetailsActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("restaurantModel", restaurantModel);
+        intent.putExtra("bundle", bundle);
+        startActivity(intent);
+
     }
 
     public static boolean flag = false;
+
     private static LatLng temp;
 
     private Marker getMarkerFromCluster(LatLng latLng) {
@@ -542,7 +540,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         call.enqueue(new Callback<DirectionResponses>() {
             @Override
             public void onResponse(Call<DirectionResponses> call, Response<DirectionResponses> response) {
-                if (response.body()!=null && response.body().getStatus().equals("OK")) {
+                if (response.body() != null && response.body().getStatus().equals("OK")) {
                     drawPolyline(response);
                     Log.d("OKAY", response.message());
                 } else {
@@ -567,7 +565,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             mClusterManager = clusterManager;
         }
 
-
         @Override
         protected void onClusterItemRendered(@NonNull RestaurantModel clusterItem, @NonNull Marker marker) {
             super.onClusterItemRendered(clusterItem, marker);
@@ -577,6 +574,4 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             }
         }
     }
-
-
 }

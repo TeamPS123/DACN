@@ -94,6 +94,7 @@
                     android:orientation="horizontal">
 
                     <com.makeramen.roundedimageview.RoundedImageView
+                        android:id="@+id/imageViewRestaurant"
                         android:layout_width="@dimen/_120sdp"
                         android:layout_height="@dimen/_100sdp"
                         android:adjustViewBounds="true"
