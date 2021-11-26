@@ -42,6 +42,9 @@ public interface ServiceAPI_lib {
     @GET("getAllPromotion")
     Call<messagePromotion> getAllPromotion();
 
+    @GET("getRestaurantId")
+    Call<message> getRestaurantId(@Header("Authorization") String token, @Query("userId") String userId);
+
     @GET("getAllMenuByResId")
     Call<messageAllMenu> getAllMenu(@Header("Authorization") String token, @Query("userId") String userId, @Query("restaurantId") String restaurantId);
 
@@ -93,8 +96,10 @@ public interface ServiceAPI_lib {
     Call<message> addImgFood(@Header("Authorization") String token, @Part List<MultipartBody.Part> photo, @Query("userId") String userId, @Query("restaurantId") String restaurantId, @Query("foodId") String foodId);
 
     @GET("getAllReserveTableByRestaurantId")
-    Call<messageAllReserveTable> getAllReserveTables(@Header("Authorization") String token, @Query("userId") String userId, @Query("restaurantId") String restaurantId);
+    Call<messageAllReserveTable> getAllReserveTables(@Header("Authorization") String token, @Query("userId") String userId, @Query("restaurantId") String restaurantId, @Query("code") int code);
 
+    @GET("updateReserveTable")
+    Call<message> updateReserveTable(@Header("Authorization") String token, @Query("userId") String userId, @Query("reserveTableId") String reserveTableId, @Query("code") int code);
 
 //    private void get(){
 //        ServiceAPI_lib serviceAPI = getRetrofit_lib().create(ServiceAPI_lib.class);

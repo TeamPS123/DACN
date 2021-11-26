@@ -51,8 +51,6 @@ public class PendingReservedTableFragment extends Fragment {
     private ReserveTableAdapter reserveTableAdapter;
     private ArrayList<BodySenderFromUser> reserveTables;
 
-    private String userId = "restaurant";
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,14 +80,12 @@ public class PendingReservedTableFragment extends Fragment {
         reserveTableAdapter=new ReserveTableAdapter(reserveTables, new ReserveTableAdapter.ReserveTableListeners() {
             @Override
             public void onConfirmClicked(BodySenderFromUser reserveTable, int position) {
-                MessageSenderFromRes message = new MessageSenderFromRes(userId, reserveTable.getUserId(), "thông báo", new BodySenderFromRes("Nhà hàng đã xác nhận đơn đặt bàn của bạn", reserveTable.getReserveTableId()));
-                setupSocket.reserveTable(message);
+                updateReserveTable(1, reserveTable, position);
             }
 
             @Override
             public void onDenyClicked(BodySenderFromUser reserveTable, int position) {
-                MessageSenderFromRes message = new MessageSenderFromRes(userId, reserveTable.getUserId(), "thông báo", new BodySenderFromRes("Nhà hàng đã từ chối đơn đặt bàn của bạn", reserveTable.getReserveTableId()));
-                setupSocket.reserveTable(message);
+                updateReserveTable(2, reserveTable, position);
             }
 
             @Override
@@ -150,7 +146,7 @@ public class PendingReservedTableFragment extends Fragment {
         DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getActivity());
 
         ServiceAPI_lib serviceAPI = getRetrofit_lib().create(ServiceAPI_lib.class);
-        Call<messageAllReserveTable> call = serviceAPI.getAllReserveTables(dataTokenAndUserId.getToken(), dataTokenAndUserId.getUserId(), dataTokenAndUserId.getRestaurantId());
+        Call<messageAllReserveTable> call = serviceAPI.getAllReserveTables(dataTokenAndUserId.getToken(), dataTokenAndUserId.getUserId(), dataTokenAndUserId.getRestaurantId(), 0);
         call.enqueue(new Callback<messageAllReserveTable>() {
             @Override
             public void onResponse(Call<messageAllReserveTable> call, Response<messageAllReserveTable> response) {
@@ -178,6 +174,38 @@ public class PendingReservedTableFragment extends Fragment {
             @Override
             public void onFailure(Call<messageAllReserveTable> call, Throwable t) {
 
+            }
+        });
+    }
+
+    private void updateReserveTable(int code, BodySenderFromUser reserveTable, int position){
+        DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getActivity());
+
+        ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
+        Call<message> call = serviceAPI_lib.updateReserveTable(dataTokenAndUserId.getToken(), dataTokenAndUserId.getUserId(), reserveTable.getReserveTableId(), code);
+        call.enqueue(new Callback<message>() {
+            @Override
+            public void onResponse(Call<message> call, Response<message> response) {
+                if(response.body().getStatus() == 1){
+                    //xác nhận phiếu
+                    if(code == 1){
+                        MessageSenderFromRes message = new MessageSenderFromRes(dataTokenAndUserId.getUserId(), reserveTable.getUserId(), "thông báo", new BodySenderFromRes("Nhà hàng đã xác nhận đơn đặt bàn của bạn", reserveTable.getReserveTableId()));
+                        setupSocket.reserveTable(message);
+                    }else if(code == 2){
+                        MessageSenderFromRes message = new MessageSenderFromRes(dataTokenAndUserId.getUserId(), reserveTable.getUserId(), "thông báo", new BodySenderFromRes("Nhà hàng đã từ chối đơn đặt bàn của bạn", reserveTable.getReserveTableId()));
+                        setupSocket.reserveTable(message);
+                    }
+
+                    reserveTables.remove(position);
+                    reserveTableAdapter.notifyDataSetChanged();
+                }
+
+                Toast.makeText(getContext(), response.body().getNotification(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<message> call, Throwable t) {
+                Toast.makeText(getContext(), "Câp nhật phiếu đặt bàn thất bại", Toast.LENGTH_SHORT).show();
             }
         });
     }

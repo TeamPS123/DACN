@@ -292,7 +292,11 @@ public class MenuFragment extends Fragment {
     private ImageRestaurantAdapter imageRestaurantAdapter;
 
     private void init() {
-        foods = menu.getFoodList();
+        if(menu == null){
+            foods = new ArrayList<>();
+        }else{
+            foods = menu.getFoodList();
+        }
         uris = new ArrayList<>();
 
         initFoodManagerAdapter();

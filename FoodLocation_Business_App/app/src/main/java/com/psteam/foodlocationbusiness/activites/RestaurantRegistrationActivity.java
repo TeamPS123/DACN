@@ -54,6 +54,7 @@ public class RestaurantRegistrationActivity extends AppCompatActivity {
     private ProvinceModel provinceModel;
     private DistrictModel districtModel;
     private WardModel wardModel;
+    private String LatLng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +71,7 @@ public class RestaurantRegistrationActivity extends AppCompatActivity {
         districtModel = new DistrictModel();
         wardModel = new WardModel();
         districtModels = new ArrayList<>();
-        setFullScreen();
+
         getProvinces();
         getProvince("0");
         getDistrict("0");
@@ -229,7 +230,7 @@ public class RestaurantRegistrationActivity extends AppCompatActivity {
         });
 
         binding.inputGetLocation.setOnClickListener(v -> {
-
+            setFullScreen();
             Intent intent = new Intent(getApplicationContext(), MapRegistrationActivity.class);
             startActivityForResult(intent, 1);
         });
@@ -242,6 +243,7 @@ public class RestaurantRegistrationActivity extends AppCompatActivity {
             if (resultCode == 2) {
                 String latitude = data.getStringExtra("latitude");
                 String longitude = data.getStringExtra("longitude");
+                LatLng = latitude+","+longitude;
                 binding.inputGetLocation.setText("Lấy vị trí thành công");
             }
         }
@@ -286,7 +288,7 @@ public class RestaurantRegistrationActivity extends AppCompatActivity {
         restaurant.setOpenTime(binding.inputTimeOpen.getText()+"");
         restaurant.setCloseTime(binding.inputTimeClose.getText()+"");
         restaurant.setUserId(dataTokenAndUserId.getUserId());
-        restaurant.setLongLat("108.200364,16.080288");
+        restaurant.setLongLat(LatLng);
 
         ServiceAPI_lib serviceAPI = getRetrofit_lib().create(ServiceAPI_lib.class);
         Call<message> call = serviceAPI.addRestaurant(dataTokenAndUserId.getToken(), restaurant);

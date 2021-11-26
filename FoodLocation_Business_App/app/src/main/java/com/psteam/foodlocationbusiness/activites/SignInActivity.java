@@ -1,20 +1,26 @@
 package com.psteam.foodlocationbusiness.activites;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Patterns;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.psteam.foodlocationbusiness.R;
 import com.psteam.foodlocationbusiness.databinding.ActivitySignInBinding;
+import com.psteam.foodlocationbusiness.ultilities.CustomToast;
 import com.psteam.foodlocationbusiness.ultilities.DataTokenAndUserId;
 import com.psteam.lib.Models.Input.signIn;
 import com.psteam.lib.Models.message;
@@ -47,6 +53,8 @@ public class SignInActivity extends AppCompatActivity {
 
         checkSaveUser();
         setListeners();
+
+        checkSelfPermission();
     }
 
     private void checkSaveUser() {
@@ -70,6 +78,8 @@ public class SignInActivity extends AppCompatActivity {
         });
 
         binding.textviewSignUp.setOnClickListener(v -> {
+            setFullScreen();
+
             startActivity(new Intent(SignInActivity.this, SignUpActivity.class));
         });
     }
@@ -103,6 +113,18 @@ public class SignInActivity extends AppCompatActivity {
         }
     }
 
+    private void setFullScreen(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.TRANSPARENT);
+
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);//  set status text dark
+            getWindow().setStatusBarColor(ContextCompat.getColor(getApplicationContext(), R.color.white));// set status background white
+        }
+    }
+
+
     private void signIn(){
         ServiceAPI_lib serviceAPI = getRetrofit_lib().create(ServiceAPI_lib.class);
         Call<message> call = serviceAPI.signin(new signIn(binding.inputPhone.getText()+"", binding.inputPassword.getText()+""));
@@ -115,11 +137,25 @@ public class SignInActivity extends AppCompatActivity {
                     dataTokenAndUserId.saveToken(response.body().getNotification());
                     dataTokenAndUserId.saveUserId(response.body().getId());
 
-                    Intent intent = new Intent(SignInActivity.this, BusinessActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    loading(false);
-                    finish();
+                    Call<message> call1 = serviceAPI.getRestaurantId(dataTokenAndUserId.getToken(), dataTokenAndUserId.getUserId());
+                    call1.enqueue(new Callback<message>() {
+                        @Override
+                        public void onResponse(Call<message> call, Response<message> response) {
+
+                            dataTokenAndUserId.saveRestaurantId(response.body().getId());
+
+                            Intent intent = new Intent(SignInActivity.this, BusinessActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                            loading(false);
+                            finish();
+                        }
+
+                        @Override
+                        public void onFailure(Call<message> call, Throwable t) {
+
+                        }
+                    });
 
                     Toast.makeText(SignInActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                 }else{
@@ -132,5 +168,31 @@ public class SignInActivity extends AppCompatActivity {
                 Toast.makeText(SignInActivity.this, "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public final static int REQUEST_CODE_LOCATION_PERMISSION = 1;
+
+    private void checkSelfPermission() {
+        if (ContextCompat.checkSelfPermission(
+                getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION
+        ) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                    SignInActivity.this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_CODE_LOCATION_PERMISSION
+            );
+        } else {
+
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CODE_LOCATION_PERMISSION && grantResults.length > 0) {
+            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                CustomToast.makeText(getApplicationContext(), "Permission denied", CustomToast.LENGTH_SHORT, CustomToast.WARNING).show();
+            }
+        }
     }
 }

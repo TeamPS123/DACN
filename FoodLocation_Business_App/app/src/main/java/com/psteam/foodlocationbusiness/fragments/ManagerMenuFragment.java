@@ -42,7 +42,7 @@ public class ManagerMenuFragment extends Fragment {
     private FragmentManagerMenuBinding binding;
     private MenuFragmentAdapter menuFragmentAdapter;
     private ArrayList<String> menuIdList = new ArrayList<>();
-    private ArrayList<getMenu> meuns = new ArrayList<>();
+    private ArrayList<getMenu> menus = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,11 +69,12 @@ public class ManagerMenuFragment extends Fragment {
     }
 
     private void init() {
+        getAllMenu();
+
         initMenu();
     }
 
     private void initMenu() {
-
         binding.viewPager.setOffscreenPageLimit(4);
         binding.viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(binding.tabs));
         binding.tabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -91,14 +92,12 @@ public class ManagerMenuFragment extends Fragment {
             }
         });
 
-        getAllMenu();
-
         setDynamicFragmentToTabLayout();
     }
 
     private void setDynamicFragmentToTabLayout() {
 
-        menuFragmentAdapter = new MenuFragmentAdapter(getActivity().getSupportFragmentManager(), binding.tabs.getTabCount(), menuIdList, meuns);
+        menuFragmentAdapter = new MenuFragmentAdapter(getActivity().getSupportFragmentManager(), binding.tabs.getTabCount(), menuIdList, menus);
         binding.viewPager.setAdapter(menuFragmentAdapter);
         binding.viewPager.setCurrentItem(0);
 
@@ -141,6 +140,8 @@ public class ManagerMenuFragment extends Fragment {
                     if(response.body().getStatus() == 1){
                         menuIdList.add(response.body().getId());
 
+                        menus.add(null);
+
                         binding.tabs.addTab(binding.tabs.newTab().setText(layoutAddMenuNameDialogBinding.inputMenuName.getText().toString()));
                         Para.numberTabs = binding.tabs.getTabCount();
                         menuFragmentAdapter.notifyDataSetChanged();
@@ -176,7 +177,7 @@ public class ManagerMenuFragment extends Fragment {
 
                         menuIdList.add(menu.getMenuId());
 
-                        meuns.add(menu);
+                        menus.add(menu);
 
                         binding.tabs.addTab(binding.tabs.newTab().setText(menu.getName()));
                         Para.numberTabs = binding.tabs.getTabCount();
