@@ -3,6 +3,7 @@ package com.psteam.foodlocationbusiness.adapters;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -10,8 +11,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.bumptech.glide.Glide;
 import com.psteam.foodlocationbusiness.R;
 import com.psteam.foodlocationbusiness.databinding.ManagerFoodItemContainerBinding;
+import com.psteam.lib.Models.Get.getFood;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -19,10 +22,10 @@ import java.util.Locale;
 
 public class ManagerFoodAdapter extends RecyclerView.Adapter<ManagerFoodAdapter.ManagerFoodViewHolder> {
 
-    private final List<Food> foodList;
+    private final List<getFood> foodList;
     private final Context context;
 
-    public ManagerFoodAdapter(List<Food> foodList, Context context) {
+    public ManagerFoodAdapter(List<getFood> foodList, Context context) {
         this.foodList = foodList;
         this.context = context;
     }
@@ -56,11 +59,14 @@ public class ManagerFoodAdapter extends RecyclerView.Adapter<ManagerFoodAdapter.
             binding = itemView;
         }
 
-        public void setData(Food food) {
-            binding.imageViewFood.setImageBitmap(food.getImage().get(0));
+        public void setData(getFood food) {
+            if(food.getPic().size() > 0){
+                Glide.with(context).load(food.getPic().get(0)).into(binding.imageViewFood);
+            }
+            //binding.imageViewFood.setImageURI(food.getImage().get(0));
             binding.textViewFoodName.setText(food.getName());
             binding.textViewPrice.setText(DecimalFormat.getCurrencyInstance(new Locale("vi", "VN")).format(food.getPrice()));
-            binding.textViewFoodInfo.setText(food.getInfo());
+            binding.textViewFoodInfo.setText(food.getCategoryName());
 
             binding.buttonStatus.setOnClickListener(v -> {
                 if( binding.buttonStatus.getTag().equals("off")) {
@@ -76,51 +82,51 @@ public class ManagerFoodAdapter extends RecyclerView.Adapter<ManagerFoodAdapter.
         }
     }
 
-    public static class Food {
-
-        private List<Bitmap> image;
-        private String name;
-        private double price;
-        private String info;
-
-
-        public Food(List<Bitmap> image, String name, double price, String info) {
-            this.image = image;
-            this.name = name;
-            this.price = price;
-            this.info = info;
-        }
-
-        public List<Bitmap> getImage() {
-            return image;
-        }
-
-        public String getInfo() {
-            return info;
-        }
-
-        public void setInfo(String info) {
-            this.info = info;
-        }
-
-        public void setImage(List<Bitmap> image) {
-            this.image = image;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public double getPrice() {
-            return price;
-        }
-
-        public void setPrice(double price) {
-            this.price = price;
-        }
-    }
+//    public static class Food {
+//
+//        private List<Uri> image;
+//        private String name;
+//        private double price;
+//        private String info;
+//
+//
+//        public Food(List<Uri> image, String name, double price, String info) {
+//            this.image = image;
+//            this.name = name;
+//            this.price = price;
+//            this.info = info;
+//        }
+//
+//        public List<Uri> getImage() {
+//            return image;
+//        }
+//
+//        public String getInfo() {
+//            return info;
+//        }
+//
+//        public void setInfo(String info) {
+//            this.info = info;
+//        }
+//
+//        public void setImage(List<Uri> image) {
+//            this.image = image;
+//        }
+//
+//        public String getName() {
+//            return name;
+//        }
+//
+//        public void setName(String name) {
+//            this.name = name;
+//        }
+//
+//        public double getPrice() {
+//            return price;
+//        }
+//
+//        public void setPrice(double price) {
+//            this.price = price;
+//        }
+//    }
 }

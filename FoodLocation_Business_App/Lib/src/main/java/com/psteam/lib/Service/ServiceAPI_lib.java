@@ -10,6 +10,7 @@ import com.psteam.lib.Models.Input.confirmTable;
 import com.psteam.lib.Models.Input.signIn;
 import com.psteam.lib.Models.Insert.insertCategory;
 import com.psteam.lib.Models.Insert.insertFood;
+import com.psteam.lib.Models.Insert.insertFoods;
 import com.psteam.lib.Models.Insert.insertMenu;
 import com.psteam.lib.Models.Insert.insertPromotion;
 import com.psteam.lib.Models.Insert.insertRestaurant;
@@ -21,7 +22,6 @@ import com.psteam.lib.Models.message;
 import java.util.List;
 
 import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -63,8 +63,11 @@ public interface ServiceAPI_lib {
     @POST("addMenu")
     Call<message> addMenu(@Header("Authorization") String token,@Body insertMenu menu);
 
+    @POST("addFoods")
+    Call<message> addFood_lib(@Header("Authorization") String token,@Body insertFoods foodList);
+
     @POST("addFood")
-    Call<message> addFood_lib(@Header("Authorization") String token,@Body insertFood foodList);
+    Call<message> addFood(@Header("Authorization") String token,@Body insertFood foodList);
 
     @POST("addPromotion")
     Call<message> addPromotion(@Header("Authorization") String token,@Body insertPromotion promotion);
@@ -84,6 +87,10 @@ public interface ServiceAPI_lib {
     @Multipart
     @POST("upImageOfRes")
     Call<message> addImgRes(@Header("Authorization") String token, @Part List<MultipartBody.Part> photo, @Query("userId") String userId, @Query("restaurantId") String restaurantId);
+
+    @Multipart
+    @POST("upImageOfFood")
+    Call<message> addImgFood(@Header("Authorization") String token, @Part List<MultipartBody.Part> photo, @Query("userId") String userId, @Query("restaurantId") String restaurantId, @Query("foodId") String foodId);
 
     @GET("getAllReserveTableByRestaurantId")
     Call<messageAllReserveTable> getAllReserveTables(@Header("Authorization") String token, @Query("userId") String userId, @Query("restaurantId") String restaurantId);

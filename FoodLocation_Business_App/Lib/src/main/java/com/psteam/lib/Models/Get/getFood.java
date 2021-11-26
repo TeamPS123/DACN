@@ -1,8 +1,9 @@
 package com.psteam.lib.Models.Get;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class getFood {
+public class getFood implements Serializable {
     public getFood(String menuId, String foodId, String name, double price, String unit, String categoryName, List<String> pic) {
         this.menuId = menuId;
         this.foodId = foodId;
@@ -11,6 +12,9 @@ public class getFood {
         this.unit = unit;
         this.categoryName = categoryName;
         this.pic = pic;
+    }
+
+    public getFood() {
     }
 
     public String getMenuId() {

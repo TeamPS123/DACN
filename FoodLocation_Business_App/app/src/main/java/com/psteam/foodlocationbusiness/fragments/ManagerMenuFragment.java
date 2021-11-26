@@ -41,7 +41,8 @@ public class ManagerMenuFragment extends Fragment {
 
     private FragmentManagerMenuBinding binding;
     private MenuFragmentAdapter menuFragmentAdapter;
-    private List<String> menuIdList = new ArrayList<>();
+    private ArrayList<String> menuIdList = new ArrayList<>();
+    private ArrayList<getMenu> meuns = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -90,14 +91,14 @@ public class ManagerMenuFragment extends Fragment {
             }
         });
 
-        setDynamicFragmentToTabLayout();
-
         getAllMenu();
+
+        setDynamicFragmentToTabLayout();
     }
 
     private void setDynamicFragmentToTabLayout() {
 
-        menuFragmentAdapter = new MenuFragmentAdapter(getActivity().getSupportFragmentManager(), binding.tabs.getTabCount());
+        menuFragmentAdapter = new MenuFragmentAdapter(getActivity().getSupportFragmentManager(), binding.tabs.getTabCount(), menuIdList, meuns);
         binding.viewPager.setAdapter(menuFragmentAdapter);
         binding.viewPager.setCurrentItem(0);
 
@@ -175,6 +176,8 @@ public class ManagerMenuFragment extends Fragment {
 
                         menuIdList.add(menu.getMenuId());
 
+                        meuns.add(menu);
+
                         binding.tabs.addTab(binding.tabs.newTab().setText(menu.getName()));
                         Para.numberTabs = binding.tabs.getTabCount();
                         menuFragmentAdapter.notifyDataSetChanged();
@@ -190,5 +193,9 @@ public class ManagerMenuFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
 
+    }
 }

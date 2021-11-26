@@ -1,9 +1,11 @@
 package com.psteam.lib.Models.Get;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-public class getMenu {
-    public getMenu(String menuId, String name, List<getFood> foodList) {
+public class getMenu implements Serializable {
+    public getMenu(String menuId, String name, ArrayList<getFood> foodList) {
         this.menuId = menuId;
         this.name = name;
         this.foodList = foodList;
@@ -25,15 +27,15 @@ public class getMenu {
         this.name = name;
     }
 
-    public List<getFood> getFoodList() {
+    public ArrayList<getFood> getFoodList() {
         return foodList;
     }
 
-    public void setFoodList(List<getFood> foodList) {
+    public void setFoodList(ArrayList<getFood> foodList) {
         this.foodList = foodList;
     }
 
     private String menuId ;
     private String name ;
-    private List<getFood> foodList ;
+    private ArrayList<getFood> foodList ;
 }

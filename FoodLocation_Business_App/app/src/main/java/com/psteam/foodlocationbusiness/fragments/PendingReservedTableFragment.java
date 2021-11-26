@@ -98,8 +98,8 @@ public class PendingReservedTableFragment extends Fragment {
                 intent.putExtra("response", reserveTable);
                 startActivity(intent);
 
-                reserveTables.remove(position);
-                reserveTableAdapter.notifyDataSetChanged();
+//                reserveTables.remove(position);
+//                reserveTableAdapter.notifyDataSetChanged();
             }
         });
 
@@ -155,7 +155,7 @@ public class PendingReservedTableFragment extends Fragment {
             @Override
             public void onResponse(Call<messageAllReserveTable> call, Response<messageAllReserveTable> response) {
                 if(response.body().getStatus() == 1){
-                    if(response.body().getReserveTables().size() < 1) {
+                    if(response.body().getReserveTables().size() > 0) {
                         for (int i = 0; i < response.body().getReserveTables().size(); i++) {
                             BodySenderFromUser bodySenderFromUser = new BodySenderFromUser();
                             bodySenderFromUser.setUserId(response.body().getReserveTables().get(i).getUserId());
@@ -169,6 +169,7 @@ public class PendingReservedTableFragment extends Fragment {
                             bodySenderFromUser.setName(response.body().getReserveTables().get(i).getName());
 
                             reserveTables.add(bodySenderFromUser);
+                            reserveTableAdapter.notifyDataSetChanged();
                         }
                     }
                 }
