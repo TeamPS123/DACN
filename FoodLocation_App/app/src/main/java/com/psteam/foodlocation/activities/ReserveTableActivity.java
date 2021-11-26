@@ -192,11 +192,6 @@ public class ReserveTableActivity extends AppCompatActivity {
         });
 
         binding.buttonReserve.setOnClickListener(v -> {
-            //lấy thời gian và ngày bắt buộc SDK >= 26
-            BodySenderFromUser body = new BodySenderFromUser("i", 5, java.time.LocalTime.now() + " " + java.time.LocalDate.now(), "1", "phàm", "0589674321", "1", "hello");
-            MessageSenderFromUser message = new MessageSenderFromUser("user", "restaurant", "Thông báo", body);
-
-            setupSocket.notificationFromUser(message, setupSocket.mSocket);
 
             if (isValidateReserveTable()) {
                 loading(true);
@@ -342,6 +337,12 @@ public class ReserveTableActivity extends AppCompatActivity {
                         openDialogReserveDialog("success");
                         loading(false);
                     }
+
+
+                    BodySenderFromUser body = new BodySenderFromUser(response.body().getId(), Integer.parseInt(insertReserveTableModel.getQuantity()), insertReserveTableModel.getTime(), restaurantModel.getRestaurantId(), insertReserveTableModel.getName(), insertReserveTableModel.getPhone(), insertReserveTableModel.getPromotionId(), insertReserveTableModel.getNote());
+                    MessageSenderFromUser message = new MessageSenderFromUser(preferenceManager.getString(Constants.USER_ID), "UI00010", "Thông báo", body);
+
+                    setupSocket.notificationFromUser(message, setupSocket.mSocket);
                 } else if (response.body() != null) {
                     openDialogReserveDialog("failed");
                     loading(false);

@@ -116,7 +116,6 @@ public class MainActivity extends AppCompatActivity implements CategoryListener,
     private UserModel user;
     private MaterialButton buttonSignIn;
 
-    private String userId ="user";
     public Socket mSocket;
     {
         try {
@@ -233,6 +232,8 @@ public class MainActivity extends AppCompatActivity implements CategoryListener,
 
         binding.buttonNotification.setOnClickListener(v -> {
             badgeDrawable.setNumber(notifications.size());
+
+
             if (notifications.size() > 0) {
                 binding.textEmptyNotification.setVisibility(View.GONE);
             } else {
@@ -575,7 +576,7 @@ public class MainActivity extends AppCompatActivity implements CategoryListener,
         setupSocket.mSocket.connect();
         // receiver notification when used app
         setupSocket.mSocket.on("send_notication", onNotification);
-        setupSocket.signIn(userId);
+        setupSocket.signIn(preferenceManager.getString(Constants.USER_ID));
     }
 
     @Override
@@ -592,7 +593,7 @@ public class MainActivity extends AppCompatActivity implements CategoryListener,
         //notification when come back activity
         setupSocket.mSocket.connect();
 
-        setupSocket.reconnect(userId, setupSocket.mSocket);
+        setupSocket.reconnect(preferenceManager.getString(Constants.USER_ID), setupSocket.mSocket);
     }
     private void GetCategoryRes() {
         ServiceAPI serviceAPI = getRetrofit().create(ServiceAPI.class);
