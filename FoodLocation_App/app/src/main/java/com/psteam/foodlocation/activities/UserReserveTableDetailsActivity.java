@@ -32,11 +32,6 @@ public class UserReserveTableDetailsActivity extends AppCompatActivity {
         setListeners();
     }
 
-    private void init() {
-        setFullScreen();
-        initData();
-    }
-
     private void initData() {
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
@@ -94,24 +89,27 @@ public class UserReserveTableDetailsActivity extends AppCompatActivity {
         }
     }
 
-    private void init(){
-        if(getIntent().getExtras() != null){
+    private void init() {
+        setFullScreen();
+        initData();
+
+        if (getIntent().getExtras() != null) {
             getDataFromNoti();
             setBinding();
         }
     }
 
-    private void getDataFromNoti(){
-        if(getIntent().getExtras().getString("notification") != null){
+    private void getDataFromNoti() {
+        if (getIntent().getExtras().getString("notification") != null) {
             response = new BodySenderFromRes();
             response.setNotification(getIntent().getExtras().getString("notification"));
             response.setReserveTableId(getIntent().getExtras().getString("reserveTableId"));
-        }else{
+        } else {
             response = (BodySenderFromRes) getIntent().getSerializableExtra("response");
         }
     }
 
-    private void setBinding(){
+    private void setBinding() {
         binding.inputNote.setText(response.getNotification());
     }
 }

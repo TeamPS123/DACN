@@ -340,7 +340,7 @@ public class ReserveTableActivity extends AppCompatActivity {
 
 
                     BodySenderFromUser body = new BodySenderFromUser(response.body().getId(), Integer.parseInt(insertReserveTableModel.getQuantity()), insertReserveTableModel.getTime(), restaurantModel.getRestaurantId(), insertReserveTableModel.getName(), insertReserveTableModel.getPhone(), insertReserveTableModel.getPromotionId(), insertReserveTableModel.getNote());
-                    MessageSenderFromUser message = new MessageSenderFromUser(preferenceManager.getString(Constants.USER_ID), "UI00010", "Thông báo", body);
+                    MessageSenderFromUser message = new MessageSenderFromUser(preferenceManager.getString(Constants.USER_ID), restaurantModel.getUserId(), "Thông báo", body);
 
                     setupSocket.notificationFromUser(message, setupSocket.mSocket);
                 } else if (response.body() != null) {

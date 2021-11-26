@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements CategoryListener,
 
         setFCM();
         socket();
-        GetRestaurantByDistance(new GetRestaurantByDistance("10","108.200364","16.080288"));
+        GetRestaurantByDistance(new GetRestaurantByDistance("20",  "10.803312745723506","106.71158641576767"));
     }
 
     private void setFullScreen() {
