@@ -1,6 +1,7 @@
 package com.psteam.foodlocation.activities;
 
 import static com.psteam.foodlocation.ultilities.RetrofitClient.getRetrofitGoogleMapAPI;
+import static com.psteam.lib.RetrofitClient.getRetrofit;
 
 import android.Manifest;
 import android.content.Intent;
@@ -15,7 +16,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,25 +43,26 @@ import com.psteam.foodlocation.models.GoogleMapApiModels.DirectionResponses;
 import com.psteam.foodlocation.services.ServiceAPI;
 import com.psteam.foodlocation.ultilities.CustomToast;
 import com.psteam.foodlocation.ultilities.Para;
+import com.psteam.lib.modeluser.GetRestaurantByDistance;
+import com.psteam.lib.modeluser.GetRestaurantModel;
 import com.psteam.lib.modeluser.RestaurantModel;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RestaurantDetailsActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class RestaurantDetailsActivity extends AppCompatActivity implements OnMapReadyCallback,RestaurantPostAdapter.RestaurantPostListeners {
 
     private ActivityRestaurantDetailsBinding binding;
     private GoogleMap mMap;
     private View viewMap;
     private RestaurantPhotoAdapter restaurantPhotoAdapter;
-    private ArrayList<RestaurantPhotoAdapter.Photo> photoArrayList;
+    private ArrayList<String> photoArrayList;
 
     private TimeBookTableAdapter timeBookTableAdapter;
     private ArrayList<TimeBookTableAdapter.TimeBook> timeBooks;
@@ -101,11 +102,11 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
         mapFragment.getMapAsync(this);
         viewMap = mapFragment.getView();
         setFullScreen();
-        initSliderPhotoRestaurant();
         initTimeBookTable();
         //initFoodRestaurant();
-
         getDataIntent();
+        initSliderPhotoRestaurant();
+        GetRestaurantByDistance(new GetRestaurantByDistance("20",  "10.803312745723506","106.71158641576767"));
     }
 
     private RestaurantModel restaurantModel;
@@ -321,14 +322,9 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
 
     private void initSliderPhotoRestaurant() {
         photoArrayList = new ArrayList<>();
-        photoArrayList.add(new RestaurantPhotoAdapter.Photo(R.drawable.p1));
-        photoArrayList.add(new RestaurantPhotoAdapter.Photo(R.drawable.p2));
-        photoArrayList.add(new RestaurantPhotoAdapter.Photo(R.drawable.p3));
-        photoArrayList.add(new RestaurantPhotoAdapter.Photo(R.drawable.p4));
-        photoArrayList.add(new RestaurantPhotoAdapter.Photo(R.drawable.p5));
-        photoArrayList.add(new RestaurantPhotoAdapter.Photo(R.drawable.p6));
+        photoArrayList.addAll(restaurantModel.getPic());
 
-        restaurantPhotoAdapter = new RestaurantPhotoAdapter(photoArrayList);
+        restaurantPhotoAdapter = new RestaurantPhotoAdapter(photoArrayList, getApplicationContext());
         binding.viewPagerSlideImageRestaurant.setAdapter(restaurantPhotoAdapter);
         binding.circleIndicator.setViewPager(binding.viewPagerSlideImageRestaurant);
         restaurantPhotoAdapter.registerAdapterDataObserver(binding.circleIndicator.getAdapterDataObserver());
@@ -390,13 +386,48 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
 
     private void initFoodRestaurant() {
 
-       /* restaurantPostAdapter = new RestaurantPostAdapter(foodRestaurants, new RestaurantPostAdapter.RestaurantPostListeners() {
+        /*restaurantPostAdapter = new RestaurantPostAdapter(foodRestaurants, new RestaurantPostAdapter.RestaurantPostListeners() {
             @Override
             public void onRestaurantPostClicked(RestaurantModel foodRestaurant) {
                 startActivity(new Intent(getApplicationContext(), RestaurantDetailsActivity.class));
             }
         }, getApplicationContext());
         binding.recycleViewPostFoodRestaurant.setAdapter(restaurantPostAdapter);*/
+    }
+
+    private GetRestaurantModel getRestaurantModels;
+
+
+    private void GetRestaurantByDistance(GetRestaurantByDistance getRestaurantByDistance) {
+
+        com.psteam.lib.Services.ServiceAPI serviceAPI = getRetrofit().create(com.psteam.lib.Services.ServiceAPI.class);
+        Call<GetRestaurantModel> call = serviceAPI.GetResByDistance(getRestaurantByDistance);
+        call.enqueue(new Callback<GetRestaurantModel>() {
+            @Override
+            public void onResponse(Call<GetRestaurantModel> call, Response<GetRestaurantModel> response) {
+                if (response.body() != null && response.body().getStatus().equals("1")) {
+                    if (response.body().getResList().size() > 0) {
+                        getRestaurantModels = response.body();
+                        restaurantPostAdapter = new RestaurantPostAdapter(getRestaurantModels.getResList(), RestaurantDetailsActivity.this::onRestaurantPostClicked, getApplicationContext());
+                        binding.recycleViewPostFoodRestaurant.setAdapter(restaurantPostAdapter);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetRestaurantModel> call, Throwable t) {
+                Log.d("Log:", t.getMessage());
+            }
+        });
+    }
+
+    @Override
+    public void onRestaurantPostClicked(RestaurantModel restaurantModel) {
+        Intent intent = new Intent(getApplicationContext(), RestaurantDetailsActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("restaurantModel", restaurantModel);
+        intent.putExtra("bundle", bundle);
+        startActivity(intent);
     }
 
     @Override

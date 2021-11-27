@@ -60,7 +60,7 @@ public class FoodReserveAdapter extends RecyclerView.Adapter<FoodReserveAdapter.
 
         public void setData(FoodModel food) {
             if(food.getPic().size()>0) {
-                Glide.with(context).load(food.getPic()).thumbnail(0.3f).into(binding.imageViewFood);
+                Glide.with(context).load(food.getPic().get(0)).thumbnail(0.3f).into(binding.imageViewFood);
             }
             binding.textViewFoodName.setText(food.getName());
             binding.textViewPrice.setText(DecimalFormat.getCurrencyInstance(new Locale("vi", "VN")).format(Double.parseDouble(food.getPrice())));

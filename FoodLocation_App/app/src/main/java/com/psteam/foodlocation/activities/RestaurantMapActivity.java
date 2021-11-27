@@ -66,6 +66,8 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
                     Uri.parse("http://maps.google.com/maps?saddr=+"+ Para.currentLatLng() +"&daddr="+restaurantModel.getLatLng().latitude+","+restaurantModel.getLatLng().longitude));
             startActivity(intent);
         });
+
+        binding.imageViewClose.setOnClickListener(v -> {finish();});
     }
 
     @Override

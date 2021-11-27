@@ -33,6 +33,7 @@ import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.LocationCallback;
@@ -102,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements CategoryListener,
     private SliderAdapter sliderAdapter;
     private ArrayList<SliderItem> sliderItemArrayList;
     private Handler sliderHandler = new Handler();
-
+    private TextView textViewName;
     private CategoryAdapter categoryAdapter;
     private ArrayList<CategoryRes> categoryModelArrayList;
     private Token token;
@@ -139,6 +140,8 @@ public class MainActivity extends AppCompatActivity implements CategoryListener,
     private void init() {
         setFullScreen();
         buttonSignIn = binding.navigationView.getHeaderView(0).findViewById(R.id.buttonSignInNavigation);
+        textViewName = binding.navigationView.getHeaderView(0).findViewById(R.id.textViewName);
+
         checkSelfPermission();
         GetInfo(preferenceManager.getString(Constants.USER_ID));
         initSliderImage();
@@ -411,6 +414,7 @@ public class MainActivity extends AppCompatActivity implements CategoryListener,
                 if (response.body() != null && response.body().getStatus().equals("1")) {
                     user = response.body().getUser();
                     Para.userModel = user;
+                    textViewName.setText(user.getFullName());
                 }
             }
 

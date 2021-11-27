@@ -102,4 +102,6 @@ dependencies {
     //Animation
     implementation "com.airbnb.android:lottie:4.2.1"
 
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
 }

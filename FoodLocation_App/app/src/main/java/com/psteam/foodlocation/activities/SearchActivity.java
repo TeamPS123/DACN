@@ -43,6 +43,8 @@ import com.psteam.lib.modeluser.GetRestaurantModel;
 import com.psteam.lib.modeluser.RestaurantModel;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Locale;
 
 import retrofit2.Call;
@@ -160,13 +162,24 @@ public class SearchActivity extends AppCompatActivity implements SearchRestauran
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                runThread(s.toString().trim().toLowerCase(Locale.ROOT), selectedDistrictList, selectedCategoryRes, 1000);
+                runThread(s.toString().trim(), selectedDistrictList, selectedCategoryRes, 1000);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                AfterTextChange = s.toString().trim().toLowerCase(Locale.ROOT);
+                AfterTextChange = s.toString().trim();
             }
+        });
+
+        binding.textviewSort.setOnClickListener(v->{
+            Collections.sort(restaurantModels, new Comparator<RestaurantModel>() {
+                @Override
+                public int compare(RestaurantModel lhs, RestaurantModel rhs) {
+                    // -1 - less than, 1 - greater than, 0 - equal, all inversed for descending
+                    return Double.parseDouble(lhs.getDistance()) > Double.parseDouble(rhs.getDistance()) ? -1 : (Double.parseDouble(lhs.getDistance()) < Double.parseDouble(rhs.getDistance())) ? 1 : 0;
+                }
+            });
+            searchRestaurantAdapter.notifyDataSetChanged();
         });
     }
 
@@ -182,7 +195,7 @@ public class SearchActivity extends AppCompatActivity implements SearchRestauran
                                 //Toast.makeText(getApplicationContext(), textChange, Toast.LENGTH_SHORT).show();
                                 loading(true);
                                 // getRestaurantBySearch(new GetRestaurantBySearch(district, category, textChange, String.valueOf(Para.longitude), String.valueOf(Para.latitude)));
-                                getRestaurantBySearch(new GetRestaurantBySearch(district, category, textChange, String.valueOf(108.200364), String.valueOf(16.090288)));
+                                getRestaurantBySearch(new GetRestaurantBySearch(district, category, textChange, "10.803312745723506","106.71158641576767"));
                             }
                         });
                     }
@@ -207,7 +220,7 @@ public class SearchActivity extends AppCompatActivity implements SearchRestauran
         builder.setView(layoutCategoryRestaurantDialogBinding.getRoot());
         dialog = builder.create();
         layoutCategoryRestaurantDialogBinding.buttonApply.setOnClickListener(v -> {
-            Toast.makeText(getApplicationContext(), selectedCategoryRes.toString(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), selectedCategoryRes.toString(), Toast.LENGTH_SHORT).show();
             dialog.dismiss();
             runThread(AfterTextChange, selectedDistrictList, selectedCategoryRes, 0);
         });
@@ -280,7 +293,7 @@ public class SearchActivity extends AppCompatActivity implements SearchRestauran
         });
 
         layoutCategoryRestaurantDialogBinding.buttonApply.setOnClickListener(v -> {
-            Toast.makeText(getApplicationContext(), selectedDistrictList.toString(), Toast.LENGTH_SHORT).show();
+           // Toast.makeText(getApplicationContext(), selectedDistrictList.toString(), Toast.LENGTH_SHORT).show();
             dialog.dismiss();
             runThread(AfterTextChange, selectedDistrictList, selectedCategoryRes, 0);
         });

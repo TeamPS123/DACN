@@ -63,7 +63,7 @@ public class SearchRestaurantAdapter extends RecyclerView.Adapter<SearchRestaura
 
             LocalTime openTime = LocalTime.parse(restaurantModel.getOpenTime());
             LocalTime now=LocalTime.now();
-            if(openTime.isAfter(now)){
+            if(openTime.isBefore(now)){
                 binding.textViewStatus.setText("Mở cửa");
                 binding.textViewTime.setText(String.format(" cho đến %s",restaurantModel.getCloseTime()));
             }else {

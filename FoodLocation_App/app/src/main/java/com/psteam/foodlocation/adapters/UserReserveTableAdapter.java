@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.psteam.foodlocation.databinding.LayoutUserReserveTableItemContainerBinding;
 import com.psteam.lib.modeluser.GetUserReserveTableModel;
 import com.psteam.lib.modeluser.ReserveTable;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -65,6 +66,8 @@ public class UserReserveTableAdapter extends RecyclerView.Adapter<UserReserveTab
                 binding.textViewStatus.setText(String.format("Hoàn tất"));
             }
             binding.textViewNumberPeople.setText(String.format("Đặt chỗ cho %s người", reserveTable.getQuantity()));
+
+            Picasso.get().load(reserveTable.getRestaurant().getMainPic()).into(binding.imageViewRestaurant);
 
             binding.getRoot().setOnClickListener(v -> {
                 userReserveTableListeners.onUserReserveTableClicked(reserveTable);

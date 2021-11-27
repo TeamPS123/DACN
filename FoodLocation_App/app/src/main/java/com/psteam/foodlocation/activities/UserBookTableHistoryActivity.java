@@ -14,6 +14,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 
 import com.psteam.foodlocation.R;
 import com.psteam.foodlocation.adapters.UserReserveTableAdapter;
@@ -29,6 +31,8 @@ import com.psteam.lib.modeluser.GetUserReserveTableModel;
 import com.psteam.lib.modeluser.ReserveTable;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -57,12 +61,14 @@ public class UserBookTableHistoryActivity extends AppCompatActivity implements U
     private void init() {
         setFullScreen();
         initUserBookTableAdapter();
-        GetUserReserveTableModel(new GetReserveTableInput(preferenceManager.getString(Constants.USER_ID), Para.longitude, Para.latitude));
+        GetUserReserveTableModel(new GetReserveTableInput(preferenceManager.getString(Constants.USER_ID), Para.latitude, Para.longitude));
     }
 
     private void initUserBookTableAdapter() {
         reserveTables = new ArrayList<>();
         userReserveTableAdapter = new UserReserveTableAdapter(reserveTables, this::onUserReserveTableClicked);
+        LayoutAnimationController layoutAnimationController = AnimationUtils.loadLayoutAnimation(UserBookTableHistoryActivity.this, R.anim.layout_animation_left_tp_right);
+        binding.recycleView.setLayoutAnimation(layoutAnimationController);
         binding.recycleView.setAdapter(userReserveTableAdapter);
     }
 
@@ -88,8 +94,9 @@ public class UserBookTableHistoryActivity extends AppCompatActivity implements U
         call.enqueue(new Callback<GetUserReserveTableModel>() {
             @Override
             public void onResponse(Call<GetUserReserveTableModel> call, Response<GetUserReserveTableModel> response) {
-                if (response.body() != null && response.body().getNotification().equals("1")) {
+                if (response.body() != null && response.body().getStatus().equals("1")) {
                     reserveTables.addAll(response.body().getReserveTables());
+                    Collections.reverse(reserveTables);
                     userReserveTableAdapter.notifyDataSetChanged();
                 }
             }
