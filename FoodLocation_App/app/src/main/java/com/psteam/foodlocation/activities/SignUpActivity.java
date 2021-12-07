@@ -87,12 +87,14 @@ public class SignUpActivity extends AppCompatActivity {
 //                bundle.putString("phoneNumber", binding.inputPhone.getText().toString());
 //                intent.putExtra("bundle", bundle);
 //                startActivity(intent);
-                String strName=binding.inputFullName.getText().toString().trim();
-                String strPhone=binding.inputPhone.getText().toString().trim();
-                String strPassword=binding.inputPassword.getText().toString().trim();
-                boolean strGender=binding.radioButtonMale.isChecked();
-
-                signUP(new LogUpModel(true,strGender,strPhone,strPassword,strName),strPassword);
+                loading(true);
+                sendVerificationCode("+84" + binding.inputPhone.getText().toString());
+//                String strName=binding.inputFullName.getText().toString().trim();
+//                String strPhone=binding.inputPhone.getText().toString().trim();
+//                String strPassword=binding.inputPassword.getText().toString().trim();
+//                boolean strGender=binding.radioButtonMale.isChecked();
+//
+//                signUP(new LogUpModel(true,strGender,strPhone,strPassword,strName),strPassword);
 
             }
         });
@@ -168,13 +170,14 @@ public class SignUpActivity extends AppCompatActivity {
     private void showToast(String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
+
     private void loading(boolean Loading) {
         if (Loading) {
             binding.progressBar.setVisibility(View.VISIBLE);
-            binding.buttonSignIn.setVisibility(View.GONE);
+            binding.buttonSignUp.setVisibility(View.GONE);
         } else {
             binding.progressBar.setVisibility(View.GONE);
-            binding.buttonSignIn.setVisibility(View.VISIBLE);
+            binding.buttonSignUp.setVisibility(View.VISIBLE);
         }
     }
 
@@ -229,8 +232,6 @@ public class SignUpActivity extends AppCompatActivity {
         @Override
         public void onCodeSent(@NonNull String verificationId,
                                @NonNull PhoneAuthProvider.ForceResendingToken token) {
-            loading(false);
-
             Log.d("Send", "onCodeSent:" + verificationId);
             //ShowNotification.dismissProgressDialog();
             Toast.makeText(getApplicationContext(), "Đã gửi OTP", Toast.LENGTH_SHORT).show();
@@ -242,6 +243,7 @@ public class SignUpActivity extends AppCompatActivity {
             String strPassword=binding.inputPassword.getText().toString().trim();
             boolean strGender=binding.radioButtonMale.isChecked();
 
+            loading(false);
             Intent intent = new Intent(SignUpActivity.this, VerifyOTPActivity.class);
             intent.putExtra("account", new LogUpModel(true,strGender,strPhone,strPassword,strName));
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

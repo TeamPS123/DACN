@@ -98,8 +98,7 @@ public class VerifyOTPActivity extends AppCompatActivity {
                     binding.inputCode5.getText().toString() +
                     binding.inputCode6.getText().toString();
             if (code.length() == 6) {
-                startActivity(new Intent(VerifyOTPActivity.this, MainActivity.class));
-                loading(false);
+                verifyCode(code);
             }
         });
 
