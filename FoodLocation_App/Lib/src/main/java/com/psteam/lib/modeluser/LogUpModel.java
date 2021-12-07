@@ -1,6 +1,8 @@
 package com.psteam.lib.modeluser;
 
-public class LogUpModel {
+import java.io.Serializable;
+
+public class LogUpModel implements Serializable {
     private boolean business;
 
     private boolean gender;

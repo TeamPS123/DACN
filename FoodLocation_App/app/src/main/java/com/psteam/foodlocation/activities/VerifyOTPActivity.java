@@ -1,5 +1,8 @@
 package com.psteam.foodlocation.activities;
 
+import static com.psteam.lib.RetrofitClient.getRetrofit;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -8,6 +11,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -15,15 +19,42 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseException;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthOptions;
+import com.google.firebase.auth.PhoneAuthProvider;
 import com.psteam.foodlocation.R;
 import com.psteam.foodlocation.databinding.ActivityVerifyOtpBinding;
+import com.psteam.foodlocation.ultilities.Constants;
+import com.psteam.foodlocation.ultilities.CustomToast;
 import com.psteam.foodlocation.ultilities.GenericTextWatcher;
+import com.psteam.foodlocation.ultilities.PreferenceManager;
+import com.psteam.foodlocation.ultilities.Token;
+import com.psteam.lib.Services.ServiceAPI;
+import com.psteam.lib.modeluser.LogUpModel;
+import com.psteam.lib.modeluser.message;
+
+import java.util.concurrent.TimeUnit;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class VerifyOTPActivity extends AppCompatActivity {
 
     private ActivityVerifyOtpBinding binding;
     private String phoneNumber;
     private Bundle bundle;
+
+    private LogUpModel account;
+    private Token dataToken;
+    private PreferenceManager preferenceManager;
 
     private long leftTimeInSecond = 60000;
 
@@ -40,6 +71,8 @@ public class VerifyOTPActivity extends AppCompatActivity {
         }
         binding = ActivityVerifyOtpBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        preferenceManager = new PreferenceManager(getApplicationContext());
+        dataToken = new Token(VerifyOTPActivity.this);
         init();
         setListeners();
 
@@ -86,6 +119,8 @@ public class VerifyOTPActivity extends AppCompatActivity {
         binding.textviewReSendOTP.setOnClickListener(v -> {
             leftTimeInSecond = 60000;
             countDownResendOTP(leftTimeInSecond);
+
+            sendVerificationCode("+84" + account.getPhone());
         });
     }
 
@@ -104,11 +139,12 @@ public class VerifyOTPActivity extends AppCompatActivity {
     }
 
     private void init() {
-        bundle = getIntent().getBundleExtra("bundle");
-        if (bundle != null) {
-            phoneNumber = bundle.getString("phoneNumber");
-            binding.textviewPhone.setText(phoneNumber);
-        }
+        account = (LogUpModel)getIntent().getSerializableExtra("account");
+//        bundle = getIntent().getBundleExtra("bundle");
+//        if (bundle != null) {
+//            phoneNumber = bundle.getString("phoneNumber");
+//            binding.textviewPhone.setText(phoneNumber);
+//        }
         countDownResendOTP(leftTimeInSecond);
     }
 
@@ -148,5 +184,123 @@ public class VerifyOTPActivity extends AppCompatActivity {
             }
             return false;
         }
+    }
+
+    private void signUP(LogUpModel logUpModel, String password) {
+        ServiceAPI serviceAPI = getRetrofit().create(ServiceAPI.class);
+        Call<message> call = serviceAPI.SignUp(logUpModel);
+        call.enqueue(new Callback<message>() {
+            @Override
+            public void onResponse(Call<message> call, Response<message> response) {
+                if (response.body() != null && response.body().getStatus().equals("1")) {
+                    preferenceManager.putString(Constants.USER_ID, response.body().getId());
+                    preferenceManager.putBoolean(Constants.IsLogin,true);
+                    preferenceManager.putString(Constants.Password, password);
+                    dataToken.saveToken(response.body().getNotification());
+                    Intent intent = new Intent(VerifyOTPActivity.this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    CustomToast.makeText(getApplicationContext(), response.body().getNotification(), CustomToast.LENGTH_SHORT, CustomToast.ERROR).show();
+                }
+                loading(false);
+            }
+
+            @Override
+            public void onFailure(Call<message> call, Throwable t) {
+                Log.d("Log:", t.getMessage());
+            }
+        });
+    }
+
+    //SignIn by Phone
+    private void sendVerificationCode(String number){
+        SignUpActivity.mAuth = FirebaseAuth.getInstance();
+
+        PhoneAuthOptions options = PhoneAuthOptions.newBuilder(SignUpActivity.mAuth)
+                .setPhoneNumber(number)
+                .setTimeout(60L, TimeUnit.SECONDS)
+                .setActivity(this)
+                .setCallbacks(mCallbacks)
+                .build();
+        PhoneAuthProvider.verifyPhoneNumber(options);
+    }
+
+    // callback xác thực sđt
+    private PhoneAuthProvider.OnVerificationStateChangedCallbacks
+            mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+
+        @Override
+        public void onVerificationCompleted(PhoneAuthCredential credential) {
+            //Hàm này được gọi trong hai trường hợp:
+            //1. Trong một số trường hợp, điện thoại di động được xác minh tự động mà không cần mã xác minh.
+            //2. Trên một số thiết bị, các dịch vụ của Google Play phát hiện SMS đến và thực hiện quy trình xác minh mà không cần người dùng thực hiện bất kỳ hành động nào.
+            Log.d("Send", "onVerificationCompleted:" + credential);
+
+            //tự động điền mã OTP
+//            edtNum1.setText(credential.getSmsCode().substring(0,1));
+//            edtNum2.setText(credential.getSmsCode().substring(1,2));
+//            edtNum3.setText(credential.getSmsCode().substring(2,3));
+//            edtNum4.setText(credential.getSmsCode().substring(3,4));
+//            edtNum5.setText(credential.getSmsCode().substring(4,5));
+//            edtNum6.setText(credential.getSmsCode().substring(5,6));
+
+            verifyCode(credential.getSmsCode());
+        }
+
+        //fail
+        @Override
+        public void onVerificationFailed(FirebaseException e) {
+            Log.w("Send", "onVerificationFailed", e);
+            //ShowNotification.dismissProgressDialog();
+
+//            if (e instanceof FirebaseAuthInvalidCredentialsException) {
+//                ShowNotification.showAlertDialog(MainActivity.this, "Request fail");
+//            } else if (e instanceof FirebaseTooManyRequestsException) {
+//                ShowNotification.showAlertDialog(MainActivity.this, "Quota không đủ");
+//            }
+        }
+
+        @Override
+        public void onCodeSent(@NonNull String verificationId,
+                               @NonNull PhoneAuthProvider.ForceResendingToken token) {
+            Log.d("Send", "onCodeSent:" + verificationId);
+            //ShowNotification.dismissProgressDialog();
+            Toast.makeText(getApplicationContext(), "Đã gửi OTP", Toast.LENGTH_SHORT).show();
+            SignUpActivity.mVerificationId = verificationId;
+            //mResendToken = token;
+        }
+    };
+
+    //code xác thực OTP
+    private void verifyCode(String code) {
+        //ShowNotification.showProgressDialog(MainActivity.this, "Đang xác thực");
+        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(SignUpActivity.mVerificationId, code);
+        signInWithPhoneAuthCredential(credential);
+    }
+
+    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
+        SignUpActivity.mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        //ShowNotification.dismissProgressDialog();
+                        if (task.isSuccessful()) {
+                            Log.d("Confirm", "signInWithCredential:success");
+                            FirebaseUser user = task.getResult().getUser();
+                            //ShowNotification.showAlertDialog(MainActivity.this, "Thành công");
+                            signUP(account, account.getPass());
+                        } else {
+                            loading(false);
+                            Log.w("Confirm", "signInWithCredential:failure", task.getException());
+                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                                //ShowNotification.showAlertDialog(MainActivity.this, "Lỗi");
+                                Toast.makeText(VerifyOTPActivity.this, task.getException()+"", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        loading(false);
+                    }
+                });
     }
 }

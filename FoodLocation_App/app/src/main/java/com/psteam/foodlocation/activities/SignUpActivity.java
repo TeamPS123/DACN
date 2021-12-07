@@ -2,6 +2,7 @@ package com.psteam.foodlocation.activities;
 
 import static com.psteam.lib.RetrofitClient.getRetrofit;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -17,6 +18,16 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseException;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthOptions;
+import com.google.firebase.auth.PhoneAuthProvider;
 import com.psteam.foodlocation.R;
 import com.psteam.foodlocation.databinding.ActivitySignUpBinding;
 import com.psteam.foodlocation.ultilities.Constants;
@@ -28,6 +39,7 @@ import com.psteam.lib.modeluser.LogUpModel;
 import com.psteam.lib.modeluser.LoginModel;
 import com.psteam.lib.modeluser.message;
 
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -40,6 +52,11 @@ public class SignUpActivity extends AppCompatActivity {
     private ActivitySignUpBinding binding;
     private PreferenceManager preferenceManager;
     private Token dataToken;
+
+    public static FirebaseAuth mAuth;
+    public static String mVerificationId;
+    private PhoneAuthProvider.ForceResendingToken mResendToken;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +73,7 @@ public class SignUpActivity extends AppCompatActivity {
 
 
         binding = ActivitySignUpBinding.inflate(getLayoutInflater());
-
+        mAuth = FirebaseAuth.getInstance();
 
         setContentView(binding.getRoot());
         setListeners();
@@ -159,5 +176,104 @@ public class SignUpActivity extends AppCompatActivity {
             binding.progressBar.setVisibility(View.GONE);
             binding.buttonSignIn.setVisibility(View.VISIBLE);
         }
+    }
+
+    //SignIn by Phone
+    private void sendVerificationCode(String number){
+        PhoneAuthOptions options = PhoneAuthOptions.newBuilder(mAuth)
+                .setPhoneNumber(number)
+                .setTimeout(60L, TimeUnit.SECONDS)
+                .setActivity(this)
+                .setCallbacks(mCallbacks)
+                .build();
+        PhoneAuthProvider.verifyPhoneNumber(options);
+    }
+
+    // callback xác thực sđt
+    private PhoneAuthProvider.OnVerificationStateChangedCallbacks
+            mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+
+        @Override
+        public void onVerificationCompleted(PhoneAuthCredential credential) {
+            //Hàm này được gọi trong hai trường hợp:
+            //1. Trong một số trường hợp, điện thoại di động được xác minh tự động mà không cần mã xác minh.
+            //2. Trên một số thiết bị, các dịch vụ của Google Play phát hiện SMS đến và thực hiện quy trình xác minh mà không cần người dùng thực hiện bất kỳ hành động nào.
+            Log.d("Send", "onVerificationCompleted:" + credential);
+
+            //tự động điền mã OTP
+//            edtNum1.setText(credential.getSmsCode().substring(0,1));
+//            edtNum2.setText(credential.getSmsCode().substring(1,2));
+//            edtNum3.setText(credential.getSmsCode().substring(2,3));
+//            edtNum4.setText(credential.getSmsCode().substring(3,4));
+//            edtNum5.setText(credential.getSmsCode().substring(4,5));
+//            edtNum6.setText(credential.getSmsCode().substring(5,6));
+
+            verifyCode(credential.getSmsCode());
+            loading(false);
+        }
+
+        //fail
+        @Override
+        public void onVerificationFailed(FirebaseException e) {
+            Log.w("Send", "onVerificationFailed", e);
+            //ShowNotification.dismissProgressDialog();
+
+//            if (e instanceof FirebaseAuthInvalidCredentialsException) {
+//                ShowNotification.showAlertDialog(MainActivity.this, "Request fail");
+//            } else if (e instanceof FirebaseTooManyRequestsException) {
+//                ShowNotification.showAlertDialog(MainActivity.this, "Quota không đủ");
+//            }
+            loading(false);
+        }
+
+        @Override
+        public void onCodeSent(@NonNull String verificationId,
+                               @NonNull PhoneAuthProvider.ForceResendingToken token) {
+            loading(false);
+
+            Log.d("Send", "onCodeSent:" + verificationId);
+            //ShowNotification.dismissProgressDialog();
+            Toast.makeText(getApplicationContext(), "Đã gửi OTP", Toast.LENGTH_SHORT).show();
+            mVerificationId = verificationId;
+            mResendToken = token;
+
+            String strName=binding.inputFullName.getText().toString().trim();
+            String strPhone=binding.inputPhone.getText().toString().trim();
+            String strPassword=binding.inputPassword.getText().toString().trim();
+            boolean strGender=binding.radioButtonMale.isChecked();
+
+            Intent intent = new Intent(SignUpActivity.this, VerifyOTPActivity.class);
+            intent.putExtra("account", new LogUpModel(true,strGender,strPhone,strPassword,strName));
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        }
+    };
+
+    //code xác thực OTP
+    private void verifyCode(String code) {
+        //ShowNotification.showProgressDialog(MainActivity.this, "Đang xác thực");
+        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, code);
+        signInWithPhoneAuthCredential(credential);
+    }
+
+    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        //ShowNotification.dismissProgressDialog();
+                        if (task.isSuccessful()) {
+                            Log.d("Confirm", "signInWithCredential:success");
+                            FirebaseUser user = task.getResult().getUser();
+                            //ShowNotification.showAlertDialog(MainActivity.this, "Thành công");
+                        } else {
+                            Log.w("Confirm", "signInWithCredential:failure", task.getException());
+                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                                //ShowNotification.showAlertDialog(MainActivity.this, "Lỗi");
+                            }
+                        }
+                    }
+                });
     }
 }
