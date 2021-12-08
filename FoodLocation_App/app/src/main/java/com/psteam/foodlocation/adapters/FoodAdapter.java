@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.psteam.foodlocation.R;
 import com.psteam.foodlocation.databinding.FoodItemContainerBinding;
 import com.psteam.lib.modeluser.FoodModel;
 
@@ -74,15 +75,19 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
                 if(binding.textViewAddFood.getText().equals("Thêm món")) {
                     foodListeners.onAddFoodClick(food);
                     binding.textViewAddFood.setText("Xoá món");
+                    binding.textViewAddFood.setBackgroundColor(context.getColor(R.color.ColorButtonReserve));
                 }else {
                     foodListeners.onRemoveFoodClick(food);
                     binding.textViewAddFood.setText("Thêm món");
+                    binding.textViewAddFood.setBackgroundColor(context.getColor(R.color.duskYellow));
                 }
             });
             if(food.getCount()>0){
                 binding.textViewAddFood.setText("Xoá món");
+                binding.textViewAddFood.setBackgroundColor(context.getColor(R.color.ColorButtonReserve));
             }else {
                 binding.textViewAddFood.setText("Thêm món");
+                binding.textViewAddFood.setBackgroundColor(context.getColor(R.color.duskYellow));
             }
             binding.getRoot().setOnClickListener(v -> {
                 foodListeners.onFoodClick(food);

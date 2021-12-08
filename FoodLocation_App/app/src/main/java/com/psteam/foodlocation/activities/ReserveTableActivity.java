@@ -231,9 +231,6 @@ public class ReserveTableActivity extends AppCompatActivity {
         }
     }
 
-
-
-
     public void setVisibilityText11(boolean b) {
         if (b && binding.text11.getVisibility() == View.GONE) {
             binding.text11.setVisibility(View.VISIBLE);
@@ -401,7 +398,7 @@ public class ReserveTableActivity extends AppCompatActivity {
         menuBottomSheetFragment = new MenuBottomSheetFragment(menus, new FoodAdapter.FoodListeners() {
             @Override
             public void onAddFoodClick(FoodModel food) {
-                CustomToast.makeText(getApplicationContext(), "Đã thêm món ăn vào thực đơn", CustomToast.LENGTH_SHORT, CustomToast.SUCCESS).show();
+                //CustomToast.makeText(getApplicationContext(), "Đã thêm món ăn vào thực đơn", CustomToast.LENGTH_SHORT, CustomToast.SUCCESS).show();
                 boolean flag = false;
                 for (FoodModel foodReserve : foodReserves) {
                     if (foodReserve.getName().equals(food.getName())) {
@@ -442,7 +439,7 @@ public class ReserveTableActivity extends AppCompatActivity {
 
             @Override
             public void onFoodClick(FoodModel food) {
-                Toast.makeText(getApplicationContext(), food.getName(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), food.getName(), Toast.LENGTH_SHORT).show();
             }
         });
         menuBottomSheetFragment.show(getSupportFragmentManager(), menuBottomSheetFragment.getTag());

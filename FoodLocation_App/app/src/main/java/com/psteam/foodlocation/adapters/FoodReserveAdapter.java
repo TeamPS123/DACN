@@ -59,7 +59,7 @@ public class FoodReserveAdapter extends RecyclerView.Adapter<FoodReserveAdapter.
         }
 
         public void setData(FoodModel food) {
-            if(food.getPic().size()>0) {
+            if (food.getPic().size() > 0) {
                 Glide.with(context).load(food.getPic().get(0)).thumbnail(0.3f).into(binding.imageViewFood);
             }
             binding.textViewFoodName.setText(food.getName());
@@ -68,7 +68,7 @@ public class FoodReserveAdapter extends RecyclerView.Adapter<FoodReserveAdapter.
             binding.textViewCategory.setText(food.getCategoryName());
             binding.textViewCount.setText(String.valueOf(food.getCount()));
             binding.textViewAdd.setOnClickListener(v -> {
-                food.setCount(food.getCount()+1);
+                food.setCount(food.getCount() + 1);
                 binding.textViewCount.setText(String.valueOf(food.getCount()));
                 foodReserveListeners.onAddFoodReserveClick(food);
             });
@@ -77,11 +77,9 @@ public class FoodReserveAdapter extends RecyclerView.Adapter<FoodReserveAdapter.
                 int count = food.getCount() - 1;
                 food.setCount(count);
                 if (count <= 0) {
-                    if (foods.size() <= 0) {
-                        double price =Double.parseDouble(food.getPrice());
-                        foodReserveListeners.onRemoveFoodReserveClick(food,count,price);
-                        return;
-                    }
+                    double price = Double.parseDouble(food.getPrice());
+                    foodReserveListeners.onRemoveFoodReserveClick(food, 1, price);
+                    return;
                 } else {
                     binding.textViewCount.setText(String.valueOf(count));
                 }
@@ -91,16 +89,19 @@ public class FoodReserveAdapter extends RecyclerView.Adapter<FoodReserveAdapter.
             binding.imageViewRemove.setOnClickListener(v -> {
                 int count = food.getCount();
                 food.setCount(0);
-                double price =Double.parseDouble(food.getPrice());
-                foodReserveListeners.onRemoveFoodReserveClick(food,count,price);
+                double price = Double.parseDouble(food.getPrice());
+                foodReserveListeners.onRemoveFoodReserveClick(food, count, price);
             });
         }
     }
 
     public interface FoodReserveListeners {
         void onAddFoodReserveClick(FoodModel food);
+
         void onMinusFoodReserveClick(FoodModel food);
-        void onRemoveFoodReserveClick(FoodModel food,int count,double price);
+
+        void onRemoveFoodReserveClick(FoodModel food, int count, double price);
+
         void onFoodClick(FoodModel food);
     }
 
