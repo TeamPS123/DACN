@@ -4,12 +4,16 @@ package com.psteam.lib.modeluser;
 import java.util.ArrayList;
 
 public class GetReserveTableSinge {
+    public GetReserveTableSinge(String notification, ArrayList<FoodModel> foodList, ReserveTable reserveTable, String status) {
+        this.notification = notification;
+        this.foodList = foodList;
+        this.reserveTable = reserveTable;
+        this.status = status;
+    }
+
     private String notification;
-
     private ArrayList<FoodModel> foodList;
-
     private ReserveTable reserveTable;
-
     private String status;
 
     public String getNotification ()

@@ -25,6 +25,7 @@ import com.psteam.foodlocation.ultilities.DividerItemDecorator;
 import com.psteam.foodlocation.ultilities.Para;
 import com.psteam.foodlocation.ultilities.PreferenceManager;
 import com.psteam.foodlocation.ultilities.Token;
+import com.psteam.lib.Models.reserveTableDetail.reserveTable;
 import com.psteam.lib.Services.ServiceAPI;
 import com.psteam.lib.modeluser.GetReserveTableInput;
 import com.psteam.lib.modeluser.GetUserReserveTableModel;
@@ -41,7 +42,7 @@ import retrofit2.Response;
 public class UserBookTableHistoryActivity extends AppCompatActivity implements UserReserveTableAdapter.UserReserveTableListeners {
 
     private ActivityUserBookTableHistoryBinding binding;
-    private ArrayList<ReserveTable> reserveTables;
+    private ArrayList<reserveTable> reserveTables;
     private UserReserveTableAdapter userReserveTableAdapter;
 
     private Token token;
@@ -109,11 +110,12 @@ public class UserBookTableHistoryActivity extends AppCompatActivity implements U
     }
 
     @Override
-    public void onUserReserveTableClicked(ReserveTable reserveTable) {
+    public void onUserReserveTableClicked(reserveTable reserveTable) {
         Intent intent = new Intent(getApplicationContext(), UserReserveTableDetailsActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("reserveTable", reserveTable);
-        intent.putExtras(bundle);
+        intent.putExtra("reserveTable", reserveTable);
+//        Bundle bundle = new Bundle();
+//        bundle.putSerializable("reserveTable", reserveTable);
+//        intent.putExtras(bundle);
         startActivity(intent);
     }
 }

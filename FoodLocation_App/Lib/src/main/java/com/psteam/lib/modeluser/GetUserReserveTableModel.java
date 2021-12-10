@@ -1,11 +1,13 @@
 package com.psteam.lib.modeluser;
 
+import com.psteam.lib.Models.reserveTableDetail.reserveTable;
+
 import java.util.ArrayList;
 
 public class GetUserReserveTableModel {
     private String notification;
 
-    private ArrayList<ReserveTable> reserveTables;
+    private ArrayList<reserveTable> reserveTables;
 
     private String status;
 
@@ -19,12 +21,12 @@ public class GetUserReserveTableModel {
         this.notification = notification;
     }
 
-    public ArrayList<ReserveTable> getReserveTables ()
+    public ArrayList<reserveTable> getReserveTables ()
     {
         return reserveTables;
     }
 
-    public void setReserveTables (ArrayList<ReserveTable> reserveTables)
+    public void setReserveTables (ArrayList<reserveTable> reserveTables)
     {
         this.reserveTables = reserveTables;
     }

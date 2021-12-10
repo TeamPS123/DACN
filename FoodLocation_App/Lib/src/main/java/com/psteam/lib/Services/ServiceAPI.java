@@ -1,5 +1,6 @@
 package com.psteam.lib.Services;
 
+import com.psteam.lib.Models.reserveTableDetail.messageReserveTable;
 import com.psteam.lib.modeluser.GetCategoryResModel;
 import com.psteam.lib.modeluser.GetMenuResModel;
 import com.psteam.lib.modeluser.GetReserveTableInput;
@@ -66,4 +67,7 @@ public interface ServiceAPI {
 
     @POST("api/getAllFoodByReserveTableId")
     Call<GetReserveTableSinge> GetReserveTableSinge(@Header("Authorization") String token, @Query("userId") String userId, @Query("reserveTableId") String reserveTableId);
+
+    @GET("api/getAllFoodByReserveTableId")
+    Call<messageReserveTable> getAllFoodByReserveTableId(@Header("Authorization") String token, @Query("userId") String userId, @Query("reserveTableId") String reserveTableId);
 }

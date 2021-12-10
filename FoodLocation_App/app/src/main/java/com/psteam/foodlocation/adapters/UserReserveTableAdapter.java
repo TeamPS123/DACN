@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.psteam.foodlocation.databinding.LayoutUserReserveTableItemContainerBinding;
+import com.psteam.lib.Models.reserveTableDetail.reserveTable;
 import com.psteam.lib.modeluser.GetUserReserveTableModel;
 import com.psteam.lib.modeluser.ReserveTable;
 import com.squareup.picasso.Picasso;
@@ -15,10 +16,10 @@ import java.util.List;
 
 public class UserReserveTableAdapter extends RecyclerView.Adapter<UserReserveTableAdapter.UserReserveTableViewHolder> {
 
-    private final List<ReserveTable> reserveTables;
+    private final List<reserveTable> reserveTables;
     private final UserReserveTableListeners userReserveTableListeners;
 
-    public UserReserveTableAdapter(List<ReserveTable> reserveTables, UserReserveTableListeners userReserveTableListeners) {
+    public UserReserveTableAdapter(List<reserveTable> reserveTables, UserReserveTableListeners userReserveTableListeners) {
         this.reserveTables = reserveTables;
         this.userReserveTableListeners = userReserveTableListeners;
     }
@@ -52,15 +53,15 @@ public class UserReserveTableAdapter extends RecyclerView.Adapter<UserReserveTab
             binding = itemView;
         }
 
-        public void setData(ReserveTable reserveTable) {
+        public void setData(reserveTable reserveTable) {
             binding.textViewRestaurantName.setText(reserveTable.getRestaurant().getName());
-            if (reserveTable.getStatus().equals("0")) {
+            if (reserveTable.getStatus() == 0) {
                 binding.textViewStatus.setText(String.format("Trạng thái chưa xác nhận"));
-            } else if (reserveTable.getStatus().equals("1")) {
+            } else if (reserveTable.getStatus() == 1) {
                 binding.textViewStatus.setText(String.format("Trạng thái đã được duyệt"));
-            } else if (reserveTable.getStatus().equals("2")) {
+            } else if (reserveTable.getStatus() == 2) {
                 binding.textViewStatus.setText(String.format("Trạng thái bị huỷ"));
-            } else if (reserveTable.getStatus().equals("3")) {
+            } else if (reserveTable.getStatus() == 3) {
                 binding.textViewStatus.setText(String.format("Quá hạn"));
             } else {
                 binding.textViewStatus.setText(String.format("Hoàn tất"));
@@ -76,6 +77,6 @@ public class UserReserveTableAdapter extends RecyclerView.Adapter<UserReserveTab
     }
 
     public interface UserReserveTableListeners {
-        void onUserReserveTableClicked(ReserveTable reserveTable);
+        void onUserReserveTableClicked(reserveTable reserveTable);
     }
 }

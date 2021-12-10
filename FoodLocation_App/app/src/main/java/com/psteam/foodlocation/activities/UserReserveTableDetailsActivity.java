@@ -26,6 +26,8 @@ import com.psteam.foodlocation.ultilities.Constants;
 import com.psteam.foodlocation.ultilities.CustomToast;
 import com.psteam.foodlocation.ultilities.PreferenceManager;
 import com.psteam.foodlocation.ultilities.Token;
+import com.psteam.lib.Models.reserveTableDetail.messageReserveTable;
+import com.psteam.lib.Models.reserveTableDetail.reserveTable;
 import com.psteam.lib.Services.ServiceAPI;
 import com.psteam.lib.modeluser.GetReserveTableInput;
 import com.psteam.lib.modeluser.GetReserveTableSinge;
@@ -43,6 +45,7 @@ public class UserReserveTableDetailsActivity extends AppCompatActivity {
     private BodySenderFromRes response;
     private Token token;
     private PreferenceManager preferenceManager;
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,17 +54,18 @@ public class UserReserveTableDetailsActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         token = new Token(getApplicationContext());
         preferenceManager = new PreferenceManager(getApplicationContext());
+        userId = preferenceManager.getString(Constants.USER_ID);
         init();
         setListeners();
     }
 
-    private ReserveTable reserveTable;
+    private com.psteam.lib.Models.reserveTableDetail.reserveTable reserveTable;
 
     private void initData() {
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
-        reserveTable = (ReserveTable) bundle.getSerializable("reserveTable");
-
+//        reserveTable = (reserveTable) bundle.getSerializable("reserveTable");
+        reserveTable = (reserveTable) intent.getSerializableExtra("reserveTable") ;
         loadData();
 
     }
@@ -80,13 +84,13 @@ public class UserReserveTableDetailsActivity extends AppCompatActivity {
                 binding.textViewPromotion.setVisibility(View.GONE);
                 binding.line6.setVisibility(View.GONE);
             }
-            if (reserveTable.getStatus().equals("0")) {
+            if (reserveTable.getStatus() == 0) {
                 binding.textViewStatus.setText(String.format("Đang chờ xác nhận"));
-            } else if (reserveTable.getStatus().equals("1")) {
+            } else if (reserveTable.getStatus() == 1) {
                 binding.textViewStatus.setText(String.format("Trạng thái đã được duyệt"));
-            } else if (reserveTable.getStatus().equals("2")) {
+            } else if (reserveTable.getStatus() == 2) {
                 binding.textViewStatus.setText(String.format("Trạng thái bị huỷ"));
-            } else if (reserveTable.getStatus().equals("3")) {
+            } else if (reserveTable.getStatus() == 3) {
                 binding.textViewStatus.setText(String.format("Quá hạn"));
             } else {
                 binding.textViewStatus.setText(String.format("Hoàn tất"));
@@ -98,7 +102,7 @@ public class UserReserveTableDetailsActivity extends AppCompatActivity {
             binding.textViewTimeReserve.setText(reserveTable.getTime());
             binding.textViewPhoneNumber.setText(reserveTable.getPhone());
 
-            if (!reserveTable.getStatus().equals("2")) {
+            if (reserveTable.getStatus() != 2) {
                 binding.text20.setVisibility(View.GONE);
                 binding.inputNote.setVisibility(View.GONE);
             }
@@ -165,7 +169,7 @@ public class UserReserveTableDetailsActivity extends AppCompatActivity {
             getDataFromNoti();
             setBinding();
             if(response!=null)
-            GetUserReserveTableModel(Constants.USER_ID, response.getReserveTableId());
+            GetUserReserveTableModel(userId, response.getReserveTableId());
         }
     }
 
@@ -187,19 +191,19 @@ public class UserReserveTableDetailsActivity extends AppCompatActivity {
 
     private void GetUserReserveTableModel(String userId, String reserveTableId) {
         ServiceAPI serviceAPI = getRetrofit().create(ServiceAPI.class);
-        Call<GetReserveTableSinge> call = serviceAPI.GetReserveTableSinge(token.getToken(), userId, reserveTableId);
-        call.enqueue(new Callback<GetReserveTableSinge>() {
+        Call<messageReserveTable> call = serviceAPI.getAllFoodByReserveTableId(token.getToken(), userId, reserveTableId);
+        call.enqueue(new Callback<messageReserveTable>() {
             @Override
-            public void onResponse(Call<GetReserveTableSinge> call, Response<GetReserveTableSinge> response) {
-                if (response.body() != null && response.body().getStatus().equals("1")) {
+            public void onResponse(Call<messageReserveTable> call, Response<messageReserveTable> response) {
+                if (response.body() != null && response.body().getStatus() == 1) {
                     reserveTable = response.body().getReserveTable();
                     loadData();
                 }
             }
 
             @Override
-            public void onFailure(Call<GetReserveTableSinge> call, Throwable t) {
-                Log.d("Log:", t.getMessage());
+            public void onFailure(Call<messageReserveTable> call, Throwable t) {
+
             }
         });
     }
