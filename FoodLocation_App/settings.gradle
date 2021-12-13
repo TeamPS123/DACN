@@ -9,3 +9,4 @@ dependencyResolutionManagement {
 rootProject.name = "Food Location"
 include ':app'
 include ':Lib'
+include ':Library'
