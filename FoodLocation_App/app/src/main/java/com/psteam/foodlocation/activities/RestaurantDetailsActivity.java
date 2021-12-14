@@ -23,6 +23,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -36,16 +37,21 @@ import com.psteam.foodlocation.adapters.ChooseDateReserveTableAdapter;
 import com.psteam.foodlocation.adapters.ChooseNumberPeopleAdapter;
 import com.psteam.foodlocation.adapters.RestaurantAddressAdapter;
 import com.psteam.foodlocation.adapters.RestaurantPostAdapter;
+import com.psteam.foodlocation.adapters.ReviewAdapter;
 import com.psteam.foodlocation.adapters.TimeBookTableAdapter;
 import com.psteam.foodlocation.databinding.ActivityRestaurantDetailsBinding;
 import com.psteam.foodlocation.adapters.RestaurantPhotoAdapter;
 import com.psteam.foodlocation.models.GoogleMapApiModels.DirectionResponses;
 import com.psteam.foodlocation.services.ServiceAPI;
 import com.psteam.foodlocation.ultilities.CustomToast;
+import com.psteam.foodlocation.ultilities.DividerItemDecorator;
 import com.psteam.foodlocation.ultilities.Para;
 import com.psteam.lib.modeluser.GetRestaurantByDistance;
 import com.psteam.lib.modeluser.GetRestaurantModel;
+import com.psteam.lib.modeluser.GetReviewModel;
+import com.psteam.lib.modeluser.Rate;
 import com.psteam.lib.modeluser.RestaurantModel;
+import com.psteam.lib.modeluser.UserModel;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -56,7 +62,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RestaurantDetailsActivity extends AppCompatActivity implements OnMapReadyCallback,RestaurantPostAdapter.RestaurantPostListeners {
+public class RestaurantDetailsActivity extends AppCompatActivity implements OnMapReadyCallback, RestaurantPostAdapter.RestaurantPostListeners {
 
     private ActivityRestaurantDetailsBinding binding;
     private GoogleMap mMap;
@@ -72,6 +78,13 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
     private ArrayList<RestaurantAddressAdapter.AddressRestaurant> addressRestaurants;
     private ArrayList<ChooseNumberPeopleAdapter.NumberPeople> numberPeople;
     private ArrayList<ChooseDateReserveTableAdapter.DateReserveTable> dateReserveTables;
+
+    //Review
+    private ArrayList<Rate> rates;
+    private ArrayList<Rate> tempRates;
+    private ReviewAdapter reviewAdapter;
+    private GetReviewModel.CountRating countRating;
+    private GetReviewModel getReviewModel;
 
     private String AddressRestaurantReserve;
     private LocalDate DateReserve;
@@ -97,6 +110,8 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
     }
 
     private void init() {
+        rates = new ArrayList<>();
+        tempRates = new ArrayList<>();
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.mapRestaurant);
         mapFragment.getMapAsync(this);
@@ -106,7 +121,55 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
         //initFoodRestaurant();
         getDataIntent();
         initSliderPhotoRestaurant();
-        GetRestaurantByDistance(new GetRestaurantByDistance("20",  "10.803312745723506","106.71158641576767"));
+        initReviewAdapter();
+        getReview(restaurantModel.getRestaurantId(), -1, 0, 10);
+        GetRestaurantByDistance(new GetRestaurantByDistance("20", "10.803312745723506", "106.71158641576767"));
+    }
+
+    private void getReview(String restaurantId, int value, int skip, int take) {
+        com.psteam.lib.Services.ServiceAPI serviceAPI = getRetrofit().create(com.psteam.lib.Services.ServiceAPI.class);
+        Call<GetReviewModel> call = serviceAPI.getReview(restaurantId, value, skip, take);
+        call.enqueue(new Callback<GetReviewModel>() {
+            @Override
+            public void onResponse(Call<GetReviewModel> call, Response<GetReviewModel> response) {
+                if (response.body() != null && response.body().getStatus().equals("1")) {
+                    if (response.body().getRates().size() > 0) {
+                        countRating = response.body().getCountRating();
+                        rates.addAll(response.body().getRates());
+                        getReviewModel=response.body();
+                        binding.ratingBarTotalValue.setRating(Float.valueOf(response.body().getRateTotal()));
+                        binding.textTotalRate.setText(response.body().getRateTotal());
+                        binding.textViewRatingValue.setText(response.body().getRateTotal());
+                        binding.ratingBar.setRating(Float.valueOf(response.body().getRateTotal()));
+                        binding.textViewTotalCountReview.setText(String.format("%s đánh giá từ %s người dùng", countRating.getCount(), countRating.getCount()));
+                        if (Integer.parseInt(countRating.getCount()) <= 3) {
+                            binding.textViewViewMoreReview.setText("Xem chi tiết");
+                            tempRates.addAll(rates);
+                        } else {
+                            binding.textViewViewMoreReview.setText(String.format("Xem thêm %d đánh giá", Integer.parseInt(countRating.getCount()) - 3));
+                            tempRates.addAll(rates.subList(0,3));
+                        }
+                        binding.textViewReviewCount.setText(String.format("(Xem %s đánh giá)",countRating.getCount()));
+                        reviewAdapter.notifyDataSetChanged();
+                    } else {
+                        binding.layout11.setVisibility(View.GONE);
+                        binding.textViewReviewCount.setText("Hãy là người đánh giá đầu tiên");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetReviewModel> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void initReviewAdapter() {
+        reviewAdapter = new ReviewAdapter(restaurantModel, tempRates);
+        binding.recycleViewReview.setAdapter(reviewAdapter);
+        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecorator(getDrawable(R.drawable.diveder_review));
+        binding.recycleViewReview.addItemDecoration(itemDecoration);
     }
 
     private RestaurantModel restaurantModel;
@@ -224,6 +287,15 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
 
         binding.textViewClose.setOnClickListener(v -> {
             finish();
+        });
+
+        binding.textViewViewMoreReview.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), ReviewRestaurantActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("restaurantModel", restaurantModel);
+            bundle.putSerializable("getReviewModel", getReviewModel);
+            intent.putExtras(bundle);
+            startActivity(intent);
         });
     }
 

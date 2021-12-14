@@ -588,12 +588,121 @@ I/ Chương trình: 15% cho tất cả các gói buffet\n
             </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/layout5"
+                android:id="@+id/layout11"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_16sdp"
                 android:background="@color/white"
                 app:layout_constraintTop_toBottomOf="@id/layout4">
+
+                <LinearLayout
+                    android:id="@+id/layout12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Đánh giá trải nghiệm"
+                        android:textSize="@dimen/_14ssp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="@dimen/_60sdp"
+                        android:layout_height="@dimen/_2sdp"
+                        android:layout_marginTop="@dimen/_1sdp"
+                        android:background="#E63141" />
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/textTotalRate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:text="5.0"
+                    android:textColor="@color/TextPrimary"
+                    android:textSize="@dimen/_32sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout12" />
+
+                <RatingBar
+                    android:id="@+id/ratingBarTotalValue"
+                    style="@style/Widget.AppCompat.RatingBar.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_4sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:numStars="5"
+                    android:rating="4.9"
+                    android:stepSize="0.5"
+                    android:isIndicator="false"
+                    android:theme="@style/RatingBar"
+                    app:layout_constraintStart_toEndOf="@id/textTotalRate"
+                    app:layout_constraintTop_toTopOf="@id/textTotalRate" />
+
+                <TextView
+                    android:id="@+id/textViewTotalCountReview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_2sdp"
+                    android:text="69 đánh giá từ 69 người dùng"
+                    android:textColor="@color/TextColorSub"
+                    app:layout_constraintStart_toStartOf="@id/ratingBarTotalValue"
+                    app:layout_constraintTop_toBottomOf="@id/ratingBarTotalValue" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycleViewReview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:clipChildren="false"
+                    android:orientation="vertical"
+                    android:overScrollMode="never"
+                    android:scrollbars="none"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintTop_toBottomOf="@id/textTotalRate" />
+
+                <TextView
+                    android:id="@+id/line2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:background="#EDEDED"
+                    app:layout_constraintTop_toBottomOf="@id/recycleViewReview" />
+
+                <TextView
+                    android:id="@+id/textViewViewMoreReview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="@dimen/_8sdp"
+                    android:text="Xem thêm 66 đánh giá"
+                    android:textColor="#EF863B"
+                    android:textSize="@dimen/_11ssp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/line2" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:background="@color/white"
+                app:layout_constraintTop_toBottomOf="@id/layout11">
 
 
                 <LinearLayout

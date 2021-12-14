@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activities.ReviewRestaurantActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutTop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent">
+
+        <ImageView
+            android:id="@+id/textViewClose"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginBottom="@dimen/_8sdp"
+            android:src="@drawable/ic_round_arrow_back_ios_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="#E83848" />
+
+        <TextView
+            android:id="@+id/text11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="đánh giá trải nghiệm"
+            android:textAllCaps="true"
+            android:textColor="#E83848"
+            android:textSize="@dimen/_10ssp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textViewNameRestaurant"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:text="@string/sweet_salt_factory"
+                android:textColor="@color/TextPrimary"
+                android:textSize="@dimen/_14ssp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <TextView
+                android:id="@+id/textViewTotalPoint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:text="5.0"
+                android:textColor="@color/TextPrimary"
+                android:textSize="@dimen/_32ssp"
+                app:layout_constraintStart_toStartOf="@id/textViewNameRestaurant"
+                app:layout_constraintTop_toBottomOf="@id/textViewNameRestaurant" />
+
+            <androidx.appcompat.widget.AppCompatRatingBar
+                android:id="@+id/ratingBar"
+                style="@style/Widget.AppCompat.RatingBar.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:isIndicator="true"
+                android:numStars="5"
+                android:rating="4.5"
+                android:stepSize="0.5"
+                android:theme="@style/RatingBar"
+                app:layout_constraintStart_toEndOf="@id/textViewTotalPoint"
+                app:layout_constraintTop_toTopOf="@id/textViewTotalPoint" />
+
+            <TextView
+                android:id="@+id/textViewTotalCountReview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="68 đánh giá từ 68 người dùng"
+                android:textColor="@color/TextColorSub"
+                android:textSize="@dimen/_10ssp"
+                app:layout_constraintStart_toStartOf="@id/ratingBar"
+                app:layout_constraintTop_toBottomOf="@id/ratingBar" />
+
+            <LinearLayout
+                android:id="@+id/layout1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@id/textViewTotalPoint">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatRatingBar
+                        style="@style/Widget.AppCompat.RatingBar.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:isIndicator="true"
+                        android:numStars="5"
+                        android:rating="5"
+                        android:theme="@style/RatingBarReview" />
+
+                    <ProgressBar
+                        android:id="@+id/progressBar5"
+                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:layout_marginEnd="@dimen/_12sdp"
+                        android:layout_weight="1"
+                        android:progress="55" />
+
+                    <TextView
+                        android:id="@+id/textViewCount5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="62"
+                        android:textSize="@dimen/_10ssp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatRatingBar
+                        style="@style/Widget.AppCompat.RatingBar.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:isIndicator="true"
+                        android:numStars="5"
+                        android:rating="4"
+                        android:rotationY="180"
+                        android:theme="@style/RatingBarReview" />
+
+                    <ProgressBar
+                        android:id="@+id/progressBar4"
+                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:layout_marginEnd="@dimen/_12sdp"
+                        android:layout_weight="1"
+                        android:progress="55" />
+
+                    <TextView
+                        android:id="@+id/textViewCount4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="62"
+                        android:textSize="@dimen/_10ssp" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatRatingBar
+                        style="@style/Widget.AppCompat.RatingBar.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:isIndicator="true"
+                        android:numStars="5"
+                        android:rating="3"
+                        android:rotationY="180"
+                        android:theme="@style/RatingBarReview" />
+
+                    <ProgressBar
+                        android:id="@+id/progressBar3"
+                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:layout_marginEnd="@dimen/_12sdp"
+                        android:layout_weight="1"
+                        android:progress="55" />
+
+                    <TextView
+                        android:id="@+id/textViewCount3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="62"
+                        android:textSize="@dimen/_10ssp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatRatingBar
+                        style="@style/Widget.AppCompat.RatingBar.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:isIndicator="true"
+                        android:numStars="5"
+                        android:rating="2"
+                        android:rotationY="180"
+                        android:theme="@style/RatingBarReview" />
+
+                    <ProgressBar
+                        android:id="@+id/progressBar2"
+                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:layout_marginEnd="@dimen/_12sdp"
+                        android:layout_weight="1"
+                        android:progress="55" />
+
+                    <TextView
+                        android:id="@+id/textViewCount2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="62"
+                        android:textSize="@dimen/_10ssp" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatRatingBar
+                        style="@style/Widget.AppCompat.RatingBar.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:isIndicator="true"
+                        android:numStars="5"
+                        android:rating="1"
+                        android:rotationY="180"
+                        android:theme="@style/RatingBarReview" />
+
+                    <ProgressBar
+                        android:id="@+id/progressBar1"
+                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:layout_marginEnd="@dimen/_12sdp"
+                        android:layout_weight="1"
+                        android:progress="55" />
+
+                    <TextView
+                        android:id="@+id/textViewCount1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="62"
+                        android:textSize="@dimen/_10ssp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/line1"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:background="#EDEDED" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:text="Điểm đánh giá trên đây là điểm đánh giá từ những người sử dụng đã trực tiếp trải nghiệm sản phẩm, dịch vụ tại cửa hàng thông qua ứng dụng này."
+                    android:textColor="@color/colorSubtext"
+                    android:textSize="@dimen/_9ssp" />
+
+                <TextView
+                    android:id="@+id/line2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:background="#EDEDED" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                app:layout_constraintTop_toBottomOf="@id/layout1">
+
+                <LinearLayout
+                    android:id="@+id/textViewFilter5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_2sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/layout_radius"
+                    android:backgroundTint="@color/ColorLine"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingVertical="@dimen/_4sdp">
+
+                    <androidx.appcompat.widget.AppCompatRatingBar
+                        style="?android:attr/ratingBarStyleSmall"
+                        android:layout_width="@dimen/_60sdp"
+                        android:layout_height="wrap_content"
+                        android:isIndicator="true"
+                        android:numStars="5"
+                        android:rating="5"
+                        android:scaleX=".6"
+                        android:scaleY=".6"
+                        android:stepSize="1"
+                        android:theme="@style/RatingBar" />
+
+                    <TextView
+                        android:id="@+id/textViewCount5start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="(26)"
+                        android:textColor="@color/TextPrimary"
+                        android:textSize="@dimen/_10ssp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/textViewFilter4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_2sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/layout_radius"
+                    android:backgroundTint="@color/ColorLine"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingVertical="@dimen/_4sdp">
+
+                    <androidx.appcompat.widget.AppCompatRatingBar
+                        style="@style/Widget.AppCompat.RatingBar.Small"
+                        android:layout_width="@dimen/_50sdp"
+                        android:layout_height="wrap_content"
+                        android:isIndicator="true"
+                        android:numStars="4"
+                        android:rating="4"
+                        android:scaleX=".6"
+                        android:scaleY=".6"
+                        android:theme="@style/RatingBar" />
+
+                    <TextView
+                        android:id="@+id/textViewCount4start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="(26)"
+                        android:textColor="@color/TextPrimary"
+                        android:textSize="@dimen/_10ssp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/textViewFilter3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_2sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/layout_radius"
+                    android:backgroundTint="@color/ColorLine"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingVertical="@dimen/_4sdp">
+
+                    <androidx.appcompat.widget.AppCompatRatingBar
+                        style="@style/Widget.AppCompat.RatingBar.Small"
+                        android:layout_width="@dimen/_35sdp"
+                        android:layout_height="wrap_content"
+                        android:isIndicator="true"
+                        android:numStars="3"
+                        android:rating="3"
+                        android:scaleX=".6"
+                        android:scaleY=".6"
+                        android:theme="@style/RatingBar" />
+
+                    <TextView
+                        android:id="@+id/textViewCount3start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="(26)"
+                        android:textColor="@color/TextPrimary"
+                        android:textSize="@dimen/_10ssp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/textViewFilter2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_2sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/layout_radius"
+                    android:backgroundTint="@color/ColorLine"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingVertical="@dimen/_4sdp">
+
+                    <androidx.appcompat.widget.AppCompatRatingBar
+                        style="@style/Widget.AppCompat.RatingBar.Small"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="wrap_content"
+                        android:isIndicator="true"
+                        android:numStars="2"
+                        android:rating="2"
+                        android:scaleX=".6"
+                        android:scaleY=".6"
+                        android:theme="@style/RatingBar" />
+
+                    <TextView
+                        android:id="@+id/textViewCount2start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="(26)"
+                        android:textColor="@color/TextPrimary"
+                        android:textSize="@dimen/_10ssp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/textViewFilter1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_2sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/layout_radius"
+                    android:backgroundTint="@color/ColorLine"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingVertical="@dimen/_4sdp">
+
+                    <androidx.appcompat.widget.AppCompatRatingBar
+                        style="@style/Widget.AppCompat.RatingBar.Small"
+                        android:layout_width="@dimen/_12sdp"
+                        android:layout_height="wrap_content"
+                        android:isIndicator="true"
+                        android:numStars="1"
+                        android:rating="1"
+                        android:scaleX=".6"
+                        android:scaleY=".6"
+                        android:theme="@style/RatingBar" />
+
+                    <TextView
+                        android:id="@+id/textViewCount1start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="(26)"
+                        android:textColor="@color/TextPrimary"
+                        android:textSize="@dimen/_10ssp" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/line3"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="#EDEDED"
+                app:layout_constraintTop_toBottomOf="@id/layout2" />
+
+            <TextView
+                android:id="@+id/textViewViewAll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:text="Xem tất cả"
+                android:textColor="@color/ColorButtonReserve"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/line3" />
+
+            <TextView
+                android:id="@+id/textViewTotalCountReview1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:text="Có 68 đánh giá"
+                android:textColor="@color/TextColorSub"
+                android:textSize="@dimen/_10ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textViewViewAll" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycleView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:clipChildren="false"
+                android:orientation="vertical"
+                android:overScrollMode="never"
+                android:scrollbars="none"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewViewAll" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

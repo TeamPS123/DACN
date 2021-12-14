@@ -1,5 +1,12 @@
 package com.psteam.foodlocation.ultilities;
 
+import android.content.Context;
+import android.graphics.Color;
+import android.os.Build;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+
 public class Constants {
     public static final String KEY_PREFERENCE_NAME = "FoodLocationPreference";
     public static final String PACKAGE_NAME = "com.psteam.foodlocation";

@@ -8,6 +8,7 @@ import com.psteam.lib.modeluser.GetReserveTableSinge;
 import com.psteam.lib.modeluser.GetRestaurantByDistance;
 import com.psteam.lib.modeluser.GetRestaurantBySearch;
 import com.psteam.lib.modeluser.GetRestaurantModel;
+import com.psteam.lib.modeluser.GetReviewModel;
 import com.psteam.lib.modeluser.GetUserReserveTableModel;
 import com.psteam.lib.modeluser.InsertReserveFoodModel;
 import com.psteam.lib.modeluser.InsertReserveTableModel;
@@ -70,4 +71,7 @@ public interface ServiceAPI {
 
     @GET("api/getAllFoodByReserveTableId")
     Call<messageReserveTable> getAllFoodByReserveTableId(@Header("Authorization") String token, @Query("userId") String userId, @Query("reserveTableId") String reserveTableId);
+
+    @GET("api/getAllRateRes")
+    Call<GetReviewModel> getReview(@Query("restaurantId") String restaurantId, @Query("value") int value, @Query("skip") int skip, @Query("take") int take);
 }
