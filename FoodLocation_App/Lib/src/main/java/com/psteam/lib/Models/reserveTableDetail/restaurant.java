@@ -1,5 +1,7 @@
 package com.psteam.lib.Models.reserveTableDetail;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -167,6 +169,13 @@ public class restaurant implements Serializable {
 
     public void setCategoryRes(ArrayList<categoryRes> categoryRes) {
         this.categoryRes = categoryRes;
+    }
+
+    public LatLng getLatLng() {
+        String[] tempArray = longLat.split(",");
+        double longitude = Double.parseDouble(tempArray[1]);
+        double latitude = Double.parseDouble(tempArray[0]);
+        return new LatLng(latitude, longitude);
     }
 
     public String getAddress(){

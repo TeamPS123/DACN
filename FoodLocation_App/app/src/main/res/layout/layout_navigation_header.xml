@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/_12sdp"
+    android:paddingHorizontal="@dimen/_16sdp"
+    android:paddingVertical="@dimen/_4sdp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.google.android.material.button.MaterialButton
@@ -19,17 +20,45 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/imageUserView"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_50sdp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/suatuoi"
+        app:riv_oval="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <View
+        android:id="@+id/viewSupport"
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        app:layout_constraintBottom_toBottomOf="@id/imageUserView"
+        app:layout_constraintTop_toTopOf="@id/imageUserView"
+        app:layout_constraintStart_toStartOf="@id/imageUserView"
+        app:layout_constraintEnd_toEndOf="@id/imageUserView"/>
+
     <TextView
         android:id="@+id/textViewName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_12ssp"
-        android:text="Xin Chào Lê Tiểu Phàm"
-        android:textSize="@dimen/_12ssp"
+        android:layout_marginStart="@dimen/_12ssp"
+        android:text="Lê Tiểu Phàm"
+        android:textSize="@dimen/_14ssp"
         android:textStyle="bold"
         android:textColor="@color/TextPrimary"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintBottom_toTopOf="@id/viewSupport"
+        app:layout_constraintStart_toEndOf="@id/imageUserView"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_12sdp"
+        android:text="Đã xác thực"
+        android:textColor="@color/color_open"
+        android:textSize="@dimen/_12ssp"
+        app:layout_constraintStart_toEndOf="@id/imageUserView"
+        app:layout_constraintTop_toBottomOf="@id/viewSupport"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

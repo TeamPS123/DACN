@@ -5,7 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
     private static Retrofit retrofit;
-    private static String BASE_URL = "https://ps.covid21tsp.space";
+    private static String BASE_URL = "https://pamle.pro";
 
     public static Retrofit getRetrofit() {
         if (retrofit == null) {

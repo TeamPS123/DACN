@@ -7,11 +7,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.psteam.foodlocation.databinding.LayoutUserReserveTableItemContainerBinding;
+import com.psteam.foodlocation.ultilities.Constants;
 import com.psteam.lib.Models.reserveTableDetail.reserveTable;
 import com.psteam.lib.modeluser.GetUserReserveTableModel;
 import com.psteam.lib.modeluser.ReserveTable;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class UserReserveTableAdapter extends RecyclerView.Adapter<UserReserveTableAdapter.UserReserveTableViewHolder> {
@@ -69,6 +72,13 @@ public class UserReserveTableAdapter extends RecyclerView.Adapter<UserReserveTab
             binding.textViewNumberPeople.setText(String.format("Đặt chỗ cho %s người", reserveTable.getQuantity()));
 
             Picasso.get().load(reserveTable.getRestaurant().getMainPic()).into(binding.imageViewRestaurant);
+
+            Date date= Constants.coverStringToDate(reserveTable.getTime());
+            binding.textViewTime.setText(new SimpleDateFormat("hh:mm").format(date));
+            binding.textViewAMPM.setText(new SimpleDateFormat("a").format(date).equals("AM")?"Sáng":"Chiều");
+
+            binding.textViewDay.setText(new SimpleDateFormat("dd").format(date));
+            binding.textViewMonth.setText(new SimpleDateFormat("MMM").format(date).replace("t","T"));
 
             binding.getRoot().setOnClickListener(v -> {
                 userReserveTableListeners.onUserReserveTableClicked(reserveTable);

@@ -100,7 +100,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/text1"
+                android:id="@+id/textViewAMPM"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Sáng"
@@ -131,7 +131,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/text2"
+                android:id="@+id/textViewMonth"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Thg 9"

@@ -281,8 +281,11 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
 
         binding.textViewDirections.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), RestaurantMapActivity.class);
-            intent.putExtra("restaurantModel", restaurantModel);
+            Bundle bundle=new Bundle();
+            bundle.putString("getLongLat", restaurantModel.getLongLat());
+            intent.putExtras(bundle);
             startActivity(intent);
+
         });
 
         binding.textViewClose.setOnClickListener(v -> {
@@ -391,7 +394,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
         chooseAddressBottomSheetFragment.show(getSupportFragmentManager(), chooseAddressBottomSheetFragment.getTag());
     }
 
-
     private void initSliderPhotoRestaurant() {
         photoArrayList = new ArrayList<>();
         photoArrayList.addAll(restaurantModel.getPic());
@@ -409,7 +411,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
             }
         });
     }
-
 
     private Runnable sliderRunnable = new Runnable() {
         @Override
@@ -469,7 +470,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
 
     private GetRestaurantModel getRestaurantModels;
 
-
     private void GetRestaurantByDistance(GetRestaurantByDistance getRestaurantByDistance) {
 
         com.psteam.lib.Services.ServiceAPI serviceAPI = getRetrofit().create(com.psteam.lib.Services.ServiceAPI.class);
@@ -528,7 +528,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
             }
         });
     }
-
 
     private void getDistance(LatLng latLngOrigin, LatLng latLngDestination) {
         String origin = String.valueOf(latLngOrigin.latitude) + "," + String.valueOf(latLngOrigin.longitude);

@@ -42,6 +42,12 @@ public class RestaurantModel implements Serializable, ClusterItem {
 
     private String openTime;
 
+    private boolean status;
+
+    private String statusCO;
+
+    private String rateTotal;
+
     public String getPhoneRes() {
         return phoneRes;
     }
@@ -181,8 +187,30 @@ public class RestaurantModel implements Serializable, ClusterItem {
         this.openTime = openTime;
     }
 
+    public String getStatusCO() {
+        return statusCO;
+    }
 
-   /* public double getLatitude() {
+    public void setStatusCO(String statusCO) {
+        this.statusCO = statusCO;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public String getRateTotal() {
+        return rateTotal;
+    }
+
+    public void setRateTotal(String rateTotal) {
+        this.rateTotal = rateTotal;
+    }
+/* public double getLatitude() {
         String[] latLng_Array = getLatLng().split(",");
         return Double.parseDouble(latLng_Array[0]);
     }

@@ -34,6 +34,14 @@ import com.psteam.lib.modeluser.GetReserveTableSinge;
 import com.psteam.lib.modeluser.GetUserReserveTableModel;
 import com.psteam.lib.modeluser.ReserveTable;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -65,7 +73,7 @@ public class UserReserveTableDetailsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
 //        reserveTable = (reserveTable) bundle.getSerializable("reserveTable");
-        reserveTable = (reserveTable) intent.getSerializableExtra("reserveTable") ;
+        reserveTable = (reserveTable) intent.getSerializableExtra("reserveTable");
         loadData();
 
     }
@@ -94,18 +102,36 @@ public class UserReserveTableDetailsActivity extends AppCompatActivity {
                 binding.textViewStatus.setText(String.format("Quá hạn"));
             } else {
                 binding.textViewStatus.setText(String.format("Hoàn tất"));
+                binding.layoutReview.setVisibility(View.VISIBLE);
             }
 
             binding.textPhoneRestaurant.setText(reserveTable.getRestaurant().getPhoneRes());
 
             binding.textViewUserName.setText(reserveTable.getName());
-            binding.textViewTimeReserve.setText(reserveTable.getTime());
+            binding.textViewTimeReserve.setText(formatToYesterdayOrToday(Constants.coverStringToDate(reserveTable.getTime())));
             binding.textViewPhoneNumber.setText(reserveTable.getPhone());
 
             if (reserveTable.getStatus() != 2) {
                 binding.text20.setVisibility(View.GONE);
                 binding.inputNote.setVisibility(View.GONE);
             }
+        }
+    }
+
+    public static String formatToYesterdayOrToday(Date dateTime) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(dateTime);
+        Calendar today = Calendar.getInstance();
+        Calendar yesterday = Calendar.getInstance();
+        yesterday.add(Calendar.DATE, 1);
+        DateFormat timeFormatter = new SimpleDateFormat("dd MMM yyyy");
+
+        if (calendar.get(Calendar.YEAR) == today.get(Calendar.YEAR) && calendar.get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR)) {
+            return new SimpleDateFormat("hh:mm").format(dateTime) + ", Hôm nay " + timeFormatter.format(dateTime);
+        } else if (calendar.get(Calendar.YEAR) == yesterday.get(Calendar.YEAR) && calendar.get(Calendar.DAY_OF_YEAR) == yesterday.get(Calendar.DAY_OF_YEAR)) {
+            return new SimpleDateFormat("hh:mm").format(dateTime) + ", Ngày mai " + timeFormatter.format(dateTime);
+        } else {
+            return new SimpleDateFormat("hh:mm, EEEE dd MMM yyyy").format(dateTime);
         }
     }
 
@@ -131,7 +157,18 @@ public class UserReserveTableDetailsActivity extends AppCompatActivity {
 
         binding.buttonDirection.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), RestaurantMapActivity.class);
-            intent.putExtra("restaurantModel", reserveTable.getRestaurant());
+            Bundle bundle = new Bundle();
+            bundle.putString("getLongLat", reserveTable.getRestaurant().getLongLat());
+            intent.putExtras(bundle);
+            startActivity(intent);
+        });
+
+        binding.buttonReview.setOnClickListener(v -> {
+            Intent intent=new Intent(getApplicationContext(),ReviewActivity.class);
+            Bundle bundle =new Bundle();
+            bundle.putSerializable("getRestaurant",reserveTable.getRestaurant());
+            bundle.putSerializable("getRestaurantId",reserveTable.getRestaurant().getRestaurantId());
+            intent.putExtras(bundle);
             startActivity(intent);
         });
     }
@@ -168,8 +205,8 @@ public class UserReserveTableDetailsActivity extends AppCompatActivity {
         if (getIntent().getExtras() != null) {
             getDataFromNoti();
             setBinding();
-            if(response!=null)
-            GetUserReserveTableModel(userId, response.getReserveTableId());
+            if (response != null)
+                GetUserReserveTableModel(userId, response.getReserveTableId());
         }
     }
 

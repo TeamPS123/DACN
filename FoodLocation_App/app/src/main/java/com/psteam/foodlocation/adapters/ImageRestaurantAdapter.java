@@ -1,25 +1,27 @@
 package com.psteam.foodlocation.adapters;
 
-import android.graphics.Bitmap;
+import android.net.Uri;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.psteam.foodlocation.databinding.ContainerItemImageRestaurantBinding;
-import com.psteam.foodlocation.listeners.ImageRestaurantListener;
 
 import java.util.ArrayList;
 
-public class ImageRestaurantAdapter extends RecyclerView.Adapter<ImageRestaurantAdapter.ImageRestaurantViewHolder>{
-    private final ArrayList<Bitmap> bitmaps;
+public class ImageRestaurantAdapter extends RecyclerView.Adapter<ImageRestaurantAdapter.ImageRestaurantViewHolder> {
+    private final ArrayList<Uri> bitmaps;
+    private final ImageRestaurantListeners imageRestaurantListeners;
 
-    public ImageRestaurantAdapter(ArrayList<Bitmap> bitmaps ) {
+    public ImageRestaurantAdapter(ArrayList<Uri> bitmaps, ImageRestaurantListeners imageRestaurantListeners) {
         this.bitmaps = bitmaps;
 
+        this.imageRestaurantListeners = imageRestaurantListeners;
     }
 
     @NonNull
@@ -43,36 +45,49 @@ public class ImageRestaurantAdapter extends RecyclerView.Adapter<ImageRestaurant
     }
 
 
-    class ImageRestaurantViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
+    class ImageRestaurantViewHolder extends RecyclerView.ViewHolder {
 
         private final ContainerItemImageRestaurantBinding binding;
 
         public ImageRestaurantViewHolder(@NonNull ContainerItemImageRestaurantBinding itemView) {
             super(itemView.getRoot());
-            binding=itemView;
+            binding = itemView;
         }
 
-        public void setData(Bitmap bitmap){
-            binding.imageViewRestaurant.setImageBitmap(bitmap);
-            binding.getRoot().setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    bitmaps.remove(getAdapterPosition());
-                    notifyItemRemoved(getAdapterPosition());
-                    return false;
+        public void setData(Uri bitmap) {
+            if (bitmap == null) {
+                if (getAdapterPosition() < 5) {
+                    binding.layoutPhoto.setVisibility(View.GONE);
+                    binding.layoutAddPhoto.setVisibility(View.VISIBLE);
+                    binding.layoutAddPhoto.setOnClickListener(v -> {
+                        imageRestaurantListeners.onAddPhotoClick(getAdapterPosition());
+                    });
+                }else {
+                    binding.layoutPhoto.setVisibility(View.GONE);
                 }
-            });
 
-        }
+                return;
+            }else {
+                binding.layoutAddPhoto.setVisibility(View.GONE);
+                binding.layoutPhoto.setVisibility(View.VISIBLE);
+                binding.imageViewRestaurant.setImageURI(bitmap);
 
-        @Override
-        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-            menu.add(getAdapterPosition(), 1, 0, "Xoá");
+                binding.imageRemove.setOnClickListener(v -> {
+                    removeImage(getAdapterPosition());
+                    imageRestaurantListeners.onRemovePhotoClick(bitmap, getAdapterPosition(), binding.layoutAddPhoto);
+                });
+            }
         }
     }
 
-    public void removeImage(int position){
+    public void removeImage(int position) {
         bitmaps.remove(position);
-        notifyItemRemoved(position);
+        notifyDataSetChanged();
+    }
+
+    public interface ImageRestaurantListeners {
+        void onAddPhotoClick(int position);
+
+        void onRemovePhotoClick(Uri uri, int position, View view);
     }
 }

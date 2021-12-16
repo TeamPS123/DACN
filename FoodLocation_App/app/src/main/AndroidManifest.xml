@@ -19,15 +19,13 @@
         android:theme="@style/Theme.FoodLocation"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".activities.ReviewNotificationActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.ReviewActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustResize"
-            >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:windowSoftInputMode="adjustResize">
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activities.ReviewRestaurantActivity"
@@ -36,6 +34,11 @@
             android:name=".activities.SplashActivity"
             android:exported="true">
 
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".activities.UserBookTableHistoryActivity"

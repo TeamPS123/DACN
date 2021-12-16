@@ -56,7 +56,8 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -673,5 +674,26 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:id="@+id/layoutReview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/_4sdp"
+        android:visibility="gone">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonReview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/_45sdp"
+            android:layout_marginHorizontal="@dimen/_8sdp"
+            app:backgroundTint="@color/color_open"
+            android:textAllCaps="false"
+            android:textSize="@dimen/_13ssp"
+            android:text="Đánh gia ngay"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
 
 </LinearLayout>

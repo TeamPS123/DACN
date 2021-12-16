@@ -47,6 +47,7 @@ import com.google.android.material.badge.BadgeUtils;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.psteam.foodlocation.R;
 import com.psteam.foodlocation.adapters.CategoryAdapter;
 import com.psteam.foodlocation.adapters.ChooseCityAdapter;
@@ -79,6 +80,7 @@ import com.psteam.foodlocation.ultilities.PreferenceManager;
 
 import com.psteam.lib.modeluser.UserModel;
 import com.psteam.library.TopSheetBehavior;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
 
@@ -104,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements CategoryListener,
     private ArrayList<SliderItem> sliderItemArrayList;
     private Handler sliderHandler = new Handler();
     private TextView textViewName;
+    private RoundedImageView imageUserView;
     private CategoryAdapter categoryAdapter;
     private ArrayList<CategoryRes> categoryModelArrayList;
     private Token token;
@@ -118,6 +121,7 @@ public class MainActivity extends AppCompatActivity implements CategoryListener,
     private MaterialButton buttonSignIn;
 
     public Socket mSocket;
+
     {
         try {
             mSocket = IO.socket(setupSocket.uriLocal);
@@ -141,8 +145,9 @@ public class MainActivity extends AppCompatActivity implements CategoryListener,
         setFullScreen();
         buttonSignIn = binding.navigationView.getHeaderView(0).findViewById(R.id.buttonSignInNavigation);
         textViewName = binding.navigationView.getHeaderView(0).findViewById(R.id.textViewName);
+        imageUserView = binding.navigationView.getHeaderView(0).findViewById(R.id.imageUserView);
 
-        checkSelfPermission();
+        //checkSelfPermission();
         GetInfo(preferenceManager.getString(Constants.USER_ID));
         initSliderImage();
         GetCategoryRes();
@@ -150,7 +155,9 @@ public class MainActivity extends AppCompatActivity implements CategoryListener,
 
         setFCM();
         socket();
-        GetRestaurantByDistance(new GetRestaurantByDistance("20",  "10.803312745723506","106.71158641576767"));
+        GetRestaurantByDistance(new GetRestaurantByDistance("20", "10.803312745723506", "106.71158641576767"));
+        binding.textviewCurrentLocation.setText(Para.currentUserAddress);
+        binding.textTitle.setText(String.format("Các địa điểm ở %s",Para.currentCity));
     }
 
     private void setFullScreen() {
@@ -163,7 +170,7 @@ public class MainActivity extends AppCompatActivity implements CategoryListener,
         }
     }
 
-    private void checkSelfPermission() {
+    /*private void checkSelfPermission() {
         resultReceiver = new AddressResultReceiver(new Handler());
 
         if (ContextCompat.checkSelfPermission(
@@ -189,9 +196,9 @@ public class MainActivity extends AppCompatActivity implements CategoryListener,
                 CustomToast.makeText(getApplicationContext(), "Permission denied", CustomToast.LENGTH_SHORT, CustomToast.WARNING).show();
             }
         }
-    }
+    }*/
 
-    private void fetchAddressFromLatLong(Location location) {
+    /*private void fetchAddressFromLatLong(Location location) {
         Intent intent = new Intent(this, FetchAddressIntentServices.class);
         intent.putExtra(Constants.RECEIVER, resultReceiver);
         intent.putExtra(Constants.LOCATION_DATA_EXTRA, location);
@@ -216,7 +223,7 @@ public class MainActivity extends AppCompatActivity implements CategoryListener,
                 Toast.makeText(getApplicationContext(), resultData.getString(Constants.RESULT_DATA_KEY), Toast.LENGTH_SHORT).show();
             }
         }
-    }
+    }*/
 
     private ArrayList<NotificationAdapter.Notification> notifications;
     private TopSheetBehavior topSheetBehavior;
@@ -229,8 +236,8 @@ public class MainActivity extends AppCompatActivity implements CategoryListener,
             Intent intent = new Intent(MainActivity.this, SearchActivity.class);
             Bundle bundle = new Bundle();
             bundle.putSerializable("categoryModelArrayList", categoryModelArrayList);
-            bundle.putSerializable("getRestaurantModels",getRestaurantModels);
-            bundle.putString("flag","normal");
+            bundle.putSerializable("getRestaurantModels", getRestaurantModels);
+            bundle.putString("flag", "normal");
             intent.putExtra("bundle", bundle);
             startActivity(intent);
         });
@@ -415,6 +422,7 @@ public class MainActivity extends AppCompatActivity implements CategoryListener,
                     user = response.body().getUser();
                     Para.userModel = user;
                     textViewName.setText(user.getFullName());
+                    Picasso.get().load(user.getPic()).into(imageUserView);
                 }
             }
 
@@ -458,14 +466,14 @@ public class MainActivity extends AppCompatActivity implements CategoryListener,
         Intent intent = new Intent(MainActivity.this, SearchActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("categoryModelArrayList", categoryModelArrayList);
-        bundle.putSerializable("categoryModel",categoryModel);
-        bundle.putString("flag","categoryRes");
+        bundle.putSerializable("categoryModel", categoryModel);
+        bundle.putString("flag", "categoryRes");
         intent.putExtra("bundle", bundle);
         startActivity(intent);
     }
 
 
-    @SuppressLint("MissingPermission")
+    /*@SuppressLint("MissingPermission")
     public void getCurrentLocation() {
         LocationRequest locationRequest = new LocationRequest();
         locationRequest.setInterval(10000);
@@ -486,7 +494,6 @@ public class MainActivity extends AppCompatActivity implements CategoryListener,
                                     double longitude = locationResult.getLastLocation().getLongitude();
                                     Para.latitude = latitude;
                                     Para.longitude = longitude;
-                                    //binding.textviewCurrentLocation.setText(String.format("Latitude: %s  Longitude:%s", latitude, longitude));
 
                                     Location location = new Location("providerNA");
                                     location.setLatitude(latitude);
@@ -499,7 +506,7 @@ public class MainActivity extends AppCompatActivity implements CategoryListener,
                         }
                         , Looper.getMainLooper());
 
-    }
+    }*/
 
     private ChooseCityBottomSheetFragment chooseCityBottomSheetFragment;
     private ArrayList<ChooseCityAdapter.City> cities;
@@ -520,7 +527,7 @@ public class MainActivity extends AppCompatActivity implements CategoryListener,
     }
 
     //FCM
-    private void setFCM(){
+    private void setFCM() {
         // set notification FCM
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel("notification_channel", "notification_channel", NotificationManager.IMPORTANCE_DEFAULT);
@@ -536,7 +543,7 @@ public class MainActivity extends AppCompatActivity implements CategoryListener,
                         if (!task.isSuccessful()) {
                             msg = "Subscription failed";
                         }
-                        Log.e("Notification form FCM",msg);
+                        Log.e("Notification form FCM", msg);
                     }
                 });
     }
@@ -607,6 +614,7 @@ public class MainActivity extends AppCompatActivity implements CategoryListener,
 
         setupSocket.reconnect(preferenceManager.getString(Constants.USER_ID), setupSocket.mSocket);
     }
+
     private void GetCategoryRes() {
         ServiceAPI serviceAPI = getRetrofit().create(ServiceAPI.class);
         Call<GetCategoryResModel> call = serviceAPI.GetCategoryRes();

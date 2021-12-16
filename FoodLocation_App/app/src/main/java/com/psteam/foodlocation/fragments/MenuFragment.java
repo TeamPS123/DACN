@@ -99,7 +99,7 @@ public class MenuFragment extends Fragment {
             dialog.dismiss();
         });
         spinnerCategory();
-        imageRestaurantAdapter = new ImageRestaurantAdapter(bitmaps);
+        //imageRestaurantAdapter = new ImageRestaurantAdapter(bitmaps);
         layoutInsertFoodDialogBinding.recycleView.setAdapter(imageRestaurantAdapter);
         PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
         pagerSnapHelper.attachToRecyclerView(layoutInsertFoodDialogBinding.recycleView);

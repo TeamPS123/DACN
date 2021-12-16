@@ -7,6 +7,12 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 public class Constants {
     public static final String KEY_PREFERENCE_NAME = "FoodLocationPreference";
     public static final String PACKAGE_NAME = "com.psteam.foodlocation";
@@ -36,6 +42,32 @@ public class Constants {
     public static final String IsLogin = "IsLogin";
     public static final String Password = "Password";
 
-    public static final String EXPIRES ="expires";
+    public static final String EXPIRES = "expires";
+
+    public static Date coverStringToDate(String strDate) {
+        try {
+            Date date = new SimpleDateFormat("hh:mm a,yyyy-MM-dd").parse(strDate);
+            return date;
+        } catch (ParseException e) {
+            return new Date();
+        }
+    }
+
+    public static String formatToYesterdayOrToday(Date dateTime) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(dateTime);
+        Calendar today = Calendar.getInstance();
+        Calendar yesterday = Calendar.getInstance();
+        yesterday.add(Calendar.DATE, 1);
+        DateFormat timeFormatter = new SimpleDateFormat("dd MMM yyyy");
+
+        if (calendar.get(Calendar.YEAR) == today.get(Calendar.YEAR) && calendar.get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR)) {
+            return new SimpleDateFormat("hh:mm, Hôm nay dd MMM yyyyy").format(dateTime);
+        } else if (calendar.get(Calendar.YEAR) == yesterday.get(Calendar.YEAR) && calendar.get(Calendar.DAY_OF_YEAR) == yesterday.get(Calendar.DAY_OF_YEAR)) {
+            return new SimpleDateFormat("hh:mm, Ngày mai dd MMM yyyyy").format(dateTime);
+        } else {
+            return new SimpleDateFormat("hh:mm, EEEE dd MMM yyyy").format(dateTime);
+        }
+    }
 
 }

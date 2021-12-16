@@ -2,15 +2,21 @@ package com.psteam.foodlocation.activities;
 
 import static com.psteam.lib.RetrofitClient.getRetrofit;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.Icon;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -39,6 +45,7 @@ import com.psteam.lib.modeluser.LogUpModel;
 import com.psteam.lib.modeluser.LoginModel;
 import com.psteam.lib.modeluser.message;
 
+import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -95,15 +102,20 @@ public class SignUpActivity extends AppCompatActivity {
 //                boolean strGender=binding.radioButtonMale.isChecked();
 //
 //                signUP(new LogUpModel(true,strGender,strPhone,strPassword,strName),strPassword);
-
             }
         });
         binding.buttonSignIn.setOnClickListener(v -> {
             startActivity(new Intent(SignUpActivity.this, SignInActivity.class));
         });
+
+        binding.layoutImage.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            pickImage.launch(intent);
+        });
     }
 
-    private void signUP(LogUpModel logUpModel,String password) {
+    private void signUP(LogUpModel logUpModel, String password) {
         ServiceAPI serviceAPI = getRetrofit().create(ServiceAPI.class);
         Call<message> call = serviceAPI.SignUp(logUpModel);
         call.enqueue(new Callback<message>() {
@@ -111,7 +123,7 @@ public class SignUpActivity extends AppCompatActivity {
             public void onResponse(Call<message> call, Response<message> response) {
                 if (response.body() != null && response.body().getStatus().equals("1")) {
                     preferenceManager.putString(Constants.USER_ID, response.body().getId());
-                    preferenceManager.putBoolean(Constants.IsLogin,true);
+                    preferenceManager.putBoolean(Constants.IsLogin, true);
                     preferenceManager.putString(Constants.Password, password);
                     dataToken.saveToken(response.body().getNotification());
                     Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
@@ -132,7 +144,10 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private boolean isValidSignUp() {
-        if (binding.inputFullName.getText().toString().trim().isEmpty()) {
+        if (binding.imageProfile.getTag().equals("null")) {
+            CustomToast.makeText(getApplicationContext(), "Chọn ảnh đại điện", CustomToast.LENGTH_SHORT, CustomToast.WARNING).show();
+            return false;
+        } else if (binding.inputFullName.getText().toString().trim().isEmpty()) {
             binding.inputFullName.setError("Họ và tên không được bỏ trống");
             return false;
         } else if (binding.inputPhone.getText().toString().trim().isEmpty()) {
@@ -168,7 +183,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void showToast(String message) {
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+        CustomToast.makeText(getApplicationContext(), message, CustomToast.LENGTH_SHORT,CustomToast.ERROR).show();
     }
 
     private void loading(boolean Loading) {
@@ -182,7 +197,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     //SignIn by Phone
-    private void sendVerificationCode(String number){
+    private void sendVerificationCode(String number) {
         PhoneAuthOptions options = PhoneAuthOptions.newBuilder(mAuth)
                 .setPhoneNumber(number)
                 .setTimeout(60L, TimeUnit.SECONDS)
@@ -198,19 +213,8 @@ public class SignUpActivity extends AppCompatActivity {
 
         @Override
         public void onVerificationCompleted(PhoneAuthCredential credential) {
-            //Hàm này được gọi trong hai trường hợp:
-            //1. Trong một số trường hợp, điện thoại di động được xác minh tự động mà không cần mã xác minh.
-            //2. Trên một số thiết bị, các dịch vụ của Google Play phát hiện SMS đến và thực hiện quy trình xác minh mà không cần người dùng thực hiện bất kỳ hành động nào.
             Log.d("Send", "onVerificationCompleted:" + credential);
-
-            //tự động điền mã OTP
-//            edtNum1.setText(credential.getSmsCode().substring(0,1));
-//            edtNum2.setText(credential.getSmsCode().substring(1,2));
-//            edtNum3.setText(credential.getSmsCode().substring(2,3));
-//            edtNum4.setText(credential.getSmsCode().substring(3,4));
-//            edtNum5.setText(credential.getSmsCode().substring(4,5));
-//            edtNum6.setText(credential.getSmsCode().substring(5,6));
-
+            showToast("onVerificationCompleted");
             verifyCode(credential.getSmsCode());
             loading(false);
         }
@@ -219,13 +223,7 @@ public class SignUpActivity extends AppCompatActivity {
         @Override
         public void onVerificationFailed(FirebaseException e) {
             Log.w("Send", "onVerificationFailed", e);
-            //ShowNotification.dismissProgressDialog();
-
-//            if (e instanceof FirebaseAuthInvalidCredentialsException) {
-//                ShowNotification.showAlertDialog(MainActivity.this, "Request fail");
-//            } else if (e instanceof FirebaseTooManyRequestsException) {
-//                ShowNotification.showAlertDialog(MainActivity.this, "Quota không đủ");
-//            }
+            showToast(e.getMessage());
             loading(false);
         }
 
@@ -234,18 +232,18 @@ public class SignUpActivity extends AppCompatActivity {
                                @NonNull PhoneAuthProvider.ForceResendingToken token) {
             Log.d("Send", "onCodeSent:" + verificationId);
             //ShowNotification.dismissProgressDialog();
-            Toast.makeText(getApplicationContext(), "Đã gửi OTP", Toast.LENGTH_SHORT).show();
+            showToast("Đã gửi OTP");
             mVerificationId = verificationId;
             mResendToken = token;
 
-            String strName=binding.inputFullName.getText().toString().trim();
-            String strPhone=binding.inputPhone.getText().toString().trim();
-            String strPassword=binding.inputPassword.getText().toString().trim();
-            boolean strGender=binding.radioButtonMale.isChecked();
+            String strName = binding.inputFullName.getText().toString().trim();
+            String strPhone = binding.inputPhone.getText().toString().trim();
+            String strPassword = binding.inputPassword.getText().toString().trim();
+            boolean strGender = binding.radioButtonMale.isChecked();
 
             loading(false);
             Intent intent = new Intent(SignUpActivity.this, VerifyOTPActivity.class);
-            intent.putExtra("account", new LogUpModel(true,strGender,strPhone,strPassword,strName));
+            intent.putExtra("account", new LogUpModel(true, strGender, strPhone, strPassword, strName));
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
@@ -254,7 +252,6 @@ public class SignUpActivity extends AppCompatActivity {
 
     //code xác thực OTP
     private void verifyCode(String code) {
-        //ShowNotification.showProgressDialog(MainActivity.this, "Đang xác thực");
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, code);
         signInWithPhoneAuthCredential(credential);
     }
@@ -264,18 +261,37 @@ public class SignUpActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        //ShowNotification.dismissProgressDialog();
                         if (task.isSuccessful()) {
                             Log.d("Confirm", "signInWithCredential:success");
+                            showToast("success");
                             FirebaseUser user = task.getResult().getUser();
-                            //ShowNotification.showAlertDialog(MainActivity.this, "Thành công");
                         } else {
                             Log.w("Confirm", "signInWithCredential:failure", task.getException());
+                            showToast("failure");
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                                //ShowNotification.showAlertDialog(MainActivity.this, "Lỗi");
                             }
                         }
                     }
                 });
     }
+
+    private final ActivityResultLauncher<Intent> pickImage = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK) {
+                    if (result.getData() != null) {
+                        Uri imageUri = result.getData().getData();
+                        try {
+                            InputStream inputStream = getContentResolver().openInputStream(imageUri);
+                            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                            binding.imageProfile.setImageBitmap(bitmap);
+                            binding.imageProfile.setTag("had");
+                            binding.textAddImage.setVisibility(View.GONE);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+    );
 }

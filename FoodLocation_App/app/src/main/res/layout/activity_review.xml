@@ -118,10 +118,10 @@
             android:layout_marginHorizontal="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_8sdp"
             android:clipChildren="false"
-            android:orientation="horizontal"
+            app:spanCount="4"
             android:overScrollMode="never"
             android:scrollbars="none"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintTop_toBottomOf="@id/layoutAddPhoto" />
 
         <com.google.android.material.button.MaterialButton
@@ -147,7 +147,7 @@
             android:background="@drawable/layout_dash"
             android:gravity="center"
             android:orientation="vertical"
-            android:paddingVertical="@dimen/_4sdp"
+            android:paddingVertical="@dimen/_8sdp"
             app:layout_constraintTop_toBottomOf="@id/layout2">
 
             <com.makeramen.roundedimageview.RoundedImageView

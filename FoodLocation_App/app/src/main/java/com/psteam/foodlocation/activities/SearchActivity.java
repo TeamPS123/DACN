@@ -81,6 +81,7 @@ public class SearchActivity extends AppCompatActivity implements SearchRestauran
         districtModels = new ArrayList<>();
         selectedCategoryRes = new ArrayList<>();
         restaurantModels = new ArrayList<>();
+        lstCategoryRes=new ArrayList<>();
         initSearchRestaurantAdapter();
         initData();
         getDistrict(Para.cityCode);
@@ -97,14 +98,28 @@ public class SearchActivity extends AppCompatActivity implements SearchRestauran
     }
 
     private GetRestaurantModel restaurantModel;
+    private ArrayList<CategoryRes> lstCategoryRes;
 
     private void initData() {
         Bundle bundle = getIntent().getBundleExtra("bundle");
         categoryModelArrayList = (ArrayList<CategoryRes>) bundle.getSerializable("categoryModelArrayList");
         if (bundle.getString("flag").equals("normal")) {
             restaurantModel = (GetRestaurantModel) bundle.getSerializable("getRestaurantModels");
-            if (restaurantModel != null)
+            if (restaurantModel != null) {
                 restaurantModels.addAll(restaurantModel.getResList());
+                lstCategoryRes.addAll(restaurantModel.getCategoryList());
+
+                for (CategoryRes categoryRes : categoryModelArrayList) {
+                    for(CategoryRes res:lstCategoryRes){
+                        if(categoryRes.getId().equals(res.getId())){
+                            categoryRes.setSelected(true);
+                            selectedCategoryRes.add(categoryRes.getId());
+                            break;
+                        }
+                    }
+                }
+
+            }
             searchRestaurantAdapter.notifyDataSetChanged();
         } else if (bundle.getString("flag").equals("categoryRes")) {
             CategoryRes categoryModel = (CategoryRes) bundle.getSerializable("categoryModel");

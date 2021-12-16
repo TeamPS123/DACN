@@ -25,6 +25,7 @@ import com.psteam.foodlocation.databinding.ActivityUserInfoBinding;
 import com.psteam.foodlocation.databinding.LayoutChangePasswordDialogBinding;
 import com.psteam.foodlocation.databinding.LayoutCheckPasswordDialogBinding;
 import com.psteam.foodlocation.databinding.LayoutUpdateUserInfoDialogBinding;
+import com.psteam.foodlocation.databinding.LayoutUserInfoBinding;
 import com.psteam.foodlocation.ultilities.Constants;
 import com.psteam.foodlocation.ultilities.CustomToast;
 import com.psteam.foodlocation.ultilities.PreferenceManager;
@@ -36,6 +37,7 @@ import com.psteam.lib.modeluser.LogUpModel;
 import com.psteam.lib.modeluser.LoginModel;
 import com.psteam.lib.modeluser.UserModel;
 import com.psteam.lib.modeluser.message;
+import com.squareup.picasso.Picasso;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
@@ -47,7 +49,8 @@ import retrofit2.Response;
 
 public class UserInfoActivity extends AppCompatActivity {
 
-    private ActivityUserInfoBinding binding;
+    //private ActivityUserInfoBinding binding;
+    private LayoutUserInfoBinding binding;
     private String oldPassword;
     private PreferenceManager preferenceManager;
     private UserModel user;
@@ -57,7 +60,7 @@ public class UserInfoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityUserInfoBinding.inflate(getLayoutInflater());
+        binding = LayoutUserInfoBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         preferenceManager = new PreferenceManager(getApplicationContext());
         oldPassword = preferenceManager.getString(Constants.Password);
@@ -75,6 +78,8 @@ public class UserInfoActivity extends AppCompatActivity {
         binding.textViewPhoneNumber.setText(user.getPhone());
         String gender = user.getGender() == true ? "Nam" : "Nữ";
         binding.textViewGender.setText(gender);
+        if(!user.getPic().isEmpty())
+            Picasso.get().load(user.getPic()).into(binding.imageUser);
 
     }
 
@@ -215,6 +220,7 @@ public class UserInfoActivity extends AppCompatActivity {
                     binding.textViewUserName.setText(user.getFullName());
                     binding.textViewPhoneNumber.setText(user.getPhone());
                     String gender = user.getGender() == true ? "Nam" : "Nữ";
+
                     binding.textViewGender.setText(gender);
                 }
             }

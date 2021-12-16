@@ -58,7 +58,7 @@ public class RestaurantRegistrationStep2Activity extends AppCompatActivity  {
 
     private void init() {
         bitmaps = new ArrayList<>();
-        imageRestaurantAdapter = new ImageRestaurantAdapter(bitmaps);
+        //imageRestaurantAdapter = new ImageRestaurantAdapter(bitmaps);
         binding.recycleViewImage.setAdapter(imageRestaurantAdapter);
     }
 

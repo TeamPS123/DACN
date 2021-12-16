@@ -232,33 +232,13 @@ public class VerifyOTPActivity extends AppCompatActivity {
 
         @Override
         public void onVerificationCompleted(PhoneAuthCredential credential) {
-            //Hàm này được gọi trong hai trường hợp:
-            //1. Trong một số trường hợp, điện thoại di động được xác minh tự động mà không cần mã xác minh.
-            //2. Trên một số thiết bị, các dịch vụ của Google Play phát hiện SMS đến và thực hiện quy trình xác minh mà không cần người dùng thực hiện bất kỳ hành động nào.
             Log.d("Send", "onVerificationCompleted:" + credential);
-
-            //tự động điền mã OTP
-//            edtNum1.setText(credential.getSmsCode().substring(0,1));
-//            edtNum2.setText(credential.getSmsCode().substring(1,2));
-//            edtNum3.setText(credential.getSmsCode().substring(2,3));
-//            edtNum4.setText(credential.getSmsCode().substring(3,4));
-//            edtNum5.setText(credential.getSmsCode().substring(4,5));
-//            edtNum6.setText(credential.getSmsCode().substring(5,6));
-
             verifyCode(credential.getSmsCode());
         }
 
-        //fail
         @Override
         public void onVerificationFailed(FirebaseException e) {
             Log.w("Send", "onVerificationFailed", e);
-            //ShowNotification.dismissProgressDialog();
-
-//            if (e instanceof FirebaseAuthInvalidCredentialsException) {
-//                ShowNotification.showAlertDialog(MainActivity.this, "Request fail");
-//            } else if (e instanceof FirebaseTooManyRequestsException) {
-//                ShowNotification.showAlertDialog(MainActivity.this, "Quota không đủ");
-//            }
         }
 
         @Override

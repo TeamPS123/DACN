@@ -22,14 +22,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.psteam.foodlocation.R;
 import com.psteam.foodlocation.databinding.ActivityRestaurantMapBinding;
 import com.psteam.foodlocation.ultilities.Para;
-import com.psteam.lib.modeluser.RestaurantModel;
 
 public class RestaurantMapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private ActivityRestaurantMapBinding binding;
     private GoogleMap mMap;
     private View mapView;
-    private RestaurantModel restaurantModel;
+    private LatLng latLng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +46,15 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         mapView = mapFragment.getView();
-        restaurantModel=(RestaurantModel)getIntent().getSerializableExtra("restaurantModel");
+        String longLat = getIntent().getExtras().getString("getLongLat");
+        latLng = getLatLng(longLat);
+    }
+
+    public LatLng getLatLng(String longLat) {
+        String[] tempArray = longLat.split(",");
+        double longitude = Double.parseDouble(tempArray[1]);
+        double latitude = Double.parseDouble(tempArray[0]);
+        return new LatLng(latitude, longitude);
     }
 
     private void setFullScreen() {
@@ -63,17 +70,18 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
     private void setListeners() {
         binding.buttonDirection.setOnClickListener(v -> {
             Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                    Uri.parse("http://maps.google.com/maps?saddr=+"+ Para.currentLatLng() +"&daddr="+restaurantModel.getLatLng().latitude+","+restaurantModel.getLatLng().longitude));
+                    Uri.parse("http://maps.google.com/maps?saddr=+" + Para.currentLatLng() + "&daddr=" + latLng.latitude + "," + latLng.longitude));
             startActivity(intent);
         });
 
-        binding.imageViewClose.setOnClickListener(v -> {finish();});
+        binding.imageViewClose.setOnClickListener(v -> {
+            finish();
+        });
     }
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
-        LatLng latLng = restaurantModel.getLatLng();
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
         mMap.addMarker(new MarkerOptions().position(latLng));
         googleMap.getUiSettings().setMapToolbarEnabled(false);

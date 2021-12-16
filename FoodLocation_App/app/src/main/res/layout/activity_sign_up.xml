@@ -10,7 +10,6 @@
     android:scrollbars="none"
     tools:context=".activities.SignUpActivity">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,11 +25,37 @@
             android:textSize="@dimen/_18ssp"
             android:textStyle="bold" />
 
+        <FrameLayout
+            android:id="@+id/layoutImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_12sdp">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/imageProfile"
+                android:layout_width="@dimen/_80sdp"
+                android:layout_height="@dimen/_80sdp"
+                android:background="@drawable/background_image"
+                android:scaleType="centerCrop"
+                android:tag="null"
+                app:riv_oval="true"/>
+
+            <TextView
+                android:id="@+id/textAddImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Thêm ảnh"
+                android:textColor="@color/secondary_text"
+                android:textSize="@dimen/_10ssp"/>
+
+        </FrameLayout>
+
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_40sdp"
+            android:layout_marginTop="@dimen/_16sdp"
             app:hintEnabled="false"
             app:errorEnabled="false"
             app:boxBackgroundColor="@color/input_background"
@@ -122,7 +147,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_45sdp"
                 android:hint="Mật khẩu"
-                android:paddingEnd="@dimen/_30sdp"
+                android:paddingEnd="@dimen/_35sdp"
                 android:maxLength="24"
                 android:textSize="@dimen/_13ssp"
                 android:textColor="@color/primary_text"
@@ -149,7 +174,7 @@
                 android:layout_height="@dimen/_45sdp"
                 android:hint="Nhập lại mật khẩu"
                 android:textSize="@dimen/_13ssp"
-                android:paddingEnd="@dimen/_30sdp"
+                android:paddingEnd="@dimen/_35sdp"
                 android:maxLength="24"
                 android:textColor="@color/primary_text"
                 android:imeOptions="actionDone"
