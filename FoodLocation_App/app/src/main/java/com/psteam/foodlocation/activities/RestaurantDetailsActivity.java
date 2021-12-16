@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,6 +33,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
 import com.psteam.foodlocation.R;
 import com.psteam.foodlocation.adapters.ChooseDateReserveTableAdapter;
 import com.psteam.foodlocation.adapters.ChooseNumberPeopleAdapter;
@@ -53,10 +55,13 @@ import com.psteam.lib.modeluser.Rate;
 import com.psteam.lib.modeluser.RestaurantModel;
 import com.psteam.lib.modeluser.UserModel;
 
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -117,9 +122,9 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
         mapFragment.getMapAsync(this);
         viewMap = mapFragment.getView();
         setFullScreen();
-        initTimeBookTable();
         //initFoodRestaurant();
         getDataIntent();
+        initTimeBookTable();
         initSliderPhotoRestaurant();
         initReviewAdapter();
         getReview(restaurantModel.getRestaurantId(), -1, 0, 10);
@@ -136,7 +141,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
                     if (response.body().getRates().size() > 0) {
                         countRating = response.body().getCountRating();
                         rates.addAll(response.body().getRates());
-                        getReviewModel=response.body();
+                        getReviewModel = response.body();
                         binding.ratingBarTotalValue.setRating(Float.valueOf(response.body().getRateTotal()));
                         binding.textTotalRate.setText(response.body().getRateTotal());
                         binding.textViewRatingValue.setText(response.body().getRateTotal());
@@ -147,9 +152,9 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
                             tempRates.addAll(rates);
                         } else {
                             binding.textViewViewMoreReview.setText(String.format("Xem thêm %d đánh giá", Integer.parseInt(countRating.getCount()) - 3));
-                            tempRates.addAll(rates.subList(0,3));
+                            tempRates.addAll(rates.subList(0, 3));
                         }
-                        binding.textViewReviewCount.setText(String.format("(Xem %s đánh giá)",countRating.getCount()));
+                        binding.textViewReviewCount.setText(String.format("(Xem %s đánh giá)", countRating.getCount()));
                         reviewAdapter.notifyDataSetChanged();
                     } else {
                         binding.layout11.setVisibility(View.GONE);
@@ -281,7 +286,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
 
         binding.textViewDirections.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), RestaurantMapActivity.class);
-            Bundle bundle=new Bundle();
+            Bundle bundle = new Bundle();
             bundle.putString("getLongLat", restaurantModel.getLongLat());
             intent.putExtras(bundle);
             startActivity(intent);
@@ -430,15 +435,23 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
 
     private void initTimeBookTable() {
         timeBooks = new ArrayList<>();
-        timeBooks.add(new TimeBookTableAdapter.TimeBook("05:00 CH", "-15% *"));
-        timeBooks.add(new TimeBookTableAdapter.TimeBook("05:15 CH", "-15% *"));
-        timeBooks.add(new TimeBookTableAdapter.TimeBook("05:30 CH", "-15% *"));
-        timeBooks.add(new TimeBookTableAdapter.TimeBook("05:45 CH", "-15% *"));
-        timeBooks.add(new TimeBookTableAdapter.TimeBook("06:00 CH", "-15% *"));
-        timeBooks.add(new TimeBookTableAdapter.TimeBook("06:15 CH", "-15% *"));
-        timeBooks.add(new TimeBookTableAdapter.TimeBook("06:30 CH", "-15% *"));
-        timeBooks.add(new TimeBookTableAdapter.TimeBook("06:45 CH", "-15% *"));
-        timeBooks.add(new TimeBookTableAdapter.TimeBook("07:00 CH", "-15% *"));
+
+        LocalTime openTime = LocalTime.parse(restaurantModel.getOpenTime(), DateTimeFormatter.ofPattern("hh:mm a", new Locale("vi", "VN")));
+        LocalTime closeTime = LocalTime.parse(restaurantModel.getCloseTime(), DateTimeFormatter.ofPattern("hh:mm a", new Locale("vi", "VN")));
+        Duration duration = Duration.between(openTime, closeTime);
+        Long timeLoop = duration.toMinutes();
+        LocalTime tempTime = openTime;
+        int step = 15;
+        int i = 0;
+        while (i <= timeLoop) {
+            timeBooks.add(new TimeBookTableAdapter.TimeBook(tempTime.plusMinutes(i).format(DateTimeFormatter.ofPattern("hh:mm a", new Locale("vi", "VN"))), "-15% *"));
+            i+=step;
+        }
+
+        Gson gson = new Gson();
+        String s= gson.toJson(timeBooks);
+
+        Log.d("Time",s.toString());
 
         timeBookTableAdapter = new TimeBookTableAdapter(timeBooks, new TimeBookTableAdapter.TimeBookTableListener() {
             @Override
@@ -449,6 +462,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
                 bundle.putString("AddressRestaurantReserve", AddressRestaurantReserve);
                 bundle.putInt("NumberReserve", NumberReserve);
                 bundle.putString("TimeReserve", timeBook.getTime());
+
                 bundle.putSerializable("restaurantModel", restaurantModel);
                 intent.putExtra("bundle", bundle);
                 startActivity(intent);

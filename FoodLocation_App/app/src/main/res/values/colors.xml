@@ -19,4 +19,5 @@
     <color name="ColorTextSelected">#C81425</color>
     <color name="ColorTextUnSelected">#00A1CA</color>
     <color name="color_open">#03AE49</color>
+    <color name="colorsub">#9A9A9A</color>
 </resources>

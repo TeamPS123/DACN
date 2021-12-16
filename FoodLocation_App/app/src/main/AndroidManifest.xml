@@ -9,6 +9,8 @@
         tools:ignore="CoarseFineLocation" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -19,21 +21,21 @@
         android:theme="@style/Theme.FoodLocation"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".activities.MenuReviewActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.ReviewNotificationActivity"
             android:exported="false" />
         <activity
             android:name=".activities.ReviewActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustResize">
-
-        </activity>
+            android:windowSoftInputMode="adjustResize"></activity>
         <activity
             android:name=".activities.ReviewRestaurantActivity"
             android:exported="false" />
         <activity
             android:name=".activities.SplashActivity"
             android:exported="true">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

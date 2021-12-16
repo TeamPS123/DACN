@@ -31,15 +31,20 @@ import com.psteam.foodlocation.ultilities.CustomToast;
 import com.psteam.foodlocation.ultilities.PreferenceManager;
 import com.psteam.foodlocation.ultilities.Token;
 import com.psteam.lib.Models.reserveTableDetail.restaurant;
+import com.psteam.lib.Service.ServiceAPI_lib;
 import com.psteam.lib.Services.ServiceAPI;
 import com.psteam.lib.modeluser.InsertRateModel;
 import com.psteam.lib.modeluser.message;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -68,7 +73,7 @@ public class ReviewActivity extends AppCompatActivity {
         binding = ActivityReviewBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         token = new Token(getApplicationContext());
-        preferenceManager=new PreferenceManager(getApplicationContext());
+        preferenceManager = new PreferenceManager(getApplicationContext());
         init();
         setListeners();
     }
@@ -103,9 +108,9 @@ public class ReviewActivity extends AppCompatActivity {
     }
 
     private void getDataIntent() {
-        Bundle bundle=getIntent().getExtras();
-        if(bundle!=null){
-            restaurantModel= (restaurant) bundle.getSerializable("getRestaurant");
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            restaurantModel = (restaurant) bundle.getSerializable("getRestaurant");
         }
     }
 
@@ -129,7 +134,7 @@ public class ReviewActivity extends AppCompatActivity {
             }
         });
 
-        binding.textViewClose.setOnClickListener(v->{
+        binding.textViewClose.setOnClickListener(v -> {
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
             finish();
         });
@@ -225,12 +230,12 @@ public class ReviewActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<message> call, Response<message> response) {
                 if (response.body() != null && response.body().getStatus().equals("1")) {
-                    startActivity(new Intent(getApplicationContext(), ReviewNotificationActivity.class));
+                    addImgRate(response.body().getId());
                 } else {
                     CustomToast.makeText(getApplicationContext(), "Đánh giá thât bại vui lòng thử lại lại sau", CustomToast.LENGTH_SHORT, CustomToast.ERROR).show();
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    finish();
                 }
-                finish();
             }
 
             @Override
@@ -241,31 +246,30 @@ public class ReviewActivity extends AppCompatActivity {
 
     }
 
-   /* private void addImg(){
-        DataTokenAndUserId dataTokenAndUserId = new DataTokenAndUserId(getApplication());
+    private void addImgRate(String rateId) {
         List<MultipartBody.Part> photo = new ArrayList<>();
 
-        for (int i = 0 ; i < pathList.size() ; i++){
+        for (int i = 0; i < pathList.size(); i++) {
             File f = new File(pathList.get(i));
             RequestBody photoContext = RequestBody.create(MediaType.parse("multipart/form-data"), f);
             photo.add(MultipartBody.Part.createFormData("photo", f.getName(), photoContext));
         }
 
-        ServiceAPI_lib serviceAPI = getRetrofit_lib().create(ServiceAPI_lib.class);
-        Call<com.psteam.lib.Models.message> call = serviceAPI.addImgRes(dataTokenAndUserId.getToken(), photo, dataTokenAndUserId.getUserId(), dataTokenAndUserId.getRestaurantId());
-        call.enqueue(new Callback<com.psteam.lib.Models.message>() {
+        ServiceAPI serviceAPI = getRetrofit().create(ServiceAPI.class);
+        Call<message> call = serviceAPI.addImgRate(token.getToken(), photo, preferenceManager.getString(Constants.USER_ID), rateId);
+        call.enqueue(new Callback<message>() {
             @Override
-            public void onResponse(Call<com.psteam.lib.Models.message> call, Response<com.psteam.lib.Models.message> response) {
-                if(response.body().getStatus() == 1){
-                    startActivity(new Intent(getApplicationContext(),BusinessActivity.class));
+            public void onResponse(Call<message> call, Response<message> response) {
+                if (response.body() != null && response.body().getStatus().equals("1")) {
+                    startActivity(new Intent(getApplicationContext(), ReviewNotificationActivity.class));
+                    finish();
                 }
-                Toast.makeText(RestaurantRegistrationStep2Activity.this, response.body().getNotification(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onFailure(Call<com.psteam.lib.Models.message> call, Throwable t) {
-                Toast.makeText(RestaurantRegistrationStep2Activity.this, "Thêm ảnh thất bại", Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<message> call, Throwable t) {
+                Log.d("Tag", t.getMessage());
             }
         });
-    }*/
+    }
 }

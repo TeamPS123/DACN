@@ -44,6 +44,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.badge.BadgeUtils;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -170,60 +171,6 @@ public class MainActivity extends AppCompatActivity implements CategoryListener,
         }
     }
 
-    /*private void checkSelfPermission() {
-        resultReceiver = new AddressResultReceiver(new Handler());
-
-        if (ContextCompat.checkSelfPermission(
-                getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION
-        ) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(
-                    MainActivity.this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    REQUEST_CODE_LOCATION_PERMISSION
-            );
-        } else {
-            getCurrentLocation();
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_CODE_LOCATION_PERMISSION && grantResults.length > 0) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                getCurrentLocation();
-            else {
-                CustomToast.makeText(getApplicationContext(), "Permission denied", CustomToast.LENGTH_SHORT, CustomToast.WARNING).show();
-            }
-        }
-    }*/
-
-    /*private void fetchAddressFromLatLong(Location location) {
-        Intent intent = new Intent(this, FetchAddressIntentServices.class);
-        intent.putExtra(Constants.RECEIVER, resultReceiver);
-        intent.putExtra(Constants.LOCATION_DATA_EXTRA, location);
-        startService(intent);
-    }
-
-
-    private class AddressResultReceiver extends ResultReceiver {
-        AddressResultReceiver(Handler handler) {
-            super(handler);
-        }
-
-        @Override
-        protected void onReceiveResult(int resultCode, Bundle resultData) {
-            super.onReceiveResult(resultCode, resultData);
-            if (resultCode == Constants.SUCCESS_RESULT) {
-                Para.currentAddress = resultData.getString(Constants.RESULT_DATA_KEY);
-                binding.textviewCurrentLocation.setText(resultData.getString(Constants.RESULT_DATA_KEY));
-                if (resultData.getString(Constants.RESULT_DATA_KEY) != null && !resultData.getString(Constants.RESULT_DATA_KEY).isEmpty())
-                    binding.textTitle.setText(String.format("Các địa điểm ở %s", resultData.getString(Constants.RESULT_CITY)));
-            } else {
-                Toast.makeText(getApplicationContext(), resultData.getString(Constants.RESULT_DATA_KEY), Toast.LENGTH_SHORT).show();
-            }
-        }
-    }*/
 
     private ArrayList<NotificationAdapter.Notification> notifications;
     private TopSheetBehavior topSheetBehavior;
@@ -330,6 +277,26 @@ public class MainActivity extends AppCompatActivity implements CategoryListener,
 
         buttonSignIn.setOnClickListener(v -> {
             startActivity(new Intent(MainActivity.this, SignInActivity.class));
+        });
+
+        binding.bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                switch (item.getItemId()){
+                    case R.id.menuReserve:
+
+                        break;
+                    case R.id.menuReview:
+                        startActivity(new Intent(getApplicationContext(),MenuReviewActivity.class));
+                        break;
+                    default:
+                        Toast.makeText(getApplicationContext(), item.getTitle(), Toast.LENGTH_SHORT).show();
+                        break;
+                }
+
+                return true;
+            }
         });
     }
 
@@ -471,7 +438,6 @@ public class MainActivity extends AppCompatActivity implements CategoryListener,
         intent.putExtra("bundle", bundle);
         startActivity(intent);
     }
-
 
     /*@SuppressLint("MissingPermission")
     public void getCurrentLocation() {

@@ -82,6 +82,14 @@ public class TimeBookTableAdapter extends RecyclerView.Adapter<TimeBookTableAdap
         public void setDiscount(String discount) {
             this.discount = discount;
         }
+
+        @Override
+        public String toString() {
+            return "TimeBook{" +
+                    "time='" + time + '\'' +
+                    ", discount='" + discount + '\'' +
+                    '}';
+        }
     }
 
     public interface TimeBookTableListener{

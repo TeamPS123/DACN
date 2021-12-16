@@ -22,12 +22,17 @@ import com.psteam.lib.modeluser.LoginModel;
 import com.psteam.lib.modeluser.message;
 
 
+import java.util.List;
+
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 
 import retrofit2.http.Query;
@@ -78,5 +83,9 @@ public interface ServiceAPI {
 
     @POST("api/ratingRes")
     Call<message> insertRate(@Header("Authorization") String token, @Body InsertRateModel insertRateModel);
+
+    @Multipart
+    @POST("api/upImageOfRate")
+    Call<message> addImgRate(@Header("Authorization") String token, @Part List<MultipartBody.Part> photo, @Query("userId") String userId, @Query("rateId") String rateId);
 
 }
