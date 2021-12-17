@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/_4sdp"
+    android:background="@android:color/transparent"
+    app:cardBackgroundColor="#F6F6F6"
+    app:cardCornerRadius="@dimen/_4sdp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/imageLogoRestaurant"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/suatuoi"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:riv_corner_radius_bottom_left="@dimen/_4sdp"
+            app:riv_corner_radius_top_left="@dimen/_4sdp" />
+
+        <View
+            android:id="@+id/viewSupport"
+            android:layout_width="1dp"
+            android:layout_height="1dp"
+            app:layout_constraintBottom_toBottomOf="@id/imageLogoRestaurant"
+            app:layout_constraintEnd_toEndOf="@id/imageLogoRestaurant"
+            app:layout_constraintStart_toStartOf="@id/imageLogoRestaurant"
+            app:layout_constraintTop_toTopOf="@id/imageLogoRestaurant" />
+
+        <TextView
+            android:id="@+id/textViewName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_6sdp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:paddingEnd="@dimen/_8sdp"
+            android:text="Aka House - Tầng trệt"
+            android:textColor="@color/TextPrimary"
+            android:textSize="@dimen/_10ssp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/viewSupport"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/imageLogoRestaurant" />
+
+        <TextView
+            android:id="@+id/textViewAddress"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_6sdp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:paddingEnd="@dimen/_8sdp"
+            android:text="Tầng trệt, Siêu thị Co.opmart Bảo Lộc, 452 Trần Phú"
+            android:textColor="@color/colorSubtext"
+            android:textSize="@dimen/_9ssp"
+            app:layout_constraintEnd_toStartOf="@id/textViewDistance"
+            app:layout_constraintStart_toEndOf="@id/imageLogoRestaurant"
+            app:layout_constraintTop_toBottomOf="@id/viewSupport" />
+
+        <TextView
+            android:id="@+id/textViewDistance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:text="156.0km"
+            android:textColor="@color/colorSubtext"
+            android:textSize="@dimen/_9ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/textViewAddress"
+            app:layout_constraintTop_toBottomOf="@id/viewSupport" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

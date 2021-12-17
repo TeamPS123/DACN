@@ -78,7 +78,7 @@ public class UserInfoActivity extends AppCompatActivity {
         binding.textViewPhoneNumber.setText(user.getPhone());
         String gender = user.getGender() == true ? "Nam" : "Nữ";
         binding.textViewGender.setText(gender);
-        if(!user.getPic().isEmpty())
+        if(user.getPic()!=null && !user.getPic().isEmpty())
             Picasso.get().load(user.getPic()).into(binding.imageUser);
 
     }

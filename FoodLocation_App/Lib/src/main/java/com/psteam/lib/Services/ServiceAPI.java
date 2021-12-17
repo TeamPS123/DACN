@@ -1,6 +1,7 @@
 package com.psteam.lib.Services;
 
 import com.psteam.lib.Models.reserveTableDetail.messageReserveTable;
+import com.psteam.lib.modeluser.CreateReviewModel;
 import com.psteam.lib.modeluser.GetCategoryResModel;
 import com.psteam.lib.modeluser.GetMenuResModel;
 import com.psteam.lib.modeluser.GetReserveTableInput;
@@ -9,6 +10,7 @@ import com.psteam.lib.modeluser.GetRestaurantByDistance;
 import com.psteam.lib.modeluser.GetRestaurantBySearch;
 import com.psteam.lib.modeluser.GetRestaurantModel;
 import com.psteam.lib.modeluser.GetReviewModel;
+import com.psteam.lib.modeluser.GetReviewRestaurantModel;
 import com.psteam.lib.modeluser.GetUserReserveTableModel;
 import com.psteam.lib.modeluser.InsertRateModel;
 import com.psteam.lib.modeluser.InsertReserveFoodModel;
@@ -19,6 +21,7 @@ import com.psteam.lib.modeluser.GetInfoUser;
 import com.psteam.lib.modeluser.LogUpModel;
 
 import com.psteam.lib.modeluser.LoginModel;
+import com.psteam.lib.modeluser.SearchCheckInModel;
 import com.psteam.lib.modeluser.message;
 
 
@@ -50,6 +53,9 @@ public interface ServiceAPI {
 
     @POST("api/getResWithSupperSearch")
     Call<GetRestaurantModel> GetResBySearch(@Body GetRestaurantBySearch getRestaurantBySearch);
+
+    @POST("api/getResWithNameOrAdd")
+    Call<GetRestaurantModel> GetResBySearchCheckIn(@Body SearchCheckInModel searchCheckInModel);
 
     @POST("api/reserveTable")
     Call<message> ReserveTable(@Header("Authorization") String token, @Body InsertReserveTableModel insertReserveTableModel);
@@ -88,4 +94,13 @@ public interface ServiceAPI {
     @POST("api/upImageOfRate")
     Call<message> addImgRate(@Header("Authorization") String token, @Part List<MultipartBody.Part> photo, @Query("userId") String userId, @Query("rateId") String rateId);
 
+    @POST("api/review")
+    Call<message> insertReview(@Header("Authorization") String token, @Body CreateReviewModel createReviewModel);
+
+    @GET("api/getAllReviewRes")
+    Call<GetReviewRestaurantModel> GetReviewRestaurant(@Query("skip") int skip, @Query("take") int take);
+
+    @Multipart
+    @POST("api/upImageOfReview")
+    Call<message> addImgReview(@Header("Authorization") String token, @Part List<MultipartBody.Part> photo, @Query("userId") String userId, @Query("reviewId") String reviewId);
 }

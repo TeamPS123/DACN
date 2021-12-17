@@ -291,7 +291,7 @@ public class ReserveTableActivity extends AppCompatActivity {
 
     //socket.io
     private void socket() {
-        setupSocket.mSocket.connect();
+        //setupSocket.mSocket.connect();
         // notification login success or fail
         //setupSocket.mSocket.on("noti_login", onLogin);
         // receiver notification when used app

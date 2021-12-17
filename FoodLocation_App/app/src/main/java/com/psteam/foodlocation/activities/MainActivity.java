@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
@@ -57,6 +58,9 @@ import com.psteam.foodlocation.adapters.PromotionAdapter;
 import com.psteam.foodlocation.adapters.RestaurantPostAdapter;
 import com.psteam.foodlocation.adapters.SliderAdapter;
 import com.psteam.foodlocation.databinding.ActivityMainBinding;
+import com.psteam.foodlocation.fragments.MainFragment;
+import com.psteam.foodlocation.fragments.NotificationFragment;
+import com.psteam.foodlocation.fragments.ReviewFragment;
 import com.psteam.foodlocation.listeners.CategoryListener;
 import com.psteam.foodlocation.models.PromotionModel;
 import com.psteam.foodlocation.models.SliderItem;
@@ -97,46 +101,14 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class MainActivity extends AppCompatActivity implements CategoryListener, RestaurantPostAdapter.RestaurantPostListeners {
+public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
-
-    private static final int REQUEST_CODE_LOCATION_PERMISSION = 1;
-
-    private SliderAdapter sliderAdapter;
-    private ArrayList<SliderItem> sliderItemArrayList;
-    private Handler sliderHandler = new Handler();
-    private TextView textViewName;
-    private RoundedImageView imageUserView;
-    private CategoryAdapter categoryAdapter;
-    private ArrayList<CategoryRes> categoryModelArrayList;
-    private Token token;
-    private PreferenceManager preferenceManager;
-    private PromotionAdapter promotionAdapter;
-    private List<PromotionModel> promotionModels;
-
-    private RestaurantPostAdapter restaurantPostAdapter;
-
-    private ResultReceiver resultReceiver;
-    private UserModel user;
-    private MaterialButton buttonSignIn;
-
-    public Socket mSocket;
-
-    {
-        try {
-            mSocket = IO.socket(setupSocket.uriLocal);
-        } catch (URISyntaxException e) {
-            e.getMessage();
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
-        token = new Token(getApplicationContext());
-        preferenceManager = new PreferenceManager(getApplicationContext());
         setContentView(binding.getRoot());
         init();
         setListeners();
@@ -144,21 +116,6 @@ public class MainActivity extends AppCompatActivity implements CategoryListener,
 
     private void init() {
         setFullScreen();
-        buttonSignIn = binding.navigationView.getHeaderView(0).findViewById(R.id.buttonSignInNavigation);
-        textViewName = binding.navigationView.getHeaderView(0).findViewById(R.id.textViewName);
-        imageUserView = binding.navigationView.getHeaderView(0).findViewById(R.id.imageUserView);
-
-        //checkSelfPermission();
-        GetInfo(preferenceManager.getString(Constants.USER_ID));
-        initSliderImage();
-        GetCategoryRes();
-        setNumberNotification(0);
-
-        setFCM();
-        socket();
-        GetRestaurantByDistance(new GetRestaurantByDistance("20", "10.803312745723506", "106.71158641576767"));
-        binding.textviewCurrentLocation.setText(Para.currentUserAddress);
-        binding.textTitle.setText(String.format("Các địa điểm ở %s",Para.currentCity));
     }
 
     private void setFullScreen() {
@@ -171,468 +128,30 @@ public class MainActivity extends AppCompatActivity implements CategoryListener,
         }
     }
 
-
-    private ArrayList<NotificationAdapter.Notification> notifications;
-    private TopSheetBehavior topSheetBehavior;
-    private NotificationAdapter notificationAdapter;
-
     private void setListeners() {
-        notifications = new ArrayList<>();
-        topSheetBehavior = new TopSheetBehavior();
-        binding.textviewCurrentLocation.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, SearchActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("categoryModelArrayList", categoryModelArrayList);
-            bundle.putSerializable("getRestaurantModels", getRestaurantModels);
-            bundle.putString("flag", "normal");
-            intent.putExtra("bundle", bundle);
-            startActivity(intent);
-        });
 
-        binding.buttonNotification.setOnClickListener(v -> {
-            badgeDrawable.setNumber(notifications.size());
-
-
-            if (notifications.size() > 0) {
-                binding.textEmptyNotification.setVisibility(View.GONE);
-            } else {
-                binding.textEmptyNotification.setVisibility(View.VISIBLE);
-            }
-            notificationAdapter = new NotificationAdapter(notifications, new NotificationAdapter.NotificationListeners() {
-                @Override
-                public void onClicked(NotificationAdapter.Notification notification, int position) {
-                    Intent intent = new Intent(getApplicationContext(), UserReserveTableDetailsActivity.class);
-                    intent.putExtra("response", new BodySenderFromRes(notification.getContent(), notification.getType()));
-                    startActivity(intent);
-
-                    notifications.remove(position);
-                    notificationAdapter.notifyDataSetChanged();
-                }
-            });
-            binding.recycleViewNotification.setAdapter(notificationAdapter);
-            new ItemTouchHelper(simpleCallback).attachToRecyclerView(binding.recycleViewNotification);
-            RecyclerView.ItemDecoration itemDecoration = new DividerItemDecorator(getDrawable(R.drawable.divider));
-            binding.recycleViewNotification.addItemDecoration(itemDecoration);
-
-            topSheetBehavior.from(binding.topSheet).setState(TopSheetBehavior.STATE_EXPANDED);
-
-        });
-
-        binding.textViewExpand.setOnClickListener(v -> {
-            topSheetBehavior.from(binding.topSheet).setState(TopSheetBehavior.STATE_COLLAPSED);
-        });
-
-
-        binding.imageMenu.setOnClickListener(v -> {
-            binding.drawerLayout.openDrawer(GravityCompat.START);
-        });
-
-        binding.navigationView.setItemIconTintList(null);
-
-
-        binding.navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-                switch (item.getItemId()) {
-                    case R.id.menuUserInfo: {
-                        Intent intent = new Intent(MainActivity.this, UserInfoActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("user", user);
-                        intent.putExtra("bundle", bundle);
-                        startActivity(intent);
-                        break;
-                    }
-
-                    case R.id.menuBookTable: {
-                        startActivity(new Intent(MainActivity.this, UserBookTableHistoryActivity.class));
-                        break;
-                    }
-
-                    case R.id.menuLogOut: {
-                        setupSocket.signOut();
-
-                        PreferenceManager preferenceManager = new PreferenceManager(getApplicationContext());
-                        preferenceManager.clear();
-
-                        startActivity(new Intent(MainActivity.this, SignInActivity.class));
-                        finishAffinity();
-                        logOut();
-                        break;
-                    }
-
-                    case R.id.menuManager: {
-                        startActivity(new Intent(MainActivity.this, BusinessActivity.class));
-                        break;
-                    }
-
-                    case R.id.menuChangeRegionSearch: {
-                        clickOpenBottomSheetChooseCityFragment();
-                        break;
-                    }
-                }
-                return false;
-            }
-        });
-
-        buttonSignIn.setOnClickListener(v -> {
-            startActivity(new Intent(MainActivity.this, SignInActivity.class));
-        });
+        getSupportFragmentManager().beginTransaction().replace(binding.layoutFragment.getId(), new MainFragment()).commit();
 
         binding.bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-                switch (item.getItemId()){
+                Fragment selectedFragment = null;
+                switch (item.getItemId()) {
                     case R.id.menuReserve:
-
+                        selectedFragment = new MainFragment();
                         break;
                     case R.id.menuReview:
-                        startActivity(new Intent(getApplicationContext(),MenuReviewActivity.class));
+                        selectedFragment = new ReviewFragment();
                         break;
                     default:
-                        Toast.makeText(getApplicationContext(), item.getTitle(), Toast.LENGTH_SHORT).show();
+                        selectedFragment = new NotificationFragment();
                         break;
                 }
 
+                getSupportFragmentManager().beginTransaction().replace(binding.layoutFragment.getId(), selectedFragment).commit();
                 return true;
             }
         });
     }
 
-    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
-        @Override
-        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-            return false;
-        }
-
-        @Override
-        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-            notifications.remove(viewHolder.getAdapterPosition());
-            notificationAdapter.notifyDataSetChanged();
-            badgeDrawable.setNumber(notifications.size());
-            if (notifications.size() <= 0) {
-                topSheetBehavior.from(binding.topSheet).setState(TopSheetBehavior.STATE_COLLAPSED);
-            }
-        }
-    };
-
-    private BadgeDrawable badgeDrawable;
-
-    public void setNumberNotification(int number) {
-        binding.buttonNotification.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @SuppressLint("UnsafeOptInUsageError")
-            @Override
-            public void onGlobalLayout() {
-                badgeDrawable = BadgeDrawable.create(MainActivity.this);
-                badgeDrawable.setNumber(number);
-                badgeDrawable.setBadgeGravity(BadgeDrawable.TOP_END);
-                BadgeUtils.attachBadgeDrawable(badgeDrawable, binding.buttonNotification, findViewById(R.id.layout));
-                binding.buttonNotification.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                lp.setMargins(binding.buttonNotification.getWidth() / 4, 0, binding.buttonNotification.getWidth(), 0);
-                binding.buttonNotification.setLayoutParams(lp);
-
-            }
-        });
-    }
-
-    private void initSliderImage() {
-        // init Data
-        sliderItemArrayList = new ArrayList<>();
-        sliderItemArrayList.add(new SliderItem(R.drawable.panner1));
-        sliderItemArrayList.add(new SliderItem(R.drawable.paner2));
-        sliderItemArrayList.add(new SliderItem(R.drawable.paner3));
-
-        sliderAdapter = new SliderAdapter(sliderItemArrayList, binding.viewPagerSliderImage);
-        binding.viewPagerSliderImage.setAdapter(sliderAdapter);
-
-        binding.viewPagerSliderImage.setClipToPadding(false);
-        binding.viewPagerSliderImage.setClipChildren(false);
-        binding.viewPagerSliderImage.setOffscreenPageLimit(3);
-        binding.viewPagerSliderImage.getChildAt(0).setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
-
-        CompositePageTransformer compositePageTransformer = new CompositePageTransformer();
-        compositePageTransformer.addTransformer(new MarginPageTransformer(20));
-        compositePageTransformer.addTransformer(new ViewPager2.PageTransformer() {
-            @Override
-            public void transformPage(@NonNull View page, float position) {
-                float r = 1 - Math.abs(position);
-                page.setScaleY(0.85f + r * 0.15f);
-            }
-        });
-
-        binding.viewPagerSliderImage.setPageTransformer(compositePageTransformer);
-        binding.viewPagerSliderImage.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            @Override
-            public void onPageSelected(int position) {
-                super.onPageSelected(position);
-                sliderHandler.removeCallbacks(sliderRunnable);
-                sliderHandler.postDelayed(sliderRunnable, 3000);
-            }
-        });
-    }
-
-
-    private void GetInfo(String id) {
-
-        if (token.getToken().equals(token.expired)) {
-            logOut();
-        }
-
-        ServiceAPI serviceAPI = getRetrofit().create(ServiceAPI.class);
-        Call<GetInfoUser> call = serviceAPI.GetDetailUser(token.getToken(), id);
-        call.enqueue(new Callback<GetInfoUser>() {
-            @Override
-            public void onResponse(Call<GetInfoUser> call, Response<GetInfoUser> response) {
-                if (response.body() != null && response.body().getStatus().equals("1")) {
-                    user = response.body().getUser();
-                    Para.userModel = user;
-                    textViewName.setText(user.getFullName());
-                    Picasso.get().load(user.getPic()).into(imageUserView);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<GetInfoUser> call, Throwable t) {
-                Log.d("Log:", t.getMessage());
-            }
-        });
-    }
-
-    public void logOut() {
-        preferenceManager.clear();
-        Intent intent = new Intent(MainActivity.this, SignInActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finishAffinity();
-    }
-
-
-    private Runnable sliderRunnable = new Runnable() {
-        @Override
-        public void run() {
-            binding.viewPagerSliderImage.setCurrentItem(binding.viewPagerSliderImage.getCurrentItem() + 1);
-        }
-    };
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        sliderHandler.removeCallbacks(sliderRunnable);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        sliderHandler.postDelayed(sliderRunnable, 3000);
-    }
-
-    @Override
-    public void onCategoryClick(CategoryRes categoryModel) {
-        Intent intent = new Intent(MainActivity.this, SearchActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("categoryModelArrayList", categoryModelArrayList);
-        bundle.putSerializable("categoryModel", categoryModel);
-        bundle.putString("flag", "categoryRes");
-        intent.putExtra("bundle", bundle);
-        startActivity(intent);
-    }
-
-    /*@SuppressLint("MissingPermission")
-    public void getCurrentLocation() {
-        LocationRequest locationRequest = new LocationRequest();
-        locationRequest.setInterval(10000);
-        locationRequest.setFastestInterval(3000);
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-
-        LocationServices.getFusedLocationProviderClient(MainActivity.this)
-                .requestLocationUpdates(locationRequest, new LocationCallback() {
-                            @Override
-                            public void onLocationResult(@NonNull LocationResult locationResult) {
-                                super.onLocationResult(locationResult);
-
-                                LocationServices.getFusedLocationProviderClient(MainActivity.this)
-                                        .removeLocationUpdates(this);
-                                if (locationResult != null && locationResult.getLastLocation() != null) {
-                                    double latitude =
-                                            locationResult.getLastLocation().getLatitude();
-                                    double longitude = locationResult.getLastLocation().getLongitude();
-                                    Para.latitude = latitude;
-                                    Para.longitude = longitude;
-
-                                    Location location = new Location("providerNA");
-                                    location.setLatitude(latitude);
-                                    location.setLongitude(longitude);
-                                    fetchAddressFromLatLong(location);
-                                } else {
-
-                                }
-                            }
-                        }
-                        , Looper.getMainLooper());
-
-    }*/
-
-    private ChooseCityBottomSheetFragment chooseCityBottomSheetFragment;
-    private ArrayList<ChooseCityAdapter.City> cities;
-
-    private void clickOpenBottomSheetChooseCityFragment() {
-        cities = new ArrayList<>();
-        cities.add(new ChooseCityAdapter.City("Tp.Hồ Chí Minh", "79"));
-        cities.add(new ChooseCityAdapter.City("Hà Nội", "1"));
-        cities.add(new ChooseCityAdapter.City("Lâm Đồng", "68"));
-        chooseCityBottomSheetFragment = new ChooseCityBottomSheetFragment(cities, new ChooseCityAdapter.ChooseCityListener() {
-            @Override
-            public void onChooseCityClicked(ChooseCityAdapter.City city) {
-                Para.cityCode = city.getCode();
-            }
-        });
-        chooseCityBottomSheetFragment.show(getSupportFragmentManager(), chooseCityBottomSheetFragment.getTag());
-
-    }
-
-    //FCM
-    private void setFCM() {
-        // set notification FCM
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel("notification_channel", "notification_channel", NotificationManager.IMPORTANCE_DEFAULT);
-            NotificationManager manager = getSystemService(NotificationManager.class);
-            manager.createNotificationChannel(channel);
-        }
-
-        FirebaseMessaging.getInstance().subscribeToTopic("general")
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        String msg = "Subscribed Successfully";
-                        if (!task.isSuccessful()) {
-                            msg = "Subscription failed";
-                        }
-                        Log.e("Notification form FCM", msg);
-                    }
-                });
-    }
-
-    //socket
-    private final Emitter.Listener onNotification = new Emitter.Listener() {
-        @Override
-        public void call(Object... args) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    JSONObject data = (JSONObject) args[0];
-                    String senderUser = data.optString("sender");
-                    String title = data.optString("title");
-                    JSONObject body = data.optJSONObject("body");
-
-                    notifications.add(new NotificationAdapter.Notification(body.optString("notification"), body.optString("reserveTableId")));
-                    badgeDrawable.setNumber(notifications.size());
-                    if (notifications.size() > 0) {
-                        binding.textEmptyNotification.setVisibility(View.GONE);
-                    } else {
-                        binding.textEmptyNotification.setVisibility(View.VISIBLE);
-                    }
-                    notificationAdapter = new NotificationAdapter(notifications, new NotificationAdapter.NotificationListeners() {
-                        @Override
-                        public void onClicked(NotificationAdapter.Notification notification, int position) {
-                            Intent intent = new Intent(getApplicationContext(), UserReserveTableDetailsActivity.class);
-                            intent.putExtra("response", new BodySenderFromRes(notification.getContent(), notification.getType()));
-                            startActivity(intent);
-
-                            notifications.remove(position);
-                            notificationAdapter.notifyDataSetChanged();
-                        }
-                    });
-                    binding.recycleViewNotification.setAdapter(notificationAdapter);
-                    new ItemTouchHelper(simpleCallback).attachToRecyclerView(binding.recycleViewNotification);
-                    RecyclerView.ItemDecoration itemDecoration = new DividerItemDecorator(getDrawable(R.drawable.divider));
-                    binding.recycleViewNotification.addItemDecoration(itemDecoration);
-
-                    topSheetBehavior.from(binding.topSheet).setState(TopSheetBehavior.STATE_EXPANDED);
-                }
-            });
-        }
-    };
-
-    private void socket() {
-        setupSocket.mSocket = mSocket;
-
-        setupSocket.mSocket.connect();
-        // receiver notification when used app
-        setupSocket.mSocket.on("send_notication", onNotification);
-        setupSocket.signIn(preferenceManager.getString(Constants.USER_ID));
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        setupSocket.mSocket.disconnect();
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-
-        //notification when come back activity
-        setupSocket.mSocket.connect();
-
-        setupSocket.reconnect(preferenceManager.getString(Constants.USER_ID), setupSocket.mSocket);
-    }
-
-    private void GetCategoryRes() {
-        ServiceAPI serviceAPI = getRetrofit().create(ServiceAPI.class);
-        Call<GetCategoryResModel> call = serviceAPI.GetCategoryRes();
-        call.enqueue(new Callback<GetCategoryResModel>() {
-            @Override
-            public void onResponse(Call<GetCategoryResModel> call, Response<GetCategoryResModel> response) {
-                if (response.body() != null && response.body().getStatus().equals("1") && response.body().getCategoryResList().size() > 0) {
-                    categoryModelArrayList = new ArrayList<>();
-                    categoryModelArrayList = response.body().getCategoryResList();
-                    categoryAdapter = new CategoryAdapter(categoryModelArrayList, MainActivity.this::onCategoryClick, MainActivity.this);
-                    binding.recycleViewCategory.setAdapter(categoryAdapter);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<GetCategoryResModel> call, Throwable t) {
-                Log.d("Log:", t.getMessage());
-            }
-        });
-    }
-
-    private GetRestaurantModel getRestaurantModels;
-
-    private void GetRestaurantByDistance(GetRestaurantByDistance getRestaurantByDistance) {
-
-        ServiceAPI serviceAPI = getRetrofit().create(ServiceAPI.class);
-        Call<GetRestaurantModel> call = serviceAPI.GetResByDistance(getRestaurantByDistance);
-        call.enqueue(new Callback<GetRestaurantModel>() {
-            @Override
-            public void onResponse(Call<GetRestaurantModel> call, Response<GetRestaurantModel> response) {
-                if (response.body() != null && response.body().getStatus().equals("1")) {
-                    if (response.body().getResList().size() > 0) {
-                        getRestaurantModels = response.body();
-                        restaurantPostAdapter = new RestaurantPostAdapter(getRestaurantModels.getResList(), MainActivity.this::onRestaurantPostClicked, getApplicationContext());
-                        binding.recycleViewPostFoodRestaurant.setAdapter(restaurantPostAdapter);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<GetRestaurantModel> call, Throwable t) {
-                Log.d("Log:", t.getMessage());
-            }
-        });
-    }
-
-    @Override
-    public void onRestaurantPostClicked(RestaurantModel restaurantModel) {
-        Intent intent = new Intent(getApplicationContext(), RestaurantDetailsActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("restaurantModel", restaurantModel);
-        intent.putExtra("bundle", bundle);
-        startActivity(intent);
-    }
 }

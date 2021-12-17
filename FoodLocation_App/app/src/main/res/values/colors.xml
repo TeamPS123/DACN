@@ -20,4 +20,5 @@
     <color name="ColorTextUnSelected">#00A1CA</color>
     <color name="color_open">#03AE49</color>
     <color name="colorsub">#9A9A9A</color>
+    <color name="background_color">#FAFAFA</color>
 </resources>

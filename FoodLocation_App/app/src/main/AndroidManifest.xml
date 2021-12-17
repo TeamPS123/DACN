@@ -21,6 +21,22 @@
         android:theme="@style/Theme.FoodLocation"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".activities.ReviewDetailsActivity"
+            android:exported="true" >
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.CheckInActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.CreateReviewActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.MenuReviewActivity"
             android:exported="false" />
         <activity
@@ -29,18 +45,14 @@
         <activity
             android:name=".activities.ReviewActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustResize"></activity>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".activities.ReviewRestaurantActivity"
             android:exported="false" />
         <activity
             android:name=".activities.SplashActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activities.UserBookTableHistoryActivity"

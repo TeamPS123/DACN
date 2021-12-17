@@ -17,7 +17,9 @@ import com.psteam.foodlocation.databinding.RestaurantItemContainerBinding;
 import com.psteam.lib.modeluser.RestaurantModel;
 
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 
 public class SearchRestaurantAdapter extends RecyclerView.Adapter<SearchRestaurantAdapter.SearchRestaurantViewHolder> {
     private final List<RestaurantModel> restaurantModels;
@@ -76,7 +78,7 @@ public class SearchRestaurantAdapter extends RecyclerView.Adapter<SearchRestaura
                 binding.textViewPoint.setText("Điểm");
                 binding.textViewPoint.setTextSize(TypedValue.COMPLEX_UNIT_DIP,12);
             }
-            LocalTime openTime = LocalTime.parse(restaurantModel.getOpenTime());
+            LocalTime openTime = LocalTime.parse(restaurantModel.getOpenTime(), DateTimeFormatter.ofPattern("hh:mm a", new Locale("vi", "VN")));
             LocalTime now = LocalTime.now();
 
             //1 Mở cửa status true statusCO null, 2 Đang mở cửa setup ngày đóng cửa status true statusCO not null,
