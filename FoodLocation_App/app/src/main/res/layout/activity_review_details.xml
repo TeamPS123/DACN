@@ -78,23 +78,294 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
     </androidx.cardview.widget.CardView>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:overScrollMode="never"
+        android:clipChildren="false"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toTopOf="@id/layout3"
         app:layout_constraintTop_toBottomOf="@id/layout1">
 
-        <com.felipecsl.asymmetricgridview.library.widget.AsymmetricGridView
-            android:id="@+id/layoutImage"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="0dp">
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/viewPager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <me.relex.circleindicator.CircleIndicator3
+                android:id="@+id/circleIndicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_2sdp"
+                app:layout_constraintBottom_toBottomOf="@id/viewPager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/layout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:background="@android:color/transparent"
+                android:visibility="visible"
+                app:cardBackgroundColor="#F6F6F6"
+                app:cardCornerRadius="@dimen/_4sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/viewPager">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:id="@+id/imageLogoRestaurant"
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_height="@dimen/_40sdp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/suatuoi"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:riv_corner_radius_bottom_left="@dimen/_4sdp"
+                        app:riv_corner_radius_top_left="@dimen/_4sdp" />
+
+                    <View
+                        android:id="@+id/viewSupport1"
+                        android:layout_width="1dp"
+                        android:layout_height="1dp"
+                        app:layout_constraintBottom_toBottomOf="@id/imageLogoRestaurant"
+                        app:layout_constraintEnd_toEndOf="@id/imageLogoRestaurant"
+                        app:layout_constraintStart_toStartOf="@id/imageLogoRestaurant"
+                        app:layout_constraintTop_toTopOf="@id/imageLogoRestaurant" />
+
+                    <TextView
+                        android:id="@+id/textViewName"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_6sdp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:paddingEnd="@dimen/_8sdp"
+                        android:text="Aka House - Tầng trệt"
+                        android:textColor="@color/TextPrimary"
+                        android:textSize="@dimen/_10ssp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@id/viewSupport1"
+                        app:layout_constraintStart_toEndOf="@id/imageLogoRestaurant" />
+
+                    <TextView
+                        android:id="@+id/textViewAddress"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_6sdp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:paddingEnd="@dimen/_8sdp"
+                        android:text="Tầng trệt, Siêu thị Co.opmart Bảo Lộc, 452 Trần Phú"
+                        android:textColor="@color/colorSubtext"
+                        android:textSize="@dimen/_9ssp"
+                        app:layout_constraintEnd_toStartOf="@id/textViewDistance"
+                        app:layout_constraintStart_toEndOf="@id/imageLogoRestaurant"
+                        app:layout_constraintTop_toBottomOf="@id/viewSupport1" />
+
+                    <TextView
+                        android:id="@+id/textViewDistance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_8sdp"
+                        android:text="156.0km"
+                        android:textColor="@color/colorSubtext"
+                        android:textSize="@dimen/_9ssp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/textViewAddress"
+                        app:layout_constraintTop_toBottomOf="@id/viewSupport1" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/textViewContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:text="@string/text_examp"
+                android:textColor="@color/TextPrimary"
+                android:textSize="@dimen/_11sdp"
+                app:layout_constraintTop_toBottomOf="@id/layout2" />
+
+            <ImageView
+                android:id="@+id/iconHeart"
+                android:layout_width="@dimen/_18sdp"
+                android:layout_height="@dimen/_18sdp"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:src="@drawable/heart"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewContent" />
+
+            <TextView
+                android:id="@+id/textViewUserLike"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_6sdp"
+                android:text="Lê Tiểu Phàm"
+                android:textColor="@color/colorSubtext"
+                android:textSize="@dimen/_10ssp"
+                app:layout_constraintBottom_toBottomOf="@id/iconHeart"
+                app:layout_constraintStart_toEndOf="@id/iconHeart"
+                app:layout_constraintTop_toTopOf="@id/iconHeart" />
+
+            <TextView
+                android:id="@+id/textViewCountShare"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:text="2 chia sẻ"
+                android:textSize="@dimen/_10ssp"
+                app:layout_constraintBottom_toBottomOf="@id/iconHeart"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/iconHeart" />
+
+            <View
+                android:id="@+id/viewSupport2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@color/ColorLine"
+                app:layout_constraintTop_toBottomOf="@id/textViewCountShare" />
+
+            <TextView
+                android:id="@+id/textViewLike"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:drawableLeft="@drawable/heart_out_line_small"
+                android:drawablePadding="@dimen/_4sdp"
+                android:text="Thả tim"
+                android:textSize="@dimen/_10ssp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@id/textViewComment"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/viewSupport2" />
+
+            <TextView
+                android:id="@+id/textViewComment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:drawableLeft="@drawable/ic_round_chat_bubble_outline_24"
+                android:drawablePadding="@dimen/_4sdp"
+                android:drawableTint="@color/colorSubtext"
+                android:text="Phản hồi"
+                android:textSize="@dimen/_10ssp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@id/textViewShare"
+                app:layout_constraintStart_toEndOf="@id/textViewLike"
+                app:layout_constraintTop_toBottomOf="@id/viewSupport2" />
+
+            <TextView
+                android:id="@+id/textViewShare"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:drawableLeft="@drawable/ic_round_share_24"
+                android:drawablePadding="@dimen/_4sdp"
+                android:drawableTint="@color/colorSubtext"
+                android:text="Chia sẻ"
+                android:textSize="@dimen/_10ssp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/textViewComment"
+                app:layout_constraintTop_toBottomOf="@id/viewSupport2" />
+
+            <View
+                android:id="@+id/viewSupport3"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@color/ColorLine"
+                app:layout_constraintTop_toBottomOf="@id/textViewLike" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <FrameLayout
+        android:id="@+id/layout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="@dimen/_4sdp"
+            android:paddingVertical="@dimen/_6sdp"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layoutComment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_4sdp"
+                android:padding="@dimen/_4sdp"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <EditText
+                    android:id="@+id/inputComment"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_4sdp"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:background="@drawable/layout_radius"
+                    android:backgroundTint="@color/ColorLine"
+                    android:gravity="top|left"
+                    android:hint="Phản hồi của bạn"
+                    android:paddingVertical="@dimen/_8sdp"
+                    android:paddingLeft="@dimen/_8sdp"
+                    android:paddingRight="@dimen/_8sdp"
+                    android:textSize="@dimen/_11ssp"
+                    app:layout_constraintEnd_toStartOf="@id/buttonSendComment"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/buttonSendComment"
+                    app:layout_constraintBottom_toBottomOf="@id/buttonSendComment"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonSendComment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_4sdp"
+                    android:insetLeft="0dp"
+                    android:insetRight="0dp"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:paddingVertical="4dp"
+                    android:text="Gửi"
+                    android:textAllCaps="false"
+                    app:backgroundTint="@color/ColorButtonReserve"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                     />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -165,6 +165,9 @@ public class CreateReviewActivity extends AppCompatActivity {
         layoutReserveTableSuccessDialogBinding.textViewTitle.setText("Trải nghiệm đã được đăng");
         layoutReserveTableSuccessDialogBinding.buttonOk.setOnClickListener(v -> {
             dialog.dismiss();
+            Intent returnIntent = new Intent();
+            returnIntent.putExtra("status",1);
+            setResult(2310, returnIntent);
             finish();
         });
         dialog.show();

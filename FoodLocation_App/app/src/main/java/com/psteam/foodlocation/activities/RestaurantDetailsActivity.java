@@ -428,8 +428,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
             } else {
                 binding.viewPagerSlideImageRestaurant.setCurrentItem(0);
             }
-
-
         }
     };
 

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 
@@ -23,6 +24,7 @@ import com.psteam.foodlocation.R;
 import com.psteam.foodlocation.activities.BusinessActivity;
 import com.psteam.foodlocation.activities.ChooseCityBottomSheetFragment;
 import com.psteam.foodlocation.activities.CreateReviewActivity;
+import com.psteam.foodlocation.activities.ReviewDetailsActivity;
 import com.psteam.foodlocation.activities.SignInActivity;
 import com.psteam.foodlocation.activities.UserBookTableHistoryActivity;
 import com.psteam.foodlocation.activities.UserInfoActivity;
@@ -83,23 +85,38 @@ public class ReviewFragment extends Fragment {
         imageUserView = binding.navigationView.getHeaderView(0).findViewById(R.id.imageUserView);
         GetInfo(preferenceManager.getString(Constants.USER_ID));
         initReviewAdapter();
-        getReview(0,20);
+        getReview(0, 20);
     }
 
     private void initReviewAdapter() {
-        reviewModels.add(null);
         reviewRestaurantAdapter = new ReviewRestaurantAdapter(reviewModels, new ReviewRestaurantAdapter.ReviewRestaurantListeners() {
             @Override
             public void onClick(ReviewModel reviewModel) {
-
+                Intent intent = new Intent(getContext(), ReviewDetailsActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("reviewModel", reviewModel);
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
 
             @Override
             public void onAddReviewClick(int position) {
-                startActivity(new Intent(getContext(), CreateReviewActivity.class));
+
+                startActivityForResult(new Intent(getContext(), CreateReviewActivity.class), 2310);
             }
         });
         binding.recycleView.setAdapter(reviewRestaurantAdapter);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 2310) {
+            if (resultCode == 2310) {
+                if(data.getIntExtra("status",0)==1)
+                    getReview(0, 20);
+            }
+        }
     }
 
     private void setListeners() {
@@ -213,6 +230,8 @@ public class ReviewFragment extends Fragment {
             @Override
             public void onResponse(Call<GetReviewRestaurantModel> call, Response<GetReviewRestaurantModel> response) {
                 if (response.body() != null && response.body().getStatus().equals("1")) {
+                    reviewModels.clear();
+                    reviewModels.add(null);
                     reviewModels.addAll(response.body().getReviews());
                     reviewRestaurantAdapter.notifyDataSetChanged();
                 }
