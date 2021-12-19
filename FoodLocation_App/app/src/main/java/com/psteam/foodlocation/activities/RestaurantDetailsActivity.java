@@ -4,6 +4,9 @@ import static com.psteam.foodlocation.ultilities.RetrofitClient.getRetrofitGoogl
 import static com.psteam.lib.RetrofitClient.getRetrofit;
 
 import android.Manifest;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -180,20 +183,20 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
     private void getDataIntent() {
         Bundle bundle = getIntent().getBundleExtra("bundle");
         Uri uri = getIntent().getData();
-        if(bundle!=null){
+        if (bundle != null) {
             restaurantModel = (RestaurantModel) bundle.getSerializable("restaurantModel");
             setData();
-        }else if(uri != null){
+        } else if (uri != null) {
             String path = uri.toString();
             String[] parameter = path.split("/");
-            GetResInfo(parameter[5].substring(0,6));
+            GetResInfo(parameter[5].substring(0, 6));
         }
 
 
     }
 
-    private void setData(){
-        if (restaurantModel==null && restaurantModel.getPromotionRes().size() > 0) {
+    private void setData() {
+        if (restaurantModel == null && restaurantModel.getPromotionRes().size() > 0) {
             binding.textViewRestaurantName.setText(String.format("%s: %s", restaurantModel.getName(), restaurantModel.getPromotionRes().get(0).getName()));
             binding.textViewPromotion.setText(String.format("-%s%%", restaurantModel.getPromotionRes().get(0).getValue()));
             binding.textViewPromotion.setVisibility(View.VISIBLE);
@@ -341,6 +344,27 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
             intent.putExtras(bundle);
             startActivity(intent);
         });
+
+        binding.layoutShareOther.setOnClickListener(v -> {
+            try {
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Tasty");
+                String shareMessage = String.format("%s, %s", restaurantModel.getName(), restaurantModel.getAddress());
+                shareMessage = shareMessage + " https://ps.covid21tsp.space/Share/Code/" + restaurantModel.getRestaurantId();
+                shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
+                startActivity(Intent.createChooser(shareIntent, "choose one"));
+            } catch (Exception e) {
+                //e.toString();
+            }
+        });
+
+        binding.layoutCopyShareLink.setOnClickListener(v -> {
+            ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clip = ClipData.newPlainText("Link Share", "https://ps.covid21tsp.space/Share/Code/" + restaurantModel.getRestaurantId());
+            clipboard.setPrimaryClip(clip);
+            CustomToast.makeText(getApplicationContext(), "Đã lưu vào Clipboard", CustomToast.LENGTH_SHORT, CustomToast.SUCCESS).show();
+        });
     }
 
     private static final int REQUEST_CODE_PHONE_PERMISSION = 9;
@@ -479,13 +503,13 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
         int i = 0;
         while (i <= timeLoop) {
             timeBooks.add(new TimeBookTableAdapter.TimeBook(tempTime.plusMinutes(i).format(DateTimeFormatter.ofPattern("hh:mm a", new Locale("vi", "VN"))), "-15% *"));
-            i+=step;
+            i += step;
         }
 
         Gson gson = new Gson();
-        String s= gson.toJson(timeBooks);
+        String s = gson.toJson(timeBooks);
 
-        Log.d("Time",s.toString());
+        Log.d("Time", s.toString());
 
         timeBookTableAdapter = new TimeBookTableAdapter(timeBooks, new TimeBookTableAdapter.TimeBookTableListener() {
             @Override
@@ -565,7 +589,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
-        if(restaurantModel==null) return;
+        if (restaurantModel == null) return;
         LatLng latLng = restaurantModel.getLatLng();
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
         mMap.getUiSettings().setScrollGesturesEnabled(false);

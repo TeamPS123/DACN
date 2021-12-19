@@ -490,6 +490,7 @@ I/ Chương trình: 15% cho tất cả các gói buffet\n
 
 
                 <LinearLayout
+                    android:id="@+id/layoutShareMessenger"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -513,6 +514,7 @@ I/ Chương trình: 15% cho tất cả các gói buffet\n
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/layoutShareFacebook"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -537,6 +539,7 @@ I/ Chương trình: 15% cho tất cả các gói buffet\n
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/layoutCopyShareLink"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -561,6 +564,7 @@ I/ Chương trình: 15% cho tất cả các gói buffet\n
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/layoutShareOther"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
