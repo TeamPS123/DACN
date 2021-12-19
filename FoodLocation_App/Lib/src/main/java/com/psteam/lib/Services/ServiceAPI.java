@@ -4,6 +4,7 @@ import com.psteam.lib.Models.reserveTableDetail.messageReserveTable;
 import com.psteam.lib.modeluser.CreateReviewModel;
 import com.psteam.lib.modeluser.GetCategoryResModel;
 import com.psteam.lib.modeluser.GetMenuResModel;
+import com.psteam.lib.modeluser.GetResInfo;
 import com.psteam.lib.modeluser.GetReserveTableInput;
 import com.psteam.lib.modeluser.GetReserveTableSinge;
 import com.psteam.lib.modeluser.GetRestaurantByDistance;
@@ -103,4 +104,7 @@ public interface ServiceAPI {
     @Multipart
     @POST("api/upImageOfReview")
     Call<message> addImgReview(@Header("Authorization") String token, @Part List<MultipartBody.Part> photo, @Query("userId") String userId, @Query("reviewId") String reviewId);
+
+    @GET("api/getRestaurant")
+    Call<GetResInfo> GetResInfo(@Query("restaurantId") String restaurantId);
 }

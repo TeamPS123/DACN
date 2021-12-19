@@ -48,12 +48,14 @@ import com.psteam.foodlocation.services.ServiceAPI;
 import com.psteam.foodlocation.ultilities.CustomToast;
 import com.psteam.foodlocation.ultilities.DividerItemDecorator;
 import com.psteam.foodlocation.ultilities.Para;
+import com.psteam.lib.modeluser.GetResInfo;
 import com.psteam.lib.modeluser.GetRestaurantByDistance;
 import com.psteam.lib.modeluser.GetRestaurantModel;
 import com.psteam.lib.modeluser.GetReviewModel;
 import com.psteam.lib.modeluser.Rate;
 import com.psteam.lib.modeluser.RestaurantModel;
 import com.psteam.lib.modeluser.UserModel;
+import com.squareup.picasso.Picasso;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -124,11 +126,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
         setFullScreen();
         //initFoodRestaurant();
         getDataIntent();
-        initTimeBookTable();
-        initSliderPhotoRestaurant();
-        initReviewAdapter();
-        getReview(restaurantModel.getRestaurantId(), -1, 0, 10);
-        GetRestaurantByDistance(new GetRestaurantByDistance("20", "10.803312745723506", "106.71158641576767"));
+
     }
 
     private void getReview(String restaurantId, int value, int skip, int take) {
@@ -181,8 +179,21 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
 
     private void getDataIntent() {
         Bundle bundle = getIntent().getBundleExtra("bundle");
-        restaurantModel = (RestaurantModel) bundle.getSerializable("restaurantModel");
-        if (restaurantModel.getPromotionRes().size() > 0) {
+        Uri uri = getIntent().getData();
+        if(bundle!=null){
+            restaurantModel = (RestaurantModel) bundle.getSerializable("restaurantModel");
+            setData();
+        }else if(uri != null){
+            String path = uri.toString();
+            String[] parameter = path.split("/");
+            GetResInfo(parameter[5].substring(0,6));
+        }
+
+
+    }
+
+    private void setData(){
+        if (restaurantModel==null && restaurantModel.getPromotionRes().size() > 0) {
             binding.textViewRestaurantName.setText(String.format("%s: %s", restaurantModel.getName(), restaurantModel.getPromotionRes().get(0).getName()));
             binding.textViewPromotion.setText(String.format("-%s%%", restaurantModel.getPromotionRes().get(0).getValue()));
             binding.textViewPromotion.setVisibility(View.VISIBLE);
@@ -192,12 +203,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
         }
         binding.textRestaurantName.setText(restaurantModel.getName());
         binding.textViewCategory.setText(restaurantModel.getCategoryResStr());
-
-        if (restaurantModel.getPic().size() > 0) {
-
-        } else {
-
-        }
 
         binding.textViewChooseAddress.setText(String.format("%s, %s, %s", restaurantModel.getLine(), restaurantModel.getDistrict(), restaurantModel.getCity()));
 
@@ -209,6 +214,37 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
         NumberReserve = 1;
         DateReserve = LocalDate.now(ZoneId.of("Asia/Ho_Chi_Minh"));
         getDistance(new LatLng(Para.latitude, Para.longitude), restaurantModel.getLatLng());
+
+        initTimeBookTable();
+        initSliderPhotoRestaurant();
+        initReviewAdapter();
+        getReview(restaurantModel.getRestaurantId(), -1, 0, 10);
+        GetRestaurantByDistance(new GetRestaurantByDistance("20", "10.803312745723506", "106.71158641576767"));
+    }
+
+    private void GetResInfo(String resId) {
+        com.psteam.lib.Services.ServiceAPI serviceAPI = getRetrofit().create(com.psteam.lib.Services.ServiceAPI.class);
+        Call<GetResInfo> call = serviceAPI.GetResInfo(resId);
+        call.enqueue(new Callback<GetResInfo>() {
+            @Override
+            public void onResponse(Call<GetResInfo> call, Response<GetResInfo> response) {
+                if (response.body() != null && response.body().getStatus().equals("1")) {
+                    restaurantModel = response.body().getRestaurant();
+                    setData();
+                    LatLng latLng = restaurantModel.getLatLng();
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                    mMap.getUiSettings().setScrollGesturesEnabled(false);
+                    mMap.addMarker(new MarkerOptions().position(latLng));
+                    mMap.getUiSettings().setMapToolbarEnabled(false);
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetResInfo> call, Throwable t) {
+                Log.d("Tag", t.getMessage());
+            }
+        });
     }
 
     private void setFullScreen() {
@@ -529,6 +565,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
+        if(restaurantModel==null) return;
         LatLng latLng = restaurantModel.getLatLng();
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
         mMap.getUiSettings().setScrollGesturesEnabled(false);
@@ -537,6 +574,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(@NonNull LatLng latLng) {
+
             }
         });
     }

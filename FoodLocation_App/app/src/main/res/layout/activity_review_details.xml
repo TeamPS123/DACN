@@ -155,12 +155,14 @@
                         android:ellipsize="end"
                         android:maxLines="1"
                         android:paddingEnd="@dimen/_8sdp"
+                        android:layout_marginEnd="@dimen/_8sdp"
                         android:text="Aka House - Tầng trệt"
                         android:textColor="@color/TextPrimary"
                         android:textSize="@dimen/_10ssp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toTopOf="@id/viewSupport1"
-                        app:layout_constraintStart_toEndOf="@id/imageLogoRestaurant" />
+                        app:layout_constraintStart_toEndOf="@id/imageLogoRestaurant"
+                        app:layout_constraintEnd_toEndOf="parent"/>
 
                     <TextView
                         android:id="@+id/textViewAddress"

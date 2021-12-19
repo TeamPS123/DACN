@@ -1,5 +1,7 @@
 package com.psteam.foodlocation.activities;
 
+import static com.psteam.lib.RetrofitClient.getRetrofit;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -7,6 +9,10 @@ import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Typeface;
@@ -19,16 +25,24 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.felipecsl.asymmetricgridview.library.widget.AsymmetricGridViewAdapter;
 import com.psteam.foodlocation.R;
 import com.psteam.foodlocation.adapters.PhotoReviewAdapter;
 import com.psteam.foodlocation.databinding.ActivityReviewDetailsBinding;
+import com.psteam.lib.Services.ServiceAPI;
+import com.psteam.lib.modeluser.GetResInfo;
+import com.psteam.lib.modeluser.RestaurantModel;
 import com.psteam.lib.modeluser.ReviewModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ReviewDetailsActivity extends AppCompatActivity {
 
@@ -60,7 +74,7 @@ public class ReviewDetailsActivity extends AppCompatActivity {
             binding.textViewContent.setText(reviewModel.getContent());
             binding.textViewUserFullName.setText(reviewModel.getUserName());
             binding.textViewUserLike.setText(reviewModel.getUserName());
-
+            GetResInfo(reviewModel.getRestaurantId());
         }
     }
 
@@ -88,13 +102,65 @@ public class ReviewDetailsActivity extends AppCompatActivity {
             }
         });
 
-
     }
 
-    private boolean flag = true;
-    private static int heightInput;
-
     private void setListeners() {
+        binding.layout2.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), RestaurantDetailsActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("restaurantModel", restaurantModel);
+            intent.putExtra("bundle", bundle);
+            startActivity(intent);
+        });
 
+        binding.textViewShare.setOnClickListener(v -> {
+            try {
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Tasty");
+                String shareMessage = String.format("%s, %s", restaurantModel.getName(), restaurantModel.getAddress());
+                shareMessage = shareMessage + " https://ps.covid21tsp.space/Share/Code/" + restaurantModel.getRestaurantId();
+                shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
+                startActivity(Intent.createChooser(shareIntent, "choose one"));
+            } catch (Exception e) {
+                //e.toString();
+            }
+        });
+    }
+
+    public static boolean isPackageInstalled(Context c, String targetPackage) {
+        PackageManager pm = c.getPackageManager();
+        try {
+            PackageInfo info = pm.getPackageInfo(targetPackage, PackageManager.GET_META_DATA);
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
+        return true;
+    }
+
+    private RestaurantModel restaurantModel;
+
+
+    private void GetResInfo(String resId) {
+        ServiceAPI serviceAPI = getRetrofit().create(ServiceAPI.class);
+        Call<GetResInfo> call = serviceAPI.GetResInfo(resId);
+        call.enqueue(new Callback<GetResInfo>() {
+            @Override
+            public void onResponse(Call<GetResInfo> call, Response<GetResInfo> response) {
+                if (response.body() != null && response.body().getStatus().equals("1")) {
+                    restaurantModel = response.body().getRestaurant();
+
+                    Picasso.get().load(restaurantModel.getMainPic()).into(binding.imageLogoRestaurant);
+                    binding.textViewName.setText(String.format("%s - %s", restaurantModel.getName(), restaurantModel.getLine()));
+                    binding.textViewAddress.setText(restaurantModel.getAddress());
+                    binding.textViewDistance.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetResInfo> call, Throwable t) {
+                Log.d("Tag", t.getMessage());
+            }
+        });
     }
 }

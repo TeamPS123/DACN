@@ -105,6 +105,17 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
 
+    private PreferenceManager preferenceManager;
+
+    private Socket mSocket;
+    {
+        try {
+            mSocket = IO.socket(setupSocket.uriLocal);
+        } catch (URISyntaxException e) {
+            e.getMessage();
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,6 +127,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void init() {
         setFullScreen();
+        preferenceManager = new PreferenceManager(getApplicationContext());
+        setFCM();
+        socket();
     }
 
     private void setFullScreen() {
@@ -152,6 +166,51 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+    private void setFCM() {
+        // set notification FCM
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("notification_channel", "notification_channel", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+        }
+
+        FirebaseMessaging.getInstance().subscribeToTopic("general")
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        String msg = "Subscribed Successfully";
+                        if (!task.isSuccessful()) {
+                            msg = "Subscription failed";
+                        }
+                        Log.e("Notification form FCM", msg);
+                    }
+                });
+    }
+
+    private void socket() {
+        setupSocket.mSocket = mSocket;
+
+        setupSocket.mSocket.connect();
+        setupSocket.signIn(preferenceManager.getString(Constants.USER_ID));
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        setupSocket.mSocket.disconnect();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+        //notification when come back activity
+        setupSocket.mSocket.connect();
+
+        setupSocket.reconnect(preferenceManager.getString(Constants.USER_ID), setupSocket.mSocket);
     }
 
 }
