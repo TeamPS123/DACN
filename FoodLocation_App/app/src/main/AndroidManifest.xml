@@ -21,11 +21,23 @@
         android:theme="@style/Theme.FoodLocation"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".activities.SettingActivity"
+            android:exported="true">
+        </activity>
+        <activity
             android:name=".activities.ReviewDetailsActivity"
-            android:exported="true" >
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
 
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
-
+                <data
+                    android:host="ps.covid21tsp.space"
+                    android:pathPrefix="/ShareReview"
+                    android:scheme="https" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".activities.CheckInActivity"
@@ -105,21 +117,19 @@
             android:exported="true"
             android:supportsPictureInPicture="true" />
         <activity
-            android:name=".activities.RestaurantRegistrationActivity"
-            android:exported="true"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
             android:name=".activities.RestaurantDetailsActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustResize" >
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
+                <action android:name="android.intent.action.VIEW" />
 
-                <data android:scheme="https"
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
                     android:host="ps.covid21tsp.space"
-                    android:pathPrefix="/Share"/>
+                    android:pathPrefix="/Share"
+                    android:scheme="https" />
             </intent-filter>
         </activity>
         <activity

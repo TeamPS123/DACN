@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/_4sdp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/imageView"
+        android:layout_width="@dimen/_110sdp"
+        android:layout_height="@dimen/_85sdp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/suatuoi"
+        android:adjustViewBounds="true"
+        app:riv_corner_radius="@dimen/_8sdp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/textViewPromotion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:drawableLeft="@drawable/ic_outline_loyalty_24"
+        android:drawablePadding="@dimen/_4sdp"
+        android:gravity="center"
+        android:text="-15%"
+        android:drawableTint="#CA1D1D"
+        android:textColor="#CA1D1D"
+        android:textSize="@dimen/_9ssp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageView" />
+
+    <TextView
+        android:id="@+id/textViewResName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginStart="@dimen/_2sdp"
+        app:layout_constraintTop_toBottomOf="@id/textViewPromotion"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="@dimen/_10ssp"
+        android:textStyle="bold"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:textColor="@color/TextPrimary"
+        android:text="Food House: GIẢM ĐẾN 30% SET LẨU UFO"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

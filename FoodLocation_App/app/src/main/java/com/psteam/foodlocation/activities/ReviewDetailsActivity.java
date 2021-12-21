@@ -3,7 +3,9 @@ package com.psteam.foodlocation.activities;
 import static com.psteam.lib.RetrofitClient.getRetrofit;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
@@ -16,11 +18,16 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
@@ -29,16 +36,26 @@ import android.widget.Toast;
 
 import com.felipecsl.asymmetricgridview.library.widget.AsymmetricGridViewAdapter;
 import com.psteam.foodlocation.R;
+import com.psteam.foodlocation.adapters.CommentAdapter;
 import com.psteam.foodlocation.adapters.PhotoReviewAdapter;
 import com.psteam.foodlocation.databinding.ActivityReviewDetailsBinding;
+import com.psteam.foodlocation.databinding.LayoutDialogReportReviewBinding;
+import com.psteam.foodlocation.databinding.LayoutNotificationDialogBinding;
+import com.psteam.foodlocation.ultilities.Constants;
+import com.psteam.foodlocation.ultilities.CustomToast;
+import com.psteam.foodlocation.ultilities.Para;
+import com.psteam.foodlocation.ultilities.PreferenceManager;
 import com.psteam.lib.Services.ServiceAPI;
 import com.psteam.lib.modeluser.GetResInfo;
 import com.psteam.lib.modeluser.RestaurantModel;
 import com.psteam.lib.modeluser.ReviewModel;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -49,32 +66,63 @@ public class ReviewDetailsActivity extends AppCompatActivity {
     private ActivityReviewDetailsBinding binding;
     private ArrayList<String> images;
     private PhotoReviewAdapter reviewAdapter;
+    private PreferenceManager preferenceManager;
+
+    //Comment
+    private ArrayList<CommentAdapter.Comment> comments;
+    private CommentAdapter commentAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityReviewDetailsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        preferenceManager = new PreferenceManager(getApplicationContext());
         init();
         setListeners();
     }
 
     private void init() {
+        setFullScreen();
         images = new ArrayList<>();
         getDataIntent();
         initImageAdapter();
+        initComment();
     }
+
+    private void initComment() {
+        comments = new ArrayList<>();
+        comments.add(new CommentAdapter.Comment("1", "1", "Nguyễn Văn A", "Cảm ơn trải nghiệm của bạn", reviewModel.getId(), "https://dbk.vn/uploads/ckfinder/images/1-content/anime-girl-1.jpg", "19:57 20/12/2021"));
+        comments.add(new CommentAdapter.Comment("1", "1", "Lê Tiểu Phàm", "Cảm ơn trải nghiệm của bạn", reviewModel.getId(), "https://dbk.vn/uploads/ckfinder/images/1-content/anime-girl-1.jpg", "19:57 20/12/2021"));
+        comments.add(new CommentAdapter.Comment("1", "1", "Nguyễn Văn A", "Cảm ơn trải nghiệm của bạn", reviewModel.getId(), "https://dbk.vn/uploads/ckfinder/images/1-content/anime-girl-1.jpg", "19:57 20/12/2021"));
+        comments.add(new CommentAdapter.Comment("1", "1", "Nguyễn Văn A", "Cảm ơn trải nghiệm của bạn", reviewModel.getId(), "https://dbk.vn/uploads/ckfinder/images/1-content/anime-girl-1.jpg", "19:57 20/12/2021"));
+
+        commentAdapter = new CommentAdapter(comments);
+        binding.recycleViewComment.setAdapter(commentAdapter);
+    }
+
+    private ReviewModel reviewModel;
 
     private void getDataIntent() {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            ReviewModel reviewModel = (ReviewModel) bundle.getSerializable("reviewModel");
+            reviewModel = (ReviewModel) bundle.getSerializable("reviewModel");
             images.addAll(reviewModel.getImgList());
             Picasso.get().load(reviewModel.getImageUser()).into(binding.imageViewIconUser);
             binding.textViewContent.setText(reviewModel.getContent());
             binding.textViewUserFullName.setText(reviewModel.getUserName());
             binding.textViewUserLike.setText(reviewModel.getUserName());
             GetResInfo(reviewModel.getRestaurantId());
+        }
+    }
+
+    private void setFullScreen() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.TRANSPARENT);
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);//  set status text dark
+            getWindow().setStatusBarColor(ContextCompat.getColor(getApplicationContext(), R.color.white));// set status background white
         }
     }
 
@@ -118,14 +166,79 @@ public class ReviewDetailsActivity extends AppCompatActivity {
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("text/plain");
                 shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Tasty");
-                String shareMessage = String.format("%s, %s", restaurantModel.getName(), restaurantModel.getAddress());
-                shareMessage = shareMessage + " https://ps.covid21tsp.space/Share/Code/" + restaurantModel.getRestaurantId();
+                String shareMessage = String.format(" %s đã chia sẻ một đánh giá, trải nghiệm về nhà hàng %s", reviewModel.getUserName(), restaurantModel.getName());
+                shareMessage = shareMessage + " https://ps.covid21tsp.space/ShareReview/Code/" + reviewModel.getUserId();
                 shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
                 startActivity(Intent.createChooser(shareIntent, "choose one"));
             } catch (Exception e) {
                 //e.toString();
             }
         });
+
+        binding.buttonSendComment.setOnClickListener(v -> {
+            if (binding.inputComment.getText().toString().trim().isEmpty()) {
+                CustomToast.makeText(getApplicationContext(), "Nhập nội dung phản hồi của bạn", CustomToast.LENGTH_SHORT, CustomToast.WARNING).show();
+                return;
+            }
+            View view = this.getCurrentFocus();
+            if (view != null) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+            CommentAdapter.Comment comment = new CommentAdapter.Comment("1", preferenceManager.getString(Constants.USER_ID),
+                    Para.userModel.getFullName(), binding.inputComment.getText().toString(), reviewModel.getId(), Para.userModel.getPic(), new SimpleDateFormat("hh:mm dd/MM/yyyy", new Locale("vi", "VN")).format(new Date()));
+            comments.add(0, comment);
+            commentAdapter.notifyItemInserted(0);
+            binding.inputComment.setText(null);
+            binding.inputComment.clearFocus();
+        });
+
+        binding.iconReport.setOnClickListener(v -> {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(ReviewDetailsActivity.this);
+            LayoutDialogReportReviewBinding layoutDialogReportReviewBinding = LayoutDialogReportReviewBinding.inflate(LayoutInflater.from(ReviewDetailsActivity.this));
+            builder.setView(layoutDialogReportReviewBinding.getRoot());
+            alertDialog = builder.create();
+            layoutDialogReportReviewBinding.textViewReport.setOnClickListener(view -> {
+                alertDialog.dismiss();
+                openDialog();
+
+            });
+
+            layoutDialogReportReviewBinding.textViewCancel.setOnClickListener(view -> {
+                alertDialog.dismiss();
+            });
+            alertDialog.show();
+
+        });
+
+        binding.textViewLike.setOnClickListener(v->{
+            if(binding.iconHeartLike.getTag().equals("DisLike")) {
+                binding.iconHeartLike.setImageResource(R.drawable.heart);
+                binding.iconHeartLike.setTag("Like");
+            }else {
+                binding.iconHeartLike.setImageResource(R.drawable.heart_small);
+                binding.iconHeartLike.setTag("DisLike");
+            }
+        });
+    }
+
+    AlertDialog alertDialog;
+
+    public void openDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(ReviewDetailsActivity.this);
+        LayoutNotificationDialogBinding layoutNotificationDialogBinding = LayoutNotificationDialogBinding.inflate(LayoutInflater.from(ReviewDetailsActivity.this));
+        builder.setView(layoutNotificationDialogBinding.getRoot());
+        builder.setCancelable(false);
+        alertDialog = builder.create();
+        layoutNotificationDialogBinding.textViewAccept.setOnClickListener(v -> {
+            alertDialog.dismiss();
+        });
+
+        layoutNotificationDialogBinding.textViewContent.setOnClickListener(v -> {
+            alertDialog.dismiss();
+        });
+        alertDialog.show();
     }
 
     public static boolean isPackageInstalled(Context c, String targetPackage) {
@@ -139,7 +252,6 @@ public class ReviewDetailsActivity extends AppCompatActivity {
     }
 
     private RestaurantModel restaurantModel;
-
 
     private void GetResInfo(String resId) {
         ServiceAPI serviceAPI = getRetrofit().create(ServiceAPI.class);

@@ -7,7 +7,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class RestaurantModel implements Serializable, ClusterItem {
     private String phoneRes;
@@ -151,6 +154,10 @@ public class RestaurantModel implements Serializable, ClusterItem {
         return new LatLng(latitude, longitude);
     }
 
+    public String getPromotion() {
+        return (promotionRes != null && promotionRes.size() > 0) ? String.format("-%s%%", promotionRes.get(0).getValue()) : "Đặt bàn";
+    }
+
     public String getUserId() {
         return userId;
     }
@@ -159,12 +166,23 @@ public class RestaurantModel implements Serializable, ClusterItem {
         this.userId = userId;
     }
 
-    public String getAddress(){
-        return String.format("%s, %s, %s",line,district,city);
+    public String getAddress() {
+        return String.format("%s, %s, %s", line, district, city);
     }
 
     public String getCloseTime() {
-        return closeTime;
+        String s = new SimpleDateFormat("a").format(new Date());
+        if (s.equals("AM") || s.equals("PM")) {
+            if (closeTime.contains("SA")) {
+                return closeTime.replace("SA", "AM");
+            } else if (closeTime.contains("CH")) {
+                return closeTime.replace("CH", "PM");
+            } else {
+                return closeTime;
+            }
+        } else {
+            return closeTime;
+        }
     }
 
     public void setCloseTime(String closeTime) {
@@ -180,7 +198,35 @@ public class RestaurantModel implements Serializable, ClusterItem {
     }
 
     public String getOpenTime() {
-        return openTime;
+        String s = new SimpleDateFormat("a").format(new Date());
+        if (s.equals("AM") || s.equals("PM")) {
+            if (openTime.contains("SA")) {
+                return openTime.replace("SA", "AM");
+            } else if (openTime.contains("CH")) {
+                return openTime.replace("CH", "PM");
+            } else {
+                return openTime;
+            }
+        } else {
+            return openTime;
+        }
+    }
+
+    public static Date coverStringToDate(String strDate) {
+        try {
+            Date date = new SimpleDateFormat("mm:hh a dd/MM/dd").parse(strDate);
+            return date;
+        } catch (ParseException e) {
+            return new Date();
+        }
+    }
+
+    public Date getStatusOpen() {
+        return coverStringToDate(String.format("%s %s", getOpenTime(), statusCO));
+    }
+
+    public Date getStatusClose() {
+        return coverStringToDate(String.format("%s %s", getCloseTime(), statusCO));
     }
 
     public void setOpenTime(String openTime) {
@@ -230,6 +276,12 @@ public class RestaurantModel implements Serializable, ClusterItem {
         return Double.parseDouble(latLng_Array[1]);
     }*/
 
+    @Override
+    public String toString() {
+        return "RestaurantModel{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 
     @NonNull
     @Override

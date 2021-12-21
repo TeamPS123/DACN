@@ -51,7 +51,11 @@ public class SplashActivity extends AppCompatActivity {
         preferenceManager = new PreferenceManager(getApplicationContext());
         setFullScreen();
         checkSelfPermission();
+        Loading();
 
+    }
+
+    public void Loading() {
         binding.animation.addAnimatorListener(new AnimatorListenerAdapter() {
 
             @Override
@@ -59,14 +63,9 @@ public class SplashActivity extends AppCompatActivity {
                 super.onAnimationRepeat(animation);
                 if (loadDataSuccess) {
                     NextActivity();
-                } else {
-                    finishAffinity();
-                    System.exit(0);
                 }
             }
         });
-
-
     }
 
     private void NextActivity() {
@@ -175,8 +174,15 @@ public class SplashActivity extends AppCompatActivity {
                 loadDataSuccess = true;
                 Para.currentAddress = resultData.getString(Constants.RESULT_DATA_KEY);
                 Para.currentUserAddress = resultData.getString(Constants.RESULT_DATA_KEY);
-                if (resultData.getString(Constants.RESULT_DATA_KEY) != null && !resultData.getString(Constants.RESULT_DATA_KEY).isEmpty())
-                    Para.currentCity = resultData.getString(Constants.RESULT_CITY);
+                if (resultData.getString(Constants.RESULT_DATA_KEY) != null && !resultData.getString(Constants.RESULT_DATA_KEY).isEmpty()) {
+                    String s = resultData.getString(Constants.RESULT_SUB_CITY);
+                    if (s == null) {
+                        s = resultData.getString(Constants.RESULT_SUB_ADMIN_CITY);
+                        if (s == null)
+                            s = resultData.getString(Constants.RESULT_CITY);
+                    }
+                    Para.currentCity = s;
+                }
             } else {
                 loadDataSuccess = false;
                 Toast.makeText(getApplicationContext(), resultData.getString(Constants.RESULT_DATA_KEY), Toast.LENGTH_SHORT).show();

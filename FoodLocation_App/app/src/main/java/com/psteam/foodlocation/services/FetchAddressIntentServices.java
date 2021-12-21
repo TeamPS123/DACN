@@ -45,14 +45,18 @@ public class FetchAddressIntentServices extends IntentService {
             }
 
             if (addressList == null || addressList.isEmpty()) {
-                deliverResultToReceiver(Constants.FAILURE_RESULT, errorMessage,"");
+                deliverResultToReceiver(Constants.FAILURE_RESULT, errorMessage,"","","");
             } else {
                 Address address = addressList.get(0);
                 ArrayList<String> addressFragments = new ArrayList<>();
                 String city = "";
+                String subCity = "";
+                String subAdmin = "";
                 for (int i = 0; i <= address.getMaxAddressLineIndex(); i++) {
                     addressFragments.add(address.getAddressLine(i));
                     city=address.getLocality();
+                    subCity=address.getSubLocality();
+                    subAdmin=address.getSubAdminArea();
                 }
                 deliverResultToReceiver(
                         Constants.SUCCESS_RESULT,
@@ -60,17 +64,19 @@ public class FetchAddressIntentServices extends IntentService {
                                 Objects.requireNonNull(System.getProperty("line.separator")),
                                 addressFragments
                         ),
-                        city
+                        city,subCity,subAdmin
                 );
             }
         }
 
     }
 
-    private void deliverResultToReceiver(int resultCode, String addressMessage, String city) {
+    private void deliverResultToReceiver(int resultCode, String addressMessage, String city,String subCity,String subAdmin) {
         Bundle bundle = new Bundle();
         bundle.putString(Constants.RESULT_DATA_KEY, addressMessage);
         bundle.putString(Constants.RESULT_CITY, city);
+        bundle.putString(Constants.RESULT_SUB_CITY, subCity);
+        bundle.putString(Constants.RESULT_SUB_ADMIN_CITY, subAdmin);
         resultReceiver.send(resultCode, bundle);
     }
 }

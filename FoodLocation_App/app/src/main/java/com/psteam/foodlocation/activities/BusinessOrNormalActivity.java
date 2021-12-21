@@ -29,7 +29,7 @@ public class BusinessOrNormalActivity extends AppCompatActivity {
 
     private void setListeners() {
         binding.buttonIsBusiness.setOnClickListener(v -> {
-            startActivity(new Intent(BusinessOrNormalActivity.this, RestaurantRegistrationActivity.class));
+           // startActivity(new Intent(BusinessOrNormalActivity.this, RestaurantRegistrationActivity.class));
         });
 
         binding.buttonUserNormal.setOnClickListener(v -> {

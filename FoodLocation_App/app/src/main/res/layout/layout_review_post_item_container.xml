@@ -75,6 +75,7 @@
                 android:layout_marginTop="@dimen/_2sdp"
                 android:layout_marginEnd="@dimen/_12sdp"
                 android:src="@drawable/heart"
+                android:tag="Like"
                 app:layout_constraintBottom_toBottomOf="@id/imageUser"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/imageUser" />

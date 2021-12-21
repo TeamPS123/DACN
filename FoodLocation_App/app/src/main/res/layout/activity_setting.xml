@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.SettingActivity">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/layoutTop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent">
+
+            <ImageView
+                android:id="@+id/textViewClose"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginBottom="@dimen/_8sdp"
+                android:src="@drawable/ic_round_arrow_back_ios_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="#E83848" />
+
+            <TextView
+                android:id="@+id/text11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="cài đặt"
+                android:textAllCaps="true"
+                android:textColor="#E83848"
+                android:textSize="@dimen/_10ssp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_16sdp"
+        android:background="@drawable/layout_radius"
+        android:backgroundTint="#00BCD4"
+        android:padding="@dimen/_12sdp"
+        app:layout_constraintTop_toBottomOf="@id/layoutTop">
+
+        <TextView
+            android:id="@+id/textview1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Phạm vi tìm kiếm"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_11ssp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:progress="0"
+            android:progressTint="@color/color_open"
+            app:layout_constraintEnd_toEndOf="@id/textviewDistance20km"
+            app:layout_constraintStart_toStartOf="@id/textviewDistance5km"
+            app:layout_constraintTop_toBottomOf="@id/textview1" />
+
+        <TextView
+            android:id="@+id/textviewDistance5km"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:background="@drawable/layout_distance"
+            android:backgroundTint="@color/color_open"
+            android:gravity="center"
+
+            android:text="5km"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_8ssp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/progressBar"
+            app:layout_constraintEnd_toStartOf="@id/textviewDistance10km"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/progressBar" />
+
+        <TextView
+            android:id="@+id/textviewDistance10km"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:background="@drawable/layout_distance"
+            android:gravity="center"
+            android:text="10km"
+            android:textSize="@dimen/_8ssp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/textviewDistance15km"
+            app:layout_constraintStart_toEndOf="@id/textviewDistance5km"
+            app:layout_constraintTop_toTopOf="@id/textviewDistance5km" />
+
+        <TextView
+            android:id="@+id/textviewDistance15km"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:background="@drawable/layout_distance"
+            android:gravity="center"
+            android:text="15km"
+            android:textSize="@dimen/_8ssp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/textviewDistance20km"
+            app:layout_constraintStart_toEndOf="@id/textviewDistance10km"
+            app:layout_constraintTop_toTopOf="@id/textviewDistance5km" />
+
+        <TextView
+            android:id="@+id/textviewDistance20km"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:background="@drawable/layout_distance"
+            android:gravity="center"
+            android:text="20km"
+            android:textSize="@dimen/_8ssp"
+            android:textStyle="bold"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/textviewDistance15km"
+            app:layout_constraintTop_toTopOf="@id/textviewDistance5km" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_16sdp"
+        android:background="@drawable/layout_radius"
+        android:backgroundTint="@color/ColorButtonReserve"
+        android:padding="@dimen/_12sdp"
+        app:layout_constraintTop_toBottomOf="@id/layout1">
+
+        <TextView
+            android:id="@+id/textview2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thời gian gợi ý lại món ăn"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_11ssp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/spinnerChooseTime"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/spinnerChooseTime" />
+
+        <com.jaredrummler.materialspinner.MaterialSpinner
+            android:id="@+id/spinnerChooseTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_11ssp"
+            android:layout_marginStart="@dimen/_24sdp"
+            android:textStyle="bold"
+            android:gravity="end"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/textview2"
+            app:layout_constraintTop_toTopOf="parent"
+            app:ms_background_color="@color/ColorButtonReserve"
+            app:ms_background_selector="@drawable/selector_spinner"
+            app:ms_dropdown_height="wrap_content"
+            app:ms_dropdown_max_height="@dimen/_200sdp"
+            app:ms_text_color="@color/white" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_16sdp"
+        android:background="@drawable/layout_radius"
+        android:backgroundTint="@color/primary_dark"
+        android:padding="@dimen/_12sdp"
+        app:layout_constraintTop_toBottomOf="@id/layout2">
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Khu vực tìm kiếm"
+            android:textStyle="bold"
+            android:textSize="@dimen/_11ssp"
+            android:textColor="@color/white"
+            app:layout_constraintTop_toTopOf="@id/spinnerLocation"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/spinnerLocation"/>
+
+        <com.jaredrummler.materialspinner.MaterialSpinner
+            android:id="@+id/spinnerLocation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_11ssp"
+            android:layout_marginStart="@dimen/_30sdp"
+            android:textStyle="bold"
+            android:gravity="end"
+            android:maxLines="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/textView3"
+            app:layout_constraintTop_toTopOf="parent"
+            app:ms_background_color="@color/primary_dark"
+            app:ms_background_selector="@drawable/selector_spiner_city"
+            app:ms_dropdown_height="wrap_content"
+            app:ms_dropdown_max_height="@dimen/_200sdp"
+            app:ms_text_color="@color/white" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

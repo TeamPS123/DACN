@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -48,9 +49,11 @@ import com.psteam.foodlocation.databinding.ActivityRestaurantDetailsBinding;
 import com.psteam.foodlocation.adapters.RestaurantPhotoAdapter;
 import com.psteam.foodlocation.models.GoogleMapApiModels.DirectionResponses;
 import com.psteam.foodlocation.services.ServiceAPI;
+import com.psteam.foodlocation.ultilities.Constants;
 import com.psteam.foodlocation.ultilities.CustomToast;
 import com.psteam.foodlocation.ultilities.DividerItemDecorator;
 import com.psteam.foodlocation.ultilities.Para;
+import com.psteam.foodlocation.ultilities.PreferenceManager;
 import com.psteam.lib.modeluser.GetResInfo;
 import com.psteam.lib.modeluser.GetRestaurantByDistance;
 import com.psteam.lib.modeluser.GetRestaurantModel;
@@ -60,12 +63,14 @@ import com.psteam.lib.modeluser.RestaurantModel;
 import com.psteam.lib.modeluser.UserModel;
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Locale;
 
 import retrofit2.Call;
@@ -82,6 +87,8 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
 
     private TimeBookTableAdapter timeBookTableAdapter;
     private ArrayList<TimeBookTableAdapter.TimeBook> timeBooks;
+
+    private PreferenceManager preferenceManager;
 
     private RestaurantPostAdapter restaurantPostAdapter;
 
@@ -114,7 +121,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
         super.onCreate(savedInstanceState);
         binding = ActivityRestaurantDetailsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        preferenceManager = new PreferenceManager(getApplicationContext());
         init();
         setListeners();
     }
@@ -129,7 +136,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
         setFullScreen();
         //initFoodRestaurant();
         getDataIntent();
-
+        preferenceManager.AddRestaurant(restaurantModel);
     }
 
     private void getReview(String restaurantId, int value, int skip, int take) {
@@ -166,7 +173,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
 
             @Override
             public void onFailure(Call<GetReviewModel> call, Throwable t) {
-
+                Log.d("Tag", t.getMessage());
             }
         });
     }
@@ -502,7 +509,8 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
         int step = 15;
         int i = 0;
         while (i <= timeLoop) {
-            timeBooks.add(new TimeBookTableAdapter.TimeBook(tempTime.plusMinutes(i).format(DateTimeFormatter.ofPattern("hh:mm a", new Locale("vi", "VN"))), "-15% *"));
+            timeBooks.add(new TimeBookTableAdapter.TimeBook(tempTime.plusMinutes(i).format(DateTimeFormatter.ofPattern("hh:mm a", new Locale("vi", "VN"))),
+                    restaurantModel.getPromotion()));
             i += step;
         }
 

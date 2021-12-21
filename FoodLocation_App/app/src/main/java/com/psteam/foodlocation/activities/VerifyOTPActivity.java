@@ -3,14 +3,25 @@ package com.psteam.foodlocation.activities;
 import static com.psteam.lib.RetrofitClient.getRetrofit;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.loader.content.CursorLoader;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -19,6 +30,8 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.phone.SmsRetriever;
+import com.google.android.gms.auth.api.phone.SmsRetrieverClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
@@ -35,13 +48,22 @@ import com.psteam.foodlocation.ultilities.Constants;
 import com.psteam.foodlocation.ultilities.CustomToast;
 import com.psteam.foodlocation.ultilities.GenericTextWatcher;
 import com.psteam.foodlocation.ultilities.PreferenceManager;
+import com.psteam.foodlocation.ultilities.SmsBroadcastReceiver;
 import com.psteam.foodlocation.ultilities.Token;
 import com.psteam.lib.Services.ServiceAPI;
 import com.psteam.lib.modeluser.LogUpModel;
 import com.psteam.lib.modeluser.message;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -58,6 +80,15 @@ public class VerifyOTPActivity extends AppCompatActivity {
 
     private long leftTimeInSecond = 60000;
 
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISSION_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
+
+    private static final int REQ_USER_CONSENT = 200;
+    private SmsBroadcastReceiver smsBroadcastReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,11 +102,12 @@ public class VerifyOTPActivity extends AppCompatActivity {
         }
         binding = ActivityVerifyOtpBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        startSmartUserConsent();
         preferenceManager = new PreferenceManager(getApplicationContext());
         dataToken = new Token(VerifyOTPActivity.this);
+        verifyStorePermission(VerifyOTPActivity.this);
         init();
         setListeners();
-
     }
 
     private void setListeners() {
@@ -123,6 +155,18 @@ public class VerifyOTPActivity extends AppCompatActivity {
         });
     }
 
+    private static void verifyStorePermission(Activity activity) {
+        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                    activity,
+                    PERMISSION_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE
+            );
+        }
+    }
+
     private void loading(boolean Loading) {
         if (Loading) {
             binding.progressBar.setVisibility(View.VISIBLE);
@@ -137,14 +181,43 @@ public class VerifyOTPActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
+    private String imageUri;
+
     private void init() {
-        account = (LogUpModel)getIntent().getSerializableExtra("account");
-//        bundle = getIntent().getBundleExtra("bundle");
-//        if (bundle != null) {
-//            phoneNumber = bundle.getString("phoneNumber");
-//            binding.textviewPhone.setText(phoneNumber);
-//        }
+        bundle = getIntent().getExtras();
+        if (bundle != null) {
+            account = (LogUpModel) bundle.getSerializable("account");
+            imageUri = bundle.getString("imageUri");
+            phoneNumber = account.getPhone();
+            binding.textviewPhone.setText(phoneNumber);
+        }
         countDownResendOTP(leftTimeInSecond);
+    }
+
+    private void addImgUser(String userId) {
+        MultipartBody.Part part;
+        File file = new File(imageUri);
+        RequestBody photoContext = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        part = MultipartBody.Part.createFormData("photo", file.getName(), photoContext);
+
+        ServiceAPI serviceAPI = getRetrofit().create(ServiceAPI.class);
+        Call<message> call = serviceAPI.addImgUser(dataToken.getToken(), part, userId);
+        call.enqueue(new Callback<message>() {
+            @Override
+            public void onResponse(Call<message> call, Response<message> response) {
+                if (response.body() != null && response.body().getStatus().equals("1")) {
+                    Intent intent = new Intent(VerifyOTPActivity.this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<message> call, Throwable t) {
+                Log.d("Tag", t.getMessage());
+            }
+        });
     }
 
     private void countDownResendOTP(long timeLeft) {
@@ -193,13 +266,10 @@ public class VerifyOTPActivity extends AppCompatActivity {
             public void onResponse(Call<message> call, Response<message> response) {
                 if (response.body() != null && response.body().getStatus().equals("1")) {
                     preferenceManager.putString(Constants.USER_ID, response.body().getId());
-                    preferenceManager.putBoolean(Constants.IsLogin,true);
+                    preferenceManager.putBoolean(Constants.IsLogin, true);
                     preferenceManager.putString(Constants.Password, password);
                     dataToken.saveToken(response.body().getNotification());
-                    Intent intent = new Intent(VerifyOTPActivity.this, MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    finish();
+                    addImgUser(response.body().getId());
                 } else {
                     CustomToast.makeText(getApplicationContext(), response.body().getNotification(), CustomToast.LENGTH_SHORT, CustomToast.ERROR).show();
                 }
@@ -214,7 +284,7 @@ public class VerifyOTPActivity extends AppCompatActivity {
     }
 
     //SignIn by Phone
-    private void sendVerificationCode(String number){
+    private void sendVerificationCode(String number) {
         SignUpActivity.mAuth = FirebaseAuth.getInstance();
 
         PhoneAuthOptions options = PhoneAuthOptions.newBuilder(SignUpActivity.mAuth)
@@ -245,16 +315,13 @@ public class VerifyOTPActivity extends AppCompatActivity {
         public void onCodeSent(@NonNull String verificationId,
                                @NonNull PhoneAuthProvider.ForceResendingToken token) {
             Log.d("Send", "onCodeSent:" + verificationId);
-            //ShowNotification.dismissProgressDialog();
             Toast.makeText(getApplicationContext(), "Đã gửi OTP", Toast.LENGTH_SHORT).show();
             SignUpActivity.mVerificationId = verificationId;
-            //mResendToken = token;
         }
     };
 
     //code xác thực OTP
     private void verifyCode(String code) {
-        //ShowNotification.showProgressDialog(MainActivity.this, "Đang xác thực");
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(SignUpActivity.mVerificationId, code);
         signInWithPhoneAuthCredential(credential);
     }
@@ -264,22 +331,91 @@ public class VerifyOTPActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        //ShowNotification.dismissProgressDialog();
                         if (task.isSuccessful()) {
                             Log.d("Confirm", "signInWithCredential:success");
                             FirebaseUser user = task.getResult().getUser();
-                            //ShowNotification.showAlertDialog(MainActivity.this, "Thành công");
                             signUP(account, account.getPass());
                         } else {
                             loading(false);
                             Log.w("Confirm", "signInWithCredential:failure", task.getException());
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                                //ShowNotification.showAlertDialog(MainActivity.this, "Lỗi");
-                                Toast.makeText(VerifyOTPActivity.this, task.getException()+"", Toast.LENGTH_SHORT).show();
+                                CustomToast.makeText(VerifyOTPActivity.this, "Mã OTP đã hết hạn", CustomToast.LENGTH_SHORT, CustomToast.ERROR).show();
                             }
                         }
                         loading(false);
                     }
                 });
+    }
+
+
+    // Đọc mã OTP từ tin nhắn
+    private void startSmartUserConsent() {
+        SmsRetrieverClient client = SmsRetriever.getClient(VerifyOTPActivity.this);
+        client.startSmsUserConsent(null);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQ_USER_CONSENT) {
+            if ((resultCode == RESULT_OK) && (data != null)) {
+                String message = data.getStringExtra(SmsRetriever.EXTRA_SMS_MESSAGE);
+                getOtpFromMessage(message);
+            }
+        }
+    }
+
+    private void getOtpFromMessage(String message) {
+        Pattern otpPattern = Pattern.compile("(|^)\\d{6}");
+        Matcher matcher = otpPattern.matcher(message);
+        if (matcher.find()) {
+            //etOTP.setText(matcher.group(0));
+            binding.inputCode1.setText(matcher.group(0).substring(0, 1));
+            binding.inputCode2.setText(matcher.group(0).substring(1, 2));
+            binding.inputCode3.setText(matcher.group(0).substring(2, 3));
+            binding.inputCode4.setText(matcher.group(0).substring(3, 4));
+            binding.inputCode5.setText(matcher.group(0).substring(4, 5));
+            binding.inputCode6.setText(matcher.group(0).substring(5, 6));
+        }
+    }
+
+    private void registerBroadcastReceiver() {
+
+        smsBroadcastReceiver = new SmsBroadcastReceiver();
+
+
+        smsBroadcastReceiver.smsBroadcastReceiverListener = new SmsBroadcastReceiver.SmsBroadcastReceiverListener() {
+            @Override
+            public void onSuccess(Intent intent) {
+
+                try {
+                    // Start activity to show consent dialog to user, activity must be started in
+                    // 5 minutes, otherwise you'll receive another TIMEOUT intent
+                    if (intent != null)
+                        startActivityForResult(intent, REQ_USER_CONSENT);
+                } catch (ActivityNotFoundException e) {
+                    // Handle the exception ...
+                }
+            }
+
+            @Override
+            public void onFailure() {
+            }
+        };
+        IntentFilter intentFilter = new IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION);
+        registerReceiver(smsBroadcastReceiver, intentFilter);
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        registerBroadcastReceiver();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(smsBroadcastReceiver);
     }
 }

@@ -103,5 +103,10 @@ public class ChooseCityAdapter extends RecyclerView.Adapter<ChooseCityAdapter.Ch
         public void setCode(String code) {
             this.code = code;
         }
+
+        @Override
+        public String toString() {
+            return name;
+        }
     }
 }

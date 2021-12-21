@@ -11,8 +11,8 @@
         android:title="Thông tin tài khoản" />
     <item
         android:id="@+id/menuChangeRegionSearch"
-        android:icon="@drawable/ic_outline_fmd_good_24"
-        android:title="Thay đổi khu vực" />
+        android:icon="@drawable/ic_round_settings_24"
+        android:title="Cài đặt" />
 
     <item
         android:id="@+id/menuManager"

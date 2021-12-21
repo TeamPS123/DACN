@@ -31,8 +31,8 @@
                     android:layout_marginStart="@dimen/_8sdp"
                     android:layout_marginTop="@dimen/_6sdp"
                     android:src="@drawable/ic_menu"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"/>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/textviewCurrentLocation"
@@ -51,10 +51,10 @@
                     android:textAllCaps="false"
                     android:textColor="@color/TextColorSub"
                     app:cornerRadius="@dimen/_16sdp"
-                    app:layout_constraintTop_toTopOf="@id/imageMenu"
                     app:layout_constraintBottom_toBottomOf="@id/imageMenu"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/imageMenu"
-                    app:layout_constraintEnd_toEndOf="parent"/>
+                    app:layout_constraintTop_toTopOf="@id/imageMenu" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -62,7 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:background="#F5F5F5"
+                android:background="@drawable/layout_gradient"
                 android:clipToPadding="false"
                 android:overScrollMode="never"
                 android:scrollbars="none"
@@ -83,7 +83,7 @@
                         android:id="@+id/layout1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/white"
+
                         android:paddingBottom="@dimen/_12sdp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -105,14 +105,14 @@
                                 android:layout_height="wrap_content"
                                 android:text="Danh mục"
                                 android:textColor="@color/TextPrimary"
-                                android:textSize="@dimen/_14ssp"
+                                android:textSize="@dimen/_16ssp"
                                 android:textStyle="bold" />
 
                             <TextView
                                 android:layout_width="@dimen/_60sdp"
-                                android:layout_height="@dimen/_2sdp"
-                                android:layout_marginTop="@dimen/_1sdp"
-                                android:background="#E63141" />
+                                android:layout_height="@dimen/_3sdp"
+                                android:layout_marginTop="@dimen/_3sdp"
+                                android:background="@drawable/line_radius" />
                         </LinearLayout>
 
                         <androidx.recyclerview.widget.RecyclerView
@@ -132,6 +132,107 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/layout15"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/layout1">
+
+                        <LinearLayout
+                            android:id="@+id/layout16"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_8sdp"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:gravity="center_vertical"
+                            android:orientation="vertical"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Gợi ý cho bạn"
+                                android:textColor="@color/TextPrimary"
+                                android:textSize="@dimen/_16ssp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="@dimen/_60sdp"
+                                android:layout_height="@dimen/_3sdp"
+                                android:layout_marginTop="@dimen/_3sdp"
+                                android:background="@drawable/line_radius" />
+                        </LinearLayout>
+
+                        <androidx.viewpager2.widget.ViewPager2
+                            android:id="@+id/viewPagerSliderRestaurant"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_12sdp"
+                            android:layout_marginStart="@dimen/_8sdp"
+                            android:clipToPadding="false"
+                            android:overScrollMode="never"
+                            android:scrollbars="none"
+
+                            android:paddingEnd="@dimen/_30sdp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/layout16"
+                            app:layout_constraintBottom_toBottomOf="parent"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/layout12"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:paddingBottom="@dimen/_8sdp"
+                        app:layout_constraintTop_toBottomOf="@id/layout15">
+
+                        <LinearLayout
+                            android:id="@+id/layout13"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_8sdp"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:gravity="center_vertical"
+                            android:orientation="vertical"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Mới xem gần đây"
+                                android:textColor="@color/TextPrimary"
+                                android:textSize="@dimen/_16ssp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="@dimen/_60sdp"
+                                android:layout_height="@dimen/_3sdp"
+                                android:layout_marginTop="@dimen/_3sdp"
+                                android:background="@drawable/line_radius" />
+                        </LinearLayout>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recycleViewResRecent"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/_8sdp"
+                            android:layout_marginTop="@dimen/_12sdp"
+                            android:clipToPadding="false"
+                            android:orientation="horizontal"
+                            android:overScrollMode="never"
+                            android:scrollbars="none"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/layout13" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/layout3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -140,7 +241,7 @@
                         android:paddingBottom="@dimen/_12sdp"
                         android:visibility="gone"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/layout1">
+                        app:layout_constraintTop_toBottomOf="@id/layout12">
 
                         <LinearLayout
                             android:id="@+id/layout4"
@@ -185,8 +286,7 @@
                         android:id="@+id/layout5"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_16sdp"
-                        android:background="@color/white"
+
                         android:paddingBottom="@dimen/_12sdp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/layout3">
@@ -208,14 +308,14 @@
                                 android:layout_height="wrap_content"
                                 android:text="Các địa điểm ở gần bạn"
                                 android:textColor="@color/TextPrimary"
-                                android:textSize="@dimen/_14ssp"
+                                android:textSize="@dimen/_16ssp"
                                 android:textStyle="bold" />
 
                             <TextView
                                 android:layout_width="@dimen/_60sdp"
-                                android:layout_height="@dimen/_2sdp"
-                                android:layout_marginTop="@dimen/_1sdp"
-                                android:background="#E63141" />
+                                android:layout_height="@dimen/_3sdp"
+                                android:layout_marginTop="@dimen/_3sdp"
+                                android:background="@drawable/line_radius" />
                         </LinearLayout>
 
                         <androidx.recyclerview.widget.RecyclerView
@@ -231,8 +331,6 @@
                             app:layout_constraintTop_toBottomOf="@id/layout6" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -261,9 +359,9 @@
                     android:layout_gravity="center"
                     android:text="Không có thông báo nào"
                     android:textAppearance="?android:textAppearanceMedium"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycleViewNotification"
@@ -274,25 +372,25 @@
                     android:overScrollMode="never"
                     android:scrollbars="none"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintTop_toBottomOf="@id/textEmptyNotification"
-                    app:layout_constraintBottom_toTopOf="@id/textViewExpand"/>
+                    app:layout_constraintBottom_toTopOf="@id/textViewExpand"
+                    app:layout_constraintTop_toBottomOf="@id/textEmptyNotification" />
 
                 <TextView
                     android:id="@+id/textViewExpand"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Thu gọn"
-                    android:background="@color/white"
-                    android:layout_marginBottom="@dimen/_8sdp"
                     android:layout_marginTop="@dimen/_4sdp"
-                    android:textSize="@dimen/_10ssp"
-                    android:paddingHorizontal="@dimen/_8sdp"
-                    android:gravity="center"
+                    android:layout_marginBottom="@dimen/_8sdp"
+                    android:background="@color/white"
                     android:drawableRight="@drawable/ic_round_expand_less_24"
+                    android:gravity="center"
+                    android:paddingHorizontal="@dimen/_8sdp"
+                    android:text="Thu gọn"
                     android:textColor="@color/primary"
-                    app:layout_constraintStart_toStartOf="parent"
+                    android:textSize="@dimen/_10ssp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    app:layout_constraintStart_toStartOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -19,6 +19,8 @@ public class Constants {
     public static final String RESULT_DATA_KEY = PACKAGE_NAME + ".RESULT_DATA_KEY";
     public static final String RECEIVER = PACKAGE_NAME + ".RECEIVER";
     public static final String RESULT_CITY = PACKAGE_NAME + ".RESULT_CITY";
+    public static final String RESULT_SUB_CITY = PACKAGE_NAME + ".RESULT_SUB_CITY";
+    public static final String RESULT_SUB_ADMIN_CITY = PACKAGE_NAME + ".RESULT_SUB_ADMIN_CITY";
     public static final String LOCATION_DATA_EXTRA = PACKAGE_NAME + ".LOCATION_DATA_EXTRA";
     public static final int SUCCESS_RESULT = 1;
     public static final int FAILURE_RESULT = 0;
@@ -43,6 +45,9 @@ public class Constants {
     public static final String Password = "Password";
 
     public static final String EXPIRES = "expires";
+    public static final String TAG_RESTAURANT_RECENT = "TAG_RESTAURANT_RECENT";
+    public static final String TAG_DISTANCE = "TAG_DISTANCE";
+    public static final String TAG_DAY_RECOMMEND = "TAG_DAY_RECOMMEND";
 
     public static Date coverStringToDate(String strDate) {
         try {

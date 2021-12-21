@@ -25,6 +25,7 @@ import com.psteam.foodlocation.activities.BusinessActivity;
 import com.psteam.foodlocation.activities.ChooseCityBottomSheetFragment;
 import com.psteam.foodlocation.activities.CreateReviewActivity;
 import com.psteam.foodlocation.activities.ReviewDetailsActivity;
+import com.psteam.foodlocation.activities.SettingActivity;
 import com.psteam.foodlocation.activities.SignInActivity;
 import com.psteam.foodlocation.activities.UserBookTableHistoryActivity;
 import com.psteam.foodlocation.activities.UserInfoActivity;
@@ -136,20 +137,20 @@ public class ReviewFragment extends Fragment {
                         bundle.putSerializable("user", user);
                         intent.putExtra("bundle", bundle);
                         startActivity(intent);
+                        binding.drawerLayout.close();
                         break;
                     }
 
                     case R.id.menuBookTable: {
                         startActivity(new Intent(getContext(), UserBookTableHistoryActivity.class));
+                        binding.drawerLayout.close();
                         break;
                     }
 
                     case R.id.menuLogOut: {
                         setupSocket.signOut();
-
                         PreferenceManager preferenceManager = new PreferenceManager(getContext());
                         preferenceManager.clear();
-
                         startActivity(new Intent(getContext(), SignInActivity.class));
                         getActivity().finishAffinity();
                         logOut();
@@ -158,11 +159,13 @@ public class ReviewFragment extends Fragment {
 
                     case R.id.menuManager: {
                         startActivity(new Intent(getContext(), BusinessActivity.class));
+                        binding.drawerLayout.close();
                         break;
                     }
 
                     case R.id.menuChangeRegionSearch: {
-                        clickOpenBottomSheetChooseCityFragment();
+                        startActivity(new Intent(getContext(), SettingActivity.class));
+                        binding.drawerLayout.close();
                         break;
                     }
                 }

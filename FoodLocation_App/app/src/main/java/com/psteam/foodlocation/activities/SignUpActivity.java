@@ -5,10 +5,18 @@ import static com.psteam.lib.RetrofitClient.getRetrofit;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.loader.content.CursorLoader;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -24,6 +32,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.phone.SmsRetriever;
+import com.google.android.gms.auth.api.phone.SmsRetrieverClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
@@ -39,17 +49,22 @@ import com.psteam.foodlocation.databinding.ActivitySignUpBinding;
 import com.psteam.foodlocation.ultilities.Constants;
 import com.psteam.foodlocation.ultilities.CustomToast;
 import com.psteam.foodlocation.ultilities.PreferenceManager;
+import com.psteam.foodlocation.ultilities.SmsBroadcastReceiver;
 import com.psteam.foodlocation.ultilities.Token;
 import com.psteam.lib.Services.ServiceAPI;
 import com.psteam.lib.modeluser.LogUpModel;
 import com.psteam.lib.modeluser.LoginModel;
 import com.psteam.lib.modeluser.message;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -63,6 +78,12 @@ public class SignUpActivity extends AppCompatActivity {
     public static FirebaseAuth mAuth;
     public static String mVerificationId;
     private PhoneAuthProvider.ForceResendingToken mResendToken;
+
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISSION_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,30 +99,18 @@ public class SignUpActivity extends AppCompatActivity {
         preferenceManager = new PreferenceManager(getApplicationContext());
         dataToken = new Token(SignUpActivity.this);
 
-
         binding = ActivitySignUpBinding.inflate(getLayoutInflater());
         mAuth = FirebaseAuth.getInstance();
-
         setContentView(binding.getRoot());
+        verifyStorePermission(SignUpActivity.this);
         setListeners();
     }
 
     private void setListeners() {
         binding.buttonSignUp.setOnClickListener(v -> {
             if (isValidSignUp()) {
-//                Intent intent = new Intent(getApplicationContext(), VerifyOTPActivity.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putString("phoneNumber", binding.inputPhone.getText().toString());
-//                intent.putExtra("bundle", bundle);
-//                startActivity(intent);
                 loading(true);
-                sendVerificationCode("+84" + binding.inputPhone.getText().toString());
-//                String strName=binding.inputFullName.getText().toString().trim();
-//                String strPhone=binding.inputPhone.getText().toString().trim();
-//                String strPassword=binding.inputPassword.getText().toString().trim();
-//                boolean strGender=binding.radioButtonMale.isChecked();
-//
-//                signUP(new LogUpModel(true,strGender,strPhone,strPassword,strName),strPassword);
+                checkPhoneNumber(binding.inputPhone.getText().toString());
             }
         });
         binding.buttonSignIn.setOnClickListener(v -> {
@@ -112,34 +121,6 @@ public class SignUpActivity extends AppCompatActivity {
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             pickImage.launch(intent);
-        });
-    }
-
-    private void signUP(LogUpModel logUpModel, String password) {
-        ServiceAPI serviceAPI = getRetrofit().create(ServiceAPI.class);
-        Call<message> call = serviceAPI.SignUp(logUpModel);
-        call.enqueue(new Callback<message>() {
-            @Override
-            public void onResponse(Call<message> call, Response<message> response) {
-                if (response.body() != null && response.body().getStatus().equals("1")) {
-                    preferenceManager.putString(Constants.USER_ID, response.body().getId());
-                    preferenceManager.putBoolean(Constants.IsLogin, true);
-                    preferenceManager.putString(Constants.Password, password);
-                    dataToken.saveToken(response.body().getNotification());
-                    Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    finish();
-                } else {
-                    CustomToast.makeText(getApplicationContext(), response.body().getNotification(), CustomToast.LENGTH_SHORT, CustomToast.ERROR).show();
-                }
-                loading(false);
-            }
-
-            @Override
-            public void onFailure(Call<message> call, Throwable t) {
-                Log.d("Log:", t.getMessage());
-            }
         });
     }
 
@@ -183,7 +164,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void showToast(String message) {
-        CustomToast.makeText(getApplicationContext(), message, CustomToast.LENGTH_SHORT,CustomToast.ERROR).show();
+        CustomToast.makeText(getApplicationContext(), message, CustomToast.LENGTH_SHORT, CustomToast.ERROR).show();
     }
 
     private void loading(boolean Loading) {
@@ -200,7 +181,7 @@ public class SignUpActivity extends AppCompatActivity {
     private void sendVerificationCode(String number) {
         PhoneAuthOptions options = PhoneAuthOptions.newBuilder(mAuth)
                 .setPhoneNumber(number)
-                .setTimeout(60L, TimeUnit.SECONDS)
+                .setTimeout(70L, TimeUnit.SECONDS)
                 .setActivity(this)
                 .setCallbacks(mCallbacks)
                 .build();
@@ -232,7 +213,7 @@ public class SignUpActivity extends AppCompatActivity {
                                @NonNull PhoneAuthProvider.ForceResendingToken token) {
             Log.d("Send", "onCodeSent:" + verificationId);
             //ShowNotification.dismissProgressDialog();
-            showToast("Đã gửi OTP");
+            CustomToast.makeText(getApplicationContext(), "Đã gửi OTP", CustomToast.LENGTH_SHORT, CustomToast.SUCCESS).show();
             mVerificationId = verificationId;
             mResendToken = token;
 
@@ -243,12 +224,26 @@ public class SignUpActivity extends AppCompatActivity {
 
             loading(false);
             Intent intent = new Intent(SignUpActivity.this, VerifyOTPActivity.class);
-            intent.putExtra("account", new LogUpModel(true, strGender, strPhone, strPassword, strName));
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("account", new LogUpModel(true, strGender, strPhone, strPassword, strName));
+            bundle.putString("imageUri", getRealPathFromURI(imageUri));
+            intent.putExtras(bundle);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
         }
     };
+
+    private String getRealPathFromURI(Uri contentUri) {
+        String[] proj = {MediaStore.Images.Media.DATA};
+        CursorLoader loader = new CursorLoader(getApplicationContext(), contentUri, proj, null, null, null);
+        Cursor cursor = loader.loadInBackground();
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        String result = cursor.getString(column_index);
+        cursor.close();
+        return result;
+    }
 
     //code xác thực OTP
     private void verifyCode(String code) {
@@ -275,12 +270,14 @@ public class SignUpActivity extends AppCompatActivity {
                 });
     }
 
+    private Uri imageUri;
+
     private final ActivityResultLauncher<Intent> pickImage = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == RESULT_OK) {
                     if (result.getData() != null) {
-                        Uri imageUri = result.getData().getData();
+                        imageUri = result.getData().getData();
                         try {
                             InputStream inputStream = getContentResolver().openInputStream(imageUri);
                             Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
@@ -294,4 +291,40 @@ public class SignUpActivity extends AppCompatActivity {
                 }
             }
     );
+
+    private void checkPhoneNumber(String phone) {
+        ServiceAPI serviceAPI = getRetrofit().create(ServiceAPI.class);
+        Call<message> call = serviceAPI.checkPhoneNumber(phone);
+        call.enqueue(new Callback<message>() {
+            @Override
+            public void onResponse(Call<message> call, Response<message> response) {
+                if (response.body() != null && response.body().getStatus().equals("1")) {
+                    sendVerificationCode("+84" + binding.inputPhone.getText().toString());
+                } else if (response.body() != null && response.body().getStatus().equals("0")) {
+                    CustomToast.makeText(getApplicationContext(), "Số điện thoại này đã được sử dụng", CustomToast.LENGTH_SHORT, CustomToast.ERROR).show();
+                    loading(false);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<message> call, Throwable t) {
+                Log.d("Tag", t.getMessage());
+            }
+        });
+    }
+
+    private static void verifyStorePermission(Activity activity) {
+        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                    activity,
+                    PERMISSION_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE
+            );
+        }
+    }
+
+
+
 }

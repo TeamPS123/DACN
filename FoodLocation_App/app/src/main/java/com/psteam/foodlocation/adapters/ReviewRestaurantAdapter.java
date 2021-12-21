@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.psteam.foodlocation.R;
 import com.psteam.foodlocation.databinding.LayoutReviewPostItemContainerBinding;
 import com.psteam.lib.modeluser.ReviewModel;
 import com.squareup.picasso.Picasso;
@@ -66,9 +67,9 @@ public class ReviewRestaurantAdapter extends RecyclerView.Adapter<ReviewRestaura
                 if (reviewModel.getImgList().size() != 0)
                     Picasso.get().load(reviewModel.getImgList().get(0)).into(binding.imageViewReviewPost);
 
-                if(reviewModel.getContent().isEmpty()){
+                if (reviewModel.getContent().isEmpty()) {
                     binding.textViewContent.setVisibility(View.GONE);
-                }else {
+                } else {
                     binding.textViewContent.setVisibility(View.VISIBLE);
                 }
 
@@ -78,6 +79,17 @@ public class ReviewRestaurantAdapter extends RecyclerView.Adapter<ReviewRestaura
                 binding.getRoot().setOnClickListener(v -> {
                     reviewRestaurantListeners.onClick(reviewModel);
                 });
+
+                binding.iconLike.setOnClickListener(v -> {
+                    if (binding.iconLike.getTag().equals("Like")) {
+                        binding.iconLike.setImageResource(R.drawable.heart_small);
+                        binding.iconLike.setTag("DisLike");
+                    } else {
+                        binding.iconLike.setImageResource(R.drawable.heart);
+                        binding.iconLike.setTag("Like");
+                    }
+                });
+
             }
         }
     }

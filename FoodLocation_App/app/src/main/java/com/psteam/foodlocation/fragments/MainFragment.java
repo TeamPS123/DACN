@@ -3,15 +3,11 @@ package com.psteam.foodlocation.fragments;
 import static com.psteam.lib.RetrofitClient.getRetrofit;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
@@ -24,41 +20,33 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.navigation.NavigationView;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.psteam.foodlocation.R;
 import com.psteam.foodlocation.activities.BusinessActivity;
 import com.psteam.foodlocation.activities.ChooseCityBottomSheetFragment;
-import com.psteam.foodlocation.activities.MainActivity;
-import com.psteam.foodlocation.activities.MenuReviewActivity;
 import com.psteam.foodlocation.activities.RestaurantDetailsActivity;
 import com.psteam.foodlocation.activities.SearchActivity;
+import com.psteam.foodlocation.activities.SettingActivity;
 import com.psteam.foodlocation.activities.SignInActivity;
 import com.psteam.foodlocation.activities.UserBookTableHistoryActivity;
 import com.psteam.foodlocation.activities.UserInfoActivity;
-import com.psteam.foodlocation.activities.UserReserveTableDetailsActivity;
 import com.psteam.foodlocation.adapters.CategoryAdapter;
 import com.psteam.foodlocation.adapters.ChooseCityAdapter;
-import com.psteam.foodlocation.adapters.NotificationAdapter;
 import com.psteam.foodlocation.adapters.PromotionAdapter;
+import com.psteam.foodlocation.adapters.RecommendResAdapter;
 import com.psteam.foodlocation.adapters.RestaurantPostAdapter;
+import com.psteam.foodlocation.adapters.RestaurantRecentAdapter;
 import com.psteam.foodlocation.adapters.SliderAdapter;
-import com.psteam.foodlocation.databinding.ActivityMainBinding;
 import com.psteam.foodlocation.databinding.FragmentMainBinding;
 import com.psteam.foodlocation.listeners.CategoryListener;
 import com.psteam.foodlocation.models.PromotionModel;
 import com.psteam.foodlocation.models.SliderItem;
-import com.psteam.foodlocation.socket.models.BodySenderFromRes;
 import com.psteam.foodlocation.socket.setupSocket;
 import com.psteam.foodlocation.ultilities.Constants;
-import com.psteam.foodlocation.ultilities.DividerItemDecorator;
 import com.psteam.foodlocation.ultilities.Para;
 import com.psteam.foodlocation.ultilities.PreferenceManager;
 import com.psteam.foodlocation.ultilities.Token;
@@ -70,18 +58,16 @@ import com.psteam.lib.modeluser.GetRestaurantByDistance;
 import com.psteam.lib.modeluser.GetRestaurantModel;
 import com.psteam.lib.modeluser.RestaurantModel;
 import com.psteam.lib.modeluser.UserModel;
-import com.psteam.library.TopSheetBehavior;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.socket.client.Socket;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainFragment extends Fragment implements CategoryListener, RestaurantPostAdapter.RestaurantPostListeners{
+public class MainFragment extends Fragment implements CategoryListener, RestaurantPostAdapter.RestaurantPostListeners {
 
     private SliderAdapter sliderAdapter;
     private ArrayList<SliderItem> sliderItemArrayList;
@@ -96,6 +82,7 @@ public class MainFragment extends Fragment implements CategoryListener, Restaura
     private List<PromotionModel> promotionModels;
 
     private RestaurantPostAdapter restaurantPostAdapter;
+    private RecommendResAdapter recommendResAdapter;
 
     private ResultReceiver resultReceiver;
     private UserModel user;
@@ -125,15 +112,88 @@ public class MainFragment extends Fragment implements CategoryListener, Restaura
         buttonSignIn = binding.navigationView.getHeaderView(0).findViewById(R.id.buttonSignInNavigation);
         textViewName = binding.navigationView.getHeaderView(0).findViewById(R.id.textViewName);
         imageUserView = binding.navigationView.getHeaderView(0).findViewById(R.id.imageUserView);
-
+        restaurantModels = new ArrayList<>();
         //checkSelfPermission();
         GetInfo(preferenceManager.getString(Constants.USER_ID));
         initSliderImage();
         GetCategoryRes();
+        initResRecent();
+        initRecommendRes();
+        //get distance Search
+        String distance = preferenceManager.getString(Constants.TAG_DISTANCE);
+        if (distance == null) {
+            distance = "20";
+            preferenceManager.putString(Constants.TAG_DISTANCE, distance);
+        }
 
-        GetRestaurantByDistance(new GetRestaurantByDistance("20", "10.803312745723506", "106.71158641576767"));
+        String day_recommend = preferenceManager.getString(Constants.TAG_DAY_RECOMMEND);
+        if (day_recommend == null) {
+            day_recommend = "14";
+            preferenceManager.putString(Constants.TAG_DAY_RECOMMEND, day_recommend);
+        }
+
+        GetRestaurantByDistance(new GetRestaurantByDistance(distance, "10.803312745723506", "106.71158641576767"));
         binding.textviewCurrentLocation.setText(Para.currentUserAddress);
         binding.textTitle.setText(String.format("Các địa điểm ở %s", Para.currentCity));
+    }
+
+    private void initRecommendRes() {
+        recommendResAdapter = new RecommendResAdapter(new RecommendResAdapter.RecommendResListeners() {
+            @Override
+            public void onClick(RestaurantModel restaurantModel) {
+
+            }
+        }, restaurantModels, getContext());
+
+
+        binding.viewPagerSliderRestaurant.setAdapter(recommendResAdapter);
+
+        binding.viewPagerSliderRestaurant.setClipToPadding(false);
+        binding.viewPagerSliderRestaurant.setClipChildren(false);
+        binding.viewPagerSliderRestaurant.setOffscreenPageLimit(3);
+        binding.viewPagerSliderRestaurant.getChildAt(0).setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
+
+        CompositePageTransformer compositePageTransformer = new CompositePageTransformer();
+        compositePageTransformer.addTransformer(new MarginPageTransformer(20));
+        compositePageTransformer.addTransformer(new ViewPager2.PageTransformer() {
+            @Override
+            public void transformPage(@NonNull View page, float position) {
+                float r = 1 - Math.abs(position);
+                page.setScaleY(0.95f + r * 0.05f);
+            }
+        });
+
+        binding.viewPagerSliderRestaurant.setPageTransformer(compositePageTransformer);
+
+    }
+
+    private ArrayList<RestaurantModel> restaurantModels;
+    private ArrayList<RestaurantModel> tempRestaurantModels;
+    private RestaurantRecentAdapter restaurantRecentAdapter;
+
+    private void initResRecent() {
+
+        restaurantModels = preferenceManager.getListRestaurantRecent(Constants.TAG_RESTAURANT_RECENT);
+        tempRestaurantModels = restaurantModels;
+        if (restaurantModels == null || restaurantModels.size() == 0) {
+            binding.layout12.setVisibility(View.GONE);
+        } else {
+            if (binding.layout12.getVisibility() == View.GONE) {
+                binding.layout12.setVisibility(View.VISIBLE);
+            }
+        }
+        restaurantRecentAdapter = new RestaurantRecentAdapter(restaurantModels, new RestaurantRecentAdapter.RestaurantRecentListeners() {
+            @Override
+            public void onClick(RestaurantModel restaurantModel) {
+                Intent intent = new Intent(getContext(), RestaurantDetailsActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("restaurantModel", restaurantModel);
+                intent.putExtra("bundle", bundle);
+                startActivity(intent);
+            }
+        });
+
+        binding.recycleViewResRecent.setAdapter(restaurantRecentAdapter);
     }
 
     private void setListeners() {
@@ -165,11 +225,13 @@ public class MainFragment extends Fragment implements CategoryListener, Restaura
                         bundle.putSerializable("user", user);
                         intent.putExtra("bundle", bundle);
                         startActivity(intent);
+                        binding.drawerLayout.close();
                         break;
                     }
 
                     case R.id.menuBookTable: {
                         startActivity(new Intent(getContext(), UserBookTableHistoryActivity.class));
+                        binding.drawerLayout.close();
                         break;
                     }
 
@@ -182,16 +244,19 @@ public class MainFragment extends Fragment implements CategoryListener, Restaura
                         startActivity(new Intent(getContext(), SignInActivity.class));
                         getActivity().finishAffinity();
                         logOut();
+                        binding.drawerLayout.close();
                         break;
                     }
 
                     case R.id.menuManager: {
                         startActivity(new Intent(getContext(), BusinessActivity.class));
+                        binding.drawerLayout.close();
                         break;
                     }
 
                     case R.id.menuChangeRegionSearch: {
-                        clickOpenBottomSheetChooseCityFragment();
+                        startActivity(new Intent(getContext(), SettingActivity.class));
+                        binding.drawerLayout.close();
                         break;
                     }
                 }
@@ -226,7 +291,7 @@ public class MainFragment extends Fragment implements CategoryListener, Restaura
             @Override
             public void transformPage(@NonNull View page, float position) {
                 float r = 1 - Math.abs(position);
-                page.setScaleY(0.85f + r * 0.15f);
+                page.setScaleY(0.95f + r * 0.05f);
             }
         });
 
@@ -289,9 +354,16 @@ public class MainFragment extends Fragment implements CategoryListener, Restaura
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        tempRestaurantModels = preferenceManager.getListRestaurantRecent(Constants.TAG_RESTAURANT_RECENT);
+        if (tempRestaurantModels != null && tempRestaurantModels != restaurantModels)
+            initResRecent();
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
-
         sliderHandler.removeCallbacks(sliderRunnable);
     }
 

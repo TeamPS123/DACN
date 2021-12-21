@@ -107,4 +107,11 @@ public interface ServiceAPI {
 
     @GET("api/getRestaurant")
     Call<GetResInfo> GetResInfo(@Query("restaurantId") String restaurantId);
+
+    @Multipart
+    @POST("api/upImageOfUser")
+    Call<message> addImgUser(@Header("Authorization") String token, @Part MultipartBody.Part photo, @Query("userId") String userId);
+
+    @GET("api/checkPhone")
+    Call<message> checkPhoneNumber(@Query("phone") String phone);
 }
