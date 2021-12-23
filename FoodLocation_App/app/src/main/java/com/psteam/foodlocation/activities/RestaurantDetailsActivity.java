@@ -52,6 +52,7 @@ import com.psteam.foodlocation.services.ServiceAPI;
 import com.psteam.foodlocation.ultilities.Constants;
 import com.psteam.foodlocation.ultilities.CustomToast;
 import com.psteam.foodlocation.ultilities.DividerItemDecorator;
+import com.psteam.foodlocation.ultilities.LoadingDialog;
 import com.psteam.foodlocation.ultilities.Para;
 import com.psteam.foodlocation.ultilities.PreferenceManager;
 import com.psteam.lib.modeluser.GetResInfo;
@@ -127,6 +128,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
     }
 
     private void init() {
+        LoadingDialog.show(RestaurantDetailsActivity.this,LoadingDialog.Back);
         rates = new ArrayList<>();
         tempRates = new ArrayList<>();
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -166,7 +168,9 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
                         reviewAdapter.notifyDataSetChanged();
                     } else {
                         binding.layout11.setVisibility(View.GONE);
-                        binding.textViewReviewCount.setText("Hãy là người đánh giá đầu tiên");
+                        binding.textViewReviewCount.setText("Hãy là người đầu tiên trải nghiệm");
+                        binding.ratingBar.setVisibility(View.GONE);
+                        binding.textViewRatingValue.setVisibility(View.GONE);
                     }
                 }
             }
@@ -225,11 +229,45 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
         DateReserve = LocalDate.now(ZoneId.of("Asia/Ho_Chi_Minh"));
         getDistance(new LatLng(Para.latitude, Para.longitude), restaurantModel.getLatLng());
 
+        if (!restaurantModel.isStatus() && restaurantModel.getStatusCO() == null) {
+            binding.layout1.setVisibility(View.GONE);
+            binding.buttonReserve.setText("Nhà hàng tạm đóng cửa");
+            binding.buttonReserve.setEnabled(false);
+            binding.buttonReserve.setTextColor(getResources().getColor(R.color.white));
+        }
+
         initTimeBookTable();
         initSliderPhotoRestaurant();
         initReviewAdapter();
         getReview(restaurantModel.getRestaurantId(), -1, 0, 10);
         GetRestaurantByDistance(new GetRestaurantByDistance("20", "10.803312745723506", "106.71158641576767"));
+
+        LocalDate today;
+
+        // status true: open close day, status false: close open day
+        if (restaurantModel.getStatusCO() != null && restaurantModel.isStatus()) {
+            Date closeDay = restaurantModel.getStatusOpen();
+            today = LocalDate.now(ZoneId.of("Asia/Ho_Chi_Minh"));
+        } else if (restaurantModel.getStatusCO() != null && !restaurantModel.isStatus()) {
+            Date openDay = restaurantModel.getStatusOpen();
+            today = openDay.toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate();
+        } else if (restaurantModel.getStatusCO() == null && !restaurantModel.isStatus()) {
+            return;
+        } else {
+            today = LocalDate.now(ZoneId.of("Asia/Ho_Chi_Minh"));
+        }
+
+        if (today.getDayOfMonth() == LocalDate.now(ZoneId.of("Asia/Ho_Chi_Minh")).getDayOfMonth()) {
+            binding.textViewChooseDate.setText(String.format("Hôm nay, %s", today.format(DateTimeFormatter.ofPattern("dd/MM/yyyy", new Locale("vi", "VN")))));
+        } else if (today.plusDays(1).getDayOfMonth() == LocalDate.now(ZoneId.of("Asia/Ho_Chi_Minh")).plusDays(1).getDayOfMonth()) {
+            binding.textViewChooseDate.setText(String.format("Ngày mai, %s", today.format(DateTimeFormatter.ofPattern("dd/MM/yyyy", new Locale("vi", "VN")))));
+        } else {
+            binding.textViewChooseDate.setText(String.format("%s", today.format(DateTimeFormatter.ofPattern("EEEE, dd/MM/yyyy", new Locale("vi", "VN")))));
+        }
+
+
     }
 
     private void GetResInfo(String resId) {
@@ -372,6 +410,11 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
             clipboard.setPrimaryClip(clip);
             CustomToast.makeText(getApplicationContext(), "Đã lưu vào Clipboard", CustomToast.LENGTH_SHORT, CustomToast.SUCCESS).show();
         });
+
+        binding.reportRes.setOnClickListener(v -> {
+            startActivity(new Intent(getApplicationContext(), ReportRestaurantActivity.class));
+        });
+
     }
 
     private static final int REQUEST_CODE_PHONE_PERMISSION = 9;
@@ -396,13 +439,35 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
         dateReserveTables = new ArrayList<>();
         DateTimeFormatter formatter;
         String formattedString = "";
-        LocalDate today = LocalDate.now(ZoneId.of("Asia/Ho_Chi_Minh"));
-        for (int i = 0; i < 7; i++) {
+        LocalDate today;
+        int countDay = 7;
+
+        // status true: open close day, status false: close open day
+        if (restaurantModel.getStatusCO() != null && restaurantModel.isStatus()) {
+            Date closeDay = restaurantModel.getStatusOpen();
+            today = LocalDate.now(ZoneId.of("Asia/Ho_Chi_Minh"));
+            countDay = closeDay.toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate().getDayOfMonth() - today.getDayOfMonth();
+        } else if (restaurantModel.getStatusCO() != null && !restaurantModel.isStatus()) {
+            Date openDay = restaurantModel.getStatusOpen();
+            today = openDay.toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate();
+        } else if (restaurantModel.getStatusCO() == null && !restaurantModel.isStatus()) {
+            return;
+        } else {
+            today = LocalDate.now(ZoneId.of("Asia/Ho_Chi_Minh"));
+        }
+
+
+        for (int i = 0; i < countDay; i++) {
             LocalDate localDate = today.plusDays(i);
-            if (today.equals(localDate)) {
+            LocalDate now = LocalDate.now(ZoneId.of("Asia/Ho_Chi_Minh"));
+            if (today.getDayOfMonth() == localDate.getDayOfMonth() && today.getDayOfMonth() == now.getDayOfMonth()) {
                 formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
                 formattedString = "Hôm nay, " + localDate.format(formatter);
-            } else if (today.plusDays(1).equals(localDate)) {
+            } else if (today.plusDays(1).getDayOfMonth() == localDate.getDayOfMonth() && today.plusDays(1).getDayOfMonth() == now.plusDays(1).getDayOfMonth()) {
                 formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
                 formattedString = "Ngày mai, " + localDate.format(formatter);
             } else {
@@ -422,7 +487,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
             }
         });
         chooseDateReserveTableFragment.show(getSupportFragmentManager(), chooseDateReserveTableFragment.getTag());
-
 
     }
 
@@ -504,7 +568,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
         LocalTime openTime = LocalTime.parse(restaurantModel.getOpenTime(), DateTimeFormatter.ofPattern("hh:mm a", new Locale("vi", "VN")));
         LocalTime closeTime = LocalTime.parse(restaurantModel.getCloseTime(), DateTimeFormatter.ofPattern("hh:mm a", new Locale("vi", "VN")));
         Duration duration = Duration.between(openTime, closeTime);
-        Long timeLoop = duration.toMinutes();
+        Long timeLoop = (duration.toMinutes() - 60);
         LocalTime tempTime = openTime;
         int step = 15;
         int i = 0;
@@ -535,17 +599,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
             }
         });
         binding.recycleViewTimeBookTable.setAdapter(timeBookTableAdapter);
-    }
-
-    private void initFoodRestaurant() {
-
-        /*restaurantPostAdapter = new RestaurantPostAdapter(foodRestaurants, new RestaurantPostAdapter.RestaurantPostListeners() {
-            @Override
-            public void onRestaurantPostClicked(RestaurantModel foodRestaurant) {
-                startActivity(new Intent(getApplicationContext(), RestaurantDetailsActivity.class));
-            }
-        }, getApplicationContext());
-        binding.recycleViewPostFoodRestaurant.setAdapter(restaurantPostAdapter);*/
     }
 
     private GetRestaurantModel getRestaurantModels;
@@ -632,6 +685,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
                 } else {
                     CustomToast.makeText(getApplicationContext(), "Lỗi khi lấy dữ liệu bản đồ", CustomToast.LENGTH_SHORT, CustomToast.ERROR).show();
                 }
+                LoadingDialog.dismiss(500l);
             }
 
             @Override

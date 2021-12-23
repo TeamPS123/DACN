@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/_6sdp"
     android:layout_marginTop="@dimen/_8sdp"
-    android:background="@color/white"
+    android:background="@drawable/layout_item_search"
     android:padding="@dimen/_8sdp">
 
     <com.makeramen.roundedimageview.RoundedImageView
@@ -63,7 +63,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_4sdp"
+            android:layout_marginTop="@dimen/_2sdp"
             android:orientation="horizontal">
 
             <TextView

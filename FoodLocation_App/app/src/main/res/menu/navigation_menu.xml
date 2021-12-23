@@ -3,15 +3,15 @@
 
     <item
         android:id="@+id/menuBookTable"
-        android:icon="@drawable/ic_outline_receipt_24"
+        android:icon="@drawable/calendar"
         android:title="@string/text_my_book_table" />
     <item
         android:id="@+id/menuUserInfo"
-        android:icon="@drawable/ic_outline_perm_identity_24"
+        android:icon="@drawable/user_info"
         android:title="Thông tin tài khoản" />
     <item
         android:id="@+id/menuChangeRegionSearch"
-        android:icon="@drawable/ic_round_settings_24"
+        android:icon="@drawable/setting"
         android:title="Cài đặt" />
 
     <item
@@ -21,16 +21,16 @@
         android:visible="false" />
     <item
         android:id="@+id/menuLogOut"
-        android:icon="@drawable/ic_baseline_call_missed_outgoing_24"
+        android:icon="@drawable/exit"
         android:title="@string/text_logout" />
 
-    <item android:title="Khác">
+    <!--<item android:title="Khác">
         <menu>
             <item
                 android:id="@+id/menuAppInfo"
                 android:icon="@drawable/ic_outline_info_24"
                 android:title="Thông tin về chúng tôi" />
         </menu>
-    </item>
+    </item>-->
 
 </menu>

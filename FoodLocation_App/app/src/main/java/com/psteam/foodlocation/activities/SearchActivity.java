@@ -2,14 +2,22 @@ package com.psteam.foodlocation.activities;
 
 import static com.psteam.foodlocation.ultilities.RetrofitClient.getRetrofit;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.speech.RecognitionListener;
+import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -36,6 +44,7 @@ import com.psteam.foodlocation.models.DistrictModel;
 import com.psteam.foodlocation.models.ProvinceModel;
 import com.psteam.foodlocation.services.ServiceAPI;
 
+import com.psteam.foodlocation.ultilities.CustomToast;
 import com.psteam.foodlocation.ultilities.Para;
 import com.psteam.lib.modeluser.CategoryRes;
 import com.psteam.lib.modeluser.GetRestaurantBySearch;
@@ -46,6 +55,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Locale;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -81,7 +91,7 @@ public class SearchActivity extends AppCompatActivity implements SearchRestauran
         districtModels = new ArrayList<>();
         selectedCategoryRes = new ArrayList<>();
         restaurantModels = new ArrayList<>();
-        lstCategoryRes=new ArrayList<>();
+        lstCategoryRes = new ArrayList<>();
         initSearchRestaurantAdapter();
         initData();
         getDistrict(Para.cityCode);
@@ -110,8 +120,8 @@ public class SearchActivity extends AppCompatActivity implements SearchRestauran
                 lstCategoryRes.addAll(restaurantModel.getCategoryList());
 
                 for (CategoryRes categoryRes : categoryModelArrayList) {
-                    for(CategoryRes res:lstCategoryRes){
-                        if(categoryRes.getId().equals(res.getId())){
+                    for (CategoryRes res : lstCategoryRes) {
+                        if (categoryRes.getId().equals(res.getId())) {
                             categoryRes.setSelected(true);
                             selectedCategoryRes.add(categoryRes.getId());
                             break;
@@ -186,7 +196,7 @@ public class SearchActivity extends AppCompatActivity implements SearchRestauran
             }
         });
 
-        binding.textviewSort.setOnClickListener(v->{
+        binding.textviewSort.setOnClickListener(v -> {
             Collections.sort(restaurantModels, new Comparator<RestaurantModel>() {
                 @Override
                 public int compare(RestaurantModel lhs, RestaurantModel rhs) {
@@ -196,7 +206,41 @@ public class SearchActivity extends AppCompatActivity implements SearchRestauran
             });
             searchRestaurantAdapter.notifyDataSetChanged();
         });
+
+        binding.imageViewMic.setOnClickListener(v -> {
+
+            Intent intent
+                    = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                    RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE,
+                    Locale.getDefault());
+            intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Tìm nơi bạn cần");
+            try {
+                activityResultLauncher.launch(intent);
+            } catch (Exception e) {
+                CustomToast.makeText(SearchActivity.this, "Thử lại sau", CustomToast.LENGTH_SHORT, CustomToast.ERROR).show();
+            }
+        });
     }
+
+    ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        if (result.getData() != null) {
+                            ArrayList<String> data = result.getData().getStringArrayListExtra(
+                                    RecognizerIntent.EXTRA_RESULTS);
+                            binding.inputSearch.setText(Objects.requireNonNull(data).get(0));
+                            binding.inputSearch.clearFocus();
+                        } else {
+                            CustomToast.makeText(SearchActivity.this, "Thử lại sau", CustomToast.LENGTH_SHORT, CustomToast.WARNING).show();
+                        }
+                    }
+                }
+            });
 
     private void runThread(String textChange, ArrayList<String> district, ArrayList<String> category, long millis) {
         new Thread() {
@@ -210,7 +254,7 @@ public class SearchActivity extends AppCompatActivity implements SearchRestauran
                                 //Toast.makeText(getApplicationContext(), textChange, Toast.LENGTH_SHORT).show();
                                 loading(true);
                                 // getRestaurantBySearch(new GetRestaurantBySearch(district, category, textChange, String.valueOf(Para.longitude), String.valueOf(Para.latitude)));
-                                getRestaurantBySearch(new GetRestaurantBySearch(district, category, textChange, "10.803312745723506","106.71158641576767"));
+                                getRestaurantBySearch(new GetRestaurantBySearch(district, category, textChange, "10.803312745723506", "106.71158641576767"));
                             }
                         });
                     }
@@ -308,7 +352,7 @@ public class SearchActivity extends AppCompatActivity implements SearchRestauran
         });
 
         layoutCategoryRestaurantDialogBinding.buttonApply.setOnClickListener(v -> {
-           // Toast.makeText(getApplicationContext(), selectedDistrictList.toString(), Toast.LENGTH_SHORT).show();
+            // Toast.makeText(getApplicationContext(), selectedDistrictList.toString(), Toast.LENGTH_SHORT).show();
             dialog.dismiss();
             runThread(AfterTextChange, selectedDistrictList, selectedCategoryRes, 0);
         });

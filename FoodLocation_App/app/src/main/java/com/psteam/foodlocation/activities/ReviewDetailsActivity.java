@@ -45,10 +45,13 @@ import com.psteam.foodlocation.ultilities.Constants;
 import com.psteam.foodlocation.ultilities.CustomToast;
 import com.psteam.foodlocation.ultilities.Para;
 import com.psteam.foodlocation.ultilities.PreferenceManager;
+import com.psteam.foodlocation.ultilities.Token;
 import com.psteam.lib.Services.ServiceAPI;
+import com.psteam.lib.modeluser.CommentModel;
 import com.psteam.lib.modeluser.GetResInfo;
 import com.psteam.lib.modeluser.RestaurantModel;
 import com.psteam.lib.modeluser.ReviewModel;
+import com.psteam.lib.modeluser.message;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -67,9 +70,10 @@ public class ReviewDetailsActivity extends AppCompatActivity {
     private ArrayList<String> images;
     private PhotoReviewAdapter reviewAdapter;
     private PreferenceManager preferenceManager;
+    private Token token;
 
     //Comment
-    private ArrayList<CommentAdapter.Comment> comments;
+    private ArrayList<CommentModel> comments;
     private CommentAdapter commentAdapter;
 
     @Override
@@ -78,6 +82,7 @@ public class ReviewDetailsActivity extends AppCompatActivity {
         binding = ActivityReviewDetailsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         preferenceManager = new PreferenceManager(getApplicationContext());
+        token = new Token(getApplicationContext());
         init();
         setListeners();
     }
@@ -85,34 +90,62 @@ public class ReviewDetailsActivity extends AppCompatActivity {
     private void init() {
         setFullScreen();
         images = new ArrayList<>();
+        comments = new ArrayList<>();
         getDataIntent();
         initImageAdapter();
         initComment();
     }
 
     private void initComment() {
-        comments = new ArrayList<>();
-        comments.add(new CommentAdapter.Comment("1", "1", "Nguyễn Văn A", "Cảm ơn trải nghiệm của bạn", reviewModel.getId(), "https://dbk.vn/uploads/ckfinder/images/1-content/anime-girl-1.jpg", "19:57 20/12/2021"));
-        comments.add(new CommentAdapter.Comment("1", "1", "Lê Tiểu Phàm", "Cảm ơn trải nghiệm của bạn", reviewModel.getId(), "https://dbk.vn/uploads/ckfinder/images/1-content/anime-girl-1.jpg", "19:57 20/12/2021"));
-        comments.add(new CommentAdapter.Comment("1", "1", "Nguyễn Văn A", "Cảm ơn trải nghiệm của bạn", reviewModel.getId(), "https://dbk.vn/uploads/ckfinder/images/1-content/anime-girl-1.jpg", "19:57 20/12/2021"));
-        comments.add(new CommentAdapter.Comment("1", "1", "Nguyễn Văn A", "Cảm ơn trải nghiệm của bạn", reviewModel.getId(), "https://dbk.vn/uploads/ckfinder/images/1-content/anime-girl-1.jpg", "19:57 20/12/2021"));
-
         commentAdapter = new CommentAdapter(comments);
         binding.recycleViewComment.setAdapter(commentAdapter);
     }
 
     private ReviewModel reviewModel;
 
+    private void insertComment(String userId, String reviewId, String content, String date) {
+        ServiceAPI serviceAPI = getRetrofit().create(ServiceAPI.class);
+        Call<message> call = serviceAPI.insertComment(token.getToken(), userId, reviewId, content, date);
+        call.enqueue(new Callback<message>() {
+            @Override
+            public void onResponse(Call<message> call, Response<message> response) {
+                if (response.body() != null && response.body().getStatus().equals("1")) {
+                    CommentModel comment = new CommentModel(date, Para.userModel.getFullName(), Para.userModel.getPic(), content);
+                    comments.add(0, comment);
+                    commentAdapter.notifyItemInserted(0);
+                    binding.inputComment.setText(null);
+                    binding.inputComment.clearFocus();
+                    if(!Para.flagComment)
+                        Para.flagComment = true;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<message> call, Throwable t) {
+                Log.d("Log:", t.getMessage());
+            }
+        });
+    }
+
     private void getDataIntent() {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             reviewModel = (ReviewModel) bundle.getSerializable("reviewModel");
             images.addAll(reviewModel.getImgList());
+            comments = reviewModel.getComments();
             Picasso.get().load(reviewModel.getImageUser()).into(binding.imageViewIconUser);
             binding.textViewContent.setText(reviewModel.getContent());
             binding.textViewUserFullName.setText(reviewModel.getUserName());
             binding.textViewUserLike.setText(reviewModel.getUserName());
             GetResInfo(reviewModel.getRestaurantId());
+
+            if(reviewModel.checkUserLike(preferenceManager.getString(Constants.USER_ID))){
+                binding.iconHeartLike.setImageResource(R.drawable.heart);
+                binding.iconHeartLike.setTag("Like");
+            }else {
+                binding.iconHeartLike.setImageResource(R.drawable.heart_small);
+                binding.iconHeartLike.setTag("DisLike");
+            }
         }
     }
 
@@ -128,9 +161,6 @@ public class ReviewDetailsActivity extends AppCompatActivity {
 
     private void initImageAdapter() {
 
-        /*images.add("https://static.wikia.nocookie.net/kiminonawa/images/6/62/Kimi-no-Na-wa.-Visual.jpg/revision/latest?cb=20160927170951");
-        images.add("https://static.wikia.nocookie.net/kiminonawa/images/6/62/Kimi-no-Na-wa.-Visual.jpg/revision/latest?cb=20160927170951");
-        images.add("https://tuoitrechinhphuc.com/wp-content/uploads/2020/12/your-name-696x484-1.jpg");*/
         reviewAdapter = new PhotoReviewAdapter(images, binding.viewPager);
         binding.viewPager.setAdapter(reviewAdapter);
         binding.circleIndicator.setViewPager(binding.viewPager);
@@ -185,16 +215,12 @@ public class ReviewDetailsActivity extends AppCompatActivity {
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
-            CommentAdapter.Comment comment = new CommentAdapter.Comment("1", preferenceManager.getString(Constants.USER_ID),
-                    Para.userModel.getFullName(), binding.inputComment.getText().toString(), reviewModel.getId(), Para.userModel.getPic(), new SimpleDateFormat("hh:mm dd/MM/yyyy", new Locale("vi", "VN")).format(new Date()));
-            comments.add(0, comment);
-            commentAdapter.notifyItemInserted(0);
-            binding.inputComment.setText(null);
-            binding.inputComment.clearFocus();
+
+            insertComment(preferenceManager.getString(Constants.USER_ID), reviewModel.getId(), binding.inputComment.getText().toString(), new SimpleDateFormat("HH:mm dd/MM/yyyy", new Locale("vi", "VN")).format(new Date()));
+
         });
 
         binding.iconReport.setOnClickListener(v -> {
-
             AlertDialog.Builder builder = new AlertDialog.Builder(ReviewDetailsActivity.this);
             LayoutDialogReportReviewBinding layoutDialogReportReviewBinding = LayoutDialogReportReviewBinding.inflate(LayoutInflater.from(ReviewDetailsActivity.this));
             builder.setView(layoutDialogReportReviewBinding.getRoot());
@@ -202,7 +228,6 @@ public class ReviewDetailsActivity extends AppCompatActivity {
             layoutDialogReportReviewBinding.textViewReport.setOnClickListener(view -> {
                 alertDialog.dismiss();
                 openDialog();
-
             });
 
             layoutDialogReportReviewBinding.textViewCancel.setOnClickListener(view -> {
@@ -212,15 +237,17 @@ public class ReviewDetailsActivity extends AppCompatActivity {
 
         });
 
-        binding.textViewLike.setOnClickListener(v->{
-            if(binding.iconHeartLike.getTag().equals("DisLike")) {
-                binding.iconHeartLike.setImageResource(R.drawable.heart);
-                binding.iconHeartLike.setTag("Like");
-            }else {
-                binding.iconHeartLike.setImageResource(R.drawable.heart_small);
-                binding.iconHeartLike.setTag("DisLike");
-            }
+        binding.textViewLike.setOnClickListener(v -> {
+
+
+            likeOrDislike(preferenceManager.getString(Constants.USER_ID),reviewModel.getId());
         });
+
+        binding.textViewClose.setOnClickListener(v -> {
+            finish();
+        });
+
+
     }
 
     AlertDialog alertDialog;
@@ -235,20 +262,10 @@ public class ReviewDetailsActivity extends AppCompatActivity {
             alertDialog.dismiss();
         });
 
-        layoutNotificationDialogBinding.textViewContent.setOnClickListener(v -> {
+        layoutNotificationDialogBinding.textViewSkip.setOnClickListener(v -> {
             alertDialog.dismiss();
         });
         alertDialog.show();
-    }
-
-    public static boolean isPackageInstalled(Context c, String targetPackage) {
-        PackageManager pm = c.getPackageManager();
-        try {
-            PackageInfo info = pm.getPackageInfo(targetPackage, PackageManager.GET_META_DATA);
-        } catch (PackageManager.NameNotFoundException e) {
-            return false;
-        }
-        return true;
     }
 
     private RestaurantModel restaurantModel;
@@ -272,6 +289,32 @@ public class ReviewDetailsActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<GetResInfo> call, Throwable t) {
                 Log.d("Tag", t.getMessage());
+            }
+        });
+    }
+
+    private void likeOrDislike(String userId, String reviewId) {
+        ServiceAPI serviceAPI = getRetrofit().create(ServiceAPI.class);
+        Call<message> call = serviceAPI.likeOrDislike(token.getToken(),userId, reviewId);
+        call.enqueue(new Callback<message>() {
+            @Override
+            public void onResponse(Call<message> call, Response<message> response) {
+                if (response.body() != null && response.body().getStatus().equals("1")) {
+                    if (binding.iconHeartLike.getTag().equals("DisLike")) {
+                        binding.iconHeartLike.setImageResource(R.drawable.heart);
+                        binding.iconHeartLike.setTag("Like");
+                    } else {
+                        binding.iconHeartLike.setImageResource(R.drawable.heart_small);
+                        binding.iconHeartLike.setTag("DisLike");
+                    }
+                    Para.flagComment=true;
+                    Log.d("Log:","Thành công");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<message> call, Throwable t) {
+                Log.d("Log:",t.getMessage());
             }
         });
     }

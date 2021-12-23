@@ -1,14 +1,18 @@
 package com.psteam.foodlocation.adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.psteam.foodlocation.R;
 import com.psteam.foodlocation.databinding.LayoutReviewPostItemContainerBinding;
+import com.psteam.foodlocation.ultilities.Constants;
+import com.psteam.foodlocation.ultilities.PreferenceManager;
 import com.psteam.lib.modeluser.ReviewModel;
 import com.squareup.picasso.Picasso;
 
@@ -18,10 +22,14 @@ public class ReviewRestaurantAdapter extends RecyclerView.Adapter<ReviewRestaura
 
     private final List<ReviewModel> reviewModels;
     private final ReviewRestaurantListeners reviewRestaurantListeners;
+    private final Context context;
+    private PreferenceManager preferenceManager;
 
-    public ReviewRestaurantAdapter(List<ReviewModel> reviewModels, ReviewRestaurantListeners reviewRestaurantListeners) {
+    public ReviewRestaurantAdapter(List<ReviewModel> reviewModels, ReviewRestaurantListeners reviewRestaurantListeners, Context context) {
         this.reviewModels = reviewModels;
         this.reviewRestaurantListeners = reviewRestaurantListeners;
+        this.context = context;
+        preferenceManager=new PreferenceManager(context);
     }
 
     @NonNull
@@ -84,11 +92,21 @@ public class ReviewRestaurantAdapter extends RecyclerView.Adapter<ReviewRestaura
                     if (binding.iconLike.getTag().equals("Like")) {
                         binding.iconLike.setImageResource(R.drawable.heart_small);
                         binding.iconLike.setTag("DisLike");
+                        reviewRestaurantListeners.onDisLikeClick(binding.iconLike,reviewModel);
                     } else {
                         binding.iconLike.setImageResource(R.drawable.heart);
                         binding.iconLike.setTag("Like");
+                        reviewRestaurantListeners.onLikeClick(binding.iconLike,reviewModel);
                     }
                 });
+
+                if(reviewModel.checkUserLike(preferenceManager.getString(Constants.USER_ID))){
+                    binding.iconLike.setImageResource(R.drawable.heart);
+                    binding.iconLike.setTag("Like");
+                }else {
+                    binding.iconLike.setImageResource(R.drawable.heart_small);
+                    binding.iconLike.setTag("DisLike");
+                }
 
             }
         }
@@ -96,7 +114,8 @@ public class ReviewRestaurantAdapter extends RecyclerView.Adapter<ReviewRestaura
 
     public interface ReviewRestaurantListeners {
         void onClick(ReviewModel reviewModel);
-
+        void onLikeClick(ImageView imageView,ReviewModel reviewModel);
+        void onDisLikeClick(ImageView imageView,ReviewModel reviewModel);
         void onAddReviewClick(int position);
     }
 

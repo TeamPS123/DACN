@@ -114,4 +114,10 @@ public interface ServiceAPI {
 
     @GET("api/checkPhone")
     Call<message> checkPhoneNumber(@Query("phone") String phone);
+
+    @GET("api/addComment")
+    Call<message> insertComment(@Header("Authorization") String token, @Query("userId") String userId, @Query("reviewId") String reviewId, @Query("content") String content, @Query("date") String date);
+
+    @GET("api/likeReview")
+    Call<message> likeOrDislike(@Header("Authorization") String token, @Query("userId") String userId, @Query("reviewId") String reviewId);
 }

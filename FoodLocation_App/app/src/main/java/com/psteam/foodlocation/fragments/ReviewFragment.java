@@ -15,9 +15,10 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.navigation.NavigationView;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.psteam.foodlocation.R;
@@ -42,6 +43,7 @@ import com.psteam.lib.modeluser.GetInfoUser;
 import com.psteam.lib.modeluser.GetReviewRestaurantModel;
 import com.psteam.lib.modeluser.ReviewModel;
 import com.psteam.lib.modeluser.UserModel;
+import com.psteam.lib.modeluser.message;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -80,7 +82,7 @@ public class ReviewFragment extends Fragment {
     }
 
     private void init() {
-
+        loading(true);
         reviewModels = new ArrayList<>();
         textViewName = binding.navigationView.getHeaderView(0).findViewById(R.id.textViewName);
         imageUserView = binding.navigationView.getHeaderView(0).findViewById(R.id.imageUserView);
@@ -101,11 +103,21 @@ public class ReviewFragment extends Fragment {
             }
 
             @Override
+            public void onLikeClick(ImageView imageView, ReviewModel reviewModel) {
+                likeOrDislike(preferenceManager.getString(Constants.USER_ID),reviewModel.getId());
+            }
+
+            @Override
+            public void onDisLikeClick(ImageView imageView, ReviewModel reviewModel) {
+                likeOrDislike(preferenceManager.getString(Constants.USER_ID),reviewModel.getId());
+            }
+
+            @Override
             public void onAddReviewClick(int position) {
 
                 startActivityForResult(new Intent(getContext(), CreateReviewActivity.class), 2310);
             }
-        });
+        }, getContext());
         binding.recycleView.setAdapter(reviewRestaurantAdapter);
     }
 
@@ -114,9 +126,19 @@ public class ReviewFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 2310) {
             if (resultCode == 2310) {
-                if(data.getIntExtra("status",0)==1)
+                if (data.getIntExtra("status", 0) == 1)
                     getReview(0, 20);
             }
+        }
+    }
+
+    public void loading(boolean Loading) {
+        if (Loading) {
+            binding.layoutLoading.setVisibility(View.VISIBLE);
+            binding.recycleView.setVisibility(View.GONE);
+        } else {
+            binding.layoutLoading.setVisibility(View.GONE);
+            binding.recycleView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -237,13 +259,42 @@ public class ReviewFragment extends Fragment {
                     reviewModels.add(null);
                     reviewModels.addAll(response.body().getReviews());
                     reviewRestaurantAdapter.notifyDataSetChanged();
+                    loading(false);
                 }
             }
 
             @Override
             public void onFailure(Call<GetReviewRestaurantModel> call, Throwable t) {
-
+                Log.d("Log:",t.getMessage());
             }
         });
     }
+
+    private void likeOrDislike(String userId, String reviewId) {
+        ServiceAPI serviceAPI = getRetrofit().create(ServiceAPI.class);
+        Call<message> call = serviceAPI.likeOrDislike(token.getToken(),userId, reviewId);
+        call.enqueue(new Callback<message>() {
+            @Override
+            public void onResponse(Call<message> call, Response<message> response) {
+                if (response.body() != null && response.body().getStatus().equals("1")) {
+                    Log.d("Log:","Thành công");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<message> call, Throwable t) {
+                Log.d("Log:",t.getMessage());
+            }
+        });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (Para.flagComment) {
+            getReview(0, 20);
+            Para.flagComment = false;
+        }
+    }
+
 }

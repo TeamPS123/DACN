@@ -12,6 +12,10 @@ public class ReviewModel implements Serializable {
 
     private String restaurantId;
 
+    private ArrayList<UserLike> userList;
+
+    private ArrayList<CommentModel> comments;
+
     private String userName;
 
     private String value;
@@ -24,103 +28,109 @@ public class ReviewModel implements Serializable {
 
     private ArrayList<String> imgList;
 
-    public String getDate ()
-    {
+    public String getDate() {
         return date;
     }
 
-    public void setDate (String date)
-    {
+    public void setDate(String date) {
         this.date = date;
     }
 
-    public String getCountLike ()
-    {
+    public String getCountLike() {
         return countLike;
     }
 
-    public void setCountLike (String countLike)
-    {
+    public void setCountLike(String countLike) {
         this.countLike = countLike;
     }
 
-    public String getId ()
-    {
+    public String getId() {
         return id;
     }
 
-    public void setId (String id)
-    {
+    public ArrayList<UserLike> getUserList() {
+        return userList;
+    }
+
+    public boolean checkUserLike(String userId) {
+        if (getUserList() != null && getUserList().size() > 0) {
+            for (UserLike userLike : getUserList()) {
+                if (userLike.getUserId().equals(userId))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    public void setUserList(ArrayList<UserLike> userList) {
+        this.userList = userList;
+    }
+
+    public ArrayList<CommentModel> getComments() {
+        return comments;
+    }
+
+    public void setComments(ArrayList<CommentModel> comments) {
+        this.comments = comments;
+    }
+
+    public void setId(String id) {
         this.id = id;
     }
 
-    public String getRestaurantId ()
-    {
+    public String getRestaurantId() {
         return restaurantId;
     }
 
-    public void setRestaurantId (String restaurantId)
-    {
+    public void setRestaurantId(String restaurantId) {
         this.restaurantId = restaurantId;
     }
 
-    public String getUserName ()
-    {
+    public String getUserName() {
         return userName;
     }
 
-    public void setUserName (String userName)
-    {
+    public void setUserName(String userName) {
         this.userName = userName;
     }
 
-    public String getValue ()
-    {
+    public String getValue() {
         return value;
     }
 
-    public void setValue (String value)
-    {
+    public void setValue(String value) {
         this.value = value;
     }
 
-    public String getUserId ()
-    {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId (String userId)
-    {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
-    public String getContent ()
-    {
+    public String getContent() {
         return content;
     }
 
-    public void setContent (String content)
-    {
+    public void setContent(String content) {
         this.content = content;
     }
 
-    public String getImageUser ()
-    {
+    public String getImageUser() {
         return imageUser;
     }
 
-    public void setImageUser (String imageUser)
-    {
+    public void setImageUser(String imageUser) {
         this.imageUser = imageUser;
     }
 
-    public ArrayList<String> getImgList ()
-    {
+    public ArrayList<String> getImgList() {
         return imgList;
     }
 
-    public void setImgList (ArrayList<String> imgList)
-    {
+    public void setImgList(ArrayList<String> imgList) {
         this.imgList = imgList;
     }
 

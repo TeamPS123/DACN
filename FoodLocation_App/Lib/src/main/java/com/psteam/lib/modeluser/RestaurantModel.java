@@ -214,7 +214,7 @@ public class RestaurantModel implements Serializable, ClusterItem {
 
     public static Date coverStringToDate(String strDate) {
         try {
-            Date date = new SimpleDateFormat("mm:hh a dd/MM/dd").parse(strDate);
+            Date date = new SimpleDateFormat("hh:mm a dd/MM/yyyy").parse(strDate);
             return date;
         } catch (ParseException e) {
             return new Date();

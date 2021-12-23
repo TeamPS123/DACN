@@ -29,9 +29,11 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.psteam.foodlocation.R;
 import com.psteam.foodlocation.databinding.ActivitySplashBinding;
+import com.psteam.foodlocation.databinding.LayoutLoadingDialogBinding;
 import com.psteam.foodlocation.services.FetchAddressIntentServices;
 import com.psteam.foodlocation.ultilities.Constants;
 import com.psteam.foodlocation.ultilities.CustomToast;
+import com.psteam.foodlocation.ultilities.LoadingDialog;
 import com.psteam.foodlocation.ultilities.Para;
 import com.psteam.foodlocation.ultilities.PreferenceManager;
 
@@ -39,6 +41,7 @@ public class SplashActivity extends AppCompatActivity {
 
     private PreferenceManager preferenceManager;
     private ActivitySplashBinding binding;
+
     private ResultReceiver resultReceiver;
     private static final int REQUEST_CODE_LOCATION_PERMISSION = 1;
     private boolean loadDataSuccess = false;
@@ -52,7 +55,6 @@ public class SplashActivity extends AppCompatActivity {
         setFullScreen();
         checkSelfPermission();
         Loading();
-
     }
 
     public void Loading() {

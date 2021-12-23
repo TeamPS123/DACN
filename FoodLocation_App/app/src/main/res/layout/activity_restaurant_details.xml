@@ -246,7 +246,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2.5"
-                        android:drawableLeft="@drawable/ic_outline_location"
+                        android:drawableLeft="@drawable/ic_outline_fmd_good_small"
                         android:drawableTint="#000000"
                         android:ellipsize="end"
                         android:gravity="center_vertical"
@@ -439,6 +439,7 @@ I/ Chương trình: 15% cho tất cả các gói buffet\n
                     app:layout_constraintTop_toBottomOf="@id/textViewReadMore" />
 
                 <TextView
+                    android:id="@+id/reportRes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_8sdp"

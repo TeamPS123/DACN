@@ -11,6 +11,8 @@ public class Para {
     public static String cityCode = "79";
     public static int numberTabs;
 
+    public static boolean flagComment = false;
+
     public static UserModel userModel;
     public static String currentUserAddress = "";
     public static String currentCity = "Các địa điểm ở gần bạn";

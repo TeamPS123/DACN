@@ -47,6 +47,7 @@ import com.psteam.foodlocation.models.PromotionModel;
 import com.psteam.foodlocation.models.SliderItem;
 import com.psteam.foodlocation.socket.setupSocket;
 import com.psteam.foodlocation.ultilities.Constants;
+import com.psteam.foodlocation.ultilities.LoadingDialog;
 import com.psteam.foodlocation.ultilities.Para;
 import com.psteam.foodlocation.ultilities.PreferenceManager;
 import com.psteam.foodlocation.ultilities.Token;
@@ -109,6 +110,7 @@ public class MainFragment extends Fragment implements CategoryListener, Restaura
     }
 
     private void init() {
+
         buttonSignIn = binding.navigationView.getHeaderView(0).findViewById(R.id.buttonSignInNavigation);
         textViewName = binding.navigationView.getHeaderView(0).findViewById(R.id.textViewName);
         imageUserView = binding.navigationView.getHeaderView(0).findViewById(R.id.imageUserView);
@@ -408,6 +410,7 @@ public class MainFragment extends Fragment implements CategoryListener, Restaura
                     categoryAdapter = new CategoryAdapter(categoryModelArrayList, MainFragment.this::onCategoryClick, getContext());
                     binding.recycleViewCategory.setAdapter(categoryAdapter);
                 }
+
             }
 
             @Override
@@ -441,6 +444,8 @@ public class MainFragment extends Fragment implements CategoryListener, Restaura
             }
         });
     }
+
+
 
     @Override
     public void onRestaurantPostClicked(RestaurantModel restaurantModel) {

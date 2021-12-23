@@ -22,6 +22,7 @@ import com.psteam.foodlocation.adapters.UserReserveTableAdapter;
 import com.psteam.foodlocation.databinding.ActivityUserBookTableHistoryBinding;
 import com.psteam.foodlocation.ultilities.Constants;
 import com.psteam.foodlocation.ultilities.DividerItemDecorator;
+import com.psteam.foodlocation.ultilities.LoadingDialog;
 import com.psteam.foodlocation.ultilities.Para;
 import com.psteam.foodlocation.ultilities.PreferenceManager;
 import com.psteam.foodlocation.ultilities.Token;
@@ -60,6 +61,7 @@ public class UserBookTableHistoryActivity extends AppCompatActivity implements U
     }
 
     private void init() {
+        LoadingDialog.show(UserBookTableHistoryActivity.this,LoadingDialog.Back);
         setFullScreen();
         initUserBookTableAdapter();
         GetUserReserveTableModel(new GetReserveTableInput(preferenceManager.getString(Constants.USER_ID), Para.latitude, Para.longitude));
@@ -100,11 +102,13 @@ public class UserBookTableHistoryActivity extends AppCompatActivity implements U
                     Collections.reverse(reserveTables);
                     userReserveTableAdapter.notifyDataSetChanged();
                 }
+                LoadingDialog.dismiss(500l);
             }
 
             @Override
             public void onFailure(Call<GetUserReserveTableModel> call, Throwable t) {
                 Log.d("Log:", t.getMessage());
+                LoadingDialog.dismiss(500l);
             }
         });
     }
