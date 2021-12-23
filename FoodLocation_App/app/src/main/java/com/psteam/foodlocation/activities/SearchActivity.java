@@ -54,6 +54,7 @@ import com.psteam.lib.modeluser.RestaurantModel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -71,6 +72,9 @@ public class SearchActivity extends AppCompatActivity implements SearchRestauran
     private ArrayList<String> selectedCategoryRes;
     private ArrayList<CategoryRes> categoryModelArrayList;
 
+    private String[] stringKeyWordSearch;
+    private String[] stringKeyWordUnit;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +86,8 @@ public class SearchActivity extends AppCompatActivity implements SearchRestauran
 
     private void init() {
         setFullScreen();
+        stringKeyWordSearch = getResources().getStringArray(R.array.key_word_search);
+        stringKeyWordUnit = getResources().getStringArray(R.array.key_word_unit);
         categoryModelArrayList = new ArrayList<>();
         restaurantModel = new GetRestaurantModel();
         selectedCategoryRestaurants = new ArrayList<>();
@@ -233,7 +239,59 @@ public class SearchActivity extends AppCompatActivity implements SearchRestauran
                         if (result.getData() != null) {
                             ArrayList<String> data = result.getData().getStringArrayListExtra(
                                     RecognizerIntent.EXTRA_RESULTS);
-                            binding.inputSearch.setText(Objects.requireNonNull(data).get(0));
+                            //binding.inputSearch.setText(Objects.requireNonNull(data).get(0));
+                            Boolean checkSearch = false;
+                            String trimNumber = "";
+                            String strVoice = Objects.requireNonNull(data).get(0);
+                            try {
+
+
+                                for (String s : stringKeyWordSearch) {
+                                    if (strVoice.contains(s)) {
+                                        checkSearch = true;
+                                        strVoice = strVoice.substring(strVoice.indexOf(s), strVoice.length());
+                                        break;
+                                    }
+                                }
+
+                                if (checkSearch && strVoice.matches(".*\\d.*")) {
+                                    for (String s : stringKeyWordUnit) {
+                                        if (strVoice.contains(s)) {
+                                            switch (s) {
+                                                case "km":
+                                                case "kilomet":
+                                                case "kilômét":
+                                                case "ki lô mét":
+                                                    trimNumber = strVoice.substring((strVoice.lastIndexOf("k") - 5), strVoice.lastIndexOf("k"));
+                                                    break;
+                                                case "met":
+                                                case "mét":
+                                                case " m":
+                                                    trimNumber = strVoice.substring((strVoice.indexOf(" m") - 5), strVoice.indexOf(" m"));
+                                                    break;
+                                                case " m ":
+                                                    trimNumber = strVoice.substring((strVoice.indexOf(" m ") - 5), strVoice.indexOf(" m "));
+                                                    break;
+                                                case "m":
+                                                    trimNumber = strVoice.substring((strVoice.lastIndexOf("m") - 5), strVoice.lastIndexOf("m"));
+                                                    break;
+                                                case "cây số":
+                                                case "cây":
+                                                    trimNumber = strVoice.substring((strVoice.indexOf("cây") - 5), strVoice.indexOf("cây"));
+                                                    break;
+                                            }
+                                            break;
+                                        }
+                                    }
+                                }
+                            } catch (Exception e) {
+                                Log.d("Log:", e.getMessage());
+                            }
+                            if (!trimNumber.isEmpty() && checkSearch)
+                                binding.inputSearch.setText(trimNumber.replaceAll("\\D+", ""));
+                            else {
+                                binding.inputSearch.setText(Objects.requireNonNull(data).get(0));
+                            }
                             binding.inputSearch.clearFocus();
                         } else {
                             CustomToast.makeText(SearchActivity.this, "Thử lại sau", CustomToast.LENGTH_SHORT, CustomToast.WARNING).show();
@@ -449,4 +507,6 @@ public class SearchActivity extends AppCompatActivity implements SearchRestauran
         intent.putExtra("bundle", bundle);
         startActivity(intent);
     }
+
+
 }

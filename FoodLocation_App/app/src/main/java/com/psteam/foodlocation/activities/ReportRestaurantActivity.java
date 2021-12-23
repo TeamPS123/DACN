@@ -4,9 +4,13 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.psteam.foodlocation.R;
 import com.psteam.foodlocation.adapters.ReportResAdapter;
@@ -34,6 +38,7 @@ public class ReportRestaurantActivity extends AppCompatActivity {
     }
 
     private void init() {
+        setFullScreen();
         strings = new ArrayList<>();
         strings.add("Cửa hàng đã chuyển / đóng cửa");
         strings.add("Sai địa chỉ bản đồ");
@@ -61,6 +66,16 @@ public class ReportRestaurantActivity extends AppCompatActivity {
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecorator(getDrawable(R.drawable.divider));
         binding.recycleView.addItemDecoration(itemDecoration);
 
+    }
+
+    private void setFullScreen() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+            Window w = getWindow();
+            w.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            w.setStatusBarColor(Color.TRANSPARENT);
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
     }
 
     private void setListeners() {

@@ -226,7 +226,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
 
         AddressRestaurantReserve = restaurantModel.getAddress();
         NumberReserve = 1;
-        DateReserve = LocalDate.now(ZoneId.of("Asia/Ho_Chi_Minh"));
+
         getDistance(new LatLng(Para.latitude, Para.longitude), restaurantModel.getLatLng());
 
         if (!restaurantModel.isStatus() && restaurantModel.getStatusCO() == null) {
@@ -258,7 +258,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
         } else {
             today = LocalDate.now(ZoneId.of("Asia/Ho_Chi_Minh"));
         }
-
+        DateReserve = today;
         if (today.getDayOfMonth() == LocalDate.now(ZoneId.of("Asia/Ho_Chi_Minh")).getDayOfMonth()) {
             binding.textViewChooseDate.setText(String.format("Hôm nay, %s", today.format(DateTimeFormatter.ofPattern("dd/MM/yyyy", new Locale("vi", "VN")))));
         } else if (today.plusDays(1).getDayOfMonth() == LocalDate.now(ZoneId.of("Asia/Ho_Chi_Minh")).plusDays(1).getDayOfMonth()) {

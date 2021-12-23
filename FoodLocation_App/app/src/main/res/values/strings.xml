@@ -14,17 +14,25 @@
     <string name="menuReserve">Đặt chỗ</string>
     <string name="menuReview">Trải nghiệm</string>
     <string name="menuNotification">Thông báo</string>
-    <string-array name="city">
-        <item>Thành phố</item>
-        <item>Hồ Chí Minh</item>
-        <item>Đồng Nai</item>
-        <item>Bình Dương</item>
+
+    <string-array name="key_word_search">
+        <item>phạm vi</item>
+        <item>bán kính</item>
+        <item>trong khoảng</item>
+        <item>gần nhất</item>
+        <item>gần đây</item>
     </string-array>
 
-    <string-array name="district">
-        <item>Quận / Huyện</item>
-        <item>Quận 2</item>
-        <item>Quận 9</item>
-        <item>Quận 10</item>
+    <string-array name="key_word_unit">
+        <item>km</item>
+        <item>kilomet</item>
+        <item>kilômét</item>
+        <item>ki lô mét</item>
+        <item>cây số</item>
+        <item>met</item>
+        <item>mét</item>
+        <item> m</item>
+        <item> m </item>
+        <item>m</item>
     </string-array>
 </resources>
