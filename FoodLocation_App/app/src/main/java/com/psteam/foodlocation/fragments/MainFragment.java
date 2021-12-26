@@ -146,7 +146,11 @@ public class MainFragment extends Fragment implements CategoryListener, Restaura
         recommendResAdapter = new RecommendResAdapter(new RecommendResAdapter.RecommendResListeners() {
             @Override
             public void onClick(RestaurantModel restaurantModel) {
-
+                Intent intent = new Intent(getContext(), RestaurantDetailsActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("restaurantModel", restaurantModel);
+                intent.putExtra("bundle", bundle);
+                startActivity(intent);
             }
         }, restaurantSuggest, getContext());
 

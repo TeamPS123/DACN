@@ -19,6 +19,7 @@ public class MapRestaurantAdapter extends RecyclerView.Adapter<MapRestaurantAdap
     private final MapRestaurantListener mapRestaurantListener;
     private final Context context;
 
+
     public MapRestaurantAdapter(List<RestaurantModel> restaurantModels, MapRestaurantListener mapRestaurantListener, Context context) {
         this.restaurantModels = restaurantModels;
         this.mapRestaurantListener = mapRestaurantListener;

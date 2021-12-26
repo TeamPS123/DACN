@@ -91,41 +91,41 @@ public class SearchRestaurantAdapter extends RecyclerView.Adapter<SearchRestaura
             //3 Đang đóng cửa status false statusCO null , 4 Setup ngày mở cửa status false statusCO not null
             if (restaurantModel.isStatus() && restaurantModel.getStatusCO() == null) {
                 if (openTime.isBefore(now)) {
-                    binding.textViewStatusRestaurant.setText(String.format("Mở cửa cho đến %s", formatTime(restaurantModel.getCloseTime())));
+                    binding.textViewStatusRestaurant.setText(String.format("Đang mở cửa \u00b7 Mở cửa cho đến %s", formatTime(restaurantModel.getCloseTime())));
                     binding.textViewStatusRestaurant.setTextColor(context.getColor(R.color.color_open));
                 } else {
-                    binding.textViewStatusRestaurant.setText(String.format("Đóng cửa mở lúc %s", formatTime(restaurantModel.getOpenTime())));
+                    binding.textViewStatusRestaurant.setText(String.format("Đã đóng cửa \u00b7 Mở cửa vào %s", formatTime(restaurantModel.getOpenTime())));
                     binding.textViewStatusRestaurant.setTextColor(context.getColor(R.color.ColorButtonReserve));
                 }
                 onRootClick(restaurantModel);
             } else if (restaurantModel.isStatus() && restaurantModel.getStatusCO() != null) {
                 if (openTime.isBefore(now)) {
                     if (restaurantModel.getStatusOpen().before(new Date())) {
-                        binding.textViewStatusRestaurant.setText(String.format("Mở cửa cho đến %s", formatTime(restaurantModel.getCloseTime())));
+                        binding.textViewStatusRestaurant.setText(String.format("Đang mở cửa \u00b7 Mở cửa cho đến %s", formatTime(restaurantModel.getCloseTime())));
                     } else {
-                        binding.textViewStatusRestaurant.setText(String.format("Mở cửa cho đến %s quán đóng cửa ngày %s.", formatTime(restaurantModel.getCloseTime()), restaurantModel.getStatusCO()));
+                        binding.textViewStatusRestaurant.setText(String.format("Đang mở cửa \u00b7 Mở cửa cho đến %s \u00b7 Quán đóng cửa ngày %s.", formatTime(restaurantModel.getCloseTime()), restaurantModel.getStatusCO()));
                     }
                     binding.textViewStatusRestaurant.setTextColor(context.getColor(R.color.color_open));
                 } else {
                     if (restaurantModel.getStatusOpen().before(new Date())) {
-                        binding.textViewStatusRestaurant.setText(String.format("Đóng cửa mở lúc %s", formatTime(restaurantModel.getOpenTime())));
+                        binding.textViewStatusRestaurant.setText(String.format("Đã đóng cửa \u00b7 Mở cửa vào %s", formatTime(restaurantModel.getOpenTime())));
                     } else {
-                        binding.textViewStatusRestaurant.setText(String.format("Đóng cửa mở lúc %s quán đóng cửa ngày %s.", formatTime(restaurantModel.getOpenTime()), restaurantModel.getStatusCO()));
+                        binding.textViewStatusRestaurant.setText(String.format("Đã đóng cửa \u00b7 Mở cửa vào %s \u00b7 Quán đóng cửa ngày %s.", formatTime(restaurantModel.getOpenTime()), restaurantModel.getStatusCO()));
                     }
                     binding.textViewStatusRestaurant.setTextColor(context.getColor(R.color.ColorButtonReserve));
                 }
                 onRootClick(restaurantModel);
             } else if (!restaurantModel.isStatus() && restaurantModel.getStatusCO() == null) {
-                binding.textViewStatusRestaurant.setText(String.format("Đóng cửa, chưa biết ngày mở lại."));
+                binding.textViewStatusRestaurant.setText(String.format("Tạm ngừng hoạt động \u00b7 Chưa có ngày mở lại"));
                 binding.textViewStatusRestaurant.setTextColor(context.getColor(R.color.ColorButtonReserve));
                 onRootClick(restaurantModel);
             } else {
                 if (restaurantModel.getStatusOpen().before(new Date())) {
-                    binding.textViewStatusRestaurant.setText(String.format("Đóng cửa, chưa biết ngày mở lại."));
+                    binding.textViewStatusRestaurant.setText(String.format("Tạm ngừng hoạt động \u00b7 Chưa có ngày mở lại"));
                     restaurantModel.setStatus(false);
                     restaurantModel.setStatusCO(null);
                 } else {
-                    binding.textViewStatusRestaurant.setText(String.format("Đóng cửa quán mở cửa lại ngày %s.", restaurantModel.getStatusCO()));
+                    binding.textViewStatusRestaurant.setText(String.format("Tạm ngừng hoạt động \u00b7 Quán mở cửa lại ngày %s", restaurantModel.getStatusCO()));
                 }
                 binding.textViewStatusRestaurant.setTextColor(context.getColor(R.color.ColorButtonReserve));
                 onRootClick(restaurantModel);

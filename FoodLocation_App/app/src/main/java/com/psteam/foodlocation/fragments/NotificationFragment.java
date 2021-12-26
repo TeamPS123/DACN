@@ -1,8 +1,11 @@
 package com.psteam.foodlocation.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -11,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.psteam.foodlocation.R;
+import com.psteam.foodlocation.activities.UserReserveTableDetailsActivity;
 import com.psteam.foodlocation.adapters.NotificationAdapter;
 import com.psteam.foodlocation.databinding.FragmentNotificationBinding;
 import com.psteam.foodlocation.ultilities.Constants;
@@ -56,11 +60,14 @@ public class NotificationFragment extends Fragment {
         notificationAdapter = new NotificationAdapter(notifications, new NotificationAdapter.NotificationListeners() {
             @Override
             public void onClicked(NotificationAdapter.Notification notification, int position) {
-
+                Intent intent = new Intent(getContext(), UserReserveTableDetailsActivity.class);
+                intent.putExtra("reserveTable", notification.getReserveTable());
+                startActivity(intent);
             }
         });
         binding.recycleView.setAdapter(notificationAdapter);
-
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+        itemTouchHelper.attachToRecyclerView(binding.recycleView);
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecorator(getContext().getDrawable(R.drawable.divider));
         binding.recycleView.addItemDecoration(itemDecoration);
     }
@@ -72,7 +79,30 @@ public class NotificationFragment extends Fragment {
     }
 
     private void setListeners() {
+        binding.buttonClearAll.setOnClickListener(v -> {
+            preferenceManager.clearNotification();
+            notifications.clear();
+            tempNotifications.clear();
+            notificationAdapter.notifyDataSetChanged();
+        });
     }
+
+    ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+            int position = viewHolder.getAdapterPosition();
+            preferenceManager.removeNotification(position);
+            notifications.remove(position);
+            tempNotifications.remove(position);
+            notificationAdapter.notifyItemRemoved(position);
+        }
+    };
 
     @Override
     public void onResume() {

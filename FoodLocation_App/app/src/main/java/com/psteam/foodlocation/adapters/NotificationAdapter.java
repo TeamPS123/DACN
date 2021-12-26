@@ -68,6 +68,10 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             }
             binding.textViewTitle.setText(status);
             binding.textViewDate.setText(notification.getDate());
+
+            binding.getRoot().setOnClickListener(v->{
+                notificationListeners.onClicked(notification,getAdapterPosition());
+            });
         }
     }
 

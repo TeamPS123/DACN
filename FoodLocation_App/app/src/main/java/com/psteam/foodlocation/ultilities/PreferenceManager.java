@@ -66,6 +66,18 @@ public class PreferenceManager {
         putListNotification(Constants.TAG_NOTIFICATION, notifications);
     }
 
+    public void removeNotification(int notification) {
+        ArrayList<NotificationAdapter.Notification>  notifications= getListNotification(Constants.TAG_NOTIFICATION);
+        if (notifications == null) {
+            notifications = new ArrayList<>();
+        }else {
+            notifications.remove(notification);
+        }
+        putListNotification(Constants.TAG_NOTIFICATION, notifications);
+    }
+
+
+
     public ArrayList<NotificationAdapter.Notification> getListNotification(String key) {
         Gson gson = new Gson();
         String json = sharedPreferences.getString(key, null);
@@ -94,6 +106,10 @@ public class PreferenceManager {
 
     public void clearRes() {
         sharedPreferences.edit().remove(Constants.TAG_RESTAURANT_RECENT).commit();
+    }
+
+    public void clearNotification() {
+        sharedPreferences.edit().remove(Constants.TAG_NOTIFICATION).commit();
     }
 
     public RestaurantModel getRestaurantModel(String key) {

@@ -204,8 +204,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
             String[] parameter = path.split("/");
             GetResInfo(parameter[5].substring(0, 6));
         }
-
-
     }
 
     private void setData() {

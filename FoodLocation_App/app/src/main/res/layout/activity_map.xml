@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".activities.MapActivity">
 
-    <include layout="@layout/content_map" />
-    <include layout="@layout/layout_bottom_sheet_restaurant"/>
+    <include layout="@layout/content_map" android:id="@+id/amap"/>
 
+    <include
+        layout="@layout/layout_bottom_sheet_restaurnt_map"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_anchor="@id/amap"
+        app:layout_anchorGravity="right|bottom"/>
+
+    <include layout="@layout/layout_bottom_sheet_restaurant"
+        android:visibility="gone"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

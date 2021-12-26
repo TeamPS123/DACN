@@ -57,10 +57,11 @@
             android:textColor="@color/TextColorSub"/>
 
         <TextView
+            android:id="@+id/buttonClearAll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/_12sdp"
-            android:text="Dánh dấu tất cả đã đọc"
+            android:text="Xoá tất cả"
             android:drawableLeft="@drawable/ic_round_checklist_24"
             android:drawablePadding="@dimen/_4sdp"
             android:gravity="center"

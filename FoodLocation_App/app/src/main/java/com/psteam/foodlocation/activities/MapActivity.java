@@ -5,9 +5,13 @@ import static com.psteam.foodlocation.ultilities.RetrofitClient.getRetrofitGoogl
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.CompositePageTransformer;
+import androidx.viewpager2.widget.MarginPageTransformer;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -16,6 +20,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -42,6 +47,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.maps.android.PolyUtil;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterItem;
@@ -49,6 +55,8 @@ import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 import com.psteam.foodlocation.R;
 import com.psteam.foodlocation.adapters.MapRestaurantAdapter;
+import com.psteam.foodlocation.adapters.ResMapAdapter;
+import com.psteam.foodlocation.adapters.RestaurantRecentAdapter;
 import com.psteam.foodlocation.databinding.ActivityMapBinding;
 import com.psteam.foodlocation.listeners.MapRestaurantListener;
 import com.psteam.foodlocation.models.GoogleMapApiModels.DirectionResponses;
@@ -57,6 +65,7 @@ import com.psteam.foodlocation.services.ServiceAPI;
 import com.psteam.foodlocation.ultilities.Constants;
 import com.psteam.foodlocation.ultilities.DividerItemDecorator;
 import com.psteam.foodlocation.ultilities.Para;
+import com.psteam.foodlocation.ultilities.PreferenceManager;
 import com.psteam.lib.modeluser.RestaurantModel;
 
 import java.util.ArrayList;
@@ -68,6 +77,7 @@ import retrofit2.Response;
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback, MapRestaurantListener {
 
     private final static LatLng currentLocation = new LatLng(Para.latitude, Para.longitude);
+    private PreferenceManager preferenceManager;
 
     private static final int REQUEST_CODE_LOCATION_PERMISSION = 1;
     private GoogleMap mMap;
@@ -75,6 +85,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private View mapView;
     private ImageView buttonMyLocation;
     private ImageView iconLocation;
+
+    private FloatingActionButton buttonMyLocationMap;
 
     private CardView layoutBottomSheet;
     private BottomSheetBehavior bottomSheetBehavior;
@@ -87,29 +99,35 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private ImageView imageViewRestaurant;
     private LinearLayout layoutSuggestRestaurant, layoutLocationInfo, layoutProgressBar;
 
+    private static final int REQUEST_CODE_PHONE_PERMISSION = 9;
     private ProgressBar progressBar;
+
+    private ViewPager2 viewPagerRestaurantMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        binding = ActivityMapBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        preferenceManager = new PreferenceManager(getApplicationContext());
+        init();
+        setListeners();
+    }
+
+    private void setFullScreen() {
         if (Build.VERSION.SDK_INT >= 21) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(Color.TRANSPARENT);
 
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);//  set status text dark
-            getWindow().setStatusBarColor(ContextCompat.getColor(MapActivity.this, R.color.white));// set status background white
+            getWindow().setStatusBarColor(ContextCompat.getColor(MapActivity.this, android.R.color.transparent));// set status background white
         }
-
-        binding = ActivityMapBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
-        init();
-        setListeners();
     }
 
     private void init() {
+        setFullScreen();
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -128,14 +146,108 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         textViewDistance = findViewById(R.id.textviewDistance);
         textViewDirections = findViewById(R.id.textViewDirections);
         textViewDuration = findViewById(R.id.textviewDuration);
-        imageViewRestaurant=findViewById(R.id.imageViewRestaurant);
-
+        imageViewRestaurant = findViewById(R.id.imageViewRestaurant);
+        buttonMyLocationMap = findViewById(R.id.buttonMyLocationMap);
         progressBar = findViewById(R.id.progressBarMap);
         layoutProgressBar = findViewById(R.id.layoutProgressBar);
-
+        viewPagerRestaurantMap = findViewById(R.id.viewPagerRestaurantMap);
         initBottomSheetRestaurant();
+    }
 
+    private void initSlider() {
 
+        restaurantModels.add(0, null);
+        ResMapAdapter resMapAdapter = new ResMapAdapter(restaurantModels, new ResMapAdapter.ResMapListeners() {
+            @Override
+            public void onClick(RestaurantModel restaurantModel) {
+                if (restaurantModel != null) {
+                    Intent intent = new Intent(getApplicationContext(), RestaurantDetailsActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("restaurantModel", restaurantModel);
+                    intent.putExtra("bundle", bundle);
+                    startActivity(intent);
+                } else {
+                    getMyLocation();
+                }
+            }
+
+            @Override
+            public void onCallClick(RestaurantModel restaurantModel) {
+                if (ContextCompat.checkSelfPermission(
+                        getApplicationContext(), Manifest.permission.CALL_PHONE
+                ) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(
+                            MapActivity.this,
+                            new String[]{Manifest.permission.CALL_PHONE},
+                            REQUEST_CODE_PHONE_PERMISSION
+                    );
+                } else {
+                    Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + restaurantModel.getPhoneRes()));
+                    startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onDirectionClick(RestaurantModel restaurantModel, TextView textView) {
+                if (polyline == null) {
+                    loadingDirection(true);
+                    getDirection(currentLocation, restaurantModel.getPosition(),textView);
+                    polyLine = true;
+                }
+            }
+        }, getApplicationContext());
+
+        viewPagerRestaurantMap.setAdapter(resMapAdapter);
+        viewPagerRestaurantMap.setClipToPadding(false);
+        viewPagerRestaurantMap.setClipChildren(false);
+        viewPagerRestaurantMap.setOffscreenPageLimit(3);
+        viewPagerRestaurantMap.getChildAt(0).setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
+
+        CompositePageTransformer compositePageTransformer = new CompositePageTransformer();
+        compositePageTransformer.addTransformer(new MarginPageTransformer(20));
+        compositePageTransformer.addTransformer(new ViewPager2.PageTransformer() {
+            @Override
+            public void transformPage(@NonNull View page, float position) {
+                float r = 1 - Math.abs(position);
+                page.setScaleY(0.95f + r * 0.05f);
+            }
+        });
+
+        viewPagerRestaurantMap.setPageTransformer(compositePageTransformer);
+
+        viewPagerRestaurantMap.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                super.onPageScrolled(position, positionOffset, positionOffsetPixels);
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                if (mMap != null) {
+
+                    RestaurantModel restaurantModel = restaurantModels.get(position);
+                    if (restaurantModel != null) {
+
+                        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(restaurantModel.getLatLng(), 15);
+                        mMap.animateCamera(cameraUpdate, 500, null);
+                        if (getMarkerFromCluster(restaurantModel.getPosition()) != null)
+                            mClusterManager.getMarkerManager().onMarkerClick(getMarkerFromCluster(restaurantModel.getPosition()));
+                        else {
+                            flag = true;
+                            temp = restaurantModel.getPosition();
+                        }
+                    } else {
+                        getMyLocation();
+                    }
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                super.onPageScrollStateChanged(state);
+            }
+        });
     }
 
     private void initData() {
@@ -210,6 +322,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 getMyLocation();
             }
         });
+
+        buttonMyLocationMap.setOnClickListener(v -> {
+            if (mMap != null) {
+                getMyLocation();
+            }
+        });
     }
 
     private boolean isLocationServiceRunning() {
@@ -249,10 +367,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private Marker markerClicked;
     private Marker oldMarkerClicked;
 
+    private Boolean polyLine = false;
+
     @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
+        initSlider();
         setUpClusterer();
     }
 
@@ -278,33 +399,35 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         mMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
             @Override
             public void onCameraIdle() {
-                mClusterManager.onCameraIdle();
-                if (markerSelected) {
-                    iconLocation.setVisibility(View.GONE);
-                    oldMarkerClicked = markerClicked;
-                    markerSelected = false;
+                if (!polyLine) {
+                    mClusterManager.onCameraIdle();
+                    if (markerSelected) {
+                        iconLocation.setVisibility(View.GONE);
+                        oldMarkerClicked = markerClicked;
+                        markerSelected = false;
 
-                    if (layoutSuggestRestaurant.getVisibility() == View.VISIBLE) {
-                        layoutSuggestRestaurant.setVisibility(View.GONE);
-                        layoutLocationInfo.setVisibility(View.VISIBLE);
-                    }
+                        if (layoutSuggestRestaurant.getVisibility() == View.VISIBLE) {
+                            layoutSuggestRestaurant.setVisibility(View.GONE);
+                            layoutLocationInfo.setVisibility(View.VISIBLE);
+                        }
 
-                    if (bottomSheetBehavior != null) {
-                        bottomSheetBehavior.setPeekHeight(layoutLocationInfo.getHeight() + peekHeight);
-                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                        bottomSheetBehavior.setDraggable(false);
-                        RestaurantModel restaurantModel = (RestaurantModel) markerClicked.getTag();
-                        setRestaurantInfo(restaurantModel);
-                    }
+                        if (bottomSheetBehavior != null) {
+                            bottomSheetBehavior.setPeekHeight(layoutLocationInfo.getHeight() + peekHeight);
+                            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                            bottomSheetBehavior.setDraggable(false);
+                            RestaurantModel restaurantModel = (RestaurantModel) markerClicked.getTag();
+                            setRestaurantInfo(restaurantModel);
+                        }
 
-                } else {
-                    layoutLocationInfo.setVisibility(View.GONE);
-                    layoutSuggestRestaurant.setVisibility(View.VISIBLE);
+                    } else {
+                        layoutLocationInfo.setVisibility(View.GONE);
+                        layoutSuggestRestaurant.setVisibility(View.VISIBLE);
 
-                    if (bottomSheetBehavior != null) {
-                        bottomSheetBehavior.setPeekHeight(peekHeight);
-                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                        bottomSheetBehavior.setDraggable(true);
+                        if (bottomSheetBehavior != null) {
+                            bottomSheetBehavior.setPeekHeight(peekHeight);
+                            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                            bottomSheetBehavior.setDraggable(true);
+                        }
                     }
                 }
             }
@@ -335,8 +458,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             @Override
             public boolean onClusterItemClick(RestaurantModel item) {
 
+                polyLine = false;
                 Marker marker = getMarkerFromCluster(item.getPosition());
-
+                viewPagerRestaurantMap.setCurrentItem(restaurantModels.indexOf(item), true);
                 // Click buttonGuide In bottom sheet
                 if (marker == null && flag) {
 
@@ -394,34 +518,37 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             @Override
             public void onCameraMove() {
 
-                if (bottomSheetBehavior != null) {
-                    bottomSheetBehavior.setPeekHeight(0);
-                    if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_COLLAPSED) {
-                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                    }
-                }
+                if (!polyLine) {
 
-                if (!markerSelected) {
-                    if (iconLocation.getVisibility() == View.GONE)
-                        iconLocation.setVisibility(View.VISIBLE);
-
-                    if (markerClicked != null) {
-                        markerClicked.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-                        markerClicked.hideInfoWindow();
-                        markerClicked = null;
+                    if (bottomSheetBehavior != null) {
+                        bottomSheetBehavior.setPeekHeight(0);
+                        if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_COLLAPSED) {
+                            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                        }
                     }
-                }
-                if (oldMarkerClicked != null) {
-                    oldMarkerClicked.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-                    oldMarkerClicked.hideInfoWindow();
-                    oldMarkerClicked = null;
+
+                    if (!markerSelected) {
+                        if (iconLocation.getVisibility() == View.GONE)
+                            iconLocation.setVisibility(View.VISIBLE);
+
+                        if (markerClicked != null) {
+                            markerClicked.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                            markerClicked.hideInfoWindow();
+                            markerClicked = null;
+                        }
+                    }
+                    if (oldMarkerClicked != null) {
+                        oldMarkerClicked.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                        oldMarkerClicked.hideInfoWindow();
+                        oldMarkerClicked = null;
+                    }
                 }
             }
         });
 
         CircleOptions circleOptions = new CircleOptions();
         circleOptions.center(currentLocation);
-        circleOptions.radius(Constants.RADIUS);
+        circleOptions.radius(Double.parseDouble(preferenceManager.getString(Constants.TAG_DISTANCE)));
         circleOptions.fillColor(Color.TRANSPARENT);
         circleOptions.strokeWidth(6);
         circleOptions.strokeColor(Color.LTGRAY);
@@ -431,17 +558,21 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     private void addItems() {
-        mClusterManager.addItems(restaurantModels);
+        ArrayList<RestaurantModel> temp = new ArrayList<>();
+        temp.addAll(restaurantModels);
+        temp.remove(null);
+        mClusterManager.addItems(temp);
     }
 
     private void getMyLocation() {
         LatLng latLng = new LatLng(Para.latitude, Para.longitude);
+        //viewPagerRestaurantMap.setCurrentItem(0,true);
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 15);
         mMap.animateCamera(cameraUpdate);
     }
 
     private void setRestaurantInfo(RestaurantModel restaurantModel) {
-        this.restaurantModel=restaurantModel;
+        this.restaurantModel = restaurantModel;
         textViewRestaurantName.setText(restaurantModel.getName());
         textViewRestaurantAddress.setText(restaurantModel.getAddress());
         textViewDistance.setText(String.format("%skm", Math.round(Double.parseDouble(restaurantModel.getDistance()))));
@@ -450,6 +581,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             if (polyline == null) {
                 loadingDirection(true);
                 getDirection(currentLocation, restaurantModel.getPosition());
+                polyLine = true;
             }
         });
     }
@@ -555,6 +687,37 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             }
         });
     }
+
+    private void getDirection(LatLng latLngOrigin, LatLng latLngDestination, TextView textView) {
+        String origin = String.valueOf(latLngOrigin.latitude) + "," + String.valueOf(latLngOrigin.longitude);
+        String destination = String.valueOf(latLngDestination.latitude) + "," + String.valueOf(latLngDestination.longitude);
+        this.latLngDestination = latLngDestination;
+
+        ServiceAPI serviceAPI = getRetrofitGoogleMapAPI().create(ServiceAPI.class);
+        Call<DirectionResponses> call = serviceAPI.getDirection(origin, destination, getString(R.string.google_map_api_key));
+        call.enqueue(new Callback<DirectionResponses>() {
+            @Override
+            public void onResponse(Call<DirectionResponses> call, Response<DirectionResponses> response) {
+                if (response.body() != null && response.body().getStatus().equals("OK")) {
+                    String distance = response.body().getRoutes().get(0).getLegs().get(0).getDistance().getText();
+                    String duration = response.body().getRoutes().get(0).getLegs().get(0).getDuration().getText();
+                    textView.setText(String.format("%s \u00b7 %s", distance, duration));
+
+                    drawPolyline(response);
+                    Log.d("OKAY", response.message());
+                } else {
+                    Toast.makeText(getApplicationContext(), "Lỗi khi lấy dữ liệu", Toast.LENGTH_SHORT).show();
+                    loadingDirection(false);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DirectionResponses> call, Throwable t) {
+                Log.e("TAG:", t.getLocalizedMessage());
+            }
+        });
+    }
+
 
     public class RestaurantRender extends DefaultClusterRenderer<RestaurantModel> {
 
