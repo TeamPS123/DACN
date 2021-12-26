@@ -96,11 +96,11 @@
                 android:drawableLeft="@drawable/ic_loyalty"
                 android:drawablePadding="@dimen/_4sdp"
                 android:gravity="center"
+                android:drawableTint="@color/ColorButtonReserve"
                 android:text="-15%"
                 android:textColor="#CA1D1D"
                 android:textSize="@dimen/_12ssp"
                 android:textStyle="bold"
-                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/viewPagerSlideImageRestaurant" />
 
@@ -177,7 +177,7 @@
                 android:drawablePadding="@dimen/_4sdp"
                 android:text="Đã có "
                 android:textColor="#FF6801"
-                android:textSize="@dimen/_12ssp"
+                android:textSize="@dimen/_10ssp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textViewReviewCount" />
 
@@ -187,7 +187,7 @@
                 android:layout_height="wrap_content"
                 android:text="0"
                 android:textColor="#FF6801"
-                android:textSize="@dimen/_12ssp"
+                android:textSize="@dimen/_10ssp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@id/textViewCountBookTableTextBefore"
                 app:layout_constraintStart_toEndOf="@id/textViewCountBookTableTextBefore"
@@ -199,7 +199,7 @@
                 android:layout_height="wrap_content"
                 android:text=" người đặt chỗ hôm nay"
                 android:textColor="#FF6801"
-                android:textSize="@dimen/_12ssp"
+                android:textSize="@dimen/_10ssp"
                 app:layout_constraintBottom_toBottomOf="@id/textViewCountBookTableTextBefore"
                 app:layout_constraintStart_toEndOf="@id/textViewCountBookTable"
                 app:layout_constraintTop_toTopOf="@id/textViewCountBookTableTextBefore" />
@@ -211,7 +211,7 @@
                 android:layout_marginTop="@dimen/_8sdp"
                 android:background="@color/white"
                 android:paddingBottom="@dimen/_8sdp"
-                app:layout_constraintTop_toBottomOf="@id/textViewCountBookTableTextAfter">
+                app:layout_constraintTop_toBottomOf="@id/textViewCountBookTableTextBefore">
 
                 <TextView
                     android:id="@+id/text1"

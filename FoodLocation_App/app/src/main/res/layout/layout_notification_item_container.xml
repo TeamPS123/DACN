@@ -19,7 +19,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_8sdp"
-        android:layout_marginEnd="@dimen/_12sdp"
+        android:layout_marginEnd="@dimen/_16sdp"
         android:textSize="@dimen/_11ssp"
         android:maxLines="2"
         android:ellipsize="end"
@@ -33,14 +33,15 @@
         android:id="@+id/textViewContent"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/_12sdp"
         android:layout_marginTop="@dimen/_2sdp"
-        android:textSize="@dimen/_9ssp"
-        android:textColor="@color/TextColorSub"
+        android:layout_marginEnd="@dimen/_16sdp"
         android:text="Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi. Hãy chia sẻ trải nghiệm của bạn về đơn hàng để giúp những Khách hàng khác có thể tham khảo nhé!"
+        android:textColor="@color/TextColorSub"
+        android:textSize="@dimen/_9ssp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@id/textViewTitle"
-        app:layout_constraintTop_toBottomOf="@id/textViewTitle"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/textViewTitle" />
 
     <TextView
         android:id="@+id/textViewDate"

@@ -59,20 +59,19 @@ public class RestaurantPostAdapter extends RecyclerView.Adapter<RestaurantPostAd
         }
 
         public void setData(RestaurantModel foodRestaurant) {
-            if (foodRestaurant.getPic().size()>0) {
+            if (foodRestaurant.getPic().size() > 0) {
                 Glide.with(context).load(foodRestaurant.getPic().get(0)).error(R.drawable.lau).thumbnail(0.3f).into(binding.imageViewRestaurant);
             }
-            if (foodRestaurant.getPromotionRes().size()>0) {
-                binding.textViewRestaurantName.setText(String.format("%s: %s",foodRestaurant.getName(),foodRestaurant.getPromotionRes().get(0).getName()));
-                binding.textViewPromotion.setText(String.format("-%s%%", foodRestaurant.getPromotionRes().get(0).getValue()));
-                binding.textViewPromotion.setVisibility(View.VISIBLE);
-            }else {
+            if (foodRestaurant.getPromotionRes().size() > 0) {
+                binding.textViewRestaurantName.setText(String.format("%s: %s", foodRestaurant.getName(), foodRestaurant.getPromotionRes().get(0).getName()));
+            } else {
                 binding.textViewRestaurantName.setText(foodRestaurant.getName());
-                binding.textViewPromotion.setVisibility(View.GONE);
             }
 
+            binding.textViewPromotion.setText(foodRestaurant.getPromotion());
+
             binding.ratingBar.setRating(Float.valueOf(foodRestaurant.getRateTotal()));
-            binding.ratingBar.setRating(4.5f);
+
             binding.textViewRestaurantAddress.setText(String.format("%s %s %s", foodRestaurant.getLine(), foodRestaurant.getDistrict(), foodRestaurant.getCity()));
             binding.getRoot().setOnClickListener(v -> {
                 restaurantPostListener.onRestaurantPostClicked(foodRestaurant);

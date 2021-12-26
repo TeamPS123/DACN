@@ -47,7 +47,6 @@ import com.psteam.foodlocation.models.PromotionModel;
 import com.psteam.foodlocation.models.SliderItem;
 import com.psteam.foodlocation.socket.setupSocket;
 import com.psteam.foodlocation.ultilities.Constants;
-import com.psteam.foodlocation.ultilities.LoadingDialog;
 import com.psteam.foodlocation.ultilities.Para;
 import com.psteam.foodlocation.ultilities.PreferenceManager;
 import com.psteam.foodlocation.ultilities.Token;

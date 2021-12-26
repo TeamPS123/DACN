@@ -108,46 +108,17 @@
                         android:layout_weight="1"
                         android:orientation="vertical">
 
-
-
-                        <LinearLayout
+                        <TextView
+                            android:id="@+id/textViewRestaurantName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_8sdp"
-                            android:layout_marginBottom="@dimen/_4sdp"
-                            android:orientation="horizontal">
-                            <TextView
-                                android:id="@+id/textViewRestaurantName"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:ellipsize="end"
-                                android:maxLines="1"
-                                android:text="Tên nhà hàng"
-                                android:textColor="#000000"
-                                android:textSize="@dimen/_12ssp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:id="@+id/textViewDirections"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_marginEnd="@dimen/_2sdp"
-                                android:layout_marginStart="@dimen/_12sdp"
-                                android:background="@drawable/background_button_guide"
-                                android:backgroundTint="#1A73E8"
-                                android:drawableLeft="@drawable/ic_directions"
-                                android:drawablePadding="@dimen/_3sdp"
-                                android:gravity="center_vertical"
-                                android:minHeight="0dp"
-                                android:paddingHorizontal="@dimen/_6sdp"
-                                android:paddingVertical="@dimen/_2sdp"
-                                android:text="Đường đi"
-                                android:textColor="@color/white"
-                                android:textSize="@dimen/_8ssp"
-                                android:textStyle="bold" />
-
-                        </LinearLayout>
+                            android:layout_weight="1"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text="Tên nhà hàng"
+                            android:textColor="#000000"
+                            android:textSize="@dimen/_12ssp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/textViewRestaurantAddress"
@@ -230,7 +201,24 @@
                                 android:textSize="@dimen/_10ssp"
                                 android:textStyle="bold" />
 
-
+                            <TextView
+                                android:id="@+id/textViewDirections"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="@dimen/_12sdp"
+                                android:layout_marginEnd="@dimen/_2sdp"
+                                android:background="@drawable/background_button_guide"
+                                android:backgroundTint="#1A73E8"
+                                android:drawableLeft="@drawable/ic_directions"
+                                android:drawablePadding="@dimen/_3sdp"
+                                android:gravity="center_vertical"
+                                android:minHeight="0dp"
+                                android:paddingHorizontal="@dimen/_6sdp"
+                                android:paddingVertical="@dimen/_2sdp"
+                                android:text="Đường đi"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_8ssp"
+                                android:textStyle="bold" />
 
                         </LinearLayout>
 
@@ -245,13 +233,13 @@
                 android:id="@+id/layoutProgressBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingVertical="@dimen/_4sdp"
-                android:paddingHorizontal="@dimen/_16sdp"
-                android:background="@drawable/background_loading_progressbar"
-                android:orientation="vertical"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginHorizontal="@dimen/_12sdp"
                 android:layout_marginBottom="@dimen/_8sdp"
-                android:layout_gravity="center_horizontal"
+                android:background="@drawable/background_loading_progressbar"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/_16sdp"
+                android:paddingVertical="@dimen/_4sdp"
                 android:visibility="gone">
 
                 <ProgressBar
@@ -260,15 +248,16 @@
                     android:layout_height="@dimen/_25sdp"
                     android:layout_gravity="center"
                     android:visibility="visible" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_4sdp"
-                    android:text="Đang lấy thông tin"
                     android:gravity="center_horizontal"
+                    android:text="Đang lấy thông tin"
+                    android:textColor="#868686"
                     android:textSize="@dimen/_11ssp"
-                    android:textStyle="bold"
-                    android:textColor="#868686"/>
+                    android:textStyle="bold" />
 
             </LinearLayout>
 

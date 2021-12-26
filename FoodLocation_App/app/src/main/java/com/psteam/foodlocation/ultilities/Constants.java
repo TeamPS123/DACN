@@ -46,6 +46,8 @@ public class Constants {
 
     public static final String EXPIRES = "expires";
     public static final String TAG_RESTAURANT_RECENT = "TAG_RESTAURANT_RECENT";
+    public static final String TAG_NOTIFICATION = "TAG_NOTIFICATION";
+    public static final String TAG_NOTIFICATION_SUCCESS = "TAG_NOTIFICATION";
     public static final String TAG_DISTANCE = "TAG_DISTANCE";
     public static final String TAG_DAY_RECOMMEND = "TAG_DAY_RECOMMEND";
 

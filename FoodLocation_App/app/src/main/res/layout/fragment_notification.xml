@@ -72,19 +72,22 @@
             app:layout_constraintEnd_toEndOf="parent"/>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycleView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/_16sdp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:clipChildren="false"
+            android:clipToPadding="false"
             android:orientation="vertical"
             android:overScrollMode="never"
             android:scrollbars="none"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            app:layout_constraintTop_toBottomOf="@id/textViewSort"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/textViewSort"
+            app:layout_constraintVertical_bias="0.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

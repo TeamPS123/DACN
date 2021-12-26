@@ -247,6 +247,7 @@
                 android:layout_marginEnd="@dimen/_12sdp"
                 android:text="2 chia sẻ"
                 android:textSize="@dimen/_10ssp"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@id/iconHeart"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/iconHeart" />
@@ -256,7 +257,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginHorizontal="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_16sdp"
                 android:background="@color/ColorLine"
                 app:layout_constraintTop_toBottomOf="@id/textViewCountShare" />
 
@@ -283,7 +284,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Thả tim"
-
                     android:layout_marginStart="@dimen/_4sdp"
                     android:textSize="@dimen/_10ssp"
                     android:textStyle="bold"

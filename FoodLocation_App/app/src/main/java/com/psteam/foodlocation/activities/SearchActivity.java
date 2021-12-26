@@ -205,8 +205,7 @@ public class SearchActivity extends AppCompatActivity implements SearchRestauran
         binding.textviewSort.setOnClickListener(v -> {
             Collections.sort(restaurantModels, new Comparator<RestaurantModel>() {
                 @Override
-                public int compare(RestaurantModel lhs, RestaurantModel rhs) {
-                    // -1 - less than, 1 - greater than, 0 - equal, all inversed for descending
+                public int compare(RestaurantModel rhs, RestaurantModel lhs) {
                     return Double.parseDouble(lhs.getDistance()) > Double.parseDouble(rhs.getDistance()) ? -1 : (Double.parseDouble(lhs.getDistance()) < Double.parseDouble(rhs.getDistance())) ? 1 : 0;
                 }
             });

@@ -48,9 +48,11 @@ import com.psteam.foodlocation.ultilities.PreferenceManager;
 import com.psteam.foodlocation.ultilities.Token;
 import com.psteam.lib.Services.ServiceAPI;
 import com.psteam.lib.modeluser.CommentModel;
+import com.psteam.lib.modeluser.GetCommentAndLikeReview;
 import com.psteam.lib.modeluser.GetResInfo;
 import com.psteam.lib.modeluser.RestaurantModel;
 import com.psteam.lib.modeluser.ReviewModel;
+import com.psteam.lib.modeluser.UserLike;
 import com.psteam.lib.modeluser.message;
 import com.squareup.picasso.Picasso;
 
@@ -68,6 +70,7 @@ public class ReviewDetailsActivity extends AppCompatActivity {
 
     private ActivityReviewDetailsBinding binding;
     private ArrayList<String> images;
+    private ArrayList<UserLike> userLikes;
     private PhotoReviewAdapter reviewAdapter;
     private PreferenceManager preferenceManager;
     private Token token;
@@ -91,9 +94,11 @@ public class ReviewDetailsActivity extends AppCompatActivity {
         setFullScreen();
         images = new ArrayList<>();
         comments = new ArrayList<>();
+        userLikes = new ArrayList<>();
         getDataIntent();
         initImageAdapter();
         initComment();
+        GetCommentAndLike(reviewModel.getId(), 0, 100);
     }
 
     private void initComment() {
@@ -115,7 +120,7 @@ public class ReviewDetailsActivity extends AppCompatActivity {
                     commentAdapter.notifyItemInserted(0);
                     binding.inputComment.setText(null);
                     binding.inputComment.clearFocus();
-                    if(!Para.flagComment)
+                    if (!Para.flagComment)
                         Para.flagComment = true;
                 }
             }
@@ -132,20 +137,20 @@ public class ReviewDetailsActivity extends AppCompatActivity {
         if (bundle != null) {
             reviewModel = (ReviewModel) bundle.getSerializable("reviewModel");
             images.addAll(reviewModel.getImgList());
-            comments = reviewModel.getComments();
+            //comments = reviewModel.getComments();
             Picasso.get().load(reviewModel.getImageUser()).into(binding.imageViewIconUser);
             binding.textViewContent.setText(reviewModel.getContent());
             binding.textViewUserFullName.setText(reviewModel.getUserName());
             binding.textViewUserLike.setText(reviewModel.getUserName());
             GetResInfo(reviewModel.getRestaurantId());
 
-            if(reviewModel.checkUserLike(preferenceManager.getString(Constants.USER_ID))){
+            /*if (reviewModel.checkUserLike(preferenceManager.getString(Constants.USER_ID))) {
                 binding.iconHeartLike.setImageResource(R.drawable.heart);
                 binding.iconHeartLike.setTag("Like");
-            }else {
+            } else {
                 binding.iconHeartLike.setImageResource(R.drawable.heart_small);
                 binding.iconHeartLike.setTag("DisLike");
-            }
+            }*/
         }
     }
 
@@ -238,16 +243,12 @@ public class ReviewDetailsActivity extends AppCompatActivity {
         });
 
         binding.textViewLike.setOnClickListener(v -> {
-
-
-            likeOrDislike(preferenceManager.getString(Constants.USER_ID),reviewModel.getId());
+            likeOrDislike(preferenceManager.getString(Constants.USER_ID), reviewModel.getId());
         });
 
         binding.textViewClose.setOnClickListener(v -> {
             finish();
         });
-
-
     }
 
     AlertDialog alertDialog;
@@ -293,9 +294,61 @@ public class ReviewDetailsActivity extends AppCompatActivity {
         });
     }
 
+    private void GetCommentAndLike(String reviewId, int skip, int take) {
+        ServiceAPI serviceAPI = getRetrofit().create(ServiceAPI.class);
+        Call<GetCommentAndLikeReview> call = serviceAPI.GetCommentAndLike(reviewId, skip, take);
+        call.enqueue(new Callback<GetCommentAndLikeReview>() {
+            @Override
+            public void onResponse(Call<GetCommentAndLikeReview> call, Response<GetCommentAndLikeReview> response) {
+                if (response.body() != null && response.body().getStatus().equals("1")) {
+                    comments.clear();
+                    comments.addAll(response.body().getComments());
+                    userLikes.addAll(response.body().getGetlike());
+                    commentAdapter.notifyDataSetChanged();
+                    Boolean checkLike = false;
+                    for (UserLike userLike : response.body().getGetlike()) {
+                        if (preferenceManager.getString(Constants.USER_ID).equals(userLike.getUserId())) {
+                            binding.iconHeartLike.setImageResource(R.drawable.heart);
+                            binding.iconHeartLike.setTag("Like");
+                            checkLike = true;
+                            break;
+                        }
+                    }
+
+                    if (checkLike) {
+                        if ((response.body().getGetlike() != null && response.body().getGetlike().size() == 1))
+                            binding.textViewUserLike.setText("Bạn đã thả tim bài viết này");
+                        else
+                            binding.textViewUserLike.setText(String.format("Bạn và %d người khác đã thả tim bài viết này", response.body().getGetlike().size() - 1));
+                    } else {
+                        if (response.body().getGetlike() != null && response.body().getGetlike().size() != 0 &&
+                                response.body().getGetlike().size() > 2)
+                            binding.textViewUserLike.setText(String.format("%d người đã thả tim bài viết này",
+                                    response.body().getGetlike().size() - 1));
+                        else if (response.body().getGetlike() != null && response.body().getGetlike().size() != 0) {
+                            binding.textViewUserLike.setText(String.format("%d người đã thả tim bài viết này",userLikes.size()));
+                        } else {
+                            binding.textViewUserLike.setText("Hãy là người thả tim đầu tiên nào");
+                        }
+                    }
+
+                    if (!checkLike) {
+                        binding.iconHeartLike.setImageResource(R.drawable.heart_small);
+                        binding.iconHeartLike.setTag("DisLike");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetCommentAndLikeReview> call, Throwable t) {
+                Log.d("Tag", t.getMessage());
+            }
+        });
+    }
+
     private void likeOrDislike(String userId, String reviewId) {
         ServiceAPI serviceAPI = getRetrofit().create(ServiceAPI.class);
-        Call<message> call = serviceAPI.likeOrDislike(token.getToken(),userId, reviewId);
+        Call<message> call = serviceAPI.likeOrDislike(token.getToken(), userId, reviewId);
         call.enqueue(new Callback<message>() {
             @Override
             public void onResponse(Call<message> call, Response<message> response) {
@@ -303,18 +356,32 @@ public class ReviewDetailsActivity extends AppCompatActivity {
                     if (binding.iconHeartLike.getTag().equals("DisLike")) {
                         binding.iconHeartLike.setImageResource(R.drawable.heart);
                         binding.iconHeartLike.setTag("Like");
+                        if ((userLikes != null && userLikes.size() == 0))
+                            binding.textViewUserLike.setText("Bạn đã thả tim bài viết này");
+                        else
+                            binding.textViewUserLike.setText(String.format("Bạn và %d người khác đã thả tim bài viết này", userLikes.size()));
                     } else {
                         binding.iconHeartLike.setImageResource(R.drawable.heart_small);
                         binding.iconHeartLike.setTag("DisLike");
+
+                        if (userLikes != null && userLikes.size() != 0 &&
+                                userLikes.size() > 2)
+                            binding.textViewUserLike.setText(String.format("%d người đã thả tim bài viết này",
+                                    userLikes.size() - 1));
+                        else if (userLikes != null && userLikes.size() == 1) {
+                            binding.textViewUserLike.setText(String.format("%d người đã thả tim bài viết này",userLikes.size()));
+                        } else {
+                            binding.textViewUserLike.setText("Hãy là người thả tim đầu tiên nào");
+                        }
                     }
-                    Para.flagComment=true;
-                    Log.d("Log:","Thành công");
+                    Para.flagComment = true;
+                    Log.d("Log:", "Thành công");
                 }
             }
 
             @Override
             public void onFailure(Call<message> call, Throwable t) {
-                Log.d("Log:",t.getMessage());
+                Log.d("Log:", t.getMessage());
             }
         });
     }

@@ -10,8 +10,10 @@ import androidx.core.app.NotificationCompat;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.psteam.foodlocation.R;
+import com.psteam.foodlocation.activities.MainActivity;
 import com.psteam.foodlocation.activities.UserReserveTableDetailsActivity;
 import com.psteam.foodlocation.socket.models.BodySenderFromRes;
+import com.psteam.foodlocation.ultilities.CustomToast;
 
 public class ServiceFCM extends FirebaseMessagingService {
     @Override
@@ -36,9 +38,9 @@ public class ServiceFCM extends FirebaseMessagingService {
 
         //create a pending intent
         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
-
+        MainActivity.updateNotification(response.getReserveTableId());
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "notification_channel")
-                .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
+                .setSmallIcon(R.drawable.icon_tasty)
                 .setContentTitle(title)
                 .setContentText(message)
                 .setContentIntent(pendingIntent);

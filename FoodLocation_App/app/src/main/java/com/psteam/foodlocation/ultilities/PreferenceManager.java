@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
+import com.psteam.foodlocation.adapters.NotificationAdapter;
 import com.psteam.lib.modeluser.RestaurantModel;
 
 import java.lang.reflect.Type;
@@ -52,9 +53,34 @@ public class PreferenceManager {
                 restaurantModels.removeAll(restaurantModels.subList(10, restaurantModels.size()));
             }
         }
-
-
         putListRestaurant(Constants.TAG_RESTAURANT_RECENT, restaurantModels);
+    }
+
+    public void AddNotification(NotificationAdapter.Notification notification) {
+        ArrayList<NotificationAdapter.Notification>  notifications= getListNotification(Constants.TAG_NOTIFICATION);
+        if (notifications == null) {
+            notifications = new ArrayList<>();
+        }
+
+        notifications.add(0, notification);
+        putListNotification(Constants.TAG_NOTIFICATION, notifications);
+    }
+
+    public ArrayList<NotificationAdapter.Notification> getListNotification(String key) {
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString(key, null);
+        Type type = new TypeToken<ArrayList<NotificationAdapter.Notification>>() {
+        }.getType();
+        ArrayList<NotificationAdapter.Notification> obj = gson.fromJson(json, type);
+        return obj;
+    }
+
+    public void putListNotification(String key, ArrayList<NotificationAdapter.Notification> notifications) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(notifications);
+        editor.putString(key, json);
+        editor.commit();
     }
 
     public boolean CheckRes(ArrayList<RestaurantModel> restaurantModels, String resId) {

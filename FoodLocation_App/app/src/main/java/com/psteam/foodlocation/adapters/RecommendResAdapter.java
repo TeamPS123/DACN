@@ -62,24 +62,30 @@ public class RecommendResAdapter extends RecyclerView.Adapter<RecommendResAdapte
         public void setData(RestaurantModel restaurantModel) {
             Picasso.get().load(restaurantModel.getMainPic()).into(binding.imageView);
             binding.textViewName.setText(String.format("%s - %s", restaurantModel.getName(), restaurantModel.getLine()));
-            binding.textViewContent.setText(String.format("Bạn đã không đến %s đã 14 ngày hãy nhấn vào để xem nhà hàng có khuyến mãi gì mới không nào!", restaurantModel.getName()));
-            if (restaurantModel.getPromotionRes() != null && restaurantModel.getPromotionRes().size() > 0)
-                binding.textViewPromotion.setText(String.format("-%s%%", restaurantModel.getPromotionRes().get(0).getValue()));
-            else
-                binding.textViewPromotion.setText(String.format("%s", "Đặt bàn"));
-
+            binding.textViewPromotion.setText(restaurantModel.getPromotion());
 
             binding.getRoot().setOnClickListener(v -> {
                 recommendResListeners.onClick(restaurantModel);
             });
 
-            binding.layoutContainer.setBackground(context.getDrawable(R.drawable.background_radius_recommend_1));
+            if(restaurantModel.getType().equals("1")){
+                binding.textViewFlag.setText("Nơi bạn từng đến");
+                binding.textViewContent.setText(String.format("Bạn đã không đến %s đã %d ngày hãy nhấn vào để xem nhà hàng có khuyến mãi gì mới không nào!", restaurantModel.getName(),14));
+            }else if(restaurantModel.getType().equals("2")) {
+                binding.textViewFlag.setText("Đặt nhiều nhất");
+                binding.textViewContent.setText(String.format("%s có số lượng đạt bàn nhiều nhất trong tháng này, còn chờ gì nữa hãy đến với %s trải nghiệm ngay nào!", restaurantModel.getName(),restaurantModel.getName()));
+            }else{
+                binding.textViewFlag.setText("Nổi bật");
+                binding.textViewContent.setText(String.format("Hãy đến %s, %s trải nghiệm ngay nào!",restaurantModel.getName(),restaurantModel.getLine()));
+            }
+
+           /* binding.layoutContainer.setBackground(context.getDrawable(R.drawable.background_radius_recommend_1));
             binding.textViewPromotion.setTextColor(context.getColor(R.color.white));
             setTextViewDrawableColor(binding.textViewPromotion, R.color.white);
 
             binding.textViewName.setTextColor(context.getColor(R.color.white));
             binding.textViewContent.setTextColor(context.getColor(R.color.white));
-            binding.viewSupport.setBackground(context.getDrawable(R.drawable.line_radius_1));
+            binding.viewSupport.setBackground(context.getDrawable(R.drawable.line_radius_1));*/
 
         }
 

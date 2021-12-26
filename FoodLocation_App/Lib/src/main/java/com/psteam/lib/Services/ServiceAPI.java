@@ -3,6 +3,7 @@ package com.psteam.lib.Services;
 import com.psteam.lib.Models.reserveTableDetail.messageReserveTable;
 import com.psteam.lib.modeluser.CreateReviewModel;
 import com.psteam.lib.modeluser.GetCategoryResModel;
+import com.psteam.lib.modeluser.GetCommentAndLikeReview;
 import com.psteam.lib.modeluser.GetMenuResModel;
 import com.psteam.lib.modeluser.GetResInfo;
 import com.psteam.lib.modeluser.GetReserveTableInput;
@@ -122,7 +123,13 @@ public interface ServiceAPI {
     @GET("api/likeReview")
     Call<message> likeOrDislike(@Header("Authorization") String token, @Query("userId") String userId, @Query("reviewId") String reviewId);
 
+    @GET("api/getStatisticResWithUser")
+    Call<message> getCountReserveTable(@Query("restaurantId") String restaurantId);
+
     @POST("api/getRes_Suggest")
     Call<GetRestaurantModel> GetSuggestRes(@Body InputSuggestRes inputSuggestRes);
+
+    @GET("api/getLikeAndComment")
+    Call<GetCommentAndLikeReview> GetCommentAndLike(@Query("reviewId") String reviewId, @Query("skip") int skip, @Query("take") int take);
 
 }

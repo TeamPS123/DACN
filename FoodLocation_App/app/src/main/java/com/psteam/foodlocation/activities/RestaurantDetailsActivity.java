@@ -62,6 +62,7 @@ import com.psteam.lib.modeluser.GetReviewModel;
 import com.psteam.lib.modeluser.Rate;
 import com.psteam.lib.modeluser.RestaurantModel;
 import com.psteam.lib.modeluser.UserModel;
+import com.psteam.lib.modeluser.message;
 import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
@@ -128,7 +129,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
     }
 
     private void init() {
-        LoadingDialog.show(RestaurantDetailsActivity.this,LoadingDialog.Back);
+        LoadingDialog.show(RestaurantDetailsActivity.this, LoadingDialog.Back);
         rates = new ArrayList<>();
         tempRates = new ArrayList<>();
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -138,6 +139,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
         setFullScreen();
         //initFoodRestaurant();
         getDataIntent();
+
         preferenceManager.AddRestaurant(restaurantModel);
     }
 
@@ -169,8 +171,8 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
                     } else {
                         binding.layout11.setVisibility(View.GONE);
                         binding.textViewReviewCount.setText("Hãy là người đầu tiên trải nghiệm");
-                        binding.ratingBar.setVisibility(View.GONE);
-                        binding.textViewRatingValue.setVisibility(View.GONE);
+                        binding.ratingBar.setRating(Float.valueOf(response.body().getRateTotal()));
+                        binding.textViewRatingValue.setText("");
                     }
                 }
             }
@@ -209,12 +211,11 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
     private void setData() {
         if (restaurantModel == null && restaurantModel.getPromotionRes().size() > 0) {
             binding.textViewRestaurantName.setText(String.format("%s: %s", restaurantModel.getName(), restaurantModel.getPromotionRes().get(0).getName()));
-            binding.textViewPromotion.setText(String.format("-%s%%", restaurantModel.getPromotionRes().get(0).getValue()));
-            binding.textViewPromotion.setVisibility(View.VISIBLE);
         } else {
             binding.textViewRestaurantName.setText(restaurantModel.getName());
-            binding.textViewPromotion.setVisibility(View.GONE);
+
         }
+        binding.textViewPromotion.setText(restaurantModel.getPromotion());
         binding.textRestaurantName.setText(restaurantModel.getName());
         binding.textViewCategory.setText(restaurantModel.getCategoryResStr());
 
@@ -266,7 +267,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
         } else {
             binding.textViewChooseDate.setText(String.format("%s", today.format(DateTimeFormatter.ofPattern("EEEE, dd/MM/yyyy", new Locale("vi", "VN")))));
         }
-
+        getCountReserveTable(restaurantModel.getRestaurantId());
 
     }
 
@@ -691,6 +692,32 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
             @Override
             public void onFailure(Call<DirectionResponses> call, Throwable t) {
                 Log.e("TAG:", t.getLocalizedMessage());
+            }
+        });
+    }
+
+
+    private void getCountReserveTable(String restaurantId) {
+
+        com.psteam.lib.Services.ServiceAPI serviceAPI = getRetrofit().create(com.psteam.lib.Services.ServiceAPI.class);
+        Call<message> call = serviceAPI.getCountReserveTable(restaurantId);
+        call.enqueue(new Callback<message>() {
+            @Override
+            public void onResponse(Call<message> call, Response<message> response) {
+                if (response.body() != null && response.body().getStatus().equals("1")) {
+                    if (!response.body().getId().equals("0"))
+                        binding.textViewCountBookTable.setText(response.body().getId());
+                    else {
+                        binding.textViewCountBookTableTextBefore.setText("Trở thành người đầu tiên đặt bàn hôm nay");
+                        binding.textViewCountBookTable.setVisibility(View.GONE);
+                        binding.textViewCountBookTableTextAfter.setVisibility(View.GONE);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<message> call, Throwable t) {
+                Log.d("Log:", t.getMessage());
             }
         });
     }

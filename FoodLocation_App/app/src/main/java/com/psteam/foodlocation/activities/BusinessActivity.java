@@ -2,14 +2,12 @@ package com.psteam.foodlocation.activities;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 
 import android.util.Log;
 
-import android.view.MenuItem;
 
 import android.view.View;
 import android.view.Window;
@@ -29,10 +27,8 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.gson.Gson;
 import com.psteam.foodlocation.R;
 import com.psteam.foodlocation.databinding.ActivityBusinessBinding;
-import com.psteam.foodlocation.socket.models.User;
 import com.psteam.foodlocation.socket.setupSocket;
 
 import org.json.JSONObject;
@@ -136,35 +132,6 @@ public class BusinessActivity extends AppCompatActivity {
                     }
                 });
     }
-//
-//    // get device token from FCM
-//    public void getToken(String user){
-//        FirebaseMessaging.getInstance().getToken()
-//                .addOnCompleteListener(new OnCompleteListener<String>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<String> task) {
-//                        if (!task.isSuccessful()) {
-//                            Log.e("notification_getToken", "Fetching FCM registration token failed", task.getException());
-//                            return;
-//                        }
-//
-//                        // Get new FCM registration token
-//                        deviceId = task.getResult();
-//
-//                        Gson gson = new Gson();
-//                        User user1 = new User("user", deviceId);
-//                        mSocket.emit("login", gson.toJson(user1));
-//                        // Log and toast
-//                        Log.e("notification_getToken", deviceId);
-//
-//                    }
-//                });
-//    }
-//
-//    //socket.io
-//    private void signIn(String user){
-//        getToken(user);
-//    }
 
     private final Emitter.Listener onLogin = new Emitter.Listener() {
         @Override
