@@ -13,6 +13,7 @@ import com.psteam.lib.modeluser.GetRestaurantModel;
 import com.psteam.lib.modeluser.GetReviewModel;
 import com.psteam.lib.modeluser.GetReviewRestaurantModel;
 import com.psteam.lib.modeluser.GetUserReserveTableModel;
+import com.psteam.lib.modeluser.InputSuggestRes;
 import com.psteam.lib.modeluser.InsertRateModel;
 import com.psteam.lib.modeluser.InsertReserveFoodModel;
 import com.psteam.lib.modeluser.InsertReserveTableModel;
@@ -120,4 +121,8 @@ public interface ServiceAPI {
 
     @GET("api/likeReview")
     Call<message> likeOrDislike(@Header("Authorization") String token, @Query("userId") String userId, @Query("reviewId") String reviewId);
+
+    @POST("api/getRes_Suggest")
+    Call<GetRestaurantModel> GetSuggestRes(@Body InputSuggestRes inputSuggestRes);
+
 }

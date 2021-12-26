@@ -57,6 +57,7 @@ import com.psteam.lib.modeluser.GetCategoryResModel;
 import com.psteam.lib.modeluser.GetInfoUser;
 import com.psteam.lib.modeluser.GetRestaurantByDistance;
 import com.psteam.lib.modeluser.GetRestaurantModel;
+import com.psteam.lib.modeluser.InputSuggestRes;
 import com.psteam.lib.modeluser.RestaurantModel;
 import com.psteam.lib.modeluser.UserModel;
 import com.squareup.picasso.Picasso;
@@ -84,6 +85,7 @@ public class MainFragment extends Fragment implements CategoryListener, Restaura
 
     private RestaurantPostAdapter restaurantPostAdapter;
     private RecommendResAdapter recommendResAdapter;
+    private ArrayList<RestaurantModel> restaurantSuggest;
 
     private ResultReceiver resultReceiver;
     private UserModel user;
@@ -115,6 +117,7 @@ public class MainFragment extends Fragment implements CategoryListener, Restaura
         textViewName = binding.navigationView.getHeaderView(0).findViewById(R.id.textViewName);
         imageUserView = binding.navigationView.getHeaderView(0).findViewById(R.id.imageUserView);
         restaurantModels = new ArrayList<>();
+        restaurantSuggest=new ArrayList<>();
         //checkSelfPermission();
         GetInfo(preferenceManager.getString(Constants.USER_ID));
         initSliderImage();
@@ -135,6 +138,7 @@ public class MainFragment extends Fragment implements CategoryListener, Restaura
         }
 
         GetRestaurantByDistance(new GetRestaurantByDistance(distance, "10.803312745723506", "106.71158641576767"));
+        GetRestaurantSuggest(new InputSuggestRes(distance,"10.803312745723506",preferenceManager.getString(Constants.USER_ID),"106.71158641576767",day_recommend));
         binding.textviewCurrentLocation.setText(Para.currentUserAddress);
         binding.textTitle.setText(String.format("Các địa điểm ở %s", Para.currentCity));
     }
@@ -145,7 +149,7 @@ public class MainFragment extends Fragment implements CategoryListener, Restaura
             public void onClick(RestaurantModel restaurantModel) {
 
             }
-        }, restaurantModels, getContext());
+        }, restaurantSuggest, getContext());
 
 
         binding.viewPagerSliderRestaurant.setAdapter(recommendResAdapter);
@@ -383,21 +387,6 @@ public class MainFragment extends Fragment implements CategoryListener, Restaura
     private ChooseCityBottomSheetFragment chooseCityBottomSheetFragment;
     private ArrayList<ChooseCityAdapter.City> cities;
 
-    private void clickOpenBottomSheetChooseCityFragment() {
-        cities = new ArrayList<>();
-        cities.add(new ChooseCityAdapter.City("Tp.Hồ Chí Minh", "79"));
-        cities.add(new ChooseCityAdapter.City("Hà Nội", "1"));
-        cities.add(new ChooseCityAdapter.City("Lâm Đồng", "68"));
-        chooseCityBottomSheetFragment = new ChooseCityBottomSheetFragment(cities, new ChooseCityAdapter.ChooseCityListener() {
-            @Override
-            public void onChooseCityClicked(ChooseCityAdapter.City city) {
-                Para.cityCode = city.getCode();
-            }
-        });
-        chooseCityBottomSheetFragment.show(getActivity().getSupportFragmentManager(), chooseCityBottomSheetFragment.getTag());
-
-    }
-
     private void GetCategoryRes() {
         ServiceAPI serviceAPI = getRetrofit().create(ServiceAPI.class);
         Call<GetCategoryResModel> call = serviceAPI.GetCategoryRes();
@@ -410,7 +399,6 @@ public class MainFragment extends Fragment implements CategoryListener, Restaura
                     categoryAdapter = new CategoryAdapter(categoryModelArrayList, MainFragment.this::onCategoryClick, getContext());
                     binding.recycleViewCategory.setAdapter(categoryAdapter);
                 }
-
             }
 
             @Override
@@ -445,7 +433,28 @@ public class MainFragment extends Fragment implements CategoryListener, Restaura
         });
     }
 
+    private void GetRestaurantSuggest(InputSuggestRes inputSuggestRes) {
 
+        ServiceAPI serviceAPI = getRetrofit().create(ServiceAPI.class);
+        Call<GetRestaurantModel> call = serviceAPI.GetSuggestRes(inputSuggestRes);
+        call.enqueue(new Callback<GetRestaurantModel>() {
+            @Override
+            public void onResponse(Call<GetRestaurantModel> call, Response<GetRestaurantModel> response) {
+                if (response.body() != null && response.body().getStatus().equals("1")) {
+                    if (response.body().getResList().size() > 0) {
+                        restaurantSuggest.clear();
+                        restaurantSuggest.addAll(response.body().getResList());
+                        recommendResAdapter.notifyDataSetChanged();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetRestaurantModel> call, Throwable t) {
+                Log.d("Log:", t.getMessage());
+            }
+        });
+    }
 
     @Override
     public void onRestaurantPostClicked(RestaurantModel restaurantModel) {

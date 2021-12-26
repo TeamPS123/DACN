@@ -43,6 +43,10 @@ public class RestaurantModel implements Serializable, ClusterItem {
 
     private String mainPic;
 
+    private String countType;
+
+    private String type;
+
     private String openTime;
 
     private boolean status;
@@ -50,6 +54,22 @@ public class RestaurantModel implements Serializable, ClusterItem {
     private String statusCO;
 
     private String rateTotal;
+
+    public String getCountType() {
+        return countType;
+    }
+
+    public void setCountType(String countType) {
+        this.countType = countType;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public String getPhoneRes() {
         return phoneRes;

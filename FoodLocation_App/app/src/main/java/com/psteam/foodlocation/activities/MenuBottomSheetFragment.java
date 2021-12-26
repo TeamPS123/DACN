@@ -50,7 +50,6 @@ public class MenuBottomSheetFragment extends BottomSheetDialogFragment {
 
         View view = bottomSheetDialog.getLayoutInflater().inflate(R.layout.layout_menu_bottom_sheet, null);
 
-
         LinearLayout linearLayout = view.findViewById(R.id.root);
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) linearLayout.getLayoutParams();
         params.height = getScreenHeight();

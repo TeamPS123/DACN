@@ -73,6 +73,6 @@ public class setupSocket {
 
     //signout
     public static void signOut(){
-      //  mSocket.emit("signout");
+        mSocket.emit("signout");
     }
 }

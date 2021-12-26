@@ -191,7 +191,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void socket() {
         setupSocket.mSocket = mSocket;
-
         setupSocket.mSocket.connect();
         setupSocket.signIn(preferenceManager.getString(Constants.USER_ID));
     }
@@ -199,7 +198,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-
         setupSocket.mSocket.disconnect();
     }
 
@@ -209,7 +207,6 @@ public class MainActivity extends AppCompatActivity {
 
         //notification when come back activity
         setupSocket.mSocket.connect();
-
         setupSocket.reconnect(preferenceManager.getString(Constants.USER_ID), setupSocket.mSocket);
     }
 
