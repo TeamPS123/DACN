@@ -73,6 +73,7 @@ public class NotificationFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
         binding.recycleView.setAdapter(notificationAdapter);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(binding.recycleView);
