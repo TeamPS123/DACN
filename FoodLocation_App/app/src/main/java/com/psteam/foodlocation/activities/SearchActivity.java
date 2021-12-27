@@ -162,6 +162,8 @@ public class SearchActivity extends AppCompatActivity implements SearchRestauran
     }
 
     private static String AfterTextChange = "";
+    private static int distance;
+    private static String key_search;
 
     private void setListeners() {
         binding.buttonMap.setOnClickListener(v -> {
@@ -183,7 +185,6 @@ public class SearchActivity extends AppCompatActivity implements SearchRestauran
         binding.textviewDistrict.setOnClickListener(v -> {
             openDistrictDialog();
         });
-
 
         binding.inputSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -243,8 +244,6 @@ public class SearchActivity extends AppCompatActivity implements SearchRestauran
                             String trimNumber = "";
                             String strVoice = Objects.requireNonNull(data).get(0);
                             try {
-
-
                                 for (String s : stringKeyWordSearch) {
                                     if (strVoice.contains(s)) {
                                         checkSearch = true;
@@ -286,12 +285,14 @@ public class SearchActivity extends AppCompatActivity implements SearchRestauran
                             } catch (Exception e) {
                                 Log.d("Log:", e.getMessage());
                             }
-                            if (!trimNumber.isEmpty() && checkSearch)
-                                binding.inputSearch.setText(trimNumber.replaceAll("\\D+", ""));
-                            else {
-                                binding.inputSearch.setText(Objects.requireNonNull(data).get(0));
-                            }
+                            if (!trimNumber.isEmpty() && checkSearch) {
+                                distance = Integer.parseInt(trimNumber.replaceAll("\\D+", ""));
+                            } else
+                                distance = 0;
+                            key_search = Objects.requireNonNull(data).get(0);
+                            binding.inputSearch.setText(Objects.requireNonNull(data).get(0));
                             binding.inputSearch.clearFocus();
+                            Toast.makeText(getApplicationContext(), key_search, Toast.LENGTH_SHORT).show();
                         } else {
                             CustomToast.makeText(SearchActivity.this, "Thử lại sau", CustomToast.LENGTH_SHORT, CustomToast.WARNING).show();
                         }
@@ -310,16 +311,25 @@ public class SearchActivity extends AppCompatActivity implements SearchRestauran
                             public void run() {
                                 //Toast.makeText(getApplicationContext(), textChange, Toast.LENGTH_SHORT).show();
                                 loading(true);
-                                // getRestaurantBySearch(new GetRestaurantBySearch(district, category, textChange, String.valueOf(Para.longitude), String.valueOf(Para.latitude)));
-                                getRestaurantBySearch(new GetRestaurantBySearch(district, category, textChange, "10.803312745723506", "106.71158641576767"));
+                                if (distance != 0) {
+                                    getRestaurantBySearch(new GetRestaurantBySearch(district, category, key_search, "10.803312745723506", "106.71158641576767", distance));
+
+                                } else {
+                                    getRestaurantBySearch(new GetRestaurantBySearch(district, category, textChange, "10.803312745723506", "106.71158641576767", distance));
+                                }
+
                             }
                         });
                     }
-                } catch (InterruptedException e) {
+                } catch (
+                        InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-        }.start();
+        }.
+
+                start();
+
     }
 
     private AlertDialog dialog;
@@ -481,6 +491,9 @@ public class SearchActivity extends AppCompatActivity implements SearchRestauran
                         searchRestaurantAdapter.notifyDataSetChanged();
                         loading(false);
                     }
+                }
+                if(getRestaurantBySearch.getDistance()!=0){
+                    distance = 0;
                 }
             }
 

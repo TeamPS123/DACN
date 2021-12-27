@@ -11,6 +11,7 @@ import com.psteam.lib.modeluser.GetReserveTableSinge;
 import com.psteam.lib.modeluser.GetRestaurantByDistance;
 import com.psteam.lib.modeluser.GetRestaurantBySearch;
 import com.psteam.lib.modeluser.GetRestaurantModel;
+import com.psteam.lib.modeluser.GetReviewById;
 import com.psteam.lib.modeluser.GetReviewModel;
 import com.psteam.lib.modeluser.GetReviewRestaurantModel;
 import com.psteam.lib.modeluser.GetUserReserveTableModel;
@@ -131,5 +132,8 @@ public interface ServiceAPI {
 
     @GET("api/getLikeAndComment")
     Call<GetCommentAndLikeReview> GetCommentAndLike(@Query("reviewId") String reviewId, @Query("skip") int skip, @Query("take") int take);
+
+    @GET("api/getReview")
+    Call<GetReviewById> GetReviewById(@Query("reviewId") String reviewId);
 
 }

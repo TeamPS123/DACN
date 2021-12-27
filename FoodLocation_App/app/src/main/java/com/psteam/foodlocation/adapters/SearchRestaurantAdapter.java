@@ -65,7 +65,7 @@ public class SearchRestaurantAdapter extends RecyclerView.Adapter<SearchRestaura
         }
 
         public void setData(RestaurantModel restaurantModel) {
-            Glide.with(context).load(restaurantModel.getMainPic()).thumbnail(0.3f).into(binding.imageViewRestaurant);
+            Glide.with(context).load(restaurantModel.getMainPic()).thumbnail(0.3f).error(R.drawable.icon_tasty).into(binding.imageViewRestaurant);
 
             binding.textViewRestaurantAddress.setText(restaurantModel.getAddress());
             binding.textviewDistance.setText(String.valueOf(Math.round(Double.parseDouble(restaurantModel.getDistance()))));

@@ -156,7 +156,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     private void initSlider() {
 
-        restaurantModels.add(0, null);
         ResMapAdapter resMapAdapter = new ResMapAdapter(restaurantModels, new ResMapAdapter.ResMapListeners() {
             @Override
             public void onClick(RestaurantModel restaurantModel) {
@@ -558,10 +557,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     private void addItems() {
-        ArrayList<RestaurantModel> temp = new ArrayList<>();
-        temp.addAll(restaurantModels);
-        temp.remove(null);
-        mClusterManager.addItems(temp);
+
+        mClusterManager.addItems(restaurantModels);
     }
 
     private void getMyLocation() {

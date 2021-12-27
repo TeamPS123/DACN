@@ -18,6 +18,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -50,6 +51,7 @@ import com.psteam.lib.Services.ServiceAPI;
 import com.psteam.lib.modeluser.CommentModel;
 import com.psteam.lib.modeluser.GetCommentAndLikeReview;
 import com.psteam.lib.modeluser.GetResInfo;
+import com.psteam.lib.modeluser.GetReviewById;
 import com.psteam.lib.modeluser.RestaurantModel;
 import com.psteam.lib.modeluser.ReviewModel;
 import com.psteam.lib.modeluser.UserLike;
@@ -96,9 +98,7 @@ public class ReviewDetailsActivity extends AppCompatActivity {
         comments = new ArrayList<>();
         userLikes = new ArrayList<>();
         getDataIntent();
-        initImageAdapter();
-        initComment();
-        GetCommentAndLike(reviewModel.getId(), 0, 100);
+
     }
 
     private void initComment() {
@@ -134,24 +134,29 @@ public class ReviewDetailsActivity extends AppCompatActivity {
 
     private void getDataIntent() {
         Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
+        Uri uri = getIntent().getData();
+        if (bundle != null && bundle.getSerializable("reviewModel") != null) {
             reviewModel = (ReviewModel) bundle.getSerializable("reviewModel");
-            images.addAll(reviewModel.getImgList());
-            //comments = reviewModel.getComments();
-            Picasso.get().load(reviewModel.getImageUser()).into(binding.imageViewIconUser);
-            binding.textViewContent.setText(reviewModel.getContent());
-            binding.textViewUserFullName.setText(reviewModel.getUserName());
-            binding.textViewUserLike.setText(reviewModel.getUserName());
-            GetResInfo(reviewModel.getRestaurantId());
+            setData();
+        } else if (uri != null) {
+            String path = uri.toString();
+            String[] parameter = path.split("/");
+            GetReviewById(parameter[5]);
 
-            /*if (reviewModel.checkUserLike(preferenceManager.getString(Constants.USER_ID))) {
-                binding.iconHeartLike.setImageResource(R.drawable.heart);
-                binding.iconHeartLike.setTag("Like");
-            } else {
-                binding.iconHeartLike.setImageResource(R.drawable.heart_small);
-                binding.iconHeartLike.setTag("DisLike");
-            }*/
         }
+    }
+
+    private void setData() {
+        images.addAll(reviewModel.getImgList());
+        //comments = reviewModel.getComments();
+        Picasso.get().load(reviewModel.getImageUser()).into(binding.imageViewIconUser);
+        binding.textViewContent.setText(reviewModel.getContent());
+        binding.textViewUserFullName.setText(reviewModel.getUserName());
+        binding.textViewUserLike.setText(reviewModel.getUserName());
+        GetResInfo(reviewModel.getRestaurantId());
+        initImageAdapter();
+        initComment();
+        GetCommentAndLike(reviewModel.getId(), 0, 100);
     }
 
     private void setFullScreen() {
@@ -202,7 +207,7 @@ public class ReviewDetailsActivity extends AppCompatActivity {
                 shareIntent.setType("text/plain");
                 shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Tasty");
                 String shareMessage = String.format(" %s đã chia sẻ một đánh giá, trải nghiệm về nhà hàng %s", reviewModel.getUserName(), restaurantModel.getName());
-                shareMessage = shareMessage + " https://ps.covid21tsp.space/ShareReview/Code/" + reviewModel.getUserId();
+                shareMessage = shareMessage + " https://ps.covid21tsp.space/ShareReview/Code/" + reviewModel.getId();
                 shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
                 startActivity(Intent.createChooser(shareIntent, "choose one"));
             } catch (Exception e) {
@@ -260,6 +265,7 @@ public class ReviewDetailsActivity extends AppCompatActivity {
         builder.setCancelable(false);
         alertDialog = builder.create();
         layoutNotificationDialogBinding.textViewAccept.setOnClickListener(v -> {
+            CustomToast.makeText(getApplicationContext(), "Đã gửi", CustomToast.LENGTH_SHORT, CustomToast.SUCCESS).show();
             alertDialog.dismiss();
         });
 
@@ -294,6 +300,25 @@ public class ReviewDetailsActivity extends AppCompatActivity {
         });
     }
 
+    private void GetReviewById(String reviewId) {
+        ServiceAPI serviceAPI = getRetrofit().create(ServiceAPI.class);
+        Call<GetReviewById> call = serviceAPI.GetReviewById(reviewId);
+        call.enqueue(new Callback<GetReviewById>() {
+            @Override
+            public void onResponse(Call<GetReviewById> call, Response<GetReviewById> response) {
+                if (response.body() != null && response.body().getStatus().equals("1")) {
+                    reviewModel = response.body().getReview();
+                    setData();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetReviewById> call, Throwable t) {
+                Log.d("Tag", t.getMessage());
+            }
+        });
+    }
+
     private void GetCommentAndLike(String reviewId, int skip, int take) {
         ServiceAPI serviceAPI = getRetrofit().create(ServiceAPI.class);
         Call<GetCommentAndLikeReview> call = serviceAPI.GetCommentAndLike(reviewId, skip, take);
@@ -302,6 +327,7 @@ public class ReviewDetailsActivity extends AppCompatActivity {
             public void onResponse(Call<GetCommentAndLikeReview> call, Response<GetCommentAndLikeReview> response) {
                 if (response.body() != null && response.body().getStatus().equals("1")) {
                     comments.clear();
+                    userLikes.clear();
                     comments.addAll(response.body().getComments());
                     userLikes.addAll(response.body().getGetlike());
                     commentAdapter.notifyDataSetChanged();
@@ -326,7 +352,7 @@ public class ReviewDetailsActivity extends AppCompatActivity {
                             binding.textViewUserLike.setText(String.format("%d người đã thả tim bài viết này",
                                     response.body().getGetlike().size() - 1));
                         else if (response.body().getGetlike() != null && response.body().getGetlike().size() != 0) {
-                            binding.textViewUserLike.setText(String.format("%d người đã thả tim bài viết này",userLikes.size()));
+                            binding.textViewUserLike.setText(String.format("%d người đã thả tim bài viết này", userLikes.size()));
                         } else {
                             binding.textViewUserLike.setText("Hãy là người thả tim đầu tiên nào");
                         }
@@ -353,7 +379,7 @@ public class ReviewDetailsActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<message> call, Response<message> response) {
                 if (response.body() != null && response.body().getStatus().equals("1")) {
-                    if (binding.iconHeartLike.getTag().equals("DisLike")) {
+                    /*if (binding.iconHeartLike.getTag().equals("DisLike")) {
                         binding.iconHeartLike.setImageResource(R.drawable.heart);
                         binding.iconHeartLike.setTag("Like");
                         if ((userLikes != null && userLikes.size() == 0))
@@ -369,11 +395,12 @@ public class ReviewDetailsActivity extends AppCompatActivity {
                             binding.textViewUserLike.setText(String.format("%d người đã thả tim bài viết này",
                                     userLikes.size() - 1));
                         else if (userLikes != null && userLikes.size() == 1) {
-                            binding.textViewUserLike.setText(String.format("%d người đã thả tim bài viết này",userLikes.size()));
+                            binding.textViewUserLike.setText(String.format("%d người đã thả tim bài viết này", userLikes.size()));
                         } else {
                             binding.textViewUserLike.setText("Hãy là người thả tim đầu tiên nào");
                         }
-                    }
+                    }*/
+                    GetCommentAndLike(reviewId, 0, 100);
                     Para.flagComment = true;
                     Log.d("Log:", "Thành công");
                 }

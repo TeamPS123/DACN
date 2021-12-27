@@ -39,56 +39,81 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/layoutTop"
+        android:background="@color/background_color"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:background="@color/background_color">
+        app:layout_constraintTop_toBottomOf="@id/layoutTop">
 
         <TextView
             android:id="@+id/textViewSort"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:text="Mới nhất"
             android:textAllCaps="true"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginStart="@dimen/_12sdp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:textColor="@color/TextColorSub"
             android:textStyle="bold"
-            android:textColor="@color/TextColorSub"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/buttonClearAll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/_12sdp"
-            android:text="Xoá tất cả"
             android:drawableLeft="@drawable/ic_round_checklist_24"
             android:drawablePadding="@dimen/_4sdp"
-            android:gravity="center"
             android:drawableTint="@color/ColorTextSelected"
+            android:gravity="center"
+            android:text="Xoá tất cả"
             android:textColor="@color/ColorTextSelected"
             android:textSize="@dimen/_11ssp"
-            app:layout_constraintTop_toTopOf="@id/textViewSort"
             app:layout_constraintBottom_toBottomOf="@id/textViewSort"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/textViewSort" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycleView"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="@dimen/_16sdp"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            android:orientation="vertical"
-            android:overScrollMode="never"
-            android:scrollbars="none"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textViewSort"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toBottomOf="@id/textViewSort">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycleView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:orientation="vertical"
+                android:overScrollMode="never"
+                android:scrollbars="none"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/textViewEmptyNotification"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawableTop="@drawable/ic_round_notifications_off_24"
+                android:drawablePadding="@dimen/_4sdp"
+                android:drawableTint="@color/TextColorSub"
+                android:text="Không có thông báo nào"
+                android:textColor="@color/TextColorSub"
+                android:textSize="@dimen/_12ssp" />
+
+        </FrameLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

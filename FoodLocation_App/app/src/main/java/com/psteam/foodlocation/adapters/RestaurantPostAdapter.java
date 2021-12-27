@@ -71,6 +71,7 @@ public class RestaurantPostAdapter extends RecyclerView.Adapter<RestaurantPostAd
             binding.textViewPromotion.setText(foodRestaurant.getPromotion());
 
             binding.ratingBar.setRating(Float.valueOf(foodRestaurant.getRateTotal()));
+            binding.textViewCountReview.setText(foodRestaurant.getCountRate());
 
             binding.textViewRestaurantAddress.setText(String.format("%s %s %s", foodRestaurant.getLine(), foodRestaurant.getDistrict(), foodRestaurant.getCity()));
             binding.getRoot().setOnClickListener(v -> {

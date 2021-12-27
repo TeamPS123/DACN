@@ -25,7 +25,7 @@ import java.util.ArrayList;
 
 public class NotificationFragment extends Fragment {
 
-    private PreferenceManager preferenceManager;
+    private static PreferenceManager preferenceManager;
     private static ArrayList<NotificationAdapter.Notification> notifications;
     private static ArrayList<NotificationAdapter.Notification> tempNotifications;
     private static NotificationAdapter notificationAdapter;
@@ -48,6 +48,7 @@ public class NotificationFragment extends Fragment {
     }
 
     private void init() {
+        loading(true);
         preferenceManager = new PreferenceManager(getContext());
         notifications = new ArrayList<>();
         tempNotifications = new ArrayList<>();
@@ -57,6 +58,13 @@ public class NotificationFragment extends Fragment {
     private void initNotification() {
         notifications = preferenceManager.getListNotification(Constants.TAG_NOTIFICATION);
         tempNotifications = notifications;
+
+        if (notifications != null && notifications.size() > 0) {
+            binding.textViewEmptyNotification.setVisibility(View.GONE);
+        } else {
+            binding.textViewEmptyNotification.setVisibility(View.VISIBLE);
+        }
+
         notificationAdapter = new NotificationAdapter(notifications, new NotificationAdapter.NotificationListeners() {
             @Override
             public void onClicked(NotificationAdapter.Notification notification, int position) {
@@ -70,12 +78,15 @@ public class NotificationFragment extends Fragment {
         itemTouchHelper.attachToRecyclerView(binding.recycleView);
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecorator(getContext().getDrawable(R.drawable.divider));
         binding.recycleView.addItemDecoration(itemDecoration);
+        loading(false);
     }
 
     public static void addNotification(NotificationAdapter.Notification notification) {
-        notifications.add(0, notification);
-        tempNotifications.add(0, notification);
-        notificationAdapter.notifyItemInserted(0);
+        if (notifications != null && notification != null) {
+            notifications.add(0, notification);
+            tempNotifications.add(0, notification);
+            notificationAdapter.notifyItemInserted(0);
+        }
     }
 
     private void setListeners() {
@@ -113,4 +124,15 @@ public class NotificationFragment extends Fragment {
             notificationAdapter.notifyDataSetChanged();
         }
     }
+
+    private void loading(boolean Loading) {
+        if (Loading) {
+            binding.recycleView.setVisibility(View.GONE);
+            binding.progressBar.setVisibility(View.VISIBLE);
+        } else {
+            binding.recycleView.setVisibility(View.VISIBLE);
+            binding.progressBar.setVisibility(View.GONE);
+        }
+    }
+
 }

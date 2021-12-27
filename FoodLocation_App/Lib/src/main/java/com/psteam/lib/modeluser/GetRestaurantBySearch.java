@@ -13,6 +13,8 @@ public class GetRestaurantBySearch {
 
     private String lat;
 
+    private int distance;
+
     public ArrayList<String> getDistrictList() {
         return districtList;
     }
@@ -27,6 +29,14 @@ public class GetRestaurantBySearch {
 
     public void setCatelogyList(ArrayList<String> catelogyList) {
         this.catelogyList = catelogyList;
+    }
+
+    public int getDistance() {
+        return distance;
+    }
+
+    public void setDistance(int distance) {
+        this.distance = distance;
     }
 
     public String getName() {
@@ -53,11 +63,12 @@ public class GetRestaurantBySearch {
         this.lat = lat;
     }
 
-    public GetRestaurantBySearch(ArrayList<String> districtList, ArrayList<String> catelogyList, String name, String lon, String lat) {
+    public GetRestaurantBySearch(ArrayList<String> districtList, ArrayList<String> catelogyList, String name, String lon, String lat, int distance) {
         this.districtList = districtList;
         this.catelogyList = catelogyList;
         this.name = name;
         this.lon = lon;
         this.lat = lat;
+        this.distance = distance;
     }
 }

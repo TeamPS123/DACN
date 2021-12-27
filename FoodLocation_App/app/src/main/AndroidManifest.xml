@@ -38,7 +38,7 @@
 
                 <data
                     android:host="ps.covid21tsp.space"
-                    android:pathPrefix="/ShareReview"
+                    android:pathPrefix="/ShareReview/Code"
                     android:scheme="https" />
             </intent-filter>
         </activity>
@@ -131,7 +131,7 @@
 
                 <data
                     android:host="ps.covid21tsp.space"
-                    android:pathPrefix="/Share"
+                    android:pathPrefix="/Share/Code"
                     android:scheme="https" />
             </intent-filter>
         </activity>

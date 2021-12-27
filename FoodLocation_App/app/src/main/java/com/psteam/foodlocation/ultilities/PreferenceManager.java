@@ -57,7 +57,7 @@ public class PreferenceManager {
     }
 
     public void AddNotification(NotificationAdapter.Notification notification) {
-        ArrayList<NotificationAdapter.Notification>  notifications= getListNotification(Constants.TAG_NOTIFICATION);
+        ArrayList<NotificationAdapter.Notification> notifications = getListNotification(Constants.TAG_NOTIFICATION);
         if (notifications == null) {
             notifications = new ArrayList<>();
         }
@@ -67,15 +67,14 @@ public class PreferenceManager {
     }
 
     public void removeNotification(int notification) {
-        ArrayList<NotificationAdapter.Notification>  notifications= getListNotification(Constants.TAG_NOTIFICATION);
+        ArrayList<NotificationAdapter.Notification> notifications = getListNotification(Constants.TAG_NOTIFICATION);
         if (notifications == null) {
             notifications = new ArrayList<>();
-        }else {
+        } else {
             notifications.remove(notification);
         }
         putListNotification(Constants.TAG_NOTIFICATION, notifications);
     }
-
 
 
     public ArrayList<NotificationAdapter.Notification> getListNotification(String key) {
@@ -96,9 +95,11 @@ public class PreferenceManager {
     }
 
     public boolean CheckRes(ArrayList<RestaurantModel> restaurantModels, String resId) {
-        for (RestaurantModel x : restaurantModels) {
-            if (x.getRestaurantId().equals(resId)) {
-                return true;
+        if (restaurantModels != null && restaurantModels.size() > 0) {
+            for (RestaurantModel x : restaurantModels) {
+                if (x.getRestaurantId().equals(resId)) {
+                    return true;
+                }
             }
         }
         return false;

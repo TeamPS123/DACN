@@ -51,7 +51,17 @@ public class RestaurantModel implements Serializable, ClusterItem {
 
     private boolean status;
 
+    private String countRate;
+
     private String statusCO;
+
+    public String getCountRate() {
+        return countRate;
+    }
+
+    public void setCountRate(String countRate) {
+        this.countRate = countRate;
+    }
 
     private String rateTotal;
 

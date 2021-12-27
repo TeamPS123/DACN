@@ -126,7 +126,7 @@ public class MainFragment extends Fragment implements CategoryListener, Restaura
         //get distance Search
         String distance = preferenceManager.getString(Constants.TAG_DISTANCE);
         if (distance == null) {
-            distance = "20";
+            distance = "10";
             preferenceManager.putString(Constants.TAG_DISTANCE, distance);
         }
 

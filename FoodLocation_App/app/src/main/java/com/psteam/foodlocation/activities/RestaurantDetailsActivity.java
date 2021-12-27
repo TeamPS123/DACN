@@ -10,7 +10,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,7 +19,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -61,11 +59,8 @@ import com.psteam.lib.modeluser.GetRestaurantModel;
 import com.psteam.lib.modeluser.GetReviewModel;
 import com.psteam.lib.modeluser.Rate;
 import com.psteam.lib.modeluser.RestaurantModel;
-import com.psteam.lib.modeluser.UserModel;
 import com.psteam.lib.modeluser.message;
-import com.squareup.picasso.Picasso;
 
-import java.text.DateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -138,9 +133,8 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
         viewMap = mapFragment.getView();
         setFullScreen();
         //initFoodRestaurant();
-        getDataIntent();
 
-        preferenceManager.AddRestaurant(restaurantModel);
+        getDataIntent();
     }
 
     private void getReview(String restaurantId, int value, int skip, int take) {
@@ -207,12 +201,13 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
     }
 
     private void setData() {
-        if (restaurantModel == null && restaurantModel.getPromotionRes().size() > 0) {
+        if (restaurantModel != null && restaurantModel.getPromotionRes().size() > 0) {
             binding.textViewRestaurantName.setText(String.format("%s: %s", restaurantModel.getName(), restaurantModel.getPromotionRes().get(0).getName()));
         } else {
             binding.textViewRestaurantName.setText(restaurantModel.getName());
 
         }
+        preferenceManager.AddRestaurant(restaurantModel);
         binding.textViewPromotion.setText(restaurantModel.getPromotion());
         binding.textRestaurantName.setText(restaurantModel.getName());
         binding.textViewCategory.setText(restaurantModel.getCategoryResStr());
@@ -238,8 +233,8 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
         initTimeBookTable();
         initSliderPhotoRestaurant();
         initReviewAdapter();
-        getReview(restaurantModel.getRestaurantId(), -1, 0, 10);
-        GetRestaurantByDistance(new GetRestaurantByDistance("20", "10.803312745723506", "106.71158641576767"));
+        getReview(restaurantModel.getRestaurantId(), -1, 0, 100);
+        GetRestaurantByDistance(new GetRestaurantByDistance(preferenceManager.getString(Constants.TAG_DISTANCE), "10.803312745723506", "106.71158641576767"));
 
         LocalDate today;
 
@@ -266,6 +261,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
             binding.textViewChooseDate.setText(String.format("%s", today.format(DateTimeFormatter.ofPattern("EEEE, dd/MM/yyyy", new Locale("vi", "VN")))));
         }
         getCountReserveTable(restaurantModel.getRestaurantId());
+
 
     }
 
@@ -682,7 +678,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
 
                     Log.d("OKAY", response.message());
                 } else {
-                    CustomToast.makeText(getApplicationContext(), "Lỗi khi lấy dữ liệu bản đồ", CustomToast.LENGTH_SHORT, CustomToast.ERROR).show();
+                    //CustomToast.makeText(getApplicationContext(), "Lỗi khi lấy dữ liệu bản đồ", CustomToast.LENGTH_SHORT, CustomToast.ERROR).show();
                 }
                 LoadingDialog.dismiss(500l);
             }
