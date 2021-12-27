@@ -125,7 +125,7 @@ public class SearchActivity extends AppCompatActivity implements SearchRestauran
                 restaurantModels.addAll(restaurantModel.getResList());
                 lstCategoryRes.addAll(restaurantModel.getCategoryList());
 
-                for (CategoryRes categoryRes : categoryModelArrayList) {
+              /*  for (CategoryRes categoryRes : categoryModelArrayList) {
                     for (CategoryRes res : lstCategoryRes) {
                         if (categoryRes.getId().equals(res.getId())) {
                             categoryRes.setSelected(true);
@@ -133,7 +133,7 @@ public class SearchActivity extends AppCompatActivity implements SearchRestauran
                             break;
                         }
                     }
-                }
+                }*/
 
             }
             searchRestaurantAdapter.notifyDataSetChanged();
@@ -249,6 +249,9 @@ public class SearchActivity extends AppCompatActivity implements SearchRestauran
                                         checkSearch = true;
                                         strVoice = strVoice.substring(strVoice.indexOf(s), strVoice.length());
                                         break;
+                                    } else if (strVoice.contains(s) && (s.equals("gần đây") || s.equals("gần nhất"))) {
+                                        distance = 1;
+                                        break;
                                     }
                                 }
 
@@ -292,7 +295,7 @@ public class SearchActivity extends AppCompatActivity implements SearchRestauran
                             key_search = Objects.requireNonNull(data).get(0);
                             binding.inputSearch.setText(Objects.requireNonNull(data).get(0));
                             binding.inputSearch.clearFocus();
-                            Toast.makeText(getApplicationContext(), key_search, Toast.LENGTH_SHORT).show();
+
                         } else {
                             CustomToast.makeText(SearchActivity.this, "Thử lại sau", CustomToast.LENGTH_SHORT, CustomToast.WARNING).show();
                         }
@@ -492,7 +495,7 @@ public class SearchActivity extends AppCompatActivity implements SearchRestauran
                         loading(false);
                     }
                 }
-                if(getRestaurantBySearch.getDistance()!=0){
+                if (getRestaurantBySearch.getDistance() != 0) {
                     distance = 0;
                 }
             }

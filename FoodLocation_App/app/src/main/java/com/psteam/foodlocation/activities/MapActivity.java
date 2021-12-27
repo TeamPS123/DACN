@@ -154,9 +154,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         initBottomSheetRestaurant();
     }
 
+    private ResMapAdapter resMapAdapter;
+
     private void initSlider() {
 
-        ResMapAdapter resMapAdapter = new ResMapAdapter(restaurantModels, new ResMapAdapter.ResMapListeners() {
+        resMapAdapter = new ResMapAdapter(restaurantModels, new ResMapAdapter.ResMapListeners() {
             @Override
             public void onClick(RestaurantModel restaurantModel) {
                 if (restaurantModel != null) {
@@ -190,7 +192,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             public void onDirectionClick(RestaurantModel restaurantModel, TextView textView) {
                 if (polyline == null) {
                     loadingDirection(true);
-                    getDirection(currentLocation, restaurantModel.getPosition(),textView);
+                    getDirection(currentLocation, restaurantModel.getPosition(), textView);
                     polyLine = true;
                 }
             }
@@ -227,6 +229,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
                     RestaurantModel restaurantModel = restaurantModels.get(position);
                     if (restaurantModel != null) {
+
+                        getDurationDistance(currentLocation, restaurantModel.getPosition(), restaurantModel, position);
 
                         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(restaurantModel.getLatLng(), 15);
                         mMap.animateCamera(cameraUpdate, 500, null);
@@ -702,6 +706,36 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
                     drawPolyline(response);
                     Log.d("OKAY", response.message());
+                } else {
+                    Toast.makeText(getApplicationContext(), "Lỗi khi lấy dữ liệu", Toast.LENGTH_SHORT).show();
+                    loadingDirection(false);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DirectionResponses> call, Throwable t) {
+                Log.e("TAG:", t.getLocalizedMessage());
+            }
+        });
+    }
+
+    private void getDurationDistance(LatLng latLngOrigin, LatLng latLngDestination, RestaurantModel restaurantModel, int position) {
+        String origin = String.valueOf(latLngOrigin.latitude) + "," + String.valueOf(latLngOrigin.longitude);
+        String destination = String.valueOf(latLngDestination.latitude) + "," + String.valueOf(latLngDestination.longitude);
+        this.latLngDestination = latLngDestination;
+
+        ServiceAPI serviceAPI = getRetrofitGoogleMapAPI().create(ServiceAPI.class);
+        Call<DirectionResponses> call = serviceAPI.getDirection(origin, destination, getString(R.string.google_map_api_key));
+        call.enqueue(new Callback<DirectionResponses>() {
+            @Override
+            public void onResponse(Call<DirectionResponses> call, Response<DirectionResponses> response) {
+                if (response.body() != null && response.body().getStatus().equals("OK")) {
+                    String distance = response.body().getRoutes().get(0).getLegs().get(0).getDistance().getText();
+                    String duration = response.body().getRoutes().get(0).getLegs().get(0).getDuration().getText();
+                    String s = String.format("%s \u00b7 %s", distance, duration);
+                    restaurantModel.setDurationAndDistance(s);
+                    restaurantModels.set(position, restaurantModel);
+                    resMapAdapter.notifyItemChanged(position);
                 } else {
                     Toast.makeText(getApplicationContext(), "Lỗi khi lấy dữ liệu", Toast.LENGTH_SHORT).show();
                     loadingDirection(false);

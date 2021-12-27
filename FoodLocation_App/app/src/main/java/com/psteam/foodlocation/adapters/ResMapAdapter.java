@@ -81,12 +81,15 @@ public class ResMapAdapter extends RecyclerView.Adapter<ResMapAdapter.ResMapView
                     restaurantRecentListeners.onDirectionClick(restaurantModel, binding.textViewDistanceResMap);
                 });
 
+                binding.textViewDistanceResMap.setText(restaurantModel.getDurationAndDistance());
+
                 binding.textViewResName.setText(restaurantModel.getName());
 
                 if(restaurantModel.getRateTotal().equals("0")){
                     binding.textViewCountReviewRate.setVisibility(View.GONE);
                 }else {
                     binding.textViewCountReviewRate.setVisibility(View.VISIBLE);
+                    binding.textViewCountReviewRate.setText(restaurantModel.getCountRate());
                 }
 
                 binding.ratingBar.setRating(Float.valueOf(restaurantModel.getRateTotal()));
@@ -98,26 +101,41 @@ public class ResMapAdapter extends RecyclerView.Adapter<ResMapAdapter.ResMapView
 
                 // 06:00 SA 06:00 AM
                 LocalTime openTime = LocalTime.parse(restaurantModel.getOpenTime(), DateTimeFormatter.ofPattern("hh:mm a", new Locale("vi", "VN")));
+                LocalTime closeTime = LocalTime.parse(restaurantModel.getCloseTime(), DateTimeFormatter.ofPattern("hh:mm a", new Locale("vi", "VN")));
                 LocalTime now = LocalTime.now();
 
                 //1 Mở cửa status true statusCO null, 2 Đang mở cửa setup ngày đóng cửa status true statusCO not null,
                 //3 Đang đóng cửa status false statusCO null , 4 Setup ngày mở cửa status false statusCO not null
                 if (restaurantModel.isStatus() && restaurantModel.getStatusCO() == null) {
                     if (openTime.isBefore(now)) {
-                        binding.textViewStatusRes.setText(String.format("Đang mở cửa \u00b7 Mở cửa cho đến %s", formatTime(restaurantModel.getCloseTime())));
-                        binding.textViewStatusRes.setTextColor(context.getColor(R.color.color_open));
+                        if (closeTime.isAfter(now)) {
+                            binding.textViewStatusRes.setText(String.format("Đang mở cửa \u00b7 Mở cửa cho đến %s", formatTime(restaurantModel.getCloseTime())));
+                            binding.textViewStatusRes.setTextColor(context.getColor(R.color.color_open));
+                        } else {
+                            binding.textViewStatusRes.setText(String.format("Đã đóng cửa \u00b7 Mở cửa vào %s", formatTime(restaurantModel.getOpenTime())));
+                            binding.textViewStatusRes.setTextColor(context.getColor(R.color.ColorButtonReserve));
+                        }
                     } else {
                         binding.textViewStatusRes.setText(String.format("Đã đóng cửa \u00b7 Mở cửa vào %s", formatTime(restaurantModel.getOpenTime())));
                         binding.textViewStatusRes.setTextColor(context.getColor(R.color.ColorButtonReserve));
                     }
                 } else if (restaurantModel.isStatus() && restaurantModel.getStatusCO() != null) {
                     if (openTime.isBefore(now)) {
-                        if (restaurantModel.getStatusOpen().before(new Date())) {
-                            binding.textViewStatusRes.setText(String.format("Đang mở cửa \u00b7 Mở cửa cho đến %s", formatTime(restaurantModel.getCloseTime())));
+                        if (closeTime.isAfter(now)) {
+                            if (restaurantModel.getStatusOpen().before(new Date())) {
+                                binding.textViewStatusRes.setText(String.format("Đang mở cửa \u00b7 Mở cửa cho đến %s", formatTime(restaurantModel.getCloseTime())));
+                            } else {
+                                binding.textViewStatusRes.setText(String.format("Đang mở cửa \u00b7 Mở cửa cho đến %s \u00b7 Quán đóng cửa ngày %s.", formatTime(restaurantModel.getCloseTime()), restaurantModel.getStatusCO()));
+                            }
+                            binding.textViewStatusRes.setTextColor(context.getColor(R.color.color_open));
                         } else {
-                            binding.textViewStatusRes.setText(String.format("Đang mở cửa \u00b7 Mở cửa cho đến %s \u00b7 Quán đóng cửa ngày %s.", formatTime(restaurantModel.getCloseTime()), restaurantModel.getStatusCO()));
+                            if (restaurantModel.getStatusOpen().before(new Date())) {
+                                binding.textViewStatusRes.setText(String.format("Đã đóng cửa \u00b7 Mở cửa vào %s", formatTime(restaurantModel.getOpenTime())));
+                            } else {
+                                binding.textViewStatusRes.setText(String.format("Đã đóng cửa \u00b7 Mở cửa vào %s \u00b7 Quán đóng cửa ngày %s.", formatTime(restaurantModel.getOpenTime()), restaurantModel.getStatusCO()));
+                            }
+                            binding.textViewStatusRes.setTextColor(context.getColor(R.color.ColorButtonReserve));
                         }
-                        binding.textViewStatusRes.setTextColor(context.getColor(R.color.color_open));
                     } else {
                         if (restaurantModel.getStatusOpen().before(new Date())) {
                             binding.textViewStatusRes.setText(String.format("Đã đóng cửa \u00b7 Mở cửa vào %s", formatTime(restaurantModel.getOpenTime())));

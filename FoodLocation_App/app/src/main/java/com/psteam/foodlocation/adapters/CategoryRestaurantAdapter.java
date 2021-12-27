@@ -58,7 +58,7 @@ public class CategoryRestaurantAdapter extends RecyclerView.Adapter<CategoryRest
 
         public void setData(CategoryRes categoryRestaurant) {
             binding.textViewName.setText(categoryRestaurant.getName());
-            Glide.with(context).load(categoryRestaurant.getIcon()).thumbnail(0.3f).into(binding.imageViewIconCategoryRestaurant);
+            Glide.with(context).load(categoryRestaurant.getIcon()).thumbnail(0.3f).error(R.drawable.icon_tasty).into(binding.imageViewIconCategoryRestaurant);
 
             binding.getRoot().setOnClickListener(v -> {
                 isSelectedItem(categoryRestaurant);

@@ -206,7 +206,7 @@ public class ReviewDetailsActivity extends AppCompatActivity {
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("text/plain");
                 shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Tasty");
-                String shareMessage = String.format(" %s đã chia sẻ một đánh giá, trải nghiệm về nhà hàng %s", reviewModel.getUserName(), restaurantModel.getName());
+                String shareMessage = String.format(" %s đã chia sẻ một đánh giá, trải nghiệm về nhà hàng %s", Para.userModel.getFullName(), restaurantModel.getName());
                 shareMessage = shareMessage + " https://ps.covid21tsp.space/ShareReview/Code/" + reviewModel.getId();
                 shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
                 startActivity(Intent.createChooser(shareIntent, "choose one"));

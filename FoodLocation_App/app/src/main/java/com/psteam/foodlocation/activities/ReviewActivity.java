@@ -230,7 +230,12 @@ public class ReviewActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<message> call, Response<message> response) {
                 if (response.body() != null && response.body().getStatus().equals("1")) {
-                    addImgRate(response.body().getId());
+                    if(pathList!=null && pathList.size()>0) {
+                        addImgRate(response.body().getId());
+                    }else {
+                        startActivity(new Intent(getApplicationContext(), ReviewNotificationActivity.class));
+                        finish();
+                    }
                 } else {
                     CustomToast.makeText(getApplicationContext(), "Đánh giá thât bại vui lòng thử lại lại sau", CustomToast.LENGTH_SHORT, CustomToast.ERROR).show();
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));

@@ -5,6 +5,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -68,15 +69,16 @@ public class RecommendResAdapter extends RecyclerView.Adapter<RecommendResAdapte
                 recommendResListeners.onClick(restaurantModel);
             });
 
-            if(restaurantModel.getType().equals("1")){
+            if (restaurantModel.getType().equals("1")) {
                 binding.textViewFlag.setText("Nơi bạn từng đến");
-                binding.textViewContent.setText(String.format("Bạn đã không đến %s đã %d ngày hãy nhấn vào để xem nhà hàng có khuyến mãi gì mới không nào!", restaurantModel.getName(),14));
-            }else if(restaurantModel.getType().equals("2")) {
-                binding.textViewFlag.setText("Đặt nhiều nhất");
-                binding.textViewContent.setText(String.format("%s có số lượng đạt bàn nhiều nhất trong tháng này, còn chờ gì nữa hãy đến với %s trải nghiệm ngay nào!", restaurantModel.getName(),restaurantModel.getName()));
-            }else{
+                binding.textViewContent.setText(String.format("Bạn đã không đến %s đã %d ngày hãy nhấn vào để xem nhà hàng có khuyến mãi gì mới không nào!", restaurantModel.getName(), 14));
+            } else if (restaurantModel.getType().equals("2")) {
                 binding.textViewFlag.setText("Nổi bật");
-                binding.textViewContent.setText(String.format("Hãy đến %s, %s trải nghiệm ngay nào!",restaurantModel.getName(),restaurantModel.getLine()));
+                binding.textViewContent.setText(String.format("%s đã có %s đơn đặt bàn trong tháng này, còn chờ gì nữa hãy đến với %s trải nghiệm ngay nào!", restaurantModel.getName(), restaurantModel.getCountRate(), restaurantModel.getName()));
+            } else {
+                binding.textViewFlag.setText("mới");
+                binding.textViewFlag.setVisibility(View.GONE);
+                binding.textViewContent.setText(String.format("Hãy đến %s, %s trải nghiệm ngay nào!", restaurantModel.getName(), restaurantModel.getLine()));
             }
 
            /* binding.layoutContainer.setBackground(context.getDrawable(R.drawable.background_radius_recommend_1));

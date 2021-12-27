@@ -289,30 +289,19 @@ public class ReserveTableActivity extends AppCompatActivity {
     }
 
 
-    //socket.io
     private void socket() {
         setupSocket.mSocket.connect();
-        // notification login success or fail
-        //setupSocket.mSocket.on("noti_login", onLogin);
-        // receiver notification when used app
-        //setupSocket.mSocket.on("send_notication", onNotification);
-
-        //setupSocket.signIn(user);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-
-        //notification when out activity
         setupSocket.mSocket.disconnect();
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-
-        //notification when come back activity
         setupSocket.mSocket.connect();
     }
 
@@ -336,7 +325,7 @@ public class ReserveTableActivity extends AppCompatActivity {
                     }
 
                     BodySenderFromUser body = new BodySenderFromUser(response.body().getId(), Integer.parseInt(insertReserveTableModel.getQuantity()), insertReserveTableModel.getTime(), restaurantModel.getRestaurantId(), insertReserveTableModel.getName(), insertReserveTableModel.getPhone(), insertReserveTableModel.getPromotionId(), insertReserveTableModel.getNote());
-                    MessageSenderFromUser message = new MessageSenderFromUser(preferenceManager.getString(Constants.USER_ID), restaurantModel.getUserId(), "Thông báo", body);
+                    MessageSenderFromUser message = new MessageSenderFromUser(preferenceManager.getString(Constants.USER_ID), restaurantModel.getUserId(), "Thông báo đặt bàn", body);
 
                     setupSocket.notificationFromUser(message, setupSocket.mSocket);
                 } else if (response.body() != null) {

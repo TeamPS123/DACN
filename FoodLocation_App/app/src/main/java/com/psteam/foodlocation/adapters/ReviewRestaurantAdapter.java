@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.psteam.foodlocation.R;
 import com.psteam.foodlocation.databinding.LayoutReviewPostItemContainerBinding;
 import com.psteam.foodlocation.ultilities.Constants;
@@ -29,7 +30,7 @@ public class ReviewRestaurantAdapter extends RecyclerView.Adapter<ReviewRestaura
         this.reviewModels = reviewModels;
         this.reviewRestaurantListeners = reviewRestaurantListeners;
         this.context = context;
-        preferenceManager=new PreferenceManager(context);
+        preferenceManager = new PreferenceManager(context);
     }
 
     @NonNull
@@ -71,10 +72,8 @@ public class ReviewRestaurantAdapter extends RecyclerView.Adapter<ReviewRestaura
             } else {
                 binding.layoutReview.setVisibility(View.VISIBLE);
                 binding.layoutAddReview.setVisibility(View.GONE);
-                Picasso.get().load(reviewModel.getImageUser()).into(binding.imageUser);
-                if (reviewModel.getImgList().size() != 0)
-                    Picasso.get().load(reviewModel.getImgList().get(0)).into(binding.imageViewReviewPost);
-
+                Picasso.get().load(reviewModel.getImageUser()).error(R.drawable.icon_tasty_small).into(binding.imageUser);
+                Picasso.get().load(reviewModel.getImgList().get(0)).error(R.drawable.icon_tasty_small).into(binding.imageViewReviewPost);
                 if (reviewModel.getContent().isEmpty()) {
                     binding.textViewContent.setVisibility(View.GONE);
                 } else {
@@ -92,18 +91,18 @@ public class ReviewRestaurantAdapter extends RecyclerView.Adapter<ReviewRestaura
                     if (binding.iconLike.getTag().equals("Like")) {
                         binding.iconLike.setImageResource(R.drawable.heart_small);
                         binding.iconLike.setTag("DisLike");
-                        reviewRestaurantListeners.onDisLikeClick(binding.iconLike,reviewModel);
+                        reviewRestaurantListeners.onDisLikeClick(binding.iconLike, reviewModel);
                     } else {
                         binding.iconLike.setImageResource(R.drawable.heart);
                         binding.iconLike.setTag("Like");
-                        reviewRestaurantListeners.onLikeClick(binding.iconLike,reviewModel);
+                        reviewRestaurantListeners.onLikeClick(binding.iconLike, reviewModel);
                     }
                 });
 
-                if(reviewModel.checkUserLike(preferenceManager.getString(Constants.USER_ID))){
+                if (reviewModel.checkUserLike(preferenceManager.getString(Constants.USER_ID))) {
                     binding.iconLike.setImageResource(R.drawable.heart);
                     binding.iconLike.setTag("Like");
-                }else {
+                } else {
                     binding.iconLike.setImageResource(R.drawable.heart_small);
                     binding.iconLike.setTag("DisLike");
                 }
@@ -114,8 +113,11 @@ public class ReviewRestaurantAdapter extends RecyclerView.Adapter<ReviewRestaura
 
     public interface ReviewRestaurantListeners {
         void onClick(ReviewModel reviewModel);
-        void onLikeClick(ImageView imageView,ReviewModel reviewModel);
-        void onDisLikeClick(ImageView imageView,ReviewModel reviewModel);
+
+        void onLikeClick(ImageView imageView, ReviewModel reviewModel);
+
+        void onDisLikeClick(ImageView imageView, ReviewModel reviewModel);
+
         void onAddReviewClick(int position);
     }
 

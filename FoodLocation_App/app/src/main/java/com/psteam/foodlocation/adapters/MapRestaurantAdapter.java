@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.psteam.foodlocation.R;
 import com.psteam.foodlocation.databinding.MapRestaurantItemContainerBinding;
 import com.psteam.foodlocation.listeners.MapRestaurantListener;
 import com.psteam.lib.modeluser.RestaurantModel;
@@ -55,7 +56,7 @@ public class MapRestaurantAdapter extends RecyclerView.Adapter<MapRestaurantAdap
         }
 
         public void setData(RestaurantModel restaurantModel) {
-            Glide.with(context).load(restaurantModel.getMainPic()).into(binding.imageViewRestaurant);
+            Glide.with(context).load(restaurantModel.getMainPic()).error(R.drawable.icon_tasty).into(binding.imageViewRestaurant);
             binding.textViewRestaurantAddress.setText(restaurantModel.getAddress());
             binding.textviewDistance.setText(Math.round(Double.parseDouble(restaurantModel.getDistance())) + "km");
             binding.textViewRestaurantName.setText(restaurantModel.getName());

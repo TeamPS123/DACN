@@ -116,7 +116,7 @@ public class MainFragment extends Fragment implements CategoryListener, Restaura
         textViewName = binding.navigationView.getHeaderView(0).findViewById(R.id.textViewName);
         imageUserView = binding.navigationView.getHeaderView(0).findViewById(R.id.imageUserView);
         restaurantModels = new ArrayList<>();
-        restaurantSuggest=new ArrayList<>();
+        restaurantSuggest = new ArrayList<>();
         //checkSelfPermission();
         GetInfo(preferenceManager.getString(Constants.USER_ID));
         initSliderImage();
@@ -137,7 +137,7 @@ public class MainFragment extends Fragment implements CategoryListener, Restaura
         }
 
         GetRestaurantByDistance(new GetRestaurantByDistance(distance, "10.803312745723506", "106.71158641576767"));
-        GetRestaurantSuggest(new InputSuggestRes(distance,"10.803312745723506",preferenceManager.getString(Constants.USER_ID),"106.71158641576767",day_recommend));
+        GetRestaurantSuggest(new InputSuggestRes(distance, "10.803312745723506", preferenceManager.getString(Constants.USER_ID), "106.71158641576767", day_recommend));
         binding.textviewCurrentLocation.setText(Para.currentUserAddress);
         binding.textTitle.setText(String.format("Các địa điểm ở %s", Para.currentCity));
     }
@@ -446,7 +446,10 @@ public class MainFragment extends Fragment implements CategoryListener, Restaura
                 if (response.body() != null && response.body().getStatus().equals("1")) {
                     if (response.body().getResList().size() > 0) {
                         restaurantSuggest.clear();
-                        restaurantSuggest.addAll(response.body().getResList());
+                        if (response.body().getResList().size() > 10) {
+                            restaurantSuggest.addAll(response.body().getResList().subList(0, 10));
+                        } else
+                            restaurantSuggest.addAll(response.body().getResList());
                         recommendResAdapter.notifyDataSetChanged();
                     }
                 }

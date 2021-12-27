@@ -60,7 +60,7 @@ public class RestaurantPostAdapter extends RecyclerView.Adapter<RestaurantPostAd
 
         public void setData(RestaurantModel foodRestaurant) {
             if (foodRestaurant.getPic().size() > 0) {
-                Glide.with(context).load(foodRestaurant.getPic().get(0)).error(R.drawable.lau).thumbnail(0.3f).into(binding.imageViewRestaurant);
+                Glide.with(context).load(foodRestaurant.getPic().get(0)).thumbnail(0.3f).error(R.drawable.icon_tasty).into(binding.imageViewRestaurant);
             }
             if (foodRestaurant.getPromotionRes().size() > 0) {
                 binding.textViewRestaurantName.setText(String.format("%s: %s", foodRestaurant.getName(), foodRestaurant.getPromotionRes().get(0).getName()));

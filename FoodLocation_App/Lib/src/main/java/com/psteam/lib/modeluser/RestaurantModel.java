@@ -55,8 +55,18 @@ public class RestaurantModel implements Serializable, ClusterItem {
 
     private String statusCO;
 
+    private String durationAndDistance;
+
     public String getCountRate() {
         return countRate;
+    }
+
+    public String getDurationAndDistance() {
+        return durationAndDistance;
+    }
+
+    public void setDurationAndDistance(String durationAndDistance) {
+        this.durationAndDistance = durationAndDistance;
     }
 
     public void setCountRate(String countRate) {
@@ -210,7 +220,16 @@ public class RestaurantModel implements Serializable, ClusterItem {
             } else {
                 return closeTime;
             }
-        } else {
+        }else if(s.equals("SA") || s.equals("CH")) {
+            if (closeTime.contains("AM")) {
+                return closeTime.replace("AM", "SA");
+            } else if (closeTime.contains("PM")) {
+                return closeTime.replace("PM", "CH");
+            } else {
+                return closeTime;
+            }
+        }
+        else {
             return closeTime;
         }
     }
@@ -234,6 +253,14 @@ public class RestaurantModel implements Serializable, ClusterItem {
                 return openTime.replace("SA", "AM");
             } else if (openTime.contains("CH")) {
                 return openTime.replace("CH", "PM");
+            } else {
+                return openTime;
+            }
+        } else if (s.equals("CH") || s.equals("SA")) {
+            if (openTime.contains("AM")) {
+                return openTime.replace("AM", "SA");
+            } else if (openTime.contains("PM")) {
+                return openTime.replace("PM", "CH");
             } else {
                 return openTime;
             }

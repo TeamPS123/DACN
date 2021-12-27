@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.psteam.foodlocation.R;
 import com.psteam.foodlocation.databinding.LayoutPhotoReiviewItemContainerBinding;
 import com.psteam.foodlocation.databinding.LayoutPhotoReviewBinding;
 import com.psteam.foodlocation.databinding.SliderItemContainerBinding;
@@ -58,7 +59,7 @@ public class PhotoReviewAdapter extends RecyclerView.Adapter<PhotoReviewAdapter.
         }
 
         public void setData(String s) {
-            Picasso.get().load(s).into(binding.imageView);
+            Picasso.get().load(s).error(R.drawable.icon_tasty).into(binding.imageView);
         }
     }
 

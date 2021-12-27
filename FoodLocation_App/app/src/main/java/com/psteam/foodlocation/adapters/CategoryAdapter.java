@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.psteam.foodlocation.R;
 import com.psteam.foodlocation.databinding.CategoryItemContainerBinding;
 import com.psteam.foodlocation.listeners.CategoryListener;
 import com.psteam.foodlocation.models.CategoryModel;
@@ -58,7 +59,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
         public void setData(CategoryRes categoryModel) {
 
-            Glide.with(context).load(categoryModel.getIcon()).into(binding.imageViewCategory);
+            Glide.with(context).load(categoryModel.getIcon()).error(R.drawable.icon_tasty).into(binding.imageViewCategory);
 
             binding.textViewName.setText(categoryModel.getName());
 

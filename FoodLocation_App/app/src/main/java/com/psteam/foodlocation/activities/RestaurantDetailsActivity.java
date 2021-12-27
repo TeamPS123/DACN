@@ -519,7 +519,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
                 binding.textViewChooseAddress.setText(addressRestaurant.getAddress());
                 binding.textViewChooseDistance.setText(addressRestaurant.getDistance());
                 chooseAddressBottomSheetFragment.dismiss();
-
             }
         });
         chooseAddressBottomSheetFragment.show(getSupportFragmentManager(), chooseAddressBottomSheetFragment.getTag());

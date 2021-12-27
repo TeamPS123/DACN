@@ -1,5 +1,7 @@
 package com.psteam.foodlocation.fragments;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -29,6 +31,7 @@ public class NotificationFragment extends Fragment {
     private static ArrayList<NotificationAdapter.Notification> notifications;
     private static ArrayList<NotificationAdapter.Notification> tempNotifications;
     private static NotificationAdapter notificationAdapter;
+    private static Activity context;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,13 +39,14 @@ public class NotificationFragment extends Fragment {
 
     }
 
-    private FragmentNotificationBinding binding;
+    private static FragmentNotificationBinding binding;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentNotificationBinding.inflate(inflater, container, false);
         init();
+        context = this.getActivity();
         setListeners();
         return binding.getRoot();
     }
@@ -87,15 +91,51 @@ public class NotificationFragment extends Fragment {
             notifications.add(0, notification);
             tempNotifications.add(0, notification);
             notificationAdapter.notifyItemInserted(0);
+        } else {
+            notifications = new ArrayList<>();
+            if (preferenceManager == null) return;
+            notifications = preferenceManager.getListNotification(Constants.TAG_NOTIFICATION);
+            tempNotifications = notifications;
+            notificationAdapter = new NotificationAdapter(notifications, new NotificationAdapter.NotificationListeners() {
+                @Override
+                public void onClicked(NotificationAdapter.Notification notification, int position) {
+                    Intent intent = new Intent(context, UserReserveTableDetailsActivity.class);
+                    intent.putExtra("reserveTable", notification.getReserveTable());
+                    context.startActivity(intent);
+                }
+            });
+
+            binding.recycleView.setAdapter(notificationAdapter);
+        }
+        checkNotification();
+    }
+
+    public static void checkNotification() {
+        ArrayList<NotificationAdapter.Notification> check = new ArrayList<>();
+        check = preferenceManager.getListNotification(Constants.TAG_NOTIFICATION);
+        if (check != null) {
+            if (check.size() != 0) {
+                binding.textViewEmptyNotification.setVisibility(View.GONE);
+                binding.recycleView.setVisibility(View.VISIBLE);
+            } else {
+                binding.textViewEmptyNotification.setVisibility(View.VISIBLE);
+                binding.recycleView.setVisibility(View.GONE);
+            }
+        } else {
+            binding.textViewEmptyNotification.setVisibility(View.VISIBLE);
+            binding.recycleView.setVisibility(View.GONE);
         }
     }
 
     private void setListeners() {
         binding.buttonClearAll.setOnClickListener(v -> {
             preferenceManager.clearNotification();
-            notifications.clear();
-            tempNotifications.clear();
-            notificationAdapter.notifyDataSetChanged();
+            if (notifications != null) {
+                notifications.clear();
+                tempNotifications.clear();
+                notificationAdapter.notifyDataSetChanged();
+                checkNotification();
+            }
         });
     }
 
@@ -113,6 +153,7 @@ public class NotificationFragment extends Fragment {
             notifications.remove(position);
             tempNotifications.remove(position);
             notificationAdapter.notifyItemRemoved(position);
+            checkNotification();
         }
     };
 
