@@ -36,6 +36,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
+import com.google.type.DateTime;
 import com.psteam.foodlocation.R;
 import com.psteam.foodlocation.adapters.ChooseDateReserveTableAdapter;
 import com.psteam.foodlocation.adapters.ChooseNumberPeopleAdapter;
@@ -559,8 +560,8 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements OnMa
     private void initTimeBookTable() {
         timeBooks = new ArrayList<>();
 
-        LocalTime openTime = LocalTime.parse(restaurantModel.getOpenTime(), DateTimeFormatter.ofPattern("hh:mm a", new Locale("vi", "VN")));
-        LocalTime closeTime = LocalTime.parse(restaurantModel.getCloseTime(), DateTimeFormatter.ofPattern("hh:mm a", new Locale("vi", "VN")));
+        LocalTime openTime = LocalTime.parse(restaurantModel.getOpenTime(), DateTimeFormatter.ofPattern("hh:mm a"));
+        LocalTime closeTime = LocalTime.parse(restaurantModel.getCloseTime(), DateTimeFormatter.ofPattern("hh:mm a"));
         Duration duration = Duration.between(openTime, closeTime);
         Long timeLoop = (duration.toMinutes() - 60);
         LocalTime tempTime = openTime;

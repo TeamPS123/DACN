@@ -100,8 +100,8 @@ public class ResMapAdapter extends RecyclerView.Adapter<ResMapAdapter.ResMapView
                 binding.recycleViewResMapPhoto.setAdapter(restaurantPhotoAdapter);
 
                 // 06:00 SA 06:00 AM
-                LocalTime openTime = LocalTime.parse(restaurantModel.getOpenTime(), DateTimeFormatter.ofPattern("hh:mm a", new Locale("vi", "VN")));
-                LocalTime closeTime = LocalTime.parse(restaurantModel.getCloseTime(), DateTimeFormatter.ofPattern("hh:mm a", new Locale("vi", "VN")));
+                LocalTime openTime = LocalTime.parse(restaurantModel.getOpenTime(), DateTimeFormatter.ofPattern("hh:mm a"));
+                LocalTime closeTime = LocalTime.parse(restaurantModel.getCloseTime(), DateTimeFormatter.ofPattern("hh:mm a"));
                 LocalTime now = LocalTime.now();
 
                 //1 Mở cửa status true statusCO null, 2 Đang mở cửa setup ngày đóng cửa status true statusCO not null,
@@ -170,7 +170,7 @@ public class ResMapAdapter extends RecyclerView.Adapter<ResMapAdapter.ResMapView
         }
 
         public String formatTime(String time) {
-            LocalTime date = LocalTime.parse(time, DateTimeFormatter.ofPattern("hh:mm a", new Locale("vi", "VN")));
+            LocalTime date = LocalTime.parse(time, DateTimeFormatter.ofPattern("hh:mm a"));
             return date.format(DateTimeFormatter.ofPattern("hh:mm a", new Locale("vi", "VN")));
         }
     }

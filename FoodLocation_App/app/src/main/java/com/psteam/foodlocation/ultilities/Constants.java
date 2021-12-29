@@ -12,6 +12,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class Constants {
     public static final String KEY_PREFERENCE_NAME = "FoodLocationPreference";
@@ -53,10 +54,14 @@ public class Constants {
 
     public static Date coverStringToDate(String strDate) {
         try {
-            Date date = new SimpleDateFormat("hh:mm a,yyyy-MM-dd").parse(strDate);
+            Date date = new SimpleDateFormat("hh:mm a,yyyy-MM-dd", new Locale("vi","VN")).parse(strDate);
             return date;
         } catch (ParseException e) {
-            return new Date();
+            try {
+               return new SimpleDateFormat("hh:mm a,yyyy-MM-dd",Locale.US).parse(strDate);
+            }catch (ParseException ex){
+                return new Date();
+            }
         }
     }
 
