@@ -444,14 +444,13 @@ public class MainFragment extends Fragment implements CategoryListener, Restaura
             @Override
             public void onResponse(Call<GetRestaurantModel> call, Response<GetRestaurantModel> response) {
                 if (response.body() != null && response.body().getStatus().equals("1")) {
-                    if (response.body().getResList().size() > 0) {
-                        restaurantSuggest.clear();
-                        if (response.body().getResList().size() > 10) {
-                            restaurantSuggest.addAll(response.body().getResList().subList(0, 10));
-                        } else
-                            restaurantSuggest.addAll(response.body().getResList());
-                        recommendResAdapter.notifyDataSetChanged();
+                    restaurantSuggest.clear();
+                    if (response.body().getResList().size() > 10) {
+                        restaurantSuggest.addAll(response.body().getResList().subList(0, 10));
+                    } else {
+                        restaurantSuggest.addAll(response.body().getResList());
                     }
+                    recommendResAdapter.notifyDataSetChanged();
                 }
             }
 

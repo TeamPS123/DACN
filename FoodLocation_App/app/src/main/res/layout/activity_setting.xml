@@ -154,7 +154,7 @@
             android:id="@+id/textview2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Thời gian gợi ý lại món ăn"
+            android:text="Thời gian gợi ý"
             android:textColor="@color/white"
             android:textSize="@dimen/_11ssp"
             android:textStyle="bold"

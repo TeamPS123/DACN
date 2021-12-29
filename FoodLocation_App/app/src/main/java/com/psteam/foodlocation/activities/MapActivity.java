@@ -722,7 +722,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private void getDurationDistance(LatLng latLngOrigin, LatLng latLngDestination, RestaurantModel restaurantModel, int position) {
         String origin = String.valueOf(latLngOrigin.latitude) + "," + String.valueOf(latLngOrigin.longitude);
         String destination = String.valueOf(latLngDestination.latitude) + "," + String.valueOf(latLngDestination.longitude);
-        this.latLngDestination = latLngDestination;
+
 
         ServiceAPI serviceAPI = getRetrofitGoogleMapAPI().create(ServiceAPI.class);
         Call<DirectionResponses> call = serviceAPI.getDirection(origin, destination, getString(R.string.google_map_api_key));

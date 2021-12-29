@@ -35,8 +35,6 @@
             android:textSize="@dimen/_12sdp"
             android:textStyle="bold" />
 
-
-
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
@@ -51,12 +49,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_45sdp"
                 android:hint="Số điện thoại"
-                android:textSize="@dimen/_13ssp"
-                android:textColor="@color/primary_text"
                 android:imeOptions="actionNext"
                 android:importantForAutofill="no"
                 android:inputType="phone"
-                android:textColorHint="@color/secondary_text" />
+                android:textColor="@color/primary_text"
+                android:textColorHint="@color/secondary_text"
+                android:textSize="@dimen/_13ssp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -75,11 +73,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_45sdp"
                 android:hint="Mật khẩu"
-                android:textSize="@dimen/_13ssp"
-                android:textColor="@color/primary_text"
                 android:imeOptions="actionDone"
                 android:inputType="textPassword"
-                android:textColorHint="@color/secondary_text" />
+                android:textColor="@color/primary_text"
+                android:textColorHint="@color/secondary_text"
+                android:textSize="@dimen/_13ssp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -95,27 +93,26 @@
                 android:layout_height="@dimen/_50sdp"
                 android:text="Đăng nhập"
                 android:textColor="@color/white"
-                android:textStyle="bold"
                 android:textSize="@dimen/_13ssp"
-                app:cornerRadius="@dimen/_8sdp"/>
+                android:textStyle="bold"
+                app:cornerRadius="@dimen/_8sdp" />
 
             <ProgressBar
                 android:id="@+id/progressBar"
                 android:layout_width="@dimen/_25sdp"
                 android:layout_height="@dimen/_25sdp"
                 android:layout_gravity="center"
-                android:visibility="gone"/>
+                android:visibility="gone" />
         </FrameLayout>
-
 
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_30sdp"
-            android:textSize="@dimen/_11ssp"
+            android:text="Bạn chưa có tài khoản?"
             android:textColor="@color/secondary_text"
-            android:text="Bạn chưa có tài khoản?"/>
+            android:textSize="@dimen/_11ssp" />
 
         <TextView
             android:id="@+id/textviewSignUp"
@@ -123,10 +120,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_4sdp"
             android:text="Đăng ký ngay"
-            android:textSize="@dimen/_13ssp"
             android:textColor="@color/primary"
-            android:textStyle="bold"/>
-
+            android:textSize="@dimen/_13ssp"
+            android:textStyle="bold" />
 
 
     </LinearLayout>
