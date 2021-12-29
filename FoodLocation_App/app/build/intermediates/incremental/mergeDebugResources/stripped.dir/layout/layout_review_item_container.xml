@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingVertical="@dimen/_8sdp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/imageViewIconUser"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:src="@drawable/suatuoi"
+        android:scaleType="centerCrop"
+        app:riv_corner_radius="@dimen/_100sdp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatRatingBar
+        android:id="@+id/ratingBar"
+        style="?android:attr/ratingBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/_12sdp"
+        android:numStars="5"
+        android:rating="5"
+        android:scaleX=".8"
+        android:scaleY=".8"
+        android:transformPivotX="0dp"
+        android:transformPivotY="0dp"
+        android:isIndicator="true"
+        android:stepSize="0.5"
+        android:theme="@style/RatingBar"
+        app:layout_constraintTop_toTopOf="@id/imageViewIconUser"
+        app:layout_constraintStart_toEndOf="@id/imageViewIconUser"/>
+
+    <TextView
+        android:id="@+id/text1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="bởi "
+        android:textSize="@dimen/_9ssp"
+        android:textColor="@color/colorSubtext"
+        app:layout_constraintTop_toBottomOf="@id/ratingBar"
+        app:layout_constraintStart_toStartOf="@id/ratingBar"/>
+
+    <TextView
+        android:id="@+id/textViewByUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lê Tiểu Phàm"
+        android:textStyle="bold"
+        android:textSize="@dimen/_9ssp"
+        android:textColor="@color/primary"
+        app:layout_constraintStart_toEndOf="@id/text1"
+        app:layout_constraintTop_toTopOf="@id/text1"
+        app:layout_constraintBottom_toBottomOf="@id/text1"/>
+
+    <TextView
+        android:id="@+id/textViewAddress"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:paddingEnd="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_1sdp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:drawableLeft="@drawable/ic_location_outline_small"
+        android:drawableTint="@color/TextColorSub"
+        android:drawablePadding="@dimen/_2sdp"
+        android:gravity="center_vertical"
+        android:text="875/22 Nguyễn Văn Cừ, P.26, Q.Bình Thạnh"
+        android:textSize="@dimen/_9ssp"
+        android:textColor="@color/TextColorSub"
+        app:layout_constraintTop_toBottomOf="@id/textViewByUser"
+        app:layout_constraintStart_toStartOf="@id/text1"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/textViewDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="12/13/2021"
+        android:textSize="@dimen/_9ssp"
+        app:layout_constraintTop_toTopOf="@id/ratingBar"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/textViewContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:text="It is a long established fact that a reader will be by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters "
+        android:textSize="@dimen/_10ssp"
+        android:paddingEnd="@dimen/_2sdp"
+        android:maxLength="256"
+        android:textColor="@color/primary"
+        app:layout_constraintTop_toBottomOf="@id/imageViewIconUser"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,1582 @@
+[
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_hotpot.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\hotpot.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_reserved_table_item_container.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\reserved_table_item_container.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_lau.jpg.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\lau.jpg"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_background_progressbar.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\background_progressbar.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_background_bottom_sheet.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\background_bottom_sheet.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_activity_review_notification.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\activity_review_notification.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_round_close_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_round_close_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_button_radius.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\button_radius.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_paner3.jpg.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\paner3.jpg"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_baseline_toggle_off_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_baseline_toggle_off_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_setting.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\setting.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_layout_item_search.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\layout_item_search.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_round_check_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_round_check_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_layout_category_restaurant_selected.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\layout_category_restaurant_selected.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\raw_rating.json.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\raw\\rating.json"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_icon_tasty_small.jpg.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\icon_tasty_small.jpg"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_fragment_menu.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\fragment_menu.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_round_keyboard_arrow_up_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_round_keyboard_arrow_up_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_background_radius_recommend_2.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\background_radius_recommend_2.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_background_image.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\background_image.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_icon_gender.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\icon_gender.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_activity_report_restaurant.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\activity_report_restaurant.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_layout_districts_search_item_container.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\layout_districts_search_item_container.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_round_add_circle_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_round_add_circle_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_round_expand_less_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_round_expand_less_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\mipmap-anydpi-v26_ic_icon_round.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\mipmap-anydpi-v26\\ic_icon_round.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_round_open_in_full_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_round_open_in_full_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_restaurant_item_container.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\restaurant_item_container.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_expand.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\expand.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_p6.jpg.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\p6.jpg"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_bell.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\bell.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_outline_receipt_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_outline_receipt_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_diveder_review.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\diveder_review.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_round_warning_amber_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_round_warning_amber_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\mipmap-anydpi-v26_ic_icon_tasty_round.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\mipmap-anydpi-v26\\ic_icon_tasty_round.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_background_radius_recommend.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\background_radius_recommend.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_restaurant.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_restaurant.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_layout_gradient.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\layout_gradient.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_sawade.jpg.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\sawade.jpg"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_arrow_forward.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_arrow_forward.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_background_current_location.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\background_current_location.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_background_gender_radio_group.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\background_gender_radio_group.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_category_item_container.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\category_item_container.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\mipmap-xhdpi_ic_icon.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\mipmap-xhdpi\\ic_icon.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_bag.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\bag.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_phone.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_phone.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_heart.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\heart.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\raw_review_success.json.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\raw\\review_success.json"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_bubble_tea.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\bubble_tea.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_baseline_assignment.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_baseline_assignment.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_notification.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\notification.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_fragment_manager_reserve_table.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\fragment_manager_reserve_table.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_shopping_bag.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\shopping_bag.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_p4.jpg.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\p4.jpg"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_directions.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_directions.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_layout_review_item_container.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\layout_review_item_container.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_call.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_call.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_fb_1.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_fb_1.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_pizza.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\pizza.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_error_shape.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\error_shape.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\menu_navigation_menu.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\menu\\navigation_menu.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_warning_shape.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\warning_shape.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_activity_review_restaurant.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\activity_review_restaurant.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_background_comment.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\background_comment.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_baseline_attach_money_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_baseline_attach_money_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_round_pending_actions.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_round_pending_actions.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_outline_add_photo.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_outline_add_photo.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\mipmap-xxhdpi_ic_icon_foreground.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_icon_foreground.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_activity_sign_up.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\activity_sign_up.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_activity_map_registration.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\activity_map_registration.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_activity_sign_in.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\activity_sign_in.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_background_choose_address.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\background_choose_address.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_arrow_down.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_arrow_down.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_baseline_groups_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_baseline_groups_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_fragment_processing_reserved_table.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\fragment_processing_reserved_table.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_icon_tasty.jpg.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\icon_tasty.jpg"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_background_time_reserve.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\background_time_reserve.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\mipmap-xxhdpi_ic_launcher_foreground.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_foreground.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ramen.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ramen.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\navigation_manager.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\navigation\\manager.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_background_radius.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\background_radius.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\raw_review_animation.json.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\raw\\review_animation.json"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_image_send.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\image_send.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_layout_photo_review.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\layout_photo_review.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_restaurant_photo_item_container.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\restaurant_photo_item_container.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_review.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\review.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_layout_notification_item_container.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\layout_notification_item_container.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_layout_bottom_sheet_restaurnt_map.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\layout_bottom_sheet_restaurnt_map.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_suatuoi.jpg.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\suatuoi.jpg"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_background_input_edit_text.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\background_input_edit_text.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_background_support_layout_search.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\background_support_layout_search.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_layout_loading_dialog.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\layout_loading_dialog.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_food_reserve_item_container.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\food_reserve_item_container.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_round_check_circle.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_round_check_circle.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\mipmap-hdpi_ic_icon_foreground.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\mipmap-hdpi\\ic_icon_foreground.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_p1.jpg.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\p1.jpg"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_outline_add_circle_outline_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_outline_add_circle_outline_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_baseline_my_location_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_baseline_my_location_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\menu_bottom_menu.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\menu\\bottom_menu.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_round_local_phone_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_round_local_phone_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\mipmap-mdpi_ic_icon_tasty_foreground.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\mipmap-mdpi\\ic_icon_tasty_foreground.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_background_current_location_pressed.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\background_current_location_pressed.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\anim_layout_animation_left_tp_right.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\anim\\layout_animation_left_tp_right.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\mipmap-xhdpi_ic_icon_tasty_round.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\mipmap-xhdpi\\ic_icon_tasty_round.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\mipmap-anydpi-v26_ic_icon_tasty.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\mipmap-anydpi-v26\\ic_icon_tasty.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_p2.jpg.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\p2.jpg"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_outline_loyalty_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_outline_loyalty_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_like.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\like.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_fragment_manager_promotion.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\fragment_manager_promotion.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\mipmap-xhdpi_ic_launcher_foreground.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher_foreground.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_give_love.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\give_love.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_round_share_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_round_share_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_user_small.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\user_small.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\mipmap-anydpi-v26\\ic_launcher.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_background_add_image_text_view.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\background_add_image_text_view.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\anim_anime_left_to_right.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\anim\\anime_left_to_right.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_icon_background.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_icon_background.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_p3.jpg.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\p3.jpg"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_background_loading_progressbar.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\background_loading_progressbar.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_ward.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_ward.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_time_reserve_item_container.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\time_reserve_item_container.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_choose_restaurant_item_container.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\choose_restaurant_item_container.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_activity_menu_review.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\activity_menu_review.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_activity_user_info.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\activity_user_info.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_icon_like.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\icon_like.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_send.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\send.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_outline_location.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_outline_location.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\mipmap-xhdpi_ic_icon_tasty.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\mipmap-xhdpi\\ic_icon_tasty.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_activity_business.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\activity_business.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_baseline_card_giftcard_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_baseline_card_giftcard_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_person.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_person.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_food_restaurant_item_container.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\food_restaurant_item_container.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_promotion_item_container.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\promotion_item_container.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_background_round.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\background_round.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_baseline_toggle_on_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_baseline_toggle_on_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_layout_photo_reiview_item_container.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\layout_photo_reiview_item_container.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_time.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_time.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_location_outline_small.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_location_outline_small.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_customtoast_layout.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\customtoast_layout.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_activity_restaurant_map.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\activity_restaurant_map.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_selector_spiner_city.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\selector_spiner_city.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_tocotoco_restaurant.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\tocotoco_restaurant.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_fragment_confirmed_reserved_table.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\fragment_confirmed_reserved_table.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_round_notifications_none_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_round_notifications_none_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_activity_setting.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\activity_setting.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_layout_user_info.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\layout_user_info.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_copy.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_copy.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_background_circle.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\background_circle.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_manager_food_item_container.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\manager_food_item_container.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_outline_mic_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_outline_mic_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_activity_search.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\activity_search.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\mipmap-xxhdpi_ic_icon_tasty_round.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_icon_tasty_round.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_outline_fact_check.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_outline_fact_check.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_activity_restaurant_registration.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\activity_restaurant_registration.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_outline_fact_check_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_outline_fact_check_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_round_edit_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_round_edit_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_fragment_manager_restaurant.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\fragment_manager_restaurant.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_background_spinner.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\background_spinner.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_confusing_shape.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\confusing_shape.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_launcher_background.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_launcher_background.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_line_radius_2.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\line_radius_2.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_background_reserved_time.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\background_reserved_time.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_restaurant_map_address.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\restaurant_map_address.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\raw_loading.json.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\raw\\loading.json"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_panner.jpeg.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\panner.jpeg"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_layout_category_restaurant_item_container.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\layout_category_restaurant_item_container.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_activity_reserve_table_details.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\activity_reserve_table_details.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_round_settings_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_round_settings_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_selector_spinner.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\selector_spinner.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\mipmap-mdpi_ic_icon.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\mipmap-mdpi\\ic_icon.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_fancytoast_layout.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\fancytoast_layout.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_background_search.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\background_search.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_activity_business_or_normal.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\activity_business_or_normal.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_choose_number_people_item_container.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\choose_number_people_item_container.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\mipmap-mdpi_ic_icon_tasty_round.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\mipmap-mdpi\\ic_icon_tasty_round.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_round_directions_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_round_directions_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\color_custom_color_bottom_nav.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\color\\custom_color_bottom_nav.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\mipmap-xxhdpi_ic_icon.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_icon.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_layout_add_menu_name_dialog.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\layout_add_menu_name_dialog.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_red_star_half.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\red_star_half.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable-v24_ic_launcher_foreground.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable-v24\\ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_rice.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\rice.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_round_location_on_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_round_location_on_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_background_layout_search.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\background_layout_search.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_layout_radius.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\layout_radius.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_user_icon.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\user_icon.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_fragment_notification.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\fragment_notification.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_layout_insert_food_dialog.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\layout_insert_food_dialog.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_round_phone_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_round_phone_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_activity_create_review.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\activity_create_review.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_coffee.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\coffee.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_messager.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_messager.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_map.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_map.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_background_category.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\background_category.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\mipmap-anydpi-v26_ic_icon.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\mipmap-anydpi-v26\\ic_icon.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_background_radius_recommend_1.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\background_radius_recommend_1.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_activity_send_otp.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\activity_send_otp.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_send_up.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\send_up.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_round_person_outline_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_round_person_outline_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_layout_restaurant_check_in_item_container.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\layout_restaurant_check_in_item_container.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_round_chat_bubble_outline_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_round_chat_bubble_outline_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_city.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_city.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_input_radius.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\input_radius.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_outline_insert_photo_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_outline_insert_photo_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_barbecue.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\barbecue.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_round_logout_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_round_logout_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_menu_item_container.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\menu_item_container.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_background_current_location_press.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\background_current_location_press.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_activity_order_food.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\activity_order_food.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_layout_menu_bottom_sheet.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\layout_menu_bottom_sheet.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_clear_black_24dp.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_clear_black_24dp.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_success_shape.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\success_shape.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_maximize.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\maximize.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\mipmap-xxxhdpi_ic_icon.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_icon.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\raw_location.json.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\raw\\location.json"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\mipmap-mdpi_ic_icon_foreground.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\mipmap-mdpi\\ic_icon_foreground.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\mipmap-hdpi_ic_launcher_foreground.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher_foreground.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_heart_small.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\heart_small.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_district.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_district.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_round_pending.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_round_pending.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_slider_item_container.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\slider_item_container.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_paner2.jpg.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\paner2.jpg"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_starbuck.jpg.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\starbuck.jpg"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_item_radius.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\item_radius.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_repeat.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_repeat.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_red_star_full.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\red_star_full.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_background_radius_recommend_3.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\background_radius_recommend_3.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_heart_out_line.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\heart_out_line.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_activity_verify_otp.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\activity_verify_otp.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_layout_user_reserve_table_item_container.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\layout_user_reserve_table_item_container.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\mipmap-hdpi_ic_icon_tasty_foreground.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\mipmap-hdpi\\ic_icon_tasty_foreground.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_layout_restaurant_recent_item_container.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\layout_restaurant_recent_item_container.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_round_keyboard_arrow_down_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_round_keyboard_arrow_down_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_layout_choose_restaurant_bottom_sheet.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\layout_choose_restaurant_bottom_sheet.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_sharp_location.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_sharp_location.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_round_person_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_round_person_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_minimize.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\minimize.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_outline_lock.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_outline_lock.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_layout_recommend_resstaurant_item_container.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\layout_recommend_resstaurant_item_container.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_activity_splash.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\activity_splash.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_layout_review_post_item_container.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\layout_review_post_item_container.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_outline_fmd_good_small.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_outline_fmd_good_small.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ratingbar_red.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ratingbar_red.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\mipmap-mdpi_ic_icon_tasty.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\mipmap-mdpi\\ic_icon_tasty.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_menu.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_menu.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_round_fastfood_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_round_fastfood_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_loyalty.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_loyalty.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_layout_bottom_sheet_restaurant.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\layout_bottom_sheet_restaurant.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_layout_category_restaurant_dialog.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\layout_category_restaurant_dialog.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_twotone_location.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_twotone_location.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_round_remove.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_round_remove.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_layout_navigation_header.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\layout_navigation_header.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_layout_comment_item_container.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\layout_comment_item_container.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_fragment_pending_reserved_table.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\fragment_pending_reserved_table.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_layout_report_item_container.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\layout_report_item_container.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_outline_notifications_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_outline_notifications_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_line_radius_1.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\line_radius_1.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_panner1.jpg.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\panner1.jpg"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_fragment_late_reserved_table.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\fragment_late_reserved_table.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_divider.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\divider.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_fragment_manager_menu.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\fragment_manager_menu.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_background_layout_notification.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\background_layout_notification.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_more.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\more.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_outline_perm_identity_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_outline_perm_identity_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_outline_fmd_good_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_outline_fmd_good_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_manager_category_item_container.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\manager_category_item_container.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_fullscreen.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\fullscreen.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_p5.jpg.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\p5.jpg"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\raw_failed.json.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\raw\\failed.json"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_background_button_guide.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\background_button_guide.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_sheet_content.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\sheet_content.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_activity_review_details.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\activity_review_details.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_outline_image_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_outline_image_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_close.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_close.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\raw_restaurant_location.json.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\raw\\restaurant_location.json"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\mipmap-xhdpi_ic_icon_foreground.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\mipmap-xhdpi\\ic_icon_foreground.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_exit.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\exit.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_activity_user_book_table_history.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\activity_user_book_table_history.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_user_add.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\user_add.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_notification_item_container.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\notification_item_container.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_container_item_image_restaurant.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\container_item_image_restaurant.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_activity_reserve_table.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\activity_reserve_table.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_layout_change_password_dialog.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\layout_change_password_dialog.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_search.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_search.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_category.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_category.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_background_districts_search.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\background_districts_search.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\mipmap-xxxhdpi_ic_launcher_foreground.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_foreground.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_layout_distance.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\layout_distance.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_image_received.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\image_received.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_refresh_black_24dp.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_refresh_black_24dp.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_activity_manager_category.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\activity_manager_category.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_round_notifications_off_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_round_notifications_off_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_lock.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_lock.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_baseline_message_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_baseline_message_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_round_notifications_small.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_round_notifications_small.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_activity_user_reserve_table_details.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\activity_user_reserve_table_details.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_translucent_marker.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\translucent_marker.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_baseline_loyalty_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_baseline_loyalty_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_activity_restaurant_details.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\activity_restaurant_details.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_food_item_container.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\food_item_container.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_round_arrow_back_ios_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_round_arrow_back_ios_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\mipmap-xxxhdpi_ic_icon_foreground.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_icon_foreground.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_activity_check_in.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\activity_check_in.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\menu_navigation_menu_manager.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\menu\\navigation_menu_manager.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_baseline_storefront_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_baseline_storefront_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_red_star_empty.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\red_star_empty.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_layout_dialog_report_review.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\layout_dialog_report_review.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_outline_event_available_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_outline_event_available_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\mipmap-xhdpi_ic_icon_tasty_foreground.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\mipmap-xhdpi\\ic_icon_tasty_foreground.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_layout_category_restaurant.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\layout_category_restaurant.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_checked.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\checked.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_fragment_manager_statistic.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\fragment_manager_statistic.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_heart_out_line_small.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\heart_out_line_small.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_outline_pending_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_outline_pending_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_layout_update_user_info_dialog.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\layout_update_user_info_dialog.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_accept.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\accept.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_activity_main.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\activity_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_gender.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_gender.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\raw_people_success.json.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\raw\\people_success.json"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_outline_info_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_outline_info_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_round_notifications_none.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_round_notifications_none.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_layout_reserve_table_success_dialog.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\layout_reserve_table_success_dialog.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\mipmap-hdpi_ic_icon_tasty_round.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\mipmap-hdpi\\ic_icon_tasty_round.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_fact_check.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_fact_check.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\raw_success.json.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\raw\\success.json"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_logo_tocotoco.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\logo_tocotoco.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_location.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_location.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_round_assignment_late_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_round_assignment_late_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_background_text_load_more.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\background_text_load_more.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_center_location.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_center_location.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_user_info.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\user_info.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_icon_tasty_background.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_icon_tasty_background.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_round_delete_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_round_delete_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_background_directions.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\background_directions.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_drink.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\drink.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_other.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_other.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_outline_recommend_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_outline_recommend_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_mes1.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_mes1.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_layout_insert_category_dialog.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\layout_insert_category_dialog.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_baseline_date_range.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_baseline_date_range.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_layout_notification_dialog.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\layout_notification_dialog.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\raw_success_reserve.json.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\raw\\success_reserve.json"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_activity_review.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\activity_review.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_map_restaurant_item_container.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\map_restaurant_item_container.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_layout_dash.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\layout_dash.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_login.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_login.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_background_districts_search_selected.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\background_districts_search_selected.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\mipmap-hdpi_ic_icon_tasty.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\mipmap-hdpi\\ic_icon_tasty.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_baseline_call_missed_outgoing_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_baseline_call_missed_outgoing_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_round_pan_tool_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_round_pan_tool_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_round_arrow_forward_ios_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_round_arrow_forward_ios_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_layout_navigation_manager_header.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\layout_navigation_manager_header.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_layout_photo_res_map_item_container.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\layout_photo_res_map_item_container.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_fragment_main.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\fragment_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_layout_check_password_dialog.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\layout_check_password_dialog.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_baseline_table_chart_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_baseline_table_chart_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\raw_success_check.json.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\raw\\success_check.json"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_outline_date_range.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_outline_date_range.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_layout_restaurant_map_item_container.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\layout_restaurant_map_item_container.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\mipmap-xxxhdpi_ic_icon_tasty_round.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_icon_tasty_round.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\mipmap-xxxhdpi_ic_icon_tasty_foreground.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_icon_tasty_foreground.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\mipmap-xxhdpi_ic_icon_tasty.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_icon_tasty.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_baseline_bloodtype_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_baseline_bloodtype_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\menu_image_restaurant_menu.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\menu\\image_restaurant_menu.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\mipmap-xxxhdpi_ic_icon_tasty.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_icon_tasty.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\mipmap-xxhdpi_ic_icon_tasty_foreground.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_icon_tasty_foreground.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_activity_restaurant_registration_step2.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\activity_restaurant_registration_step2.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_calendar.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\calendar.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_line_radius.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\line_radius.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_round_add.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_round_add.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_baseline_restaurant_menu_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_baseline_restaurant_menu_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_beer.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\beer.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_activity_map.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\activity_map.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_baseline_directions_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_baseline_directions_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_round_notifications.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_round_notifications.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_round_checklist_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_round_checklist_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_fb.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_fb.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\mipmap-mdpi_ic_launcher_foreground.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_foreground.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_round_my_location_24.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_round_my_location_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_content_map.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\content_map.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_round_check.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_round_check.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\mipmap-hdpi_ic_icon.png.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\mipmap-hdpi\\ic_icon.png"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_baseline_assessment.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\drawable\\ic_baseline_assessment.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\mipmap-anydpi-v26\\ic_launcher_round.xml"
+    },
+    {
+        "merged": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\build\\intermediates\\merged_res\\debug\\layout_fragment_review.xml.flat",
+        "source": "C:\\Users\\PAM\\Documents\\GitHub\\DACN\\FoodLocation_App\\app\\src\\main\\res\\layout\\fragment_review.xml"
+    }
+]
